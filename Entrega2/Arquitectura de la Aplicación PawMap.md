@@ -57,7 +57,7 @@ Decidimos separar la arquitectura estructural del sistema en 3 capas lógicas y 
   
 * **Integración de Servicios Externos:** Si bien el sistema base se rige por un patrón de 3 capas, PawMap requiere la integración de servicios de terceros para funcionalidades específicas. La API de Google Maps no actúa como una cuarta capa del sistema, sino como un Servicio Externo consumido asíncronamente por la Capa de Presentación.
 
-[Diagrama de Arquitectura](Arquitectura de aplicación - PawMap.drawio.png)
+[Diagrama de Arquitectura de Aplicación PawMap](Arquitectura%de%aplicación%-%PawMap.drawio.png)
 
 #### 4.1.2 Patrón de Arquitectura: MVC (Modelo-Vista-Controlador)
 Decidimos organizar el código del servidor (Tier 2) separando la recepción de requests, la lógica de negocio y la generación de respuestas mediante la aplicación del patrón MVC.
