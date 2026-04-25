@@ -49,7 +49,7 @@ Decidimos separar la arquitectura estructural del sistema en 3 capas lógicas y 
 
 * **Nivel de Presentación (Frontend):** Responsable de la interfaz y la interacción con el usuario (HTML, CSS, JS).
   
-* **Nivel de Aplicación (Backend):** Contiene la lógica de negocio y las reglas de ruteo (Servidor Java Web). A su vez este nivel aplica Arquitectura Layer MVC.
+* **Nivel de Aplicación (Backend):** Contiene la lógica de negocio y las reglas de ruteo (Servidor Web con PHP). A su vez este nivel aplica Arquitectura Layer MVC.
   
 * **Nivel de Datos (Persistencia):** Responsable del almacenamiento y la integridad de la información (PostgreSQL).
   
@@ -93,15 +93,15 @@ Decidimos diseñar la comunicación entre Tier 1 y Tier 2 como una API sin estad
 ## 5. Despliegue y entornos
 Decidimos que el diseño de la aplicación PawMap va a estar orientado a un esquema de despliegue ágil basado en infraestructura propia, utilizando redes de túneles seguros para la etapa de pruebas y la exposición final ante el cliente. El proceso se estructura de la siguiente manera:
 
-* **5.1 Control de Versiones:** Todo el código fuente (Frontend, Backend Java Web y scripts de base de datos) se mantiene centralizado en un repositorio público de GitHub, permitiendo el trabajo colaborativo asíncrono y el control de ramas durante el desarrollo.
+* **5.1 Control de Versiones:** Todo el código fuente (Frontend, Backend y scripts de base de datos) se mantiene centralizado en un repositorio público de GitHub, permitiendo el trabajo colaborativo asíncrono y el control de ramas durante el desarrollo.
   
 * **5.2 Infraestructura de Ejecución (Host Local):** La arquitectura de PawMap se ejecutará on-premise sobre el equipo de uno de los desarrolladores durante las sesiones de prueba y la entrega final.
   
     * **5.2.1 Capa de Datos:** El motor relacional PostgreSQL se ejecuta localmente.
       
-    * **5.2.2 Capa de Aplicación:** El servidor web Java compila y levanta la aplicación en un puerto local designado (por ejemplo, localhost:8080).
+    * **5.2.2 Capa de Aplicación:** El intérprete de PHP procesa los scripts en el servidor local la aplicación en un puerto local designado (por ejemplo, localhost:8080).
       
-* **5.3 Exposición a Internet (Túnel Inverso con Ngrok):** Para cumplir con el requisito de accesibilidad remota sin incurrir en costos de alojamiento (hosting), se implementa Ngrok como servicio de proxy inverso. Ngrok intercepta el tráfico externo y lo redirige de forma segura hacia el servidor local de Java. Al ejecutar el cliente de Ngrok, este genera dinámicamente una URL pública temporal con protocolo HTTPS. A través de este enlace, cualquier usuario externo puede acceder y utilizar la plataforma PawMap desde sus propios dispositivos móviles o de escritorio interactuando en tiempo real con la base de datos local.
+* **5.3 Exposición a Internet (Túnel Inverso con Ngrok):** Para cumplir con el requisito de accesibilidad remota sin incurrir en costos de alojamiento (hosting), se implementa Ngrok como servicio de proxy inverso. Ngrok intercepta el tráfico externo y lo redirige de forma segura hacia el servidor local. Al ejecutar el cliente de Ngrok, este genera dinámicamente una URL pública temporal con protocolo HTTPS. A través de este enlace, cualquier usuario externo puede acceder y utilizar la plataforma PawMap desde sus propios dispositivos móviles o de escritorio interactuando en tiempo real con la base de datos local.
   
 * **5.4 Mantenimiento y Control del Entorno:** Este enfoque garantiza un control absoluto sobre los recursos del sistema durante la presentación. Al no depender de cuotas de memoria de servidores gratuitos en la nube, se mitiga el riesgo de caídas por falta de recursos (Out of Memory) al cargar imágenes de las mascotas o al procesar múltiples consultas espaciales en el mapa interactivo.
 
@@ -110,7 +110,7 @@ Decidimos que el diseño de la aplicación PawMap va a estar orientado a un esqu
 ## 6. Operación
 Para que el sistema sea fácil de operar, depurar y comprender por cualquier miembro del equipo de desarrollo, la arquitectura se estructuró buscando que el propósito de PawMap sea evidente a simple vista, aplicando el principio de Arquitectura que revela su intención (Screaming Architecture).
 
-* **6.1. Visibilidad de Casos de Uso:** La estructura de paquetes y clases en el servidor Java se organiza puramente por la lógica de negocio. Las rutas del controlador y la lógica del modelo están organizadas de tal forma que las operaciones clave son elementos de primera clase en el código. Al examinar el proyecto, el equipo identifica rápidamente flujos funcionales críticos.
+* **6.1. Visibilidad de Casos de Uso:** La estructura de paquetes y clases en el servidor se organiza puramente por la lógica de negocio. Las rutas del controlador y la lógica del modelo están organizadas de tal forma que las operaciones clave son elementos de primera clase en el código. Al examinar el proyecto, el equipo identifica rápidamente flujos funcionales críticos.
   
 * **6.2. Trazabilidad mediante Front Controller:** Al centralizar todas las peticiones HTTP del cliente web en un Front Controller, la operación diaria y el debugging se simplifican enormemente. Este único punto de entrada permite registrar en la consola del servidor cada petición entrante. Esto facilita monitorear qué endpoints reciben más tráfico y capturar excepciones globales de forma controlada antes de que afecten la experiencia del usuario.
 
@@ -118,13 +118,13 @@ Para que el sistema sea fácil de operar, depurar y comprender por cualquier mie
 
 ## 7. Procesos, Hilos y Asignación de Recursos
 
-* **7.1. Gestión de Procesos e Hilos (Threads):** El Servidor Web Java opera bajo un modelo Thread-per-Request (un hilo por petición). Cuando múltiples usuarios acceden al mapa simultáneamente o un Refugio sube imágenes, el servidor asigna un hilo independiente a cada conexión. El Front Controller asegura que estos hilos se gestionen eficientemente mediante un Thread Pool, evitando la saturación del servidor.
+* **7.1. Gestión de Procesos e Hilos (Threads):** La arquitectura de PawMap en PHP opera bajo un modelo de procesos independientes. El servidor web recibe las conexiones y las delega a un "Worker Process" de PHP disponible. Cada petición se ejecuta en su propio espacio de memoria, lo que garantiza que un error fatal en una solicitud de un Adoptante no afecte a otros usuarios que estén navegando el mapa simultáneamente.
   
-* **7.2. Asignación de Recursos:** Pool de Conexiones: Los recursos de base de datos son costosos. Se implementará un pool de conexiones JDBC para que los hilos reutilicen conexiones a PostgreSQL en lugar de abrir y cerrar una por cada solicitud (ej. al visualizar repetidamente las mascotas en el mapa).
+* **7.2. Asignación de Recursos:** La conexión a la base de datos se crea dinámicamente mediante una clase que inyecta la configuración (clase Config).
   
 * **7.3. Gestión de Memoria y Archivos:** La asignación de recursos limitará el tamaño de las cargas, evitando el agotamiento de la memoria (Out of Memory) en el servidor.
   
-* **7.4. Ciclo de vida de un request:** El cliente envía HTTP request, el servidor web asigna un hilo, el Controlador valida la sesión y delega el procesamiento al Servicio de negocio, el DAO ejecuta la query JDBC, la respuesta JSON se serializa y por último el hilo envía HTTP response y queda disponible para otra solicitud.
+* **7.4. Ciclo de vida de un request:** El cliente envía HTTP request, el servidor web delega el proceso al intérprete de PHP, el Controlador valida la sesión y delega el procesamiento al Servicio de negocio, el DAO ejecuta la instancia de PDO, la respuesta JSON se serializa y por último el hilo envía HTTP response y queda disponible para otra solicitud.
   
 * **7.5. Proceso del cliente (navegador):** Se ejecuta JavaScript de forma single-threaded con event loop. Las llamadas a la API del servidor son asíncronas (fetch/AJAX) para no bloquear la interfaz.
   
@@ -132,9 +132,9 @@ Para que el sistema sea fácil de operar, depurar y comprender por cualquier mie
 
 ## 8. Selección de Tecnología y Justificación
 
-* **8.1. Backend (Lógica y API):** Decidimos utilizar Java ya que proporciona un tipado estricto y un entorno fuertemente orientado a objetos, ideal para plasmar el modelo de dominio complejo. Además, su madurez en el manejo de hilos y ecosistema web garantiza estabilidad. También lo elegimos por su compatibilidad directa con JDBC para el acceso a la base de datos.
+* **8.1. Backend (Lógica y API):** Se ha seleccionado PHP como lenguaje de programación para el Tier 2 ya que el uso de PHP responde a los contenidos abordados durante el transcurso de la materia, permitiendo aplicar de forma práctica los conceptos de programación web y arquitecturas de sistemas vistos en clase, esta elección permite la reutilización de módulos de código previamente desarrollados y testeados (como la clase Config y la factoría de conexión), lo que optimiza los tiempos de desarrollo y asegura una base de código conocida y confiable. Además PHP ofrece una integración simplificada con servidores web y un manejo nativo de sesiones y protocolos HTTP.
   
-* **8.2. Base de Datos:** Decidimos utilizar PostgreSQL ya que es un motor relacional ACID robusto. La elección es crítica por dos motivos: 1) Tiene un soporte nativo espacial, ideal para guardar los datos de latitud/longitud de la clase Ubicación y realizar consultas eficientes por radio de distancia. 2) Se integra correctamente con JDBC. 3) Es de Software libre (No requiere licencias).
+* **8.2. Base de Datos:** Decidimos utilizar PostgreSQL ya que es un motor relacional ACID robusto. La elección es crítica por dos motivos: 1) Tiene un soporte nativo espacial, ideal para guardar los datos de latitud/longitud de la clase Ubicación y realizar consultas eficientes por radio de distancia. 2) Se integra correctamente con PDO. 3) Es de Software libre (No requiere licencias).
   
 * **8.3. Frontend:** Utilizamos HTML5, CSS3, JavaScript ya que es solicitado en la consigna del integrador, además, es el estándar multiplataforma. JavaScript permite consumir la API REST en tiempo real y es mandatorio para integrar y manipular dinámicamente la API de Google Maps de forma asincrona.
 
@@ -147,17 +147,17 @@ La arquitectura y las decisiones tecnológicas adoptadas aseguran los siguientes
   
     * **Patrón DAO:** Toda la lógica de acceso a datos está encapsulada en clases DAO. Cambiar la base de datos o una consulta no afecta la lógica de negocio.
       
-* **9.2. Escalabilidad:** El backend (Java) y la base de datos (PostgreSQL) están desacoplados. Si la carga de Adoptantes navegando el mapa crece masivamente, el servidor de aplicaciones se puede escalar horizontalmente sin afectar la persistencia.
+* **9.2. Escalabilidad:** El backend y la base de datos están desacoplados. Si la carga de Adoptantes navegando el mapa crece masivamente, el servidor de aplicaciones se puede escalar horizontalmente sin afectar la persistencia.
   
 * **9.3. Rendimiento (Performance):** Optimizado mediante el uso de un pool de conexiones a la base de datos y la carga asincrona en el Frontend. Solo se transmiten datos JSON ligeros, mientras que el cliente absorbe el costo computacional de renderizar el mapa.
   
 * **9.4. Seguridad:**
  
-    * **Autenticación:** Centralizada en el Front Controller. Cualquier acceso a operaciones sensibles pasará por un filtro de validación de sesión (Usuario.iniciarSesion()) antes de tocar los controladores específicos o el modelo de objetos.
+    * **Autenticación:** Centralizada en el Front Controller. Cualquier acceso a operaciones sensibles pasará por un filtro de validación de sesión antes de tocar los controladores específicos o el modelo de objetos.
       
     * **Autorización por roles:** El sistema distingue tres roles visitante, usuario adoptante y refugio, cada endpoint verifica el rol antes de ejecutar la lógica.
       
-    * **Queries parametrizadas:** (JDBC PreparedStatement) Para prevenir inyecciones SQL en todos los accesos a la base de datos.
+    * **Queries parametrizadas:** Para prevenir inyecciones SQL en todos los accesos a la base de datos.
       
     * **Uso de HTTPS:** Todas las comunicaciones entre cliente y servidor están cifradas con TLS.
       
@@ -173,9 +173,9 @@ La arquitectura y las decisiones tecnológicas adoptadas aseguran los siguientes
   
     * **Degradación elegante:** Si la API de Google Maps no responde, la aplicación muestra los refugios en una lista alternativa sin el mapa, sin interrumpir el flujo de adopción.
       
-    * **Manejo de excepciones:** El Tier 2 captura errores de JDBC y devuelve respuestas de error descriptivas al cliente en lugar de fallar silenciosamente.
+    * **Manejo de excepciones:** El Tier 2 captura errores de PDO y devuelve respuestas de error descriptivas al cliente en lugar de fallar silenciosamente.
       
-    * **Pool de conexiones JDBC:** Evita que solicitudes concurrentes agoten las conexiones disponibles a la base de datos.
+    * **Pool de conexiones PDO:** Evita que solicitudes concurrentes agoten las conexiones disponibles a la base de datos.
 
 ---
 
@@ -210,13 +210,14 @@ Siguiendo la premisa de mantener el software flexible, PawMap separa sus reglas 
 ### Detalles (Externos)
 * **Google Maps API:** Es el mecanismo visual para renderizar las coordenadas de Ubicacion. La clase Ubicacion guarda únicamente latitud y longitud como datos. El sistema no sabe ni le importa cómo se dibuja el mapa.
   
-* **PostgreSQL:** Es el detalle de persistencia. Las clases Adoptante, Refugio, Mascota, SolicitudDeAdopcion, Favorito, MediaMascota, Ubicacion y TestDeCompatibilidad existen como objetos Java en el Tier 2. Los DAOs son los únicos que conocen cómo traducir esos objetos a tablas SQL y ejecutar queries mediante JDBC.
+* **PostgreSQL:** Es el detalle de persistencia. Las clases Adoptante, Refugio, Mascota, SolicitudDeAdopcion, Favorito, MediaMascota, Ubicacion y TestDeCompatibilidad existen como objetos en el Tier 2. Los DAOs son los únicos que conocen cómo traducir esos objetos a tablas SQL y ejecutar queries mediante PDO.
   
-* **JDBC y PreparedStatements:** Son el mecanismo técnico de comunicación entre el backend Java y PostgreSQL. El uso de PreparedStatements es un detalle de implementación que previene inyecciones SQL, pero es invisible para el modelo de dominio.
+* **PreparedStatements:** Son el mecanismo técnico de comunicación entre el backend y PostgreSQL. El uso de PreparedStatements es un detalle de implementación que previene inyecciones SQL, pero es invisible para el modelo de dominio.
   
-* **Pool de conexiones JDBC:** Es un detalle de infraestructura que optimiza el uso de recursos al reutilizar conexiones a la base de datos entre requests concurrentes.
+* **Pool de conexiones:** Es un detalle de infraestructura que optimiza el uso de recursos al reutilizar conexiones a la base de datos entre requests concurrentes.
   
 * **HTML5, CSS3 y JavaScript (Tier 1):** Son el mecanismo de entrega de la interfaz al usuario. El backend responde siempre con JSON estructurado, sin importar qué tecnología de frontend lo consuma.
+  
 * **Cookies de sesión HTTP-only:** Son el mecanismo técnico mediante el cual el navegador mantiene la sesión activa entre requests. Es un detalle del protocolo HTTP: la política de autenticación (quién puede acceder a qué) vive en el backend.
   
 * **Ngrok:** Es un detalle de infraestructura exclusivo de la etapa de pruebas y presentación. Actúa como proxy inverso para exponer el servidor local a Internet.
