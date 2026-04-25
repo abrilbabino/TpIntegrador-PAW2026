@@ -1,2 +1,12 @@
-# OS (macOS)
+#Dependencias
+/vendor/
+
+# Archivos de configuración sensible
+.env
+
+# Archivos de configuración de entorno de trabajo
+.vscode/
 .DS_Store
+
+/logs/*.log
+
