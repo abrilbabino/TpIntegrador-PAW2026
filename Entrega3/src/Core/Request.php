@@ -46,6 +46,6 @@ class Request
         if (!is_numeric($pagina) || $pagina < 1) {
             throw new InvalidValueFormatException("El parámetro 'pagina' debe ser un número entero válido.");
         }
-        return (int) $pagina;
+        return $pagina;
     }
 }

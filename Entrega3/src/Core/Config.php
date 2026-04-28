@@ -15,7 +15,7 @@ class Config
         $this->configs["DB_ADAPTER"]  = getenv("DB_ADAPTER")  ?? 'pgsql';
         $this->configs["DB_HOSTNAME"] = getenv("DB_HOSTNAME") ?? 'localhost';
         $this->configs["DB_DBNAME"]   = getenv("DB_DBNAME")   ?? 'pawmap';
-        $this->configs["DB_USERNAME"] = getenv("DB_USERNAME") ?? 'postgres';
+        $this->configs["DB_USERNAME"] = getenv("DB_USERNAME") ?? 'root';
         $this->configs["DB_PASSWORD"] = getenv("DB_PASSWORD") ?? '';
         $this->configs["DB_PORT"]     = getenv("DB_PORT")     ?? '5432';
         $this->configs["DB_CHARSET"]  = getenv("DB_CHARSET")  ?? 'utf8';
