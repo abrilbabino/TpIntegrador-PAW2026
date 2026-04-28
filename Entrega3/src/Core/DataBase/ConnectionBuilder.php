@@ -19,14 +19,18 @@ class ConnectionBuilder
             $port = $config -> get('DB_PORT');
             $charset = $config -> get('DB_CHARSET');
 
+            $dsn = "{$adapter}:host={$hostname};dbname={$dbname};port={$port}";
+
+            if ($adapter !== 'pgsql' && !empty($charset)) {
+                $dsn .= ";charset={$charset}";
+            }
+
             return new PDO(
-                "{$adapter}:host={$hostname};dbname={$dbname};port={$port};charset={$charset}",
+                $dsn,
                 $config -> get('DB_USERNAME'),
                 $config -> get('DB_PASSWORD'),
                 [
-                    'options' => [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                    ]
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                 ]
             );
 		}catch(PDOException $e){
