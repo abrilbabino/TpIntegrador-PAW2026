@@ -13,11 +13,11 @@
      <title>PawMap</title>
 </head>
 <body>
+  <main>
     <header class="hero">
           <h1>Encuentra a tu nuevo<br>mejor amigo</h1>
           <p>Explora mascotas cerca de tu ubicación.</p>
       </header>
-
 
       <section class="puntos-refugios">
         <figure>
@@ -38,6 +38,10 @@
         <h2>Mascotas en Adopción</h2>
         <a href="/mascotas" class="btn-ver-mascotas">Ver Todas las mascotas</a>
     </section>
+  </main>
+    <?php
+      require __DIR__ . '/footer.view.php'
+    ?>
  
 </body>
 </html>
