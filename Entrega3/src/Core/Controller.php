@@ -31,33 +31,51 @@ class Controller
                 "type" => "link",
             ],
             [
+                "href" => "/adoptar",
                 "name" => "Adoptar",
+                "icon" => "pets",
+                "type" => "link",
             ],
             [
+                "href" => "/mapa",
                 "name" => "Mapa",
+                "icon" => "map",
+                "type" => "link",
             ],
             [
+                "href" => "/test-de-compatibilidad",
                 "name" => "Test de Compatibilidad",
+                "icon" => "quiz",
+                "type" => "link",
             ],
             [
+                "href" => "/como-adoptar",
                 "name" => "Cómo Adoptar?",
+                "icon" => "help",
+                "type" => "link",
             ],
             [
+                "href" => "/donar",
                 "name" => "Donar",
+                "icon" => "volunteer_activism",
+                "type" => "link",
             ],
             [
-                "name" => "Refigios",
+                "href" => "/refugios",
+                "name" => "Refugios",
+                "icon" => "location_city",
+                "type" => "link",
             ],
             [
-                "href" => "/sobreNosotros",
-                "name" => "Sobre Nosotros",
-                "icon"  => "groups",
+                "href" => "/contacto",
+                "name" => "Contacto",
+                "icon"  => "mail",
                 "type"  => "link"
             ],
             [
-                "name" => "Iniciar Sesión",
+                "name" => "",
                 "for"   => "mostrar-login",
-                "icon"  => "login",
+                "icon"  => "person",
                 "type"  => "label"
             ]
         ];
