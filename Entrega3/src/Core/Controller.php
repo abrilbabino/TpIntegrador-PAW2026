@@ -31,10 +31,22 @@ class Controller
                 "type" => "link",
             ],
             [
-                "name" => "Iniciar Sesión",
-                "for"   => "mostrar-login",
-                "icon"  => "login",
-                "type"  => "label"
+                "name" => "Adoptar",
+            ],
+            [
+                "name" => "Mapa",
+            ],
+            [
+                "name" => "Test de Compatibilidad",
+            ],
+            [
+                "name" => "Cómo Adoptar?",
+            ],
+            [
+                "name" => "Donar",
+            ],
+            [
+                "name" => "Refigios",
             ],
             [
                 "href" => "/sobreNosotros",
@@ -43,24 +55,11 @@ class Controller
                 "type"  => "link"
             ],
             [
-                "href" => "/catalogo",
-                "name" => "Catálogo",
-                "icon"  => "menu_book",
-                "type"  => "link"
-            ],
-            [
-                "href" => "/reserva",
-                "name" => "Reserva",
-                "icon"  => "event",
-                "type"  => "link"
-            ],
-            [
-                "name" => "Carrito",
-                "for"   => "mostrar-carrito",
-                "icon"  => "shopping_cart",
-                "type"  => "label",
-                "li_class" => "item-carrito-texto"
-            ],
+                "name" => "Iniciar Sesión",
+                "for"   => "mostrar-login",
+                "icon"  => "login",
+                "type"  => "label"
+            ]
         ];
 
         $this->redes = [

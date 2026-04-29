@@ -13,6 +13,9 @@
      <title>PawMap</title>
 </head>
 <body>
+  <?php
+      require __DIR__ . '/barra-navegacion.view.php'
+    ?>
   <main>
     <header class="hero">
           <h1>Encuentra a tu nuevo<br>mejor amigo</h1>

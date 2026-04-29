@@ -9,6 +9,7 @@ class PageController extends Controller
     public function index()
     {
         $titulo = htmlspecialchars($_GET["nombre"] ?? "Inicio-PawMap");
+        $menu = $this->menu;
         $redes = $this->redes;
         require $this -> viewsDir . '/index.view.php';
     }
