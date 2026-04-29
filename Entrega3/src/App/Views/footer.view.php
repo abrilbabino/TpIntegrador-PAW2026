@@ -1,7 +1,7 @@
 <footer class="footer-principal">
     <address class="footer-direccion">
         <p class="footer-email">
-            Email: <a href="mailto:info@pawprints.com">info@pawprints.com</a>
+            Email: <a href="mailto:info@pawprints.com">info@PawMap.com</a>
         </p>
         <p class="footer-redes">Seguinos en nuestras redes:</p>
         <ul class="footer-redes-lista">

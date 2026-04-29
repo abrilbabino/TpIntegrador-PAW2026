@@ -76,7 +76,7 @@ class Controller
             ],
             [
                 'name' => 'Instagram', 
-                'url' => 'https://instagram.com', 
+                'url' => 'https://www.instagram.com/pawmap.ar/', 
                 'img' => 'instagram.png'
             ],
         ];

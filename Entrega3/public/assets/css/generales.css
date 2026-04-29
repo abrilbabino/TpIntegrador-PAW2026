@@ -1,0 +1,55 @@
+:root {
+  --color-violeta: #662483;
+  --color-azul: #283583;
+  --color-verde: #00a551;
+  --color-amarillo: #f9b233;
+  --color-magenta: #e3004f;
+  --color-texto: #333333;
+  --color-fondo: #ffffff;
+  --color-gris-claro: #f5f5f5;
+
+  --fuente-titulos: "Montserrat", sans-serif;
+  --fuente-cuerpo: "Open Sans", sans-serif;
+}
+
+body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-cuerpo);
+  font-size: 1rem;
+  padding-top: 8rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+}
+
+a {
+  color: var(--color-azul);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-magenta);
+}
+
+@media screen and (min-width: 994px) {
+  body {
+    padding-top: 11rem;
+  }
+}
