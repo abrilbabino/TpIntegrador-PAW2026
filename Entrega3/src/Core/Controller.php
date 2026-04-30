@@ -75,7 +75,7 @@ class Controller
             [
                 "name" => "",
                 "for"   => "mostrar-login",
-                "icon"  => "person",
+                "icon"  => "account_circle",
                 "type"  => "label"
             ]
         ];
