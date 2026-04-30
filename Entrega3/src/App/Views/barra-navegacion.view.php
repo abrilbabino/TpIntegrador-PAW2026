@@ -1,31 +1,22 @@
 <header class="Barra-navegacion">
     <input type="checkbox" id="menu-hamburguesa" class="menu-hamburguesa-check" />
 
-    <!-- Izquierda: Hamburguesa -->
     <label for="menu-hamburguesa" class="label-hamburguesa">
         <span class="material-symbols-outlined">menu</span>
     </label>
 
-    <!-- Centro: Logo (posicionamiento absoluto) -->
     <figure class="header-logo">
         <img src="/assets/img/logo.png" alt="PawMap" />
     </figure>
 
-    <!-- Derecha: Icono Usuario -->
     <label for="mostrar-login" class="icono-usuario">
         <span class="material-symbols-outlined">person</span>
     </label>
 
-    <!-- Buscador (oculto en móvil) -->
     <form action="/buscar" method="GET" class="header-busqueda">
-        <div class="busqueda-wrapper">
-            <span class="material-symbols-outlined busqueda-icono">search</span>
-            <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" />
-        </div>
-        <button type="submit" class="busqueda-btn">Buscar</button>
+        <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" />
     </form>
 
-    <!-- Navegación desplegable -->
     <nav class="menu-principal">
         <ul class="nav-lista">
             <?php foreach ($menu as $item) : ?>

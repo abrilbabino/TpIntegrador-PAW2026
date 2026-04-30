@@ -36,9 +36,7 @@
 
 .header-logo img {
   max-width: 120px;
-  height: 65px;        
-  width: auto;
-  object-fit: contain; 
+  height: auto;
   display: block;
 }
 
@@ -51,7 +49,7 @@
 }
 
 .icono-usuario .material-symbols-outlined {
-  font-size: 38px;
+  font-size: 44px;
   color: var(--color-azul);
   border: 2px solid var(--color-azul);
   border-radius: 50%;
@@ -73,10 +71,6 @@
 
 #menu-hamburguesa:checked ~ .menu-principal .nav-lista {
   display: flex;
-}
-
-#menu-hamburguesa:checked ~ .header-logo {
-  visibility: hidden;
 }
 
 .nav-link {
@@ -145,7 +139,7 @@
 .registro-check:checked ~ .login-panel { display: none; }
 
 main > header {
-  min-height: 400px;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -154,7 +148,7 @@ main > header {
   color: var(--color-fondo);
   text-shadow: 2px 2px 5px var(--color-texto);
   border-bottom: 4px solid var(--color-amarillo);
-  background-color: var(--color-amarillo); 
+  background-color: var(--color-amarillo);
 }
 
 main > header h1 { font-size: 3.5rem; margin-bottom: 0.5rem; }
@@ -238,11 +232,6 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     margin-right: 1rem;
   }
 
-  .header-logo img {
-    height: 90px;  
-    width: auto;
-  }
-
   .header-busqueda {
     display: flex;
     flex: 1;
@@ -252,38 +241,25 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     align-items: center;
   }
 
-  .busqueda-wrapper {
-    position: relative;
+  .busqueda-input {
     width: 80%;
     max-width: 800px;
-  }
-
-  .busqueda-icono {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--color-azul);
-    font-size: 20px;
-    pointer-events: none;
-  }
-
-  .busqueda-input {
-    width: 100%;
-    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    padding: 0.8rem 1rem 0.8rem 2.8rem;
     border: 1.5px solid var(--color-azul);
     border-radius: 25px;
     font-size: 1rem;
     box-sizing: border-box;
+    background-image: url("/assets/img/lupa.png");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
   }
 
   .busqueda-btn { display: none; }
 
-  /* Ocultar elementos móviles en PC */
   .label-hamburguesa,
   .icono-usuario { display: none; }
 
-  /* Fila 2: Menú navegación (ancho completo) */
   .menu-principal { width: 100%; }
 
   .nav-lista {
