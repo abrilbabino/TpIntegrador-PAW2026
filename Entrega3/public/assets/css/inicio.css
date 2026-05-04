@@ -194,6 +194,12 @@
   margin: 0;
 }
 
+.tarjeta-imagen img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 .verPerfil {
   position: absolute;
   top: 8px;
@@ -215,20 +221,20 @@
 }
 
 .tarjeta-info {
-  padding: 1rem;
+  padding: 20px;
   background-color: var(--color-fondo);
   border-top: 3px solid var(--color-amarillo);
 }
 
 .tarjeta-info h3 {
   font-size: 1.1rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 10px 0;
   color: var(--color-azul);
 }
 
 .tarjeta-info p {
   font-size: 0.9rem;
-  color: var(--color-gris-claro);
+  color: #555;
 }
 
 @media screen and (min-width: 994px) {

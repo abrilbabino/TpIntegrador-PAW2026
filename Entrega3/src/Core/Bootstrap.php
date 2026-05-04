@@ -24,7 +24,7 @@ $request = new Request;
 
 $log = new Logger('pawmap-app');
 $handler = new StreamHandler($config->get("LOG_PATH"));
-$handler->setLevel($config->get("LOG_LEVEL"));
+$handler->setLevel($config->get("LOG_LEVEL", "DEBUG"));
 $log->pushHandler($handler);
 
 $whoops = new \Whoops\Run;

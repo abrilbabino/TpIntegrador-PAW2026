@@ -59,16 +59,17 @@
                 <?php foreach ($mascotas as $mascota): ?>
                     <article class="tarjeta-mascota">
                         <figure class="tarjeta-imagen">
-                            <span class="verPerfil">Ver Perfil</span>
-                            <figcaption class="texto-foto">Mascota <?= htmlspecialchars($mascota->fields['id'], ENT_QUOTES, 'UTF-8') ?></figcaption>
+                            <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'], ENT_QUOTES, 'UTF-8') ?>">
+                            
+                            <a href="/mascota?id=<?= htmlspecialchars((string)$mascota->fields['id'], ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">Ver Perfil</a>
                         </figure>
                         
                         <section class="tarjeta-info">
                             <h3><?= htmlspecialchars($mascota->fields['nombre'], ENT_QUOTES, 'UTF-8') ?></h3>
                             <p>
-                                <?= htmlspecialchars($mascota->fields['edad'], ENT_QUOTES, 'UTF-8') ?> - 
-                                <?= htmlspecialchars($mascota->fields['tamanio'], ENT_QUOTES, 'UTF-8') ?> - 
-                                <?= htmlspecialchars($mascota->fields['personalidad'], ENT_QUOTES, 'UTF-8') ?>
+                                <?= htmlspecialchars((string)$mascota->fields['edad'], ENT_QUOTES, 'UTF-8') ?> años - 
+                                <?= htmlspecialchars(ucfirst($mascota->fields['tamano']), ENT_QUOTES, 'UTF-8') ?> - 
+                                <?= htmlspecialchars(ucfirst($mascota->fields['temperamento']), ENT_QUOTES, 'UTF-8') ?>
                             </p>
                         </section>
                     </article>
@@ -78,7 +79,7 @@
             <?php endif; ?>
         </section>
 
-        <a href="/mascotas" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
+        <a href="/adoptar" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
       </section>
     </main>
 

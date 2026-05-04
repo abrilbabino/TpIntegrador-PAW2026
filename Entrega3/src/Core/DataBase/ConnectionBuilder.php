@@ -13,28 +13,26 @@ class ConnectionBuilder
 	public function make(Config $config): PDO
 	{
 		try{
-            $adapter = $config -> get('DB_ADAPTER');
-            $hostname = $config -> get('DB_HOSTNAME');
-            $dbname = $config -> get('DB_DBNAME');
-            $port = $config -> get('DB_PORT');
-            $charset = $config -> get('DB_CHARSET');
+            $hostname = $config->get('DB_HOSTNAME');
+            $dbname = $config->get('DB_DBNAME');
+            $port = $config->get('DB_PORT');
+            $username = $config->get('DB_USERNAME');
+            $password = $config->get('DB_PASSWORD');
 
-            $dsn = "{$adapter}:host={$hostname};dbname={$dbname};port={$port}";
-
-            if ($adapter !== 'pgsql' && !empty($charset)) {
-                $dsn .= ";charset={$charset}";
-            }
+            $dsn = "pgsql:host={$hostname};port={$port};dbname={$dbname}";
 
             return new PDO(
                 $dsn,
-                $config -> get('DB_USERNAME'),
-                $config -> get('DB_PASSWORD'),
+                $username,
+                $password,
                 [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
                 ]
             );
-		}catch(PDOException $e){
-			$this->logger->error('Internal Server Error' , ["Error" => $e]);
+		} catch(PDOException $e){
+			$this->logger->error('Internal Server Error', ["Error" => $e]);
             die("Error Interno - Consulte al administrador");
         }
 	}

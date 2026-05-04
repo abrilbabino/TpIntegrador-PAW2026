@@ -3,15 +3,21 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
+use Paw\App\Models\Mascota;
 
 class PageController extends Controller
 {
+    public ?string $modelName = Mascota::class;
+
     public function index()
     {
         $titulo = htmlspecialchars($_GET["nombre"] ?? "Inicio-PawMap");
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this -> viewsDir . '/index.view.php';
+        
+        $mascotas = Mascota::getAllMascotas($this->model->getQueryBuilder());
+        
+        require $this->viewsDir . '/index.view.php';
     }
 
     public function contacto()
