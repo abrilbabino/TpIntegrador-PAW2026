@@ -4,6 +4,7 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Pagination;
+use Paw\App\Models\Mascota;
 
 class MascotaCollection extends Model
 {
@@ -11,7 +12,7 @@ class MascotaCollection extends Model
 
     public function getAll(array $filtros = [])
     {
-
+        
         $mascotas = $this->queryBuilder->select($this->table, $filtros);
         return $this->mapMascotas($mascotas);
     }

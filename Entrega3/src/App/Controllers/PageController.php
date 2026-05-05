@@ -15,7 +15,8 @@ class PageController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
         
-        $mascotas = Mascota::getAllMascotas($this->model->getQueryBuilder());
+        $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
+
         require $this->viewsDir . '/index.view.php';
     }
 
