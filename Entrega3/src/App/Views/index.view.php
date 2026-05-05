@@ -51,36 +51,42 @@
 
       </section>
 
-      <section class="seccion-adopcion">
-        <h2>Mascotas en Adopción</h2>
-        
-        <section class="grilla-mascotas">
-            <?php if (!empty($mascotas)): ?>
-                <?php foreach ($mascotas as $mascota): ?>
-                    <article class="tarjeta-mascota">
-                        <figure class="tarjeta-imagen">
-                            <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'], ENT_QUOTES, 'UTF-8') ?>">
+        <section class="seccion-adopcion">
+            <h2>Mascotas en Adopción</h2>
+            
+            <section class="grilla-mascotas">
+                <?php if (!empty($mascotas)): ?>
+                    <?php 
+                    $contador = 0;
+                    foreach ($mascotas as $mascota): 
+                        if ($contador >= 5) break;
+                        $contador++;
+                        if (!is_object($mascota) || !isset($mascota->fields)) continue;
+                    ?>
+                        <article class="tarjeta-mascota">
+                            <figure class="tarjeta-imagen">
+                                <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+                                
+                                <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">Ver Perfil</a>
+                            </figure>
                             
-                            <a href="/mascota?id=<?= htmlspecialchars((string)$mascota->fields['id'], ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">Ver Perfil</a>
-                        </figure>
-                        
-                        <section class="tarjeta-info">
-                            <h3><?= htmlspecialchars($mascota->fields['nombre'], ENT_QUOTES, 'UTF-8') ?></h3>
-                            <p>
-                                <?= htmlspecialchars((string)$mascota->fields['edad'], ENT_QUOTES, 'UTF-8') ?> años - 
-                                <?= htmlspecialchars(ucfirst($mascota->fields['tamano']), ENT_QUOTES, 'UTF-8') ?> - 
-                                <?= htmlspecialchars(ucfirst($mascota->fields['temperamento']), ENT_QUOTES, 'UTF-8') ?>
-                            </p>
-                        </section>
-                    </article>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No hay mascotas en adopción en este momento.</p>
-            <?php endif; ?>
-        </section>
+                            <section class="tarjeta-info">
+                                <h3><?= htmlspecialchars($mascota->fields['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
+                                <p>
+                                    <?= htmlspecialchars((string)($mascota->fields['edad'] ?? ''), ENT_QUOTES, 'UTF-8') ?> años - 
+                                    <?= htmlspecialchars(ucfirst($mascota->fields['tamano'] ?? ''), ENT_QUOTES, 'UTF-8') ?> - 
+                                    <?= htmlspecialchars(ucfirst($mascota->fields['temperamento'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                            </section>
+                        </article>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No hay mascotas en adopción en este momento.</p>
+                <?php endif; ?>
+            </section>
 
-        <a href="/adoptar" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
-      </section>
+            <a href="/adoptar" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
+        </section>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>

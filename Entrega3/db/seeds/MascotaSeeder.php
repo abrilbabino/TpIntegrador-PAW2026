@@ -69,6 +69,62 @@ class MascotaSeeder extends AbstractSeed
                 'vacunado' => true,
                 'castrado' => false,
                 'imagen' => 'toby.jpg'
+            ],
+            [
+                'id' => 5,
+                'refugio_id' => 2,
+                'nombre' => 'Luna',
+                'especie' => 'gato',
+                'descripcion' => 'Gatita muy mimosa que busca compañía constante y muchos mimos.',
+                'edad' => 2,
+                'tamano' => 'pequeño',
+                'temperamento' => 'cariñoso',
+                'estado_adopcion' => 'DISPONIBLE',
+                'vacunado' => true,
+                'castrado' => true,
+                'imagen' => 'luna.jpg'
+            ],
+            [
+                'id' => 6,
+                'refugio_id' => 3,
+                'nombre' => 'Max',
+                'especie' => 'perro',
+                'descripcion' => 'Cachorro mestizo lleno de energía, ideal para salir a correr o hacer senderismo.',
+                'edad' => 1,
+                'tamano' => 'mediano',
+                'temperamento' => 'enérgico',
+                'estado_adopcion' => 'DISPONIBLE',
+                'vacunado' => true,
+                'castrado' => false,
+                'imagen' => 'max.jpg'
+            ],
+            [
+                'id' => 7,
+                'refugio_id' => 1,
+                'nombre' => 'Bella',
+                'especie' => 'perro',
+                'descripcion' => 'Perrita adulta muy dócil y obediente. Se lleva súper bien con otros animales.',
+                'edad' => 5,
+                'tamano' => 'grande',
+                'temperamento' => 'tranquilo',
+                'estado_adopcion' => 'DISPONIBLE',
+                'vacunado' => true,
+                'castrado' => true,
+                'imagen' => 'bella.jpg'
+            ],
+            [
+                'id' => 8,
+                'refugio_id' => 2,
+                'nombre' => 'Simba',
+                'especie' => 'gato',
+                'descripcion' => 'Gato naranja independiente pero que disfruta de una buena siesta al sol en el balcón.',
+                'edad' => 3,
+                'tamano' => 'mediano',
+                'temperamento' => 'independiente',
+                'estado_adopcion' => 'DISPONIBLE',
+                'vacunado' => true,
+                'castrado' => true,
+                'imagen' => 'simba.jpg'
             ]
         ];
 

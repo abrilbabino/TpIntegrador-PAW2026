@@ -3,11 +3,11 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
-use Paw\App\Models\Mascota;
+use Paw\App\Models\MascotaCollection;
 
 class PageController extends Controller
 {
-    public ?string $modelName = Mascota::class;
+    public ?string $modelName = MascotaCollection::class;
 
     public function index()
     {
@@ -16,7 +16,6 @@ class PageController extends Controller
         $redes = $this->redes;
         
         $mascotas = Mascota::getAllMascotas($this->model->getQueryBuilder());
-        
         require $this->viewsDir . '/index.view.php';
     }
 

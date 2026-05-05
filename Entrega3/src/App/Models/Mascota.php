@@ -24,11 +24,32 @@ class Mascota extends Model
         'imagen' => 'default-pet.jpg'
     ];
 
+    public function setId($id){
+        if(!is_numeric($id) || $id < 0){
+            throw new InvalidValueFormatException("El ID de la mascota debe ser un entero mayor a 0");
+        }
+        $this->fields['id'] = $id;
+    }
+
+    public function setNombre(string $nombre){
+        $this->fields['nombre'] = $nombre;
+    }
+
+    public function setImagen(string $imagen){
+        $this->fields['imagen'] = $imagen ?? 'default-pet.jpg';
+    }
+
     public function set(array $values)
     {
-        foreach ($values as $key => $value) {
-            if (array_key_exists($key, $this->fields)) {
-                $this->fields[$key] = $value;
+        foreach (array_keys($this->fields) as $field) {
+            if (!isset($values[$field])) {
+                continue;
+            }
+            $method = "set" . ucfirst($field);
+            if (method_exists($this, $method)) {
+                $this->$method($values[$field]);
+            } else {
+                $this->fields[$field] = $values[$field];
             }
         }
     }
@@ -45,17 +66,5 @@ class Mascota extends Model
         else{
             throw new \Exception("No se encontró una mascota con el ID proporcionado");
         }
-    }
-
-    public static function getAllMascotas($queryBuilder)
-    {
-        $result = $queryBuilder->select('mascota', ['estado_adopcion' => 'DISPONIBLE']);
-        $mascotas = [];
-        foreach ($result as $row) {
-            $mascota = new self();
-            $mascota->set($row);
-            $mascotas[] = $mascota;
-        }
-        return $mascotas;
     }
 }

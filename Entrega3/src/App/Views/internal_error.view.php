@@ -14,6 +14,5 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'?>
     <h1 class="error">Error Interno del Servidor</h1>
     <?php require __DIR__ . '/footer.view.php'; ?>
-    <?php require __DIR__ . '/iniciar-sesion.view.php'; ?>
 </body>
 </html>

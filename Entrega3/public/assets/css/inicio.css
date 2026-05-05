@@ -192,12 +192,14 @@
   align-items: center;
   justify-content: center;
   margin: 0;
+  overflow: hidden;
 }
 
 .tarjeta-imagen img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  height: 100%; 
+  object-fit: cover; 
+  border-radius: 14px 14px 0 0;
 }
 
 .verPerfil {
@@ -295,7 +297,8 @@
     height: 5px;
   }
 
-  .grilla-mascotas {
+  .seccion-adopcion .grilla-mascotas {
+    display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
   }

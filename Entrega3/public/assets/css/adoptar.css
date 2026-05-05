@@ -1,0 +1,360 @@
+.adoptar-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-adoptar {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--color-amarillo);
+  color: var(--color-fondo);
+  border-bottom: 4px solid var(--color-amarillo);
+}
+
+.hero-adoptar h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-adoptar p {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.adoptar-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.seccion-filtros {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.filtros summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  justify-content: center;
+  list-style: none;
+  padding: 1rem;
+  background-color: var(--color-gris-claro);
+  border-radius: 12px;
+}
+
+.filtros[open] summary {
+  border-radius: 12px 12px 0 0;
+}
+
+.filtros-chevron {
+  transition: transform 0.3s ease;
+}
+
+.filtros[open] .filtros-chevron {
+  transform: rotate(180deg);
+}
+
+.filtros form {
+  display: none;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.filtros[open] form {
+  display: flex;
+}
+
+.filtros form p {
+  color: var(--color-texto);
+  margin: 0.5rem 0 0.2rem 0;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.filtros form input[type="text"],
+.filtros form input[type="number"],
+.filtros form select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-bottom: 4px solid var(--color-azul);
+  border-radius: 8px;
+  font-family: var(--fuente-cuerpo);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.edad-rango {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edad-rango input[type="number"] {
+  width: 100%;
+  max-width: none;
+}
+
+.edad-rango span {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.filtro-especie-grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.especie-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.especie-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-azul);
+}
+
+.filtros form button {
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+  align-self: center;
+}
+
+.filtros form button:hover {
+  background-color: var(--color-magenta);
+  transform: scale(1.05);
+}
+
+.adoptar-contenido {
+  width: 100%;
+}
+
+.grilla-mascotas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  margin: 0.7rem;
+}
+
+.tarjeta-mascota {
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background-color: var(--color-fondo);
+  box-shadow: 0 2px 12px var(--color-texto);
+}
+
+.tarjeta-mascota:hover {
+  box-shadow: 0 10px 30px var(--color-texto);
+  transform: translateY(-4px);
+}
+
+.tarjeta-imagen {
+  height: 200px;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.tarjeta-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.verPerfil {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+  color: var(--color-fondo);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  text-shadow: 0 1px 2px var(--color-texto);
+}
+
+.btn-favorito {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--color-fondo);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-favorito:hover {
+  background: var(--color-fondo);
+}
+
+.btn-favorito .material-symbols-outlined {
+  color: var(--color-magenta);
+  font-size: 20px;
+}
+
+.tarjeta-info {
+  padding: 20px;
+  background-color: var(--color-fondo);
+  border-top: 3px solid var(--color-amarillo);
+}
+
+.tarjeta-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 10px 0;
+  color: var(--color-azul);
+}
+
+.tarjeta-info p {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  margin: 0;
+}
+
+.no-resultados {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-texto);
+  font-size: 1.2rem;
+}
+
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.paginacion a {
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: var(--color-magenta);
+  text-decoration: none;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.paginacion a:hover {
+  background-color: var(--color-amarillo);
+  transform: scale(1.05);
+}
+
+.paginacion a.pagina-activa {
+  background-color: var(--color-magenta);
+  color: var(--color-fondo);
+  font-weight: bold;
+}
+
+.paginacion a.Boton {
+  background-color: var(--color-magenta);
+  color: var(--color-fondo);
+  font-weight: bold;
+  min-width: 120px;
+}
+
+.paginacion a.Boton:hover {
+  background-color: var(--color-violeta);
+  transform: scale(1.05);
+}
+
+@media screen and (min-width: 994px) {
+  .adoptar-main {
+    grid-template-areas:
+      "hero hero hero hero"
+      ". filtros contenido ."
+      ". . paginacion .";
+    display: grid;
+    grid-template-columns: 1fr minmax(auto, 300px) minmax(auto, 1000px) 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero-adoptar {
+    grid-area: hero;
+  }
+
+  .adoptar-wrapper {
+    grid-area: contenido;
+    display: contents;
+  }
+
+  .seccion-filtros {
+    grid-area: filtros;
+    min-width: 340px;
+  }
+
+  .adoptar-contenido {
+    grid-area: contenido;
+  }
+
+  .filtros summary {
+    display: none;
+  }
+
+  .filtros form {
+    display: flex;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 12px;
+    padding: 1.65rem;
+    margin-top: 1.5rem;
+  }
+
+  .grilla-mascotas {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tarjeta-imagen {
+    height: 220px;
+  }
+
+  .paginacion {
+    grid-area: paginacion;
+  }
+}
