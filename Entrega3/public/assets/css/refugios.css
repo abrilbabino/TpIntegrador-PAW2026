@@ -1,0 +1,382 @@
+.refugios-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-refugios {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--color-amarillo);
+  color: var(--color-fondo);
+  border-bottom: 4px solid var(--color-amarillo);
+}
+
+.seccion-refugio {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.seccion-filtros-refugios {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.seccion-filtros-refugios .filtros summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  justify-content: center;
+  list-style: none;
+  padding: 1rem;
+  background-color: var(--color-gris-claro);
+  border-radius: 12px;
+  border: none;
+  box-shadow: none;
+}
+
+.seccion-filtros-refugios .filtros-simbolo {
+  transition: transform 0.3s ease;
+}
+
+.seccion-filtros-refugios .filtros[open] .filtros-simbolo {
+  transform: rotate(180deg);
+}
+
+.seccion-filtros-refugios .filtros form {
+  display: none;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  box-shadow: none;
+}
+
+.seccion-filtros-refugios .filtros[open] form {
+  display: flex;
+}
+
+.seccion-filtros-refugios fieldset {
+  border: none;
+  padding: 0;
+  margin: 0.5rem 0 0.2rem 0;
+}
+
+.seccion-filtros-refugios legend {
+  color: var(--color-texto);
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.seccion-filtros-refugios form input[type="text"],
+.seccion-filtros-refugios form select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-bottom: 4px solid var(--color-azul);
+  border-radius: 8px;
+  font-family: var(--fuente-cuerpo);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.seccion-filtros-refugios form button {
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s, transform 0.3s;
+  align-self: center;
+}
+
+.seccion-filtros-refugios form button:hover {
+  background-color: var(--color-magenta);
+  transform: scale(1.05);
+}
+
+.cta-refugio {
+  background-color: var(--color-fondo);
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  border: 2px solid var(--color-naranja);
+  box-shadow: 0 4px 12px var(--color-texto);
+}
+
+.cta-refugio h3 {
+  color: var(--color-azul);
+  margin-top: 0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cta-refugio p {
+  color: var(--color-texto);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.cta-refugio h3 {
+  font-size: 1.4rem;
+  color: var(--color-texto);
+  margin-bottom: 0.5rem;
+}
+
+.cta-refugio p {
+  font-size: 1rem;
+  color: var(--color-texto);
+  margin-bottom: 1rem;
+}
+
+.btn-registro-refugio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+  color: var(--color-fondo);
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  border: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 15px var(--color-naranja);
+  text-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-registro-refugio:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--color-naranja);
+}
+
+.refugios-contenido {
+  width: 100%;
+}
+
+.grilla-refugios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  margin: 0.7rem;
+}
+
+.tarjeta-refugio {
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background-color: var(--color-fondo);
+  box-shadow: 0 2px 12px var(--color-texto);
+}
+
+.tarjeta-refugio:hover {
+  box-shadow: 0 10px 30px var(--color-texto);
+  transform: translateY(-4px);
+}
+
+.tarjeta-refugio-imagen {
+  height: 180px;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--color-fondo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tarjeta-refugio-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tarjeta-refugio-info {
+  padding: 20px;
+  background-color: var(--color-fondo);
+  border-top: 3px solid var(--color-amarillo);
+}
+
+.tarjeta-refugio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 1rem;
+}
+
+.tarjeta-refugio-header h3 {
+  font-size: 1.2rem;
+  color: var(--color-azul);
+  margin: 0;
+}
+
+.icono-telefono {
+  color: var(--color-magenta);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.icono-telefono .material-symbols-outlined {
+  font-size: 24px;
+  transition: transform 0.3s;
+}
+
+.icono-telefono:hover .material-symbols-outlined {
+  transform: scale(1.2);
+}
+
+.refugio-ubicacion {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  margin: 0 0 10px 0;
+}
+
+.refugio-adoptables {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  margin: 0 0 15px 0;
+}
+
+.refugio-adoptables strong {
+  color: var(--color-texto);
+  font-weight: bold;
+}
+
+.ver-refugio {
+  display: inline-block;
+  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+  color: var(--color-fondo);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  text-shadow: 0 1px 2px var(--color-texto);
+}
+
+.no-resultados {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-texto);
+  font-size: 1.2rem;
+}
+
+.cargar-mas {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.btn-cargar-mas {
+  background-color: var(--color-gris-claro);
+  color: var(--color-fondo);
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: none;
+}
+
+.btn-cargar-mas:hover {
+  background-color: var(--color-gris-claro);
+  transform: scale(1.05);
+}
+
+@media screen and (min-width: 994px) {
+  .refugios-main {
+    grid-template-areas:
+      "hero hero hero hero"
+      ". filtros contenido .";
+    display: grid;
+    grid-template-columns: 1fr minmax(auto, 320px) minmax(auto, 1000px) 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero-refugios {
+    grid-area: hero;
+  }
+
+  .seccion-refugio {
+    grid-area: contenido;
+    display: contents;
+  }
+
+  .seccion-filtros-refugios {
+    grid-area: filtros;
+    min-width: 320px;
+  }
+
+  .refugios-contenido {
+    grid-area: contenido;
+  }
+
+  .seccion-filtros-refugios .filtros summary {
+    display: none;
+  }
+
+  .seccion-filtros-refugios .filtros form {
+    display: flex;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 12px;
+    padding: 1.65rem;
+    margin-top: 1.5rem;
+    box-shadow: none;
+  }
+
+  .grilla-refugios {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .tarjeta-refugio-imagen {
+    height: 200px;
+  }
+}
+
+.desktop {
+  display: block;
+}
+
+.mobile {
+  display: none;
+}
+
+@media screen and (max-width: 994px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+    margin-top: 2rem;
+  }
+}

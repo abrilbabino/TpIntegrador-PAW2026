@@ -11,7 +11,7 @@ final class PawMapMigration extends AbstractMigration
         $tableUsuario = $this->table('usuario');
         $tableUsuario->addColumn('nombre_usuario', 'string', ['limit' => 50])
                      ->addColumn('email', 'string', ['limit' => 100])
-                     ->addColumn('contrasena', 'string', ['limit' => 255]) // Evitamos la "ñ" en BD
+                     ->addColumn('contrasena', 'string', ['limit' => 255]) 
                      ->addColumn('contacto', 'string', ['limit' => 100, 'null' => true])
                      ->addIndex(['nombre_usuario'], ['unique' => true])
                      ->addIndex(['email'], ['unique' => true])
@@ -38,15 +38,17 @@ final class PawMapMigration extends AbstractMigration
 
         $tableRefugio = $this->table('refugio');
         $tableRefugio->addColumn('usuario_id', 'integer', ['limit' => 11])
-                     ->addColumn('ubicacion_id', 'integer', ['limit' => 11, 'null' => true])
-                     ->addColumn('nombre_institucion', 'string', ['limit' => 150])
-                     ->addColumn('cuit', 'string', ['limit' => 20])
-                     ->addColumn('cvu', 'string', ['limit' => 50, 'null' => true])
-                     ->addColumn('alias', 'string', ['limit' => 50, 'null' => true])
-                     ->addForeignKey('usuario_id', 'usuario', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                     ->addForeignKey('ubicacion_id', 'ubicacion', 'id', ['delete'=> 'SET_NULL', 'update'=> 'CASCADE'])
-                     ->addIndex(['cuit'], ['unique' => true])
-                     ->create();
+                       ->addColumn('ubicacion_id', 'integer', ['limit' => 11, 'null' => true])
+                       ->addColumn('nombre_institucion', 'string', ['limit' => 150])
+                       ->addColumn('cuit', 'string', ['limit' => 20])
+                       ->addColumn('cvu', 'string', ['limit' => 50, 'null' => true])
+                       ->addColumn('alias', 'string', ['limit' => 50, 'null' => true])
+                       ->addColumn('imagen', 'string', ['limit' => 255, 'default' => 'default-refugio.jpg', 'null' => true])
+                       ->addColumn('telefono', 'string', ['limit' => 50, 'null' => true])
+                       ->addForeignKey('usuario_id', 'usuario', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                       ->addForeignKey('ubicacion_id', 'ubicacion', 'id', ['delete'=> 'SET_NULL', 'update'=> 'CASCADE'])
+                       ->addIndex(['cuit'], ['unique' => true])
+                       ->create();
 
         $tableMascota = $this->table('mascota');
         $tableMascota->addColumn('refugio_id', 'integer', ['limit' => 11])

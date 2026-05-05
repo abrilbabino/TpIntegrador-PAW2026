@@ -18,26 +18,45 @@ class TestCompatibilidadSeeder extends AbstractSeed
                 'id' => 1,
                 'adoptante_id' => 1,
                 'respuestas' => json_encode([
-                    'tiene_casa' => 'si',
-                    'tiene_patio' => 'si',
-                    'otros_animales' => 'no'
+                    'pregunta1' => 'departamento_chico',
+                    'pregunta2' => 'pocas',
+                    'pregunta3' => 'tranqui',
+                    'pregunta4' => 'ninguno',
+                    'pregunta5' => 'gato'
                 ]),
                 'resultado' => json_encode([
-                    'mascotas_sugeridas' => [1, 3],
-                    'mensaje' => 'Tu perfil es ideal para perros medianos a grandes.'
+                    'mascotas_sugeridas' => [2, 5],
+                    'mensaje' => 'Tu perfil es ideal para gatos independientes.'
                 ])
             ],
             [
                 'id' => 2,
                 'adoptante_id' => 2,
                 'respuestas' => json_encode([
-                    'tiene_casa' => 'no',
-                    'tiene_patio' => 'no',
-                    'otros_animales' => 'no'
+                    'pregunta1' => 'casa_con_patio',
+                    'pregunta2' => 'muchas',
+                    'pregunta3' => 'alta',
+                    'pregunta4' => 'perro',
+                    'pregunta5' => 'perro'
                 ]),
                 'resultado' => json_encode([
-                    'mascotas_sugeridas' => [2],
-                    'mensaje' => 'Tu perfil es ideal para gatos.'
+                    'mascotas_sugeridas' => [1, 3, 4],
+                    'mensaje' => 'Tu perfil es ideal para perros activos y grandes.'
+                ])
+            ],
+            [
+                'id' => 3,
+                'adoptante_id' => 3,
+                'respuestas' => json_encode([
+                    'pregunta1' => 'departamento_grande',
+                    'pregunta2' => 'mitad',
+                    'pregunta3' => 'moderada',
+                    'pregunta4' => 'gato',
+                    'pregunta5' => 'indiferente'
+                ]),
+                'resultado' => json_encode([
+                    'mascotas_sugeridas' => [1, 2, 3],
+                    'mensaje' => 'Tu perfil es flexible, podés adoptar perros o gatos de energía moderada.'
                 ])
             ]
         ];
