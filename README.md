@@ -16,3 +16,30 @@ El objetivo de PawMap es centralizar la información de animales en adopción y 
 - **Panel de administración para refugios**, que permite agregar, editar y eliminar perfiles de mascotas.
 - **Solicitudes de adopción y contacto** entre adoptantes y refugios.
 - **Test de compatibilidad**, que recomienda mascotas según el estilo de vida y el entorno del adoptante.
+
+## ejecucion
+
+`php -S localhost:3000 -t public`
+
+## migration
+
+```
+phinx rollback -e development -t 0
+phinx migrate
+phinx seed:run
+
+phinx migrate -e development
+
+php vendor/bin/phinx migration:run -e development
+
+```
+
+## composer
+
+```composer install
+
+```
+
+```composer update
+
+```
