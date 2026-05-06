@@ -38,11 +38,7 @@ class Refugio extends Model
             throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT r.*, u.ciudad, u.provincia,
-                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
-                FROM refugio r
-                LEFT JOIN ubicacion u ON r.ubicacion_id = u.id
-                WHERE r.id = :id";
+        $sql = "SELECT * FROM refugio WHERE id = :id";
         
         $stmt = $this->queryBuilder->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);

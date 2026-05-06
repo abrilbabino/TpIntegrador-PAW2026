@@ -8,16 +8,15 @@ class RefugioSeeder extends AbstractSeed
 {
     public function getDependencies(): array
     {
-        return ['UsuarioSeeder', 'UbicacionSeeder'];
+        return ['UsuarioSeeder'];
     }
 
     public function run(): void
     {
-        $data = [
+        $refugios = [
             [
                 'id' => 1,
                 'usuario_id' => 1,
-                'ubicacion_id' => 1,
                 'nombre_institucion' => 'Refugio Patitas Felices',
                 'cuit' => '30-12345678-9',
                 'cvu' => null,
@@ -28,7 +27,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 2,
                 'usuario_id' => 2,
-                'ubicacion_id' => 2,
                 'nombre_institucion' => 'Hogar Animal',
                 'cuit' => '30-87654321-0',
                 'cvu' => null,
@@ -39,7 +37,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 3,
                 'usuario_id' => 3,
-                'ubicacion_id' => 3,
                 'nombre_institucion' => 'SOS Mascotas',
                 'cuit' => '30-11223344-5',
                 'cvu' => null,
@@ -50,7 +47,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 4,
                 'usuario_id' => 1,
-                'ubicacion_id' => 1,
                 'nombre_institucion' => 'Paw Protection',
                 'cuit' => '30-55667788-1',
                 'cvu' => null,
@@ -61,7 +57,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 5,
                 'usuario_id' => 2,
-                'ubicacion_id' => 2,
                 'nombre_institucion' => 'Albergue Dog',
                 'cuit' => '30-99887766-2',
                 'cvu' => null,
@@ -72,7 +67,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 6,
                 'usuario_id' => 3,
-                'ubicacion_id' => 3,
                 'nombre_institucion' => 'Amigos Peludos',
                 'cuit' => '30-22334455-3',
                 'cvu' => null,
@@ -83,7 +77,6 @@ class RefugioSeeder extends AbstractSeed
             [
                 'id' => 7,
                 'usuario_id' => 1,
-                'ubicacion_id' => 2,
                 'nombre_institucion' => 'Refugio Esperanza',
                 'cuit' => '30-66778899-4',
                 'cvu' => null,
@@ -93,6 +86,6 @@ class RefugioSeeder extends AbstractSeed
             ]
         ];
 
-        $this->table('refugio')->insert($data)->saveData();
+        $this->table('refugio')->insert($refugios)->saveData();
     }
 }

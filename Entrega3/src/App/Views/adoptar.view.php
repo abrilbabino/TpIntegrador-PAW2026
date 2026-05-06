@@ -87,7 +87,6 @@
                     <?php foreach ($mascotas as $mascota): ?>
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
-                                <!-- Volvemos a usar ->fields pero con protección ?? por si viene vacío -->
                                 <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"
                                      alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
 

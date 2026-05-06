@@ -4,6 +4,7 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
+use \Paw\App\Models\Refugio;
 
 class MascotaController extends Controller
 {
@@ -50,7 +51,27 @@ class MascotaController extends Controller
         $menu  = $this->menu;
         $redes = $this->redes;
         $id    = $request->get('id');
+
         $mascota = $this->model->get($id);
+
+        $refugio = new Refugio();
+        $refugio->setQueryBuilder($this->model->getQueryBuilder());
+        if ($mascota && $mascota->fields['refugio_id']) {
+            try {
+                $refugio->load($mascota->fields['refugio_id']);
+            } catch (\Exception $e) {
+                // Manejar error al cargar el refugio
+            }
+        }
+
+        $ubicaciones = [];
+        if ($mascota && $mascota->fields['refugio_id']) {
+            $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
+            $stmt = $this->model->getQueryBuilder()->getConnection()->prepare($sql);
+            $stmt->bindValue(':rid', $mascota->fields['refugio_id'], \PDO::PARAM_INT);
+            $stmt->execute();
+            $ubicaciones = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
 
         require $this->viewsDir . '/mascota.view.php';
     }

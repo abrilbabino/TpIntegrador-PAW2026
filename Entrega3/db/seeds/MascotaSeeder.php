@@ -26,6 +26,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => true,
+                'sexo' => 'Macho',
                 'imagen' => 'firulais.jpg'
             ],
             [
@@ -40,6 +41,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => true,
+                'sexo' => 'Hembra',
                 'imagen' => 'mishi.jpg'
             ],
             [
@@ -54,6 +56,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => false,
+                'sexo' => 'Macho',
                 'imagen' => 'rocky.jpg'
             ],
             [
@@ -68,6 +71,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'ADOPTADO',
                 'vacunado' => true,
                 'castrado' => false,
+                'sexo' => 'Macho',
                 'imagen' => 'toby.jpg'
             ],
             [
@@ -82,6 +86,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => true,
+                'sexo' => 'Hembra',
                 'imagen' => 'luna.jpg'
             ],
             [
@@ -96,6 +101,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => false,
+                'sexo' => 'Macho',
                 'imagen' => 'max.jpg'
             ],
             [
@@ -110,6 +116,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => true,
+                'sexo' => 'Hembra',
                 'imagen' => 'bella.jpg'
             ],
             [
@@ -124,6 +131,7 @@ class MascotaSeeder extends AbstractSeed
                 'estado_adopcion' => 'DISPONIBLE',
                 'vacunado' => true,
                 'castrado' => true,
+                'sexo' => 'Macho',
                 'imagen' => 'simba.jpg'
             ]
         ];
