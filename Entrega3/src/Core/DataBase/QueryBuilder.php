@@ -11,6 +11,8 @@ class QueryBuilder
     protected $pdo;
     protected PDO $connection;
     protected ?Logger $log;
+    protected $pdo;
+
 
     public function __construct(PDO $connection, ?Logger $log = null)
     {
