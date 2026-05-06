@@ -10,6 +10,8 @@ class QueryBuilder
 {
     protected PDO $connection;
     protected ?Logger $log;
+    protected $pdo;
+
 
     public function __construct(PDO $connection, ?Logger $log = null)
     {
