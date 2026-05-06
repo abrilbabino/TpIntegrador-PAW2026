@@ -1,5 +1,9 @@
 #Dependencias
-/vendor/
+Entrega3/vendor/
+
+# Ignorar los logs dentro de Entrega3
+Entrega3/logs/*.log
+Entrega3/logs/app.log
 
 # Archivos de configuración sensible
 .env
@@ -7,7 +11,3 @@
 # Archivos de configuración de entorno de trabajo
 .vscode/
 .DS_Store
-
-/logs/*.log
-
-/logs/app.log
