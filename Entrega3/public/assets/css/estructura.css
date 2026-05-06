@@ -27,17 +27,17 @@
 }
 
 .header-logo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  z-index: 0; 
+  position: static;
+  transform: none;
+  margin-right: 1rem;
 }
 
 .header-logo img {
-  max-width: 120px;
-  height: 100px;
+  height: 80px;       
+  width: auto;        
+  max-width: 200px;
   display: block;
+  object-fit: contain;
 }
 
 .icono-usuario {

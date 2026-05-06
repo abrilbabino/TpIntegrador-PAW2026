@@ -30,6 +30,4 @@ class ErrorController extends Controller
         $redes = $this->redes;
         require $this->viewsDir . '/invalid_format.view.php';
     }
-
-
 }

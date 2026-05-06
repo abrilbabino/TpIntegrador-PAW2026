@@ -8,6 +8,7 @@ use Monolog\Logger;
 
 class QueryBuilder
 {
+    protected $pdo;
     protected PDO $connection;
     protected ?Logger $log;
 
