@@ -73,10 +73,10 @@ class Controller
                 "type"  => "link"
             ],
             [
-                "name" => "",
-                "for"   => "mostrar-login",
-                "icon"  => "account_circle",
-                "type"  => "label"
+                "href" => "/iniciar-sesion",
+                "name" => "Iniciar sesión",
+                "icon" => "account_circle",
+                "type" => "link"
             ]
         ];
 

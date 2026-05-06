@@ -19,6 +19,13 @@ class PageController extends Controller
 
         require $this->viewsDir . '/index.view.php';
     }
+    public function iniciarSesion()
+    {
+        $titulo = "Iniciar Sesión";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/iniciar-sesion.view.php';
+    }
 
     public function contacto()
     {
