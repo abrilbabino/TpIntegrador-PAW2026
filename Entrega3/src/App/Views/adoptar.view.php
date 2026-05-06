@@ -85,13 +85,11 @@
         <section class="adoptar-contenido">
                 <article class="grilla-mascotas">
                     <?php foreach ($mascotas as $mascota): ?>
+                        <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
                                 <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"
                                      alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
-
-                                <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">Ver Perfil</a>
-
                                 <button class="btn-favorito" aria-label="Agregar a favoritos">
                                     <span class="material-symbols-outlined">favorite</span>
                                 </button>
@@ -106,6 +104,7 @@
                                 </p>
                             </div>
                         </article>
+                        </a>
                     <?php endforeach; ?>
 
                     <?php if (empty($mascotas)): ?>

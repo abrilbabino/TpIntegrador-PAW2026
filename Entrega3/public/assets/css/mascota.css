@@ -11,7 +11,7 @@
 
 .imagen-principal {
     width: auto; 
-    margin: 4rem 1.5rem 0 1.5rem;
+    margin: 6rem 1.5rem 0 1.5rem;
     border-radius: 16px;
     overflow: hidden;
     aspect-ratio: 4 / 3;
@@ -61,10 +61,10 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    box-shadow: 0 -4px 20px var(--color-texto);
-    margin-top: 2rem;
+    box-shadow: 0 -1px 10px var(--color-texto);
     position: relative;
     z-index: 10;
+    margin: 0 1rem;
 }
 
 .drag-handle {
@@ -82,8 +82,8 @@
 }
 
 .info-header h2 {
-    font-size: 1.75rem;
-    margin: 0;
+    font-size: 3rem;
+    margin: 0.5 rem;
     color: var(--color-azul);
     font-weight: 700;
 }
@@ -125,8 +125,7 @@
 
 .info-subtitulo {
     color: var(--color-texto);
-    font-size: 0.95rem;
-    margin: -0.25rem 0 0 0;
+    font-size: 2rem;
     font-weight: 500;
 }
 
@@ -154,7 +153,7 @@
 }
 
 .estadistica-label {
-    font-size: 0.7rem;
+    font-size: 1.5rem;
     color: var(--color-texto);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -162,13 +161,13 @@
 }
 
 .estadistica-valor {
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--color-azul);
 }
 
 .etiquetas-mascota h4 {
-    font-size: 0.85rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     color: var(--color-azul);
@@ -186,7 +185,7 @@
     background-color: var(--color-gris-claro);
     padding: 0.4rem 0.85rem;
     border-radius: 50px;
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     color: var(--color-texto);
     font-weight: 500;
     border: 1px solid transparent;
@@ -199,7 +198,7 @@
 }
 
 .sobre-mi h4 {
-    font-size: 0.85rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     color: var(--color-azul);
@@ -211,7 +210,7 @@
     border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     padding: 1.25rem;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     line-height: 1.6;
     color: var(--color-texto);
     background-color: var(--color-fondo);
@@ -244,7 +243,7 @@
 }
 
 .refugio-label {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: var(--color-texto);
 }
 
@@ -258,6 +257,7 @@
 }
 
 .refugio-info strong {
+    font-size: 1.2rem;
     color: var(--color-azul);
 }
 
@@ -321,7 +321,7 @@
     }
 
     .mas-fotos h4 {
-        font-size: 0.85rem;
+        font-size: 2rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         color: var(--color-azul);
@@ -358,7 +358,7 @@
         padding: 2.5rem;
         min-height: 670px;
         box-shadow: 0 2px 12px var(--color-texto);
-        margin-top: 0;
+        margin:0;
     }
 
     .boton-favorito {

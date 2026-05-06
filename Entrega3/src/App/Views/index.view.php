@@ -24,7 +24,7 @@
       <section class="seccion-mapa">
         <figure>
           <iframe
-            src="https://www.google.com/maps/d/embed?mid=1fqEzq6nPa6IITzVkvMWnMvfQsy2sqrQ&ehbc=2E312F&noprof=1"
+            src="https://www.google.com/maps/d/u/0/embed?mid=1LcmkNpBFk8CbMx8mdkOJnslsdjsJlGA&ehbc=2E312F&noprof=1">
             title="Mapa de refugios y mascotas"
           ></iframe>
         </figure>
@@ -63,13 +63,12 @@
                         $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
+                        <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil"> 
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
                                 <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
-                                
-                                <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">Ver Perfil</a>
                             </figure>
-                            
+
                             <section class="tarjeta-info">
                                 <h3><?= htmlspecialchars($mascota->fields['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
                                 <p>
@@ -79,6 +78,7 @@
                                 </p>
                             </section>
                         </article>
+                      </a>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>No hay mascotas en adopción en este momento.</p>

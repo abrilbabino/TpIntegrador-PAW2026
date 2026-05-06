@@ -15,7 +15,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
     <main>
-        <header>
+        <header class="hero-como-adoptar">
             <h1>¿CÓMO ADOPTAR?</h1>
             <p>Una guía paso a paso para encontrar a tu compañero ideal en PawMap.</p>
         </header>
@@ -23,48 +23,39 @@
         <section class="pasos-adopcion">
             
             <article class="paso-individual">
-                <header class="icono-paso-individual">
-                    <span class="paso-numero">1</span>
-                    <span class="material-symbols-outlined">search</span>
-                </header>
-                <h2>1. DESCUBRE A TU COMPAÑERO</h2>
-                <p>Explora nuestro mapa y perfiles de mascotas. Filtra por especie, edad, tamaño y ubicación.</p>
+                <p class="paso-numero">1</p>
+                <span class="material-symbols-outlined">search</span>
+                <h2>DESCUBRE</h2>
+                <p class="descripcion">Explora nuestro mapa y perfiles de mascotas. Filtra por especie, edad, tamaño y ubicación.</p>
             </article>
 
             <article class="paso-individual">
-                <header class="icono-paso-individual">
-                    <span class="paso-numero">2</span>
-                    <span class="material-symbols-outlined">quiz</span>
-                </header>
-                <h2>2. TEST DE COMPATIBILIDAD</h2>
-                <p>Completa nuestro test único. Te sugerimos mascotas que se adapten perfectamente a tu estilo de vida.</p>
+                <p class="paso-numero">2</p>
+                <span class="material-symbols-outlined">quiz</span>
+                <h2>TEST</h2>
+                <p class="descripcion">Completa nuestro test único. Te sugerimos mascotas que se adapten perfectamente a vos.</p>
             </article>
 
             <article class="paso-individual">
-                <header class="icono-paso-individual">
-                    <span class="paso-numero">3</span>
-                    <span class="material-symbols-outlined">description</span>
-                </header>
-                <h2>3. ENVÍA TU SOLICITUD</h2>
-                <p>¿Encontraste un match? Envía una solicitud de adopción directamente al refugio responsable.</p>
+                <p class="paso-numero">3</p>
+                <span class="material-symbols-outlined">description</span>
+                <h2>SOLICITUD</h2>
+                <p class="descripcion">¿Encontraste un match? Envía una solicitud de adopción directamente al refugio responsable.</p>
             </article>
 
             <article class="paso-individual">
-                <header class="icono-paso-individual">
-                    <span class="paso-numero">4</span>
-                    <span class="material-symbols-outlined">event_available</span>
+                <p class="paso-numero">4</p>
+                <span class="material-symbols-outlined">event_available</span>
                 </header>
-                <h2>4. ENTREVISTA Y VISITA</h2>
-                <p>El refugio revisará tu solicitud y coordinará una entrevista y visita para conocerte mejor.</p>
+                <h2>ENTREVISTA Y VISITA</h2>
+                <p class="descripcion">El refugio revisará tu solicitud y coordinará una entrevista y visita para conocerte mejor.</p>
             </article>
 
             <article class="paso-individual">
-                <header class="icono-paso-individual">
-                    <span class="paso-numero">5</span>
-                    <span class="material-symbols-outlined">pets</span>
-                </header>
-                <h2>5. BIENVENIDO A CASA</h2>
-                <p>Completa los trámites, firma los documentos y lleva a tu nuevo amigo a casa. ¡Cambia una vida!</p>
+                <p class="paso-numero">5</p>
+                <span class="material-symbols-outlined">pets</span>
+                <h2>BIENVENIDO A CASA</h2>
+                <p class="descripcion">Completa los trámites, firma los documentos y lleva a tu nuevo amigo a casa. ¡Cambia una vida!</p>
             </article>
 
         </section>

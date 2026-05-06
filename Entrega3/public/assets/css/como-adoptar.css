@@ -1,101 +1,101 @@
+.hero-como-adoptar{
+  text-align: center;
+  gap: 1rem;
+}
+
 .pasos-adopcion {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 3rem 2rem 3rem 2rem;
-  max-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap:0.5rem;
+  padding: 3rem 0;
+  width:100%;
   margin: 0 auto;
 }
 
 .paso-individual {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  grid-template-areas: "paso icono ."
+                       "titulo titulo titulo"
+                       "descripcion descripcion descripcion";
+  display: grid;
+  grid-template-columns: 0.9fr 1fr;
   text-align: center;
   padding: 2rem 1rem;
   background-color: var(--color-fondo);
   border-radius: 20px;
-  box-shadow: 0 6px 20px var(--color-texto);
-  border: 3px solid var(--color-gris-claro);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-}
-
-.paso-individual:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px var(--color-texto);
-}
-
-.icono-paso-individual {
-  position: relative;
-  margin-bottom: 2rem;
 }
 
 .paso-numero {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: var(--color-amarillo);
-  color: var(--color-texto);
+  grid-area:paso;
+  background: var(--color-naranja);
+  color: var(--color-azul);
   font-weight: 800;
-  font-size: 1.5rem;
-  width: 45px;
-  height: 45px;
+  font-size: 2rem;
+  width: 80px;
+  margin:0 2rem 0.5rem 0;
+  height: 80px;
   border-radius: 50%;
+  justify-self:right;
   display: flex;
+  align-self: center;
   align-items: center;
   justify-content: center;
-  z-index: 2;
-  box-shadow: 0 2px 8px var(--color-texto);
 }
 
 .paso-individual .material-symbols-outlined {
+  grid-area:icono;
   font-size: 64px;
   color: var(--color-azul);
-  background-color: var(--color-gris-claro);
-  padding: 1.5rem;
-  border-radius: 50%;
+  padding:0 0 0.5rem 0;
+  justify-self: left;
+  align-self: center;
 }
 
 .paso-individual h2 {
+  grid-area:titulo;
+  grid-column: 1/-1;
+  justify-self: center;
+  align-self: center;
   font-size: 2rem;
   color: var(--color-azul);
-  margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.paso-individual p {
+.paso-individual .descripcion {
+  grid-area:descripcion;
+  grid-column: 1/-1;
+  justify-self: center;
+  align-self: center;
+  padding: 0 3rem;
   font-size: 1.4rem;
   color: var(--color-texto);
   line-height: 1.6;
-  max-width: 360px;
 }
 
 @media screen and (min-width: 994px) {
-  .pasos-adopcion {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 4.5rem;
-    padding: 3.5rem 5% 4rem 5%;
-    max-width: 1800px;
-    margin: 0 auto;
-  }
-
   .paso-individual {
-    max-width: 410px;
-    min-height: 450px;
-    gap: 0.8rem;
-    padding: 2.5rem 1rem;
+    width: 33%;
+    max-width: 480px;
   }
 
   .paso-individual .material-symbols-outlined {
+    justify-self: center;
+    grid-column: 1/-1;
     font-size: 100px;
-    padding: 2rem;
+  }
+
+  .paso-numero{
+    justify-self: center;
   }
 
   .paso-individual h2 {
     font-size: 2.2rem;
+  }
+
+  .descripcion{
+    text-align: justify;
   }
 }
