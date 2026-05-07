@@ -77,49 +77,51 @@
 
 .info-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
+    gap: 1rem;
 }
 
 .info-header h2 {
     font-size: 3rem;
-    margin: 0.5 rem;
+    margin: 0 20rem 0 0;
     color: var(--color-azul);
     font-weight: 700;
 }
 
 .form-favorito {
-    margin: 0;
-    padding: 0;
+    align-items: center;
 }
 
 .boton-favorito {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     background: var(--color-fondo);
     border: none;
-    cursor: pointer;
-    padding: 0;
     color: var(--color-magenta);
-    font-size: 1.8rem;
-    transition: color 0.2s, transform 0.2s;
-    line-height: 1;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5.5rem 1rem 0 0;
+    font-size: 2.5rem;
+    margin:0;
+    justify-self: right;
 }
 
 .boton-favorito:hover {
-    color: var(--color-magenta);
-    background: var(--color-fondo);
     transform: scale(1.15);
 }
 
 .boton-favorito .material-symbols-outlined {
+    font-size: inherit;
+}
+
+.libreta{
+    justify-self:right;
+    color: var(--color-azul);
+    font-size: 2.5rem;
+}
+
+.libreta:hover {
+    color: var(--color-naranja);
+    transform: scale(1.15);
+}
+
+.libreta .material-symbols-outlined {
     font-size: inherit;
 }
 
@@ -359,10 +361,6 @@
         min-height: 670px;
         box-shadow: 0 2px 12px var(--color-texto);
         margin:0;
-    }
-
-    .boton-favorito {
-        margin: 2rem 1rem 0rem 0;
     }
 
     .drag-handle {

@@ -12,103 +12,159 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <!--REVISAR TOOOOOOODO ESTO -->
     <main class="libreta-main">
         <header class="libreta-header">
             <h1>Libreta Sanitaria de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h1>
         </header>
 
-        <section class="filtros-libreta">
-            <form method="GET" action="/mascota/libreta" id="form-filtros-libreta">
-                <input type="hidden" name="id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                
-                <div class="tabs-categorias">
+        <form method="GET" action="/mascota/libreta" id="form-filtros-libreta" class="filtros-seccion">
+            <input type="hidden" name="id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+
+            <fieldset class="filtro-grupo">
+                <label for="anio">Año</label>
+                <select name="anio" id="anio">
+                    <option value="">Todos</option>
+                    <?php 
+                        $anioActual = (int)date('Y');
+                        $anioSel = $request->get('anio');
+                        for($i = $anioActual + 1; $i >= 2010; $i--): 
+                    ?>
+                        <option value="<?= $i ?>" <?= $anioSel == $i ? 'selected' : '' ?>><?= $i ?></option>
+                    <?php endfor; ?>
+                </select>
+            </fieldset>
+
+            <fieldset class="filtro-grupo">
+            <label for="mes">Mes</label>
+            <select name="mes" id="mes">
+                <option value="">Todos</option>
+                <?php 
+                    $meses = [1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 
+                              5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 
+                              9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'];
+                    $mesActual = $request->get('mes');
+                    foreach($meses as $numero => $nombre): 
+                ?>
+                    <option value="<?= $numero ?>" <?= $mesActual == $numero ? 'selected' : '' ?>>
+                        <?= $nombre ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            </fieldset>
+
+            <fieldset class="filtro-grupo">
+                <label for="categoria">Categoría</label>
+                <select name="categoria" id="categoria">
                     <?php 
                         $catActual = $request->get('categoria') ?? ''; 
                         $categorias = [
-                            '' => 'Todos',
+                            '' => 'Todas',
                             'vacuna' => 'Vacunación',
                             'desparasitacion' => 'Desparasitación',
                             'cirugia' => 'Cirugías',
                             'tratamiento' => 'Tratamientos',
                             'chequeo' => 'Chequeos'
                         ];
+                        foreach ($categorias as $valor => $etiqueta):
                     ?>
-                    <?php foreach ($categorias as $valor => $etiqueta): ?>
-                        <button type="submit" name="categoria" value="<?= $valor ?>" class="tab-btn <?= $catActual === $valor ? 'active' : '' ?>">
-                            <?= $etiqueta ?>
-                        </button>
+                        <option value="<?= htmlspecialchars($valor, ENT_QUOTES, 'UTF-8') ?>" <?= $catActual === $valor ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($etiqueta, ENT_QUOTES, 'UTF-8') ?>
+                        </option>
                     <?php endforeach; ?>
-                </div>
+                </select>
+            </fieldset>
 
-                <div class="filtro-anio">
-                    <label for="anio">Año:</label>
-                    <select name="anio" id="anio" onchange="document.getElementById('form-filtros-libreta').submit();">
-                        <option value="">Todos</option>
-                        <?php 
-                            $anioActual = (int)date('Y');
-                            $anioSel = $request->get('anio');
-                            for($i = $anioActual + 1; $i >= 2010; $i--): 
-                        ?>
-                            <option value="<?= $i ?>" <?= $anioSel == $i ? 'selected' : '' ?>><?= $i ?></option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-            </form>
-        </section>
+            <button type="submit" class="btn-filtrar">
+                <span class="material-symbols-outlined">filter_list</span> Filtrar
+            </button>
+        </form>
 
-        <?php if (!empty($proximos)): ?>
-        <section class="banner-proximos">
-            <h2><i class="fa-solid fa-calendar-check"></i> Próximos Turnos</h2>
-            <div class="proximos-grid">
-                <?php foreach ($proximos as $registro): ?>
-                    <article class="card-registro pendiente">
-                        <div class="icono-registro">
-                            <?= $registro->getIconoHtml() ?>
-                        </div>
-                        <div class="info-registro">
-                            <h3><?= htmlspecialchars($registro->fields['titulo'], ENT_QUOTES, 'UTF-8') ?></h3>
-                            <p class="fecha"><i class="fa-regular fa-calendar"></i> <?= htmlspecialchars($registro->fields['fecha_programada'], ENT_QUOTES, 'UTF-8') ?></p>
-                            <?php if ($registro->fields['observaciones']): ?>
-                                <p class="observaciones"><?= htmlspecialchars($registro->fields['observaciones'], ENT_QUOTES, 'UTF-8') ?></p>
+        <section class="pendientes">
+            <header class="titulo">
+                <span class="material-symbols-outlined">event_upcoming</span> Próximos turnos
+            </header>
+            
+            <?php 
+            $listaPendientes = $pendientes ?? $proximos ?? []; 
+            if (empty($listaPendientes)): 
+            ?>
+                <p class="no-registros">No hay eventos próximos.</p>
+            <?php else: ?>
+                <?php foreach ($listaPendientes as $registro): ?>
+                    <?php
+                        $tipoStr = strtolower($registro->fields['tipo'] ?? '');
+                        $iconName = 'medical_services';
+                        if ($tipoStr === 'vacuna') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'desparasitacion') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'cirugia') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'chequeo') $iconName = $registro->getIconoHtml();
+                    ?>
+                    <article class="card-registro">
+                        <figure class="card-icon-container icon-pendiente">
+                            <span class="material-symbols-outlined"><?= $iconName ?></span>
+                        </figure>
+                        <section class="card-content">
+                            <header>
+                                <h3><?= htmlspecialchars($registro->fields['titulo'] ?? 'Registro', ENT_QUOTES, 'UTF-8') ?></h3>
+                                <p class="card-date">
+                                    <span class="material-symbols-outlined">calendar_today</span>
+                                    <?= htmlspecialchars($registro->fields['fecha_programada'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                            </header>
+                            <?php if (!empty($registro->fields['observaciones'])): ?>
+                                <article class="card-obs">
+                                    <strong>Observaciones:</strong>
+                                    <p><?= htmlspecialchars($registro->fields['observaciones'], ENT_QUOTES, 'UTF-8') ?></p>
+                                </article>
                             <?php endif; ?>
-                            <span class="badge-estado pendiente">Pendiente</span>
-                        </div>
+                        </section>
+                        <footer class="badge badge-pendiente">Pendiente</footer>
                     </article>
                 <?php endforeach; ?>
-            </div>
-        </section>
-        <?php endif; ?>
-
-        <section class="historial-registros">
-            <h2><i class="fa-solid fa-clock-rotate-left"></i> Historial Médico</h2>
-            
-            <?php if (empty($historial)): ?>
-                <p class="no-registros">No hay registros en el historial para los filtros seleccionados.</p>
-            <?php else: ?>
-                <div class="historial-lista">
-                    <?php foreach ($historial as $registro): ?>
-                        <article class="card-registro completado">
-                            <div class="icono-registro">
-                                <?= $registro->getIconoHtml() ?>
-                            </div>
-                            <div class="info-registro">
-                                <h3><?= htmlspecialchars($registro->fields['titulo'], ENT_QUOTES, 'UTF-8') ?></h3>
-                                <p class="fecha">
-                                    <i class="fa-regular fa-calendar-check"></i> 
-                                    <?= htmlspecialchars($registro->fields['fecha_realizada'] ?? $registro->fields['fecha_programada'], ENT_QUOTES, 'UTF-8') ?>
-                                </p>
-                                <?php if ($registro->fields['observaciones']): ?>
-                                    <p class="observaciones"><?= htmlspecialchars($registro->fields['observaciones'], ENT_QUOTES, 'UTF-8') ?></p>
-                                <?php endif; ?>
-                                <span class="badge-estado completado">Completado</span>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
             <?php endif; ?>
         </section>
 
+        <section class="historial">
+            <header class="titulo">
+                <span class="material-symbols-outlined">history</span> Historial
+            </header>
+            
+            <?php if (empty($historial)): ?>
+                <p class="no-registros">No hay registros en el historial.</p>
+            <?php else: ?>
+                <?php foreach ($historial as $registro): ?>
+                    <?php
+                        $tipoStr = strtolower($registro->fields['tipo'] ?? '');
+                        $iconName = 'medical_services';
+                        if ($tipoStr === 'vacuna') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'desparasitacion') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'cirugia') $iconName = $registro->getIconoHtml();
+                        elseif ($tipoStr === 'chequeo') $iconName = $registro->getIconoHtml();
+                    ?>
+                    <article class="card-registro">
+                        <figure class="card-icon-container icon-completado">
+                            <span class="material-symbols-outlined"><?= $iconName ?></span>
+                        </figure>
+                        <section class="card-content">
+                            <header>
+                                <h3><?= htmlspecialchars($registro->fields['titulo'] ?? 'Registro', ENT_QUOTES, 'UTF-8') ?></h3>
+                                <p class="card-date">
+                                    <span class="material-symbols-outlined">calendar_today</span>
+                                    <?= htmlspecialchars($registro->fields['fecha_realizada'] ?? $registro->fields['fecha_programada'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                            </header>
+                            <?php if (!empty($registro->fields['observaciones'])): ?>
+                                <article class="card-obs">
+                                    <strong>Observaciones:</strong>
+                                    <p><?= htmlspecialchars($registro->fields['observaciones'], ENT_QUOTES, 'UTF-8') ?></p>
+                                </article>
+                            <?php endif; ?>
+                        </section>
+                        <footer class="badge badge-completado">Completado</footer>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </section>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>

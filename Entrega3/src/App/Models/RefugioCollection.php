@@ -3,49 +3,16 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Pagination;
-use Paw\Core\Models\Refugio;
+use Paw\App\Models\Refugio;
+use Paw\Core\Model;
 
-class RefugioCollection extends Refugio
+class RefugioCollection extends Model
 {
     public $table = 'refugio';
 
     public function count(array $filtros = []): int
     {
-        $filtrosDin = $this->prepararFiltrosRefugio($filtros);
-
-        $sql = "SELECT COUNT(*) FROM {$this->table} r WHERE 1=1 " . $filtrosDin['sql'];
-
-        $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
-        foreach ($filtrosDin['params'] as $key => $val) {
-            $sentencia->bindValue($key, $val);
-        }
-        $sentencia->execute();
-
-        return (int) ($sentencia->fetchColumn() ?: 0);
-    }
-
-    private function prepararFiltrosRefugio(array $filtros): array
-    {
-        $sql = "";
-        $params = [];
-
-        if (!empty($filtros['provincia'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.provincia = :provincia)";
-            $params[':provincia'] = $filtros['provincia'];
-        }
-
-        if (!empty($filtros['ciudad'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.ciudad = :ciudad)";
-            $params[':ciudad'] = $filtros['ciudad'];
-        }
-
-        if (!empty($filtros['ubicacion'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND (u2.ciudad LIKE :ubicacion OR u2.provincia LIKE :ubicacion2))";
-            $params[':ubicacion'] = '%' . $filtros['ubicacion'] . '%';
-            $params[':ubicacion2'] = '%' . $filtros['ubicacion'] . '%';
-        }
-
-        return ['sql' => $sql, 'params' => $params];
+        return $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, true);
     }
 
     public function getProvincias(): array { return $this->obtenerUbicacionUnica('provincia'); }
@@ -58,45 +25,20 @@ class RefugioCollection extends Refugio
             return [];
         }
 
-        $sql = "SELECT DISTINCT u.{$campo} FROM ubicacion u 
-                INNER JOIN {$this->table} r ON u.refugio_id = r.id
-                WHERE u.{$campo} IS NOT NULL AND u.{$campo} != '' 
-                ORDER BY u.{$campo} ASC";
-                
-        $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
-        $sentencia->execute();
+        $resultados = $this->queryBuilder->obtenerUbicacionUnicaRefugio($this->table, $campo);
         
-        return $this->mapearCampoRefugio($sentencia->fetchAll(\PDO::FETCH_ASSOC), $campo);
+        return $this->mapearCampoRefugio($resultados, $campo);
     }
 
     public function getPaginated(array $filtros, int $pagina, int $porPagina = 6): array
     {
         $total = $this->count($filtros);
         $paginacion = new Pagination($pagina, $porPagina, $total);
-        $filtrosDin = $this->prepararFiltrosRefugio($filtros);
 
-        $sql = "SELECT r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono,
-                       STRING_AGG(DISTINCT u.ciudad, ', ' ORDER BY u.ciudad ASC) as ciudad,
-                       STRING_AGG(DISTINCT u.provincia, ', ' ORDER BY u.provincia ASC) as provincia,
-                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
-                FROM {$this->table} r LEFT JOIN ubicacion u ON r.id = u.refugio_id WHERE 1=1 " . $filtrosDin['sql'] . "
-                GROUP BY r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono
-                ORDER BY r.nombre_institucion ASC 
-                LIMIT :limit OFFSET :offset";
-
-        $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
-        
-        foreach ($filtrosDin['params'] as $key => $val) {
-            $sentencia->bindValue($key, $val);
-        }
-        
-        $sentencia->bindValue(':limit', $paginacion->perPage, \PDO::PARAM_INT);
-        $sentencia->bindValue(':offset', $paginacion->offset, \PDO::PARAM_INT);
-        
-        $sentencia->execute();
+        $resultados = $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, false, $paginacion->perPage, $paginacion->offset);
 
         return [
-            'items' => $this->mapRefugios($sentencia->fetchAll(\PDO::FETCH_ASSOC)),
+            'items' => $this->mapRefugios($resultados),
             'pagination' => $paginacion,
         ];
     }
@@ -123,7 +65,7 @@ class RefugioCollection extends Refugio
         return $refugios;
     }
 
-    private function get($id){
+    public function get($id){
         $refugio = new Refugio();
         $refugio->setQueryBuilder($this->queryBuilder);
         $refugio->load($id);

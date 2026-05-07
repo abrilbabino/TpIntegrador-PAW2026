@@ -91,8 +91,28 @@ class QueryBuilder
     private function bindValues(PDOStatement $sentencia, array $binds): void
     {
         foreach ($binds as $key => $val) {
-            $sentencia->bindValue($key, $val);
+            if (is_array($val) && isset($val['value'], $val['type'])) {
+                $sentencia->bindValue($key, $val['value'], $val['type']);
+            } else {
+                $sentencia->bindValue($key, $val);
+            }
         }
+    }
+
+    public function rawQuery(string $sql, array $binds = []): array
+    {
+        $sentencia = $this->pdo->prepare($sql);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function rawQueryValue(string $sql, array $binds = [])
+    {
+        $sentencia = $this->pdo->prepare($sql);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+        return $sentencia->fetchColumn();
     }
 
     private function addPagination(string $query, ?int $limit): string
@@ -114,5 +134,117 @@ class QueryBuilder
 
         $sentencia->bindValue(':limit', $limit, PDO::PARAM_INT);
         $sentencia->bindValue(':offset', $offset, PDO::PARAM_INT);
+    }
+
+    public function obtenerValoresUnicos(string $tabla, string $campo): array
+    {
+        $sql = "SELECT DISTINCT {$campo} FROM {$tabla} WHERE {$campo} IS NOT NULL AND {$campo} != '' ORDER BY {$campo}";
+        return $this->rawQuery($sql);
+    }
+
+    public function buscarMascotasPorTermino(string $tabla, string $termino, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
+    {
+        $select = $esConteo ? "COUNT(*)" : "*";
+        $sql = "SELECT {$select} FROM {$tabla} WHERE estado_adopcion = 'DISPONIBLE' 
+                AND (nombre LIKE :term1 OR especie LIKE :term2 OR descripcion LIKE :term3)";
+        
+        if (!$esConteo && $limite !== null && $offset !== null) {
+            $sql .= " LIMIT :limite OFFSET :offset";
+        }
+
+        $terminoLike = "%{$termino}%";
+        $binds = [
+            ':term1' => $terminoLike,
+            ':term2' => $terminoLike,
+            ':term3' => $terminoLike
+        ];
+        
+        if (!$esConteo && $limite !== null && $offset !== null) {
+            $binds[':limite'] = ['value' => $limite, 'type' => \PDO::PARAM_INT];
+            $binds[':offset'] = ['value' => $offset, 'type' => \PDO::PARAM_INT];
+        }
+
+        if ($esConteo) {
+            return (int) $this->rawQueryValue($sql, $binds);
+        } else {
+            return $this->rawQuery($sql, $binds);
+        }
+    }
+
+    public function obtenerUbicacionUnicaRefugio(string $tabla, string $campo): array
+    {
+        $sql = "SELECT DISTINCT u.{$campo} FROM ubicacion u 
+                INNER JOIN {$tabla} r ON u.refugio_id = r.id
+                WHERE u.{$campo} IS NOT NULL AND u.{$campo} != '' 
+                ORDER BY u.{$campo} ASC";
+        return $this->rawQuery($sql);
+    }
+
+    public function obtenerRefugiosFiltrados(string $tabla, array $filtros, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
+    {
+        $sqlFiltros = "";
+        $params = [];
+
+        if (!empty($filtros['provincia'])) {
+            $sqlFiltros .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.provincia = :provincia)";
+            $params[':provincia'] = $filtros['provincia'];
+        }
+
+        if (!empty($filtros['ciudad'])) {
+            $sqlFiltros .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.ciudad = :ciudad)";
+            $params[':ciudad'] = $filtros['ciudad'];
+        }
+
+        if (!empty($filtros['ubicacion'])) {
+            $sqlFiltros .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND (u2.ciudad LIKE :ubicacion OR u2.provincia LIKE :ubicacion2))";
+            $params[':ubicacion'] = '%' . $filtros['ubicacion'] . '%';
+            $params[':ubicacion2'] = '%' . $filtros['ubicacion'] . '%';
+        }
+
+        if ($esConteo) {
+            $sql = "SELECT COUNT(*) FROM {$tabla} r WHERE 1=1 " . $sqlFiltros;
+            return (int) $this->rawQueryValue($sql, $params);
+        }
+
+        $sql = "SELECT r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono,
+                       STRING_AGG(DISTINCT u.ciudad, ', ' ORDER BY u.ciudad ASC) as ciudad,
+                       STRING_AGG(DISTINCT u.provincia, ', ' ORDER BY u.provincia ASC) as provincia,
+                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
+                FROM {$tabla} r LEFT JOIN ubicacion u ON r.id = u.refugio_id WHERE 1=1 " . $sqlFiltros . "
+                GROUP BY r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono
+                ORDER BY r.nombre_institucion ASC 
+                LIMIT :limit OFFSET :offset";
+
+        if ($limite !== null && $offset !== null) {
+            $params[':limit'] = ['value' => $limite, 'type' => \PDO::PARAM_INT];
+            $params[':offset'] = ['value' => $offset, 'type' => \PDO::PARAM_INT];
+        }
+
+        return $this->rawQuery($sql, $params);
+    }
+
+    public function obtenerRegistrosSanitarios(int $mascotaId, array $filtros = []): array
+    {
+        $sql = "SELECT * FROM registro_sanitario WHERE mascota_id = :mascota_id";
+        $binds = [':mascota_id' => $mascotaId];
+
+        if (!empty($filtros['categoria']) && strtolower($filtros['categoria']) !== 'todos') {
+            $sql .= " AND tipo = :tipo";
+            $binds[':tipo'] = $filtros['categoria'];
+        }
+
+        if (!empty($filtros['mes']) && strtolower($filtros['mes']) !== 'todos') {
+            $sql .= " AND EXTRACT(MONTH FROM fecha_programada) = :mes";
+            $binds[':mes'] = $filtros['mes'];
+        }
+
+        if (!empty($filtros['anio']) && strtolower($filtros['anio']) !== 'todos') {
+            $sql .= " AND EXTRACT(YEAR FROM fecha_programada) = :anio";
+            $binds[':anio'] = $filtros['anio'];
+        }
+
+        $sql .= " ORDER BY fecha_programada DESC";
+
+        return $this->rawQuery($sql, $binds);
     }
 }

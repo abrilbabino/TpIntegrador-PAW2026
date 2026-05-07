@@ -10,28 +10,7 @@ class RegistroSanitarioCollection extends Model
 {
     public function getByMascota(int $mascotaId, array $filtros = []): array
     {
-        $sql = "SELECT * FROM registro_sanitario WHERE mascota_id = :mascota_id";
-        $binds = [':mascota_id' => $mascotaId];
-
-        if (!empty($filtros['categoria'])) {
-            $sql .= " AND tipo = :tipo";
-            $binds[':tipo'] = $filtros['categoria'];
-        }
-
-        if (!empty($filtros['anio'])) {
-            $sql .= " AND YEAR(fecha_programada) = :anio";
-            $binds[':anio'] = $filtros['anio'];
-        }
-
-        $sql .= " ORDER BY fecha_programada DESC";
-
-        $stmt = $this->queryBuilder->getConnection()->prepare($sql);
-        foreach ($binds as $key => $val) {
-            $stmt->bindValue($key, $val);
-        }
-        $stmt->execute();
-
-        $registros = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $registros = $this->queryBuilder->obtenerRegistrosSanitarios($mascotaId, $filtros);
 
         $objetos = [];
         foreach ($registros as $row) {
@@ -60,5 +39,25 @@ class RegistroSanitarioCollection extends Model
                 // Fallback a Chequeo si hay un error
                 return new Chequeo();
         }
+    }
+
+    public function pendientes($registros,$hoy){
+        $proximos=[];
+        foreach ($registros as $registro){
+            if ($registro->fields['estado'] === 'PENDIENTE' && $registro->fields['fecha_programada'] >= $hoy) {
+                $proximos[] = $registro;
+            }
+        }
+        return $proximos;
+    }
+    
+    public function completos($registros,$hoy){
+        $historial=[];
+        foreach ($registros as $registro){
+            if ($registro->fields['estado'] === 'COMPLETADO' && $registro->fields['fecha_programada'] <= $hoy) {
+                $historial[] = $registro;
+            }
+        }
+        return $historial;
     }
 }

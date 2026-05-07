@@ -60,7 +60,6 @@ class MascotaController extends Controller
         $refugios->setQueryBuilder($this->model->getQueryBuilder());
         $refugio =$refugios->get($mascota->fields['refugio_id']);
 
-        //ARREGLAR CHANCHULLO
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
             $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
@@ -104,6 +103,7 @@ class MascotaController extends Controller
 
         $filtros = [
             'anio' => $request->get('anio'),
+            'mes' => $request->get('mes'),
             'categoria' => $request->get('categoria'),
         ];
 
@@ -115,14 +115,8 @@ class MascotaController extends Controller
         $historial = [];
         $hoy = date('Y-m-d');
 
-        //ESTO HACERLO EN EL MODELO
-        foreach ($registros as $registro) {
-            if ($registro->fields['estado'] === 'PENDIENTE' && $registro->fields['fecha_programada'] >= $hoy) {
-                $proximos[] = $registro;
-            } else {
-                $historial[] = $registro;
-            }
-        }
+        $proximos = $coleccion->pendientes($registros,$hoy);
+        $historial = $coleccion->completos($registros,$hoy);
 
         require $this->viewsDir . '/libreta.view.php';
     }
