@@ -14,14 +14,13 @@ class UserController extends Controller
     /**
      * Muestra el perfil del usuario con sus favoritos.
      * Requiere sesión activa, sino redirige a login.
-     */
-    public function perfil()
+        */
+        public function perfil()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Verificar sesión
         if (empty($_SESSION['user'])) {
             header('Location: /iniciar-sesion');
             exit;
@@ -30,9 +29,18 @@ class UserController extends Controller
         $menu  = $this->menu;
         $redes = $this->redes;
         $user  = $_SESSION['user'];
+        $rol   = $user['rol'] ?? 'adoptante';
 
-        // Obtener favoritos del usuario
-        $favoritos = [];
+        if ($rol === 'refugio') {
+            $this->cargarPerfilRefugio($user);
+        } else {
+            $this->cargarPerfilAdoptante($user);
+        }
+    }
+
+    private function cargarPerfilAdoptante(array $user): void
+    {
+        $favoritos   = [];
         $adoptanteId = $user['adoptante_id'] ?? null;
 
         if ($adoptanteId) {
@@ -46,7 +54,24 @@ class UserController extends Controller
         }
 
         $titulo = "Mi Perfil - PawMap";
-
+        $menu  = $this->menu;
+        $redes = $this->redes;
         require $this->viewsDir . '/perfil.view.php';
+    }
+
+    private function cargarPerfilRefugio(array $user): void
+    {
+        $mascotas  = [];
+        $refugioId = $user['refugio_id'] ?? null;
+
+        if ($refugioId) {
+            // Cuando tengas MascotaModel podés traer las mascotas del refugio
+            // $mascotas = $this->mascotaModel->getByRefugioId((int) $refugioId);
+        }
+
+        $titulo = "Mi Refugio - PawMap";
+        $menu  = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/perfil-refugio.view.php';
     }
 }

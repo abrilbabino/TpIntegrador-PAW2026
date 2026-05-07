@@ -63,4 +63,10 @@ class User extends Model
             'usuario_id' => $usuarioId,
         ]);
     }
+    public function getRefugio(int $usuarioId): array|false
+    {
+        return $this->queryBuilder->selectOne('refugio', [
+            'usuario_id' => $usuarioId,
+        ]);
+    }
 }

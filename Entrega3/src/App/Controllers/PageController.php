@@ -24,6 +24,7 @@ class PageController extends Controller
         $titulo = "Iniciar Sesión";
         $menu = $this->menu;
         $redes = $this->redes;
+        $request = $this->request;
         require $this->viewsDir . '/iniciar-sesion.view.php';
     }
 

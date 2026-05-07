@@ -57,23 +57,41 @@ class AuthController extends Controller
             'contacto'       => null,
         ]);
 
-        // Crear adoptante vinculado
-        $this->model->crearAdoptante([
-            'usuario_id' => $userId,
-            'nombre'     => $name,
-            'apellido'   => '',
-        ]);
+        // Crear refugio o adoptante según el rol
+        if ($rol === 'refugio') {
+            $this->model->crearRefugio([
+                'usuario_id'         => $userId,
+                'nombre_institucion' => $name,
+                'cuit'               => '',
+            ]);
 
-        // Obtener adoptante para guardar en sesión
-        $adoptante = $this->model->getAdoptante((int) $userId);
+            $refugio = $this->model->getRefugio((int) $userId);
 
-        // Loguearlo automáticamente
-        $_SESSION['user'] = [
-            'id'              => $userId,
-            'nombre_usuario'  => $username,
-            'email'           => $email,
-            'adoptante_id'    => $adoptante ? $adoptante['id'] : null,
-        ];
+            $_SESSION['user'] = [
+                'id'             => $userId,
+                'nombre_usuario' => $username,
+                'email'          => $email,
+                'rol'            => 'refugio',
+                'refugio_id'     => $refugio ? $refugio['id'] : null,
+            ];
+
+        } else {
+            $this->model->crearAdoptante([
+                'usuario_id' => $userId,
+                'nombre'     => $name,
+                'apellido'   => '',
+            ]);
+
+            $adoptante = $this->model->getAdoptante((int) $userId);
+
+            $_SESSION['user'] = [
+                'id'             => $userId,
+                'nombre_usuario' => $username,
+                'email'          => $email,
+                'rol'            => 'adoptante',
+                'adoptante_id'   => $adoptante ? $adoptante['id'] : null,
+            ];
+        }
 
         $this->log->info("Registro exitoso", ['username' => $username]);
 
@@ -121,15 +139,21 @@ class AuthController extends Controller
 
         // Login exitoso: guardar datos en sesión
         $_SESSION['user'] = [
-            'id'              => $usuario['id'],
-            'nombre_usuario'  => $usuario['nombre_usuario'],
-            'email'           => $usuario['email'],
+            'id'             => $usuario['id'],
+            'nombre_usuario' => $usuario['nombre_usuario'],
+            'email'          => $usuario['email'],
         ];
 
-        // Obtener adoptante vinculado (si existe)
+        // Detectar rol según qué tabla tiene registro vinculado
         $adoptante = $this->model->getAdoptante((int) $usuario['id']);
-        if ($adoptante) {
-            $_SESSION['user']['adoptante_id'] = $adoptante['id'];
+        $refugio   = $this->model->getRefugio((int) $usuario['id']);
+
+        if ($refugio) {
+            $_SESSION['user']['rol']        = 'refugio';
+            $_SESSION['user']['refugio_id'] = $refugio['id'];
+        } else {
+            $_SESSION['user']['rol']          = 'adoptante';
+            $_SESSION['user']['adoptante_id'] = $adoptante ? $adoptante['id'] : null;
         }
 
         $this->log->info("Login exitoso", ['username' => $username, 'user_id' => $usuario['id']]);
