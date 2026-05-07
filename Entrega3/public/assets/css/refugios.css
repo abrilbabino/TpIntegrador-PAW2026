@@ -6,9 +6,9 @@
 .hero-refugios {
   text-align: center;
   padding: 3rem 1.5rem;
-  background-color: var(--color-amarillo);
+  background-color: var(--color-azul);
+  gap: 1rem;
   color: var(--color-fondo);
-  border-bottom: 4px solid var(--color-amarillo);
 }
 
 .seccion-refugio {

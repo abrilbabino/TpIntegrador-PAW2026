@@ -154,12 +154,12 @@ main > header {
 }
 
 main > header h1 { 
-  margin-left: 2rem;
+  margin-left: 4rem;
   font-size: 3.5rem; 
   line-height: 3.5rem;
 }
 main > header p { 
-  margin-left: 2rem;
+  margin-left: 4rem;
   font-size: 1.5rem; 
   font-weight: 600; 
 }
