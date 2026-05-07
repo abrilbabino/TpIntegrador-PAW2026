@@ -1,0 +1,144 @@
+/* Layout Wrapper (mismo que detalle mascota) */
+.formulario-adopcion-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+}
+
+.galeria-mascota {
+    width: 100%;
+}
+
+.info-formulario {
+    background-color: var(--color-fondo);
+    border-radius: 32px 32px 0 0;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: 0 -4px 20px var(--color-texto);
+    margin-top: -2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.drag-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--color-gris-claro);
+    margin: 0 auto 2rem auto;
+}
+
+.form-header h2 {
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-azul);
+    font-weight: 700;
+}
+
+.form-subtitle {
+    color: var(--color-texto);
+    font-size: 0.95rem;
+    margin: 0 0 1.5rem 0;
+    font-weight: 500;
+}
+
+.form-adopcion {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-texto);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--color-texto);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-azul);
+}
+
+.btn-submit-adoptar {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--color-texto);
+    color: var(--color-fondo);
+    text-decoration: none;
+    padding: 0.95rem;
+    margin-top: 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-family: var(--fuente-titulos);
+}
+
+.btn-submit-adoptar:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 25px var(--color-texto);
+}
+
+@media (min-width: 994px) {
+    .formulario-adopcion-wrapper {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 4rem;
+        align-items: start;
+        max-width: 1680px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .carrusel-indicadores {
+        display: none;
+    }
+
+    .mas-fotos {
+        display: block;
+        margin-top: 1.2rem;
+    }
+
+    .info-formulario {
+        position: sticky;
+        top: 2rem;
+        background-color:var(--color-fondo);
+        border: 1px solid var(--color-gris-claro);
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 2px 12px var(--color-texto);
+        margin-top: 0;
+    }
+
+    .drag-handle {
+        display: none;
+    }
+}

@@ -118,7 +118,7 @@
                     </figcaption>
                 </section>
 
-                <a href="/formulario-adopcion" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+                <a href="/formulario-adopcion?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
             </aside>
         </article>
     </main>

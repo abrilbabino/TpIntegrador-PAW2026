@@ -46,7 +46,7 @@
           <header class="cuerpo-incentivar-adopcion">
             <h2>Animate a Adoptar</h2>
           </header>
-          <a href="/formulario-adopcion" class="boton-secundario">Formulario de Adopción</a>
+          <a href="/adoptar" class="boton-secundario">Formulario de Adopción</a>
         </article>
 
       </section>
