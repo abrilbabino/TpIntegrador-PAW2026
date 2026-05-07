@@ -4,11 +4,11 @@
 - [] Historial de adopciones y seguimiento sanitario.  
 
 ## Perfiles de mascotas 
-- [] Información detallada, fotos, vídeos, elementos interactivos. //tendria q ver lo de videos y elementos interactivos (voy a probar hacer lo de los svg sino).  
-- [] Libreta sanitaria digital vinculada al calendario: vacunas, desparasitaciones, castración, controles médicos, tratamientos. //en proceso  
+- [] Información detallada, fotos, vídeos, elementos interactivos. 
+- [x] Libreta sanitaria digital vinculada al calendario: vacunas, desparasitaciones, castración, controles médicos, tratamientos.  
 
 ## Listado General (Grilla de Mascotas) 
-- [] Carga dinámica desde PostgreSQL de todas las mascotas con estado "Disponible". //A revisar lo del disponible  
+- [x] Carga dinámica desde PostgreSQL de todas las mascotas con estado "Disponible".  
 - [x] Filtros de búsqueda: Especie, tamaño, edad, temperamento, ubicación.  
 
 ## Test de Compatibilidad 
