@@ -41,18 +41,40 @@
 }
 
 .icono-usuario {
-  display: flex;
-  cursor: pointer;
+  display: grid;
+  grid-template-areas: "icon"
+                       "desc";
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-items: center;
   flex-shrink: 0;
   z-index: 10; 
 }
 
 .icono-usuario .material-symbols-outlined {
+  grid-area: "icon";
+  grid-row: 1;
   font-size: 44px;
   color: var(--color-azul);
   border: 2px solid var(--color-azul);
   border-radius: 50%;
   padding: 2px;
+}
+
+.icono-usuario .material-symbols-outlined:hover {
+  color: var(--color-naranja);
+  border: 2px solid var(--color-naranja);
+  transform: scale(1.03);
+}
+
+.icono-usuario p,
+.icono-usuario p:hover{
+  color:var(--color-azul);
+  transform: (1);
+  grid-area: "desc";
+  font-size: 1rem;
+  grid-row:2;
+  pointer-events: none;
 }
 
 .header-busqueda { display: none; }
