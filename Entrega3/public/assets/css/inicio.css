@@ -1,6 +1,6 @@
 .seccion-mapa {
   padding: 2.5rem 1.5rem;
-  margin-bottom: 2rem;
+  margin: 0 2rem;
 }
 
 .seccion-mapa figure {
@@ -14,7 +14,7 @@
   border: none;
   border-radius: 16px;
   background-color: var(--color-gris-claro);
-  box-shadow: 0 4px 20px var(--color-texto);
+  box-shadow: 0 4px 10px var(--color-texto);
 }
 
 .boton-ancho {
@@ -38,30 +38,16 @@
   overflow: hidden;
 }
 
-.boton-secundario::after,
-.boton-principal::after {
-  position: absolute;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: inherit;
-}
-.boton-secundario:hover::after,
-.boton-principal:hover::after {
-  opacity: 1;
-}
-
 .boton-principal {
-  background: linear-gradient(135deg, var(--color-azul) 0%, var(--color-azul-oscuro) 100%);
+  background-color :var(--color-azul);
   color: var(--color-fondo);
   padding: 1rem 2rem;
   font-size: 1.2rem;
-  box-shadow: 0 4px 15px var(--color-azul);
 }
 
 .boton-principal:hover {
-  background: linear-gradient(135deg, var(--color-azul-oscuro) 0%, var(--color-azul) 100%);
+  background-color: var(--color-azul);
   color: var(--color-fondo);
-  box-shadow: 0 8px 25px var(--color-azul);
   transform: translateY(-3px);
 }
 
@@ -72,23 +58,23 @@
 }
 
 .boton-secundario {
-  background: linear-gradient(115deg, var(--color-naranja) 0%, var(--color-amarillo) 70%);
+  background: var(--color-naranja);
   color: var(--color-fondo);
   padding: 1.2rem 3rem;
   font-size: 1.2rem;
-  box-shadow: 0 4px 15px var(--color-naranja);
   text-shadow: 0 1px 2px var(--color-texto);
 }
 
 .boton-secundario:hover {
-  background: linear-gradient(135deg, var(--color-amarillo) 0%, var(--color-naranja) 70%);
+  background-color: var(--color-naranja);
   color: var(--color-fondo);
-  box-shadow: 0 8px 25px var(--color-naranja);
+  box-shadow: 0 2px 2px var(--color-texto);
   transform: translateY(-3px);
 }
 
 .seccion-incentivar-adopcion {
-  margin: 3rem 1.5rem;
+  padding: 2rem 1.5rem;
+  margin: 0 1.5rem;
 }
 
 .incentivar-adopcion-movil {
@@ -116,7 +102,7 @@
 }
 
 .tarjeta-incentivar-adopcion p {
-  margin: 0;
+  margin: 0 1rem;
   color: var(--color-texto);
   font-size: 1.5rem;
   font-weight: 500;
@@ -128,7 +114,7 @@
 
 .cuerpo-incentivar-adopcion h2 {
   font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 1rem;
   color: var(--color-azul);
 }
 
@@ -138,27 +124,19 @@
 }
 
 .seccion-adopcion {
+  margin: 1rem 3.5rem;
+  border-radius: 16px;
   padding: 3rem 1.5rem;
-  background: linear-gradient(180deg, var(--color-fondo) 0%, var(--color-fondo) 100%);
+  background-color: var(--color-naranja);
 }
 
 .seccion-adopcion > h2 {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
+  margin-left: 1rem;
   margin-bottom: 1.5rem;
   color: var(--color-azul);
-  position: relative;
-  display: inline-block;
-}
-
-.seccion-adopcion > h2::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 50px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-naranja), var(--color-amarillo));
-  border-radius: 2px;
+  text-shadow: 1px 1px 1px var(--color-fondo);
+  text-align: left;
 }
 
 .grilla-mascotas {
@@ -168,12 +146,17 @@
   margin-top: 1.5rem;
 }
 
+.verPerfil {
+  display:block;
+}
+
 .tarjeta-mascota {
   border: none;
   border-radius: 14px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height:100%;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   background-color: var(--color-fondo);
   box-shadow: 0 2px 12px var(--color-texto);
@@ -200,21 +183,6 @@
   height: 100%; 
   object-fit: cover; 
   border-radius: 14px 14px 0 0;
-}
-
-.verPerfil {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
-  color: var(--color-fondo);
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-shadow: 0 1px 2px var(--color-texto);
 }
 
 .texto-foto {
@@ -251,7 +219,7 @@
   }
 
   .seccion-incentivar-adopcion {
-    margin: 3rem 5%;
+    margin: 0 2rem;
   }
 
   .incentivar-adopcion-movil {
@@ -263,18 +231,15 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, var(--color-azul) 0%, var(--color-azul-oscuro) 100%);
+    background-color: var(--color-azul);
     border-radius: 20px;
     padding: 3.5rem 5rem;
-    box-shadow: 0 12px 40px var(--color-azul);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
   }
 
   .incentivar-adopcion-desktop .cuerpo-incentivar-adopcion h2 {
-    font-size: 4rem;
-    margin: 0;
+    font-size: 3.5rem;
     color: var(--color-fondo);
     text-shadow: 0 2px 8px var(--color-texto);
   }
@@ -284,22 +249,13 @@
     flex-shrink: 0;
   }
 
-  .seccion-adopcion {
-    padding: 3rem 5%;
-  }
-
   .seccion-adopcion > h2 {
-    font-size: 2.5rem;
-  }
-
-  .seccion-adopcion > h2::after {
-    width: 70px;
-    height: 5px;
+    font-size: 3rem;
   }
 
   .seccion-adopcion .grilla-mascotas {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 

@@ -44,9 +44,8 @@ $router->setControllerFactory($controllerFactory);
 // Páginas estáticas
 $router->get('/', 'PageController@index');
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
-$router->get('/donar', 'PageController@donar');
-$router->get('/mapa', 'PageController@mapa');
-$router->get('/contacto', 'PageController@contacto');
+// $router->get('/donar', 'PageController@donar');
+// $router->get('/mapa', 'PageController@mapa');
 
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');

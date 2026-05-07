@@ -66,30 +66,13 @@ class Controller
                 "icon" => "location_city",
                 "type" => "link",
             ],
-            [
-                "href" => "/contacto",
-                "name" => "Contacto",
-                "icon"  => "mail",
-                "type"  => "link"
-            ],
-            [
-                "name" => "",
-                "for"   => "mostrar-login",
-                "icon"  => "account_circle",
-                "type"  => "label"
-            ]
         ];
 
         $this->redes = [
             [
-                'name' => 'Facebook', 
-                'url' => 'https://facebook.com', 
-                'img' => 'facebook.png'
-            ],
-            [
-                'name' => 'Twitter', 
-                'url' => 'https://twitter.com', 
-                'img' => 'twitter.png'
+                'name' => 'TikTok', 
+                'url' => 'https://tiktok.com', 
+                'img' => 'tiktok.png'
             ],
             [
                 'name' => 'Instagram', 
