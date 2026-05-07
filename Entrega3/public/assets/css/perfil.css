@@ -1,304 +1,445 @@
-/* Estilos para la página de Perfil de Usuario */
-
+/* ===== PERFIL CONTAINER ===== */
 .perfil-container {
-  width: 90%;
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
+  max-width: 700px;
+  margin: 5rem auto 2rem;
+  /* Aumentado para evitar la superposición de la barra fija */
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Cabecera del perfil */
+/* ===== HEADER ===== */
 .perfil-header {
-  text-align: center;
-  padding: 2rem 1rem;
-  margin-bottom: 2rem;
-  background: linear-gradient(135deg, var(--color-violeta) 0%, var(--color-azul) 100%);
-  border-radius: 12px;
-  color: var(--color-fondo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem 1rem;
 }
 
 .perfil-avatar {
-  width: 90px;
-  height: 90px;
-  background-color: rgba(255, 255, 255, 0.2);
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin: 0 auto 1rem;
+  background: #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
-.perfil-avatar span {
-  font-size: 48px;
-  color: var(--color-fondo);
+.perfil-avatar .material-symbols-outlined {
+  font-size: 2.5rem;
+  color: #888;
 }
 
 .perfil-header h1 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  margin: 0 0 0.3rem;
-  color: var(--color-fondo);
+  margin: 0;
 }
 
 .perfil-email {
   font-size: 0.9rem;
-  opacity: 0.85;
-  margin: 0 0 1rem;
-}
-
-.perfil-logout {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: var(--color-fondo);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.perfil-logout span {
-  font-size: 1.1rem;
-}
-
-.perfil-logout:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: var(--color-fondo);
-}
-
-/* Sección de favoritos */
-.perfil-favoritos h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.3rem;
-  color: var(--color-violeta);
-  margin-bottom: 1.5rem;
-}
-
-.perfil-favoritos h2 span {
-  color: var(--color-magenta);
-}
-
-/* Estado vacío */
-.favoritos-vacio {
-  text-align: center;
-  padding: 3rem 1rem;
-  background-color: var(--color-gris-claro);
-  border-radius: 12px;
-}
-
-.favoritos-vacio span {
-  font-size: 64px;
-  color: #ccc;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.favoritos-vacio p {
-  color: #777;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.btn-explorar {
-  display: inline-block;
-  padding: 0.7rem 1.5rem;
-  background-color: var(--color-azul);
-  color: var(--color-fondo);
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn-explorar:hover {
-  background-color: var(--color-azul-oscuro);
-  transform: translateY(-2px);
-  color: var(--color-fondo);
-}
-
-/* Grid de favoritos */
-.favoritos-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-/* Card de favorito */
-.favorito-card {
-  background-color: var(--color-fondo);
-  border: 1px solid #eee;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-.favorito-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.favorito-img {
-  width: 100%;
-  height: 180px;
-  overflow: hidden;
+  color: #666;
   margin: 0;
 }
 
-.favorito-img img {
+.perfil-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #e53935;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.perfil-logout:hover {
+  text-decoration: underline;
+}
+
+/* ===== DATOS PERSONALES ===== */
+.perfil-datos {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem 1.5rem;
+}
+
+.perfil-datos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.perfil-datos-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-editar {
+  color: #555;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.btn-editar:hover {
+  color: #111;
+}
+
+.perfil-datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dato-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.dato-label {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #888;
+}
+
+.dato-valor {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* ===== NAV ANCLA (reemplaza los tabs) ===== */
+.perfil-nav {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.perfil-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.perfil-nav a .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+.perfil-nav a:hover {
+  color: #333;
+}
+
+.perfil-nav a.active {
+  color: #e53935;
+  border-bottom-color: #e53935;
+}
+
+/* ===== SECCIONES ===== */
+.perfil-seccion {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem 1.5rem;
+  scroll-margin-top: 4.5rem;
+}
+
+.perfil-seccion h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+/* ===== VACÍO ===== */
+.perfil-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  color: #aaa;
+  text-align: center;
+}
+
+.perfil-vacio .material-symbols-outlined {
+  font-size: 2.5rem;
+}
+
+.perfil-vacio p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.btn-explorar {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: #e53935;
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== CARDS FAVORITOS ===== */
+.perfil-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.perfil-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.perfil-card-img {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #e0e0e0;
+  margin: 0;
+}
+
+.perfil-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.favorito-info {
-  padding: 1rem;
+.form-quitar-fav {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
 }
 
-.favorito-info h3 {
-  font-size: 1.1rem;
-  color: var(--color-texto);
-  margin: 0 0 0.5rem;
-}
-
-.favorito-especie,
-.favorito-edad {
+.btn-corazon {
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0.3rem 0;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
 }
 
-.favorito-especie span,
-.favorito-edad span {
-  font-size: 1rem;
-  color: var(--color-violeta);
+.btn-corazon.activo .material-symbols-outlined {
+  color: #e53935;
+  font-variation-settings: "FILL" 1;
 }
 
-.favorito-estado {
-  display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
+.btn-corazon .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.perfil-card h4 {
+  padding: 0.6rem 0.7rem 0;
+  margin: 0 0 0.2rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  text-transform: uppercase;
-  margin-top: 0.5rem;
 }
 
-.estado-disponible {
-  background-color: #e8f5e9;
+.perfil-card p {
+  padding: 0 0.7rem 0.6rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== LISTA SOLICITUDES / ADOPCIONES ===== */
+.perfil-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.perfil-lista-item {
+  display: grid;
+  grid-template-areas:
+    "titulo estado"
+    "info estado";
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  row-gap: 0.2rem;
+}
+
+.perfil-lista-item h4 {
+  grid-area: titulo;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.perfil-lista-item p {
+  grid-area: info;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.perfil-estado {
+  grid-area: estado;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  background: #e0e0e0;
+  color: #555;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.perfil-estado.estado-aprobado {
+  background: #c8e6c9;
   color: #2e7d32;
 }
 
-.estado-adoptado {
-  background-color: #fff3e0;
+.perfil-estado.estado-pendiente {
+  background: #fff3e0;
   color: #e65100;
 }
 
-.estado-en_proceso {
-  background-color: #e3f2fd;
-  color: #1565c0;
+.perfil-estado.estado-rechazado {
+  background: #ffcdd2;
+  color: #b71c1c;
 }
 
-/* Acciones del favorito */
-.favorito-acciones {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0 1rem 1rem;
-}
-
-.btn-ver {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.45rem 0.8rem;
-  background-color: var(--color-azul);
-  color: var(--color-fondo);
-  border-radius: 5px;
-  font-size: 0.8rem;
-  font-weight: 600;
+.btn-ver-detalle {
+  grid-area: estado;
+  color: #555;
   text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-ver:hover {
-  background-color: var(--color-azul-oscuro);
-  color: var(--color-fondo);
-}
-
-.btn-ver span {
-  font-size: 1rem;
-}
-
-.form-eliminar {
-  display: inline;
-}
-
-.btn-eliminar {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.45rem 0.8rem;
-  background-color: transparent;
-  color: var(--color-magenta);
-  border: 1px solid var(--color-magenta);
-  border-radius: 5px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-eliminar:hover {
-  background-color: var(--color-magenta);
-  color: var(--color-fondo);
+.btn-ver-detalle:hover {
+  color: #111;
 }
 
-.btn-eliminar span {
-  font-size: 1rem;
-}
+/* =========================================
+   MEDIA QUERY DESKTOP (min-width: 994px)
+   ========================================= */
+@media (min-width: 994px) {
 
-/* ---- Responsive Desktop ---- */
-@media screen and (min-width: 994px) {
+  /* === COLORES (Variables de generales.css) === */
+  .btn-explorar {
+    background-color: var(--color-violeta);
+    color: var(--color-fondo);
+  }
+
+  .perfil-nav a.active {
+    color: var(--color-violeta);
+    border-bottom-color: var(--color-violeta);
+  }
+
+  .btn-corazon.activo .material-symbols-outlined {
+    color: var(--color-magenta);
+  }
+
+  .perfil-estado {
+    color: var(--color-fondo);
+  }
+
+  .perfil-estado.estado-aprobado {
+    background-color: var(--color-verde);
+  }
+
+  .perfil-estado.estado-pendiente {
+    background-color: var(--color-amarillo);
+    color: var(--color-texto);
+  }
+
+  .perfil-estado.estado-rechazado {
+    background-color: var(--color-magenta);
+  }
+
+  /* === LAYOUT DESKTOP === */
   .perfil-container {
-    padding: 2rem;
+    max-width: 1200px;
+    margin: 3.5rem auto 2rem;
+    /* Aumentado porque la barra en desktop es más alta */
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+      "header datos"
+      "nav nav"
+      "favoritos favoritos"
+      "solicitudes solicitudes"
+      "adopciones adopciones";
+    gap: 2rem;
+    align-items: start;
   }
 
   .perfil-header {
-    padding: 3rem 2rem;
+    grid-area: header;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0;
   }
 
-  .perfil-header h1 {
-    font-size: 2rem;
+  .perfil-datos {
+    grid-area: datos;
+    height: 100%;
   }
 
-  .perfil-avatar {
-    width: 110px;
-    height: 110px;
+  .perfil-nav {
+    grid-area: nav;
   }
 
-  .perfil-avatar span {
-    font-size: 56px;
+  #sec-favoritos {
+    grid-area: favoritos;
   }
 
-  .favoritos-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+  .perfil-cards-grid {
+    grid-template-columns: repeat(5, 1fr);
   }
 
-  .favorito-img {
-    height: 220px;
+  #sec-solicitudes {
+    grid-area: solicitudes;
   }
-}
 
-@media screen and (min-width: 1200px) {
-  .favoritos-grid {
-    grid-template-columns: repeat(3, 1fr);
+  #sec-adopciones {
+    grid-area: adopciones;
   }
+
+  .perfil-seccion {
+    scroll-margin-top: 1rem;
+  }
+
 }
