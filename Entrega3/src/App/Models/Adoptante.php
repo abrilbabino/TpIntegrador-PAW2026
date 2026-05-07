@@ -4,21 +4,17 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 
-class Refugio extends Model
+class Adoptante extends Model
 {
-    public $table = 'refugio';
+    public $table = 'adoptante';
     public $fields = [
         'usuario_id' => null,
         'ubicacion_id' => null,
-        'nombre_institucion' => '',
-        'cuit' => '',
-        'cvu' => null,
-        'alias' => null,
-        'imagen' => 'default-refugio.jpg',
-        'telefono' => '',
-        'ciudad' => null,
-        'provincia' => null,
-        'adoptables_disponibles' => 0,
+        'nombre' => '',
+        'apellido' => '',
+        'dni' => '',
+        'fecha_de_nacimiento' => null,
+        // Agrega aquí otros campos que tengas en tu tabla 'adoptante'
     ];
 
     public function set(array $values)
@@ -34,10 +30,10 @@ class Refugio extends Model
     public function load($id)
     {
         if (!is_numeric($id) || $id < 0) {
-            throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
+            throw new \Exception("El ID del adoptante debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT * FROM refugio WHERE usuario_id = :id";
+        $sql = "SELECT * FROM adoptante WHERE usuario_id = :id";
         
         $stmt = $this->queryBuilder->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
@@ -47,7 +43,7 @@ class Refugio extends Model
         if ($record) {
             $this->set($record);
         } else {
-            throw new \Exception("No se encontró un refugio con el ID proporcionado");
+            throw new \Exception("No se encontró un adoptante con el ID proporcionado");
         }
     }
 }

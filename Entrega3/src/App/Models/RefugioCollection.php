@@ -29,17 +29,17 @@ class RefugioCollection extends Refugio
         $params = [];
 
         if (!empty($filtros['provincia'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.provincia = :provincia)";
+            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.usuario_id AND u2.provincia = :provincia)";
             $params[':provincia'] = $filtros['provincia'];
         }
 
         if (!empty($filtros['ciudad'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND u2.ciudad = :ciudad)";
+            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.usuario_id AND u2.ciudad = :ciudad)";
             $params[':ciudad'] = $filtros['ciudad'];
         }
 
         if (!empty($filtros['ubicacion'])) {
-            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.id AND (u2.ciudad LIKE :ubicacion OR u2.provincia LIKE :ubicacion2))";
+            $sql .= " AND EXISTS (SELECT 1 FROM ubicacion u2 WHERE u2.refugio_id = r.usuario_id AND (u2.ciudad LIKE :ubicacion OR u2.provincia LIKE :ubicacion2))";
             $params[':ubicacion'] = '%' . $filtros['ubicacion'] . '%';
             $params[':ubicacion2'] = '%' . $filtros['ubicacion'] . '%';
         }
@@ -58,7 +58,7 @@ class RefugioCollection extends Refugio
         }
 
         $sql = "SELECT DISTINCT u.{$campo} FROM ubicacion u 
-                INNER JOIN {$this->table} r ON u.refugio_id = r.id
+                INNER JOIN {$this->table} r ON u.refugio_id = r.usuario_id
                 WHERE u.{$campo} IS NOT NULL AND u.{$campo} != '' 
                 ORDER BY u.{$campo} ASC";
                 
@@ -74,12 +74,12 @@ class RefugioCollection extends Refugio
         $paginacion = new Pagination($pagina, $porPagina, $total);
         $filtrosDin = $this->prepararFiltrosRefugio($filtros);
 
-        $sql = "SELECT r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono,
+        $sql = "SELECT r.usuario_id, r.nombre_institucion, r.cuit, r.imagen, r.telefono,
                        STRING_AGG(DISTINCT u.ciudad, ', ' ORDER BY u.ciudad ASC) as ciudad,
                        STRING_AGG(DISTINCT u.provincia, ', ' ORDER BY u.provincia ASC) as provincia,
-                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
-                FROM {$this->table} r LEFT JOIN ubicacion u ON r.id = u.refugio_id WHERE 1=1 " . $filtrosDin['sql'] . "
-                GROUP BY r.id, r.nombre_institucion, r.cuit, r.imagen, r.telefono
+                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.usuario_id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
+                FROM {$this->table} r LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id WHERE 1=1 " . $filtrosDin['sql'] . "
+                GROUP BY r.usuario_id, r.nombre_institucion, r.cuit, r.imagen, r.telefono
                 ORDER BY r.nombre_institucion ASC 
                 LIMIT :limit OFFSET :offset";
 

@@ -13,9 +13,17 @@
         <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" />
     </form>
     
-    <label for="mostrar-login" class="icono-usuario">
-        <span class="material-symbols-outlined">person</span>
-    </label>
+    <?php if (isset($_SESSION['user'])): ?>
+        <a href="/perfil" class="icono-usuario">
+            <span class="material-symbols-outlined">person</span>
+            <p>Perfil</p>
+        </a>
+    <?php else: ?>
+        <a href="/iniciar-sesion" class="icono-usuario">
+            <span class="material-symbols-outlined">person</span>
+            <p>Iniciar Sesión</p>
+        </a>
+    <?php endif; ?>
 
     <nav class="menu-principal">
         <ul class="nav-lista">
