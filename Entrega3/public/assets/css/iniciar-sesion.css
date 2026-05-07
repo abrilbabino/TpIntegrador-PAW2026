@@ -240,6 +240,26 @@
   color: var(--color-violeta);
 }
 
+/* Mensaje de error en login */
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fdecea;
+  color: #b71c1c;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.login-error span {
+  font-size: 1.2rem;
+  color: #c62828;
+}
+
 /* Estilos para pantallas grandes */
 @media screen and (min-width: 994px) {
   .sesion-container {
@@ -287,24 +307,4 @@
   .registro-header h2 {
     font-size: 1.5rem;
   }
-}
-
-/* Mensaje de error en login */
-.login-error {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: #fdecea;
-  color: #b71c1c;
-  border: 1px solid #f5c6cb;
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.login-error span {
-  font-size: 1.2rem;
-  color: #c62828;
 }
