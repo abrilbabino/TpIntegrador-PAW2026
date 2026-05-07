@@ -4,7 +4,9 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
-use \Paw\App\Models\Refugio;
+use Paw\App\Models\RefugioCollection; 
+use Paw\App\Models\RegistroSanitarioCollection;
+
 
 class MascotaController extends Controller
 {
@@ -54,15 +56,9 @@ class MascotaController extends Controller
 
         $mascota = $this->model->get($id);
 
-        $refugio = new Refugio();
-        $refugio->setQueryBuilder($this->model->getQueryBuilder());
-        if ($mascota && $mascota->fields['refugio_id']) {
-            try {
-                $refugio->load($mascota->fields['refugio_id']);
-            } catch (\Exception $e) {
-                // Manejar error al cargar el refugio
-            }
-        }
+        $refugios = new RefugioCollection();
+        $refugios->setQueryBuilder($this->model->getQueryBuilder());
+        $refugio =$refugios->get($mascota->fields['refugio_id']);
 
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
@@ -94,5 +90,34 @@ class MascotaController extends Controller
         $temperamentos = $this->model->getTemperamentos();
 
         require $this->viewsDir . '/adoptar.view.php';
+    }
+
+    public function libreta()
+    {
+        $request = $this->request;
+        $menu  = $this->menu;
+        $redes = $this->redes;
+        $id = $request->get('id');
+
+        $mascota = $this->model->get($id);
+
+        $filtros = [
+            'anio' => $request->get('anio'),
+            'mes' => $request->get('mes'),
+            'categoria' => $request->get('categoria'),
+        ];
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        $registros = $coleccion->getByMascota((int)$id, $filtros);
+
+        $proximos = [];
+        $historial = [];
+        $hoy = date('Y-m-d');
+
+        $proximos = $coleccion->pendientes($registros,$hoy);
+        $historial = $coleccion->completos($registros,$hoy);
+
+        require $this->viewsDir . '/libreta.view.php';
     }
 }

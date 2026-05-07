@@ -1,0 +1,223 @@
+.libreta-header{
+    text-align: center;
+}
+
+/* Sección de Filtros */
+.filtros-seccion {
+    display:flex;
+    flex-direction: row;
+    border-radius: 12px;
+    padding: 3rem;
+    gap: 1.5rem;
+    justify-content: space-between ;
+}
+
+.filtros-seccion {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filtro-grupo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filtro-grupo label {
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--color-azul);
+}
+
+.filtro-grupo select {
+    padding: 1rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    color: var(--color-azul);
+}
+
+.filtro-grupo select:focus{
+    border: 1px solid var(--color-naranja);
+}
+
+.btn-filtrar {
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 2rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-filtrar:hover {
+    transform: scale(0.98);
+}
+
+.pendientes {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.historial {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.titulo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-azul);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-gris-claro);
+    margin: 0;
+    margin: 0 3rem;
+}
+
+.titulo .material-symbols-outlined {
+    font-size: 3rem;
+    color: var(--color-azul);
+}
+
+/* Tarjetas */
+.card-registro {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 4px var(--color-texto);
+    position: relative;
+    
+    /* Layout interno de la tarjeta */
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+
+    margin:1rem 3rem;
+}
+
+.card-registro:hover {
+    transform: scale(1.0025);
+    box-shadow: 0 2px 6px var(--color-texto);
+}
+
+.card-icon-container {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon-container .material-symbols-outlined {
+    font-size: 1.8rem;
+}
+
+.icon-pendiente {
+    background-color: var(--color-naranja-claro);
+    color: var(--color-rojo);
+}
+
+.icon-completado {
+    background-color: var(--color-verde-claro);
+    color: var(--color-verde);
+}
+
+.card-content {
+    display: grid;
+    gap: 0.8rem;
+    padding-bottom: 1.5rem; /* Espacio para el badge absoluto */
+}
+
+.card-content header h3 {
+    margin: 0 0 0.4rem 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.card-date {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-azul);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.card-date .material-symbols-outlined {
+    font-size: 1.3rem;
+}
+
+.card-obs {
+    font-size: 1rem;
+    color: var(--color-texto);
+    padding: 0.75rem;
+    border-radius: 6px;
+    border-left: 3px solid var(--color-gris-claro);
+}
+
+.card-obs strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-azul);
+}
+
+.card-obs p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Badges */
+.badge {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-pendiente {
+    background-color: var(--color-naranja-claro);
+    color: var(--color-rojo);
+}
+
+.badge-completado {
+    background-color: var(--color-verde-claro);
+    color: var(--color-verde);
+}
+
+.no-registros {
+    text-align: left;
+    color: var(--color-azul);
+    margin: 1rem 4rem;
+    background: var(--color-fondo);
+    border-radius: 12px;
+    font-style: italic;
+    font-size: 1.5rem;
+}
