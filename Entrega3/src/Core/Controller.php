@@ -23,6 +23,11 @@ class Controller
         $this->log = $log;
         $this -> viewsDir = __DIR__ . "/../App/Views";
 
+        // Iniciar sesión para verificar si hay usuario autenticado
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $this -> menu = [
             [
                 "href" => "/",
@@ -66,6 +71,25 @@ class Controller
                 "icon" => "location_city",
                 "type" => "link",
             ],
+            [
+                "href"  => "/contacto",
+                "name"  => "Contacto",
+                "icon"  => "mail",
+                "type"  => "link"
+            ],
+            (isset($_SESSION['user']))
+            ? [
+                "href" => "/perfil",
+                "name" => "Mi Perfil",
+                "icon" => "account_circle",
+                "type" => "link"
+            ]
+            : [
+                "href" => "/iniciar-sesion",
+                "name" => "Iniciar sesión",
+                "icon" => "account_circle",
+                "type" => "link"
+            ]
         ];
 
         $this->redes = [
