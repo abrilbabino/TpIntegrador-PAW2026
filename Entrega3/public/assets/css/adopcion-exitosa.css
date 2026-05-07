@@ -9,7 +9,7 @@
 }
 
 .icono-exito {
-    font-size: 80px !important;
+    font-size: 140px;
     color: var(--color-naranja);
     margin-bottom: 1.5rem;
 }
@@ -23,7 +23,7 @@
 }
 
 .mensaje-exito p {
-    color: #4a4a4a;
+    color: var(--color-texto);
     font-size: 1.15rem;
     line-height: 1.7;
     margin: 0 0 2.5rem;
@@ -52,5 +52,5 @@
 .btn-volver:hover {
     color: var(--color-fondo);
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(40, 53, 131, 0.3);
+    box-shadow: 0 4px 12px var(--color-azul);
 }

@@ -3,95 +3,67 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
+use Paw\Core\Database\QueryBuilder;
+use Paw\App\Models\Mascota;
 use Paw\Core\MailService;
 
 class AdopcionController extends Controller
 {
-    public ?string $modelName = \Paw\App\Models\MascotaCollection::class;
+    public ?string $modelName = \Paw\App\Models\SolicitudAdopcion::class;
 
     public function formulario()
     {
-        $request = $this->request;
         $menu = $this->menu;
         $redes = $this->redes;
-        $errores = $_SESSION['errores'] ?? [];
-        unset($_SESSION['errores']);
+        $errores = [];
 
-        $id = $request->get('id');
-        if (!$id) {
-            header('Location: /adoptar');
-            exit;
-        }
+        $id = $this->request->get('id');
 
-        try {
-            $mascota = $this->model->get($id);
-        } catch (\Exception $e) {
-            error_log("ERROR formulario(): " . $e->getMessage());
-            header('Location: /adoptar');
-            exit;
-        }
+        $mascota = $this->cargarMascota($id);
 
         require $this->viewsDir . '/formulario-adopcion.view.php';
     }
 
     public function enviar()
     {
-        $request = $this->request;
-        $mascota_id = $request->get('mascota_id');
+        global $config;
 
-        if (!$mascota_id) {
-            header('Location: /adoptar');
-            exit;
-        }
+        $menu = $this->menu;
+        $redes = $this->redes;
 
-        try {
-            $mascota = $this->model->get($mascota_id);
-        } catch (\Exception $e) {
-            error_log("ERROR enviar() al cargar mascota: " . $e->getMessage());
-            header('Location: /formulario-adopcion?id=' . $mascota_id);
-            exit;
-        }
+        $this->model->set($this->request->post());
+        $errores = $this->model->validar();
 
-        $nombre = trim($request->get('nombre') ?? '');
-        $apellido = trim($request->get('apellido') ?? '');
-        $email = trim($request->get('email') ?? '');
+        $mascota_id = $this->model->fields['mascota_id'];
 
-        if (!$nombre || !$apellido || !$email) {
-            header('Location: /formulario-adopcion?id=' . $mascota_id);
-            exit;
-        }
+        $mascota = $this->cargarMascota($mascota_id);
+    
 
-        // Enviar mail primero
-        try {
-            global $config;
-            $mailService = new MailService();
-            $datosAdopcion = [
-                'nombre_mascota' => $mascota->fields['nombre'],
-                'nombre' => $nombre,
-                'apellido' => $apellido,
-                'email' => $email,
-            ];
-            error_log("DEBUG enviar() - Intentando enviar mail");
-            $result = $mailService->enviarConfirmacionAdopcion($config->get('MAIL_PERSONAL'), $datosAdopcion);
-            error_log("DEBUG enviar() - Mail enviado: " . var_export($result, true));
-        } catch (\Exception $e) {
-            error_log("ERROR enviar() al enviar mail: " . $e->getMessage());
-        }
+        if (count($errores) > 0) {
+            require $this->viewsDir . '/formulario-adopcion.view.php';
+        } else {
+            $this->model->guardar($mascota->fields['refugio_id']);
 
-        try {
-            $stmt = $this->model->getQueryBuilder()->getConnection()->prepare(
-                "INSERT INTO solicitud_de_adopcion (mascota_id, refugio_id, fecha, estado) 
-                 VALUES (:mascota_id, :refugio_id, CURRENT_TIMESTAMP, 'PENDIENTE')"
+            $mailService = new MailService;
+            $mailService->enviarConfirmacionAdopcion(
+                $config->get('MAIL_PERSONAL'),
+                [
+                    'nombre_mascota' => $mascota->fields['nombre'],
+                    'nombre' => $this->model->fields['nombre'],
+                    'apellido' => $this->model->fields['apellido'],
+                    'email' => $this->model->fields['email'],
+                ]
             );
-            $stmt->bindValue(':mascota_id', $mascota_id, \PDO::PARAM_INT);
-            $stmt->bindValue(':refugio_id', $mascota->fields['refugio_id'], \PDO::PARAM_INT);
-            $stmt->execute();
-            error_log("DEBUG enviar() - Solicitud insertada OK");
-        } catch (\Exception $e) {
-            error_log("ERROR enviar() al insertar: " . $e->getMessage());
-        }
 
-        header('Location: /adopcion-exitosa');
-        exit;
+            header('Location: /adopcion-exitosa');
+        }
+    }
+
+    private function cargarMascota($id)
+    {
+        $mascota = new Mascota;
+        $mascota->setQueryBuilder(new QueryBuilder($this->connection, $this->log));
+        $mascota->load($id);
+        return $mascota;
     }
 }

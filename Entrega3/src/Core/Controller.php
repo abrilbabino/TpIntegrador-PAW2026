@@ -90,11 +90,6 @@ class Controller
         }
     }
 
-    public function getQueryBuilder()
-    {
-        return new QueryBuilder($this->connection, $this->log);
-    }
-
     public function setModel(Model $model)
     {
         $this->model = $model;
