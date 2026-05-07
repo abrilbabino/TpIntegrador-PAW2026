@@ -85,7 +85,7 @@
         <section class="adoptar-contenido">
                 <article class="grilla-mascotas">
                     <?php foreach ($mascotas as $mascota): ?>
-                        <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
+                        <a href="/mascota?id=<?= htmlspecialchars(($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
                                 <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"

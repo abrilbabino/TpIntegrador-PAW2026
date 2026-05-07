@@ -4,6 +4,7 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Exceptions\InvalidValueFormatException;
+use Paw\Core\Exceptions\MascotaNotFoundException;
 
 class Mascota extends Model
 {
@@ -65,7 +66,7 @@ class Mascota extends Model
             $this->set($record);
         }
         else{
-            throw new \Exception("No se encontró una mascota con el ID proporcionado");
+            throw new MascotaNotFoundException("No se encontró una mascota con el ID proporcionado");
         }
     }
 }

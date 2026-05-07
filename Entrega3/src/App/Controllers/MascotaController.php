@@ -4,7 +4,9 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
-use \Paw\App\Models\Refugio;
+use Paw\App\Models\RefugioCollection; 
+use Paw\App\Models\RegistroSanitarioCollection;
+
 
 class MascotaController extends Controller
 {
@@ -54,16 +56,11 @@ class MascotaController extends Controller
 
         $mascota = $this->model->get($id);
 
-        $refugio = new Refugio();
-        $refugio->setQueryBuilder($this->model->getQueryBuilder());
-        if ($mascota && $mascota->fields['refugio_id']) {
-            try {
-                $refugio->load($mascota->fields['refugio_id']);
-            } catch (\Exception $e) {
-                // Manejar error al cargar el refugio
-            }
-        }
+        $refugios = new RefugioCollection();
+        $refugios->setQueryBuilder($this->model->getQueryBuilder());
+        $refugio =$refugios->get($mascota->fields['refugio_id']);
 
+        //ARREGLAR CHANCHULLO
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
             $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
@@ -94,5 +91,39 @@ class MascotaController extends Controller
         $temperamentos = $this->model->getTemperamentos();
 
         require $this->viewsDir . '/adoptar.view.php';
+    }
+
+    public function libreta()
+    {
+        $request = $this->request;
+        $menu  = $this->menu;
+        $redes = $this->redes;
+        $id = $request->get('id');
+
+        $mascota = $this->model->get($id);
+
+        $filtros = [
+            'anio' => $request->get('anio'),
+            'categoria' => $request->get('categoria'),
+        ];
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        $registros = $coleccion->getByMascota((int)$id, $filtros);
+
+        $proximos = [];
+        $historial = [];
+        $hoy = date('Y-m-d');
+
+        //ESTO HACERLO EN EL MODELO
+        foreach ($registros as $registro) {
+            if ($registro->fields['estado'] === 'PENDIENTE' && $registro->fields['fecha_programada'] >= $hoy) {
+                $proximos[] = $registro;
+            } else {
+                $historial[] = $registro;
+            }
+        }
+
+        require $this->viewsDir . '/libreta.view.php';
     }
 }

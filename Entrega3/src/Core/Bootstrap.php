@@ -50,6 +50,7 @@ $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/mascota', 'MascotaController@detalle');
+$router->get('/mascota/libreta', 'MascotaController@libreta');
 $router->get('/buscar', 'MascotaController@buscar');
 
 // Formulario de adopción

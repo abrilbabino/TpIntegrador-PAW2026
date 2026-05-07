@@ -57,6 +57,7 @@
                     <h2><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h2>
                     <form method="POST" action="/favoritos" class="form-favorito">
                         <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                        
                         <button type="submit" class="boton-favorito" aria-label="Agregar a favoritos">
                             <span class="material-symbols-outlined"><?= isset($esFavorito) && $esFavorito ? 'favorite' : 'favorite_border' ?></span>
                         </button>

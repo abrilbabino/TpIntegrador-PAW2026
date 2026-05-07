@@ -3,6 +3,7 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Pagination;
+use Paw\Core\Models\Refugio;
 
 class RefugioCollection extends Refugio
 {
@@ -120,5 +121,12 @@ class RefugioCollection extends Refugio
             $refugios[] = $refugio;
         }
         return $refugios;
+    }
+
+    private function get($id){
+        $refugio = new Refugio();
+        $refugio->setQueryBuilder($this->queryBuilder);
+        $refugio->load($id);
+        return $refugio;
     }
 }
