@@ -15,14 +15,17 @@ class AuthController extends Controller
      */
     public function register()
     {
+        $request= $this->request;
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
-        $name     = trim($_POST['name'] ?? '');
-        $email    = trim($_POST['email'] ?? '');
-        $username = trim($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
+    
+        $name     = trim($request->get('name') ?? '');
+        $email    = trim($request->get('email') ?? '');
+        $username = trim($request->get('username') ?? '');
+        $password = $request->get('password') ?? '';
+        $rol = $request->get('rol') ?? '';
 
         // Validación básica
         if (!$name || !$email || !$username || !$password) {
@@ -46,6 +49,7 @@ class AuthController extends Controller
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         // Crear usuario
+
         $userId = $this->model->crearUsuario([
             'nombre_usuario' => $username,
             'email'          => $email,
