@@ -59,7 +59,7 @@
                     <?php 
                     $contador = 0;
                     foreach ($mascotas as $mascota): 
-                        if ($contador >= 5) break;
+                        if ($contador >= 4) break;
                         $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
