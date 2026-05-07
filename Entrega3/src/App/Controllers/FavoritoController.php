@@ -25,7 +25,7 @@ class FavoritoController extends Controller
             exit;
         }
 
-        $adoptanteId = $_SESSION['user']['adoptante_id'] ?? null;
+        $adoptanteId = $_SESSION['user']['id'] ?? null;
 
         if (!$adoptanteId) {
             $this->log->warning("Intento de guardar favorito sin adoptante vinculado", [
@@ -75,7 +75,7 @@ class FavoritoController extends Controller
             exit;
         }
 
-        $adoptanteId = $_SESSION['user']['adoptante_id'] ?? null;
+        $adoptanteId = $_SESSION['user']['id'] ?? null;
         $favoritoId  = $this->request->get('favorito_id');
 
         if (!$adoptanteId || !$favoritoId || !is_numeric($favoritoId)) {
