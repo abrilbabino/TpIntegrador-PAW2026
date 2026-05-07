@@ -7,21 +7,27 @@ use Paw\Core\Database\QueryBuilder;
 
 class Controller
 {
-    public string $viewsDir;
+    public $viewsDir;
     protected $menu;
     protected $redes;
     protected $model;
+    protected $request;
+    protected $log;
+    protected $connection;
 
     public ?string $modelName = null; 
     
-    protected $request;
-    protected $log;
-
     public function __construct($request, $log, $connection)
     {
         $this->request = $request;
         $this->log = $log;
-        $this -> viewsDir = __DIR__ . "/../App/Views";
+        $this->connection = $connection;
+        $this->viewsDir = __DIR__ . "/../App/Views";
+
+        // Iniciar sesión para verificar si hay usuario autenticado
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $this -> menu = [
             [
@@ -66,6 +72,12 @@ class Controller
                 "icon" => "location_city",
                 "type" => "link",
             ],
+            [
+                "href"  => "/contacto",
+                "name"  => "Contacto",
+                "icon"  => "mail",
+                "type"  => "link"
+            ]
         ];
 
         $this->redes = [
@@ -81,16 +93,16 @@ class Controller
             ],
         ];
 
-        if (!is_null($this ->modelName)){
+        if (!is_null($this->modelName)){
             $qb = new QueryBuilder($connection, $log);
             $model = new $this->modelName;
-            $model -> setQueryBuilder($qb);
-            $this -> setModel($model);
+            $model->setQueryBuilder($qb);
+            $this->setModel($model);
         }
     }
 
     public function setModel(Model $model)
     {
-        $this -> model = $model;
+        $this->model = $model;
     }
 }

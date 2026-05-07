@@ -1,0 +1,167 @@
+.formulario-adopcion {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+}
+
+.seccion-mascota {
+    width: 100%;
+}
+
+.info-formulario {
+    background-color: var(--color-fondo);
+    border-radius: 32px 32px 0 0;
+    padding: 2.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 -4px 20px var(--color-texto);
+    margin-top: -2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.drag-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--color-gris-claro);
+    margin: 0 auto 2rem auto;
+}
+
+.form-header h2 {
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-azul);
+    font-weight: 700;
+}
+
+.form-subtitulo {
+    color: var(--color-texto);
+    font-size: 0.95rem;
+    margin: 0 0 1.5rem 0;
+    font-weight: 500;
+}
+
+.form-adopcion {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.form-adopcion fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-adopcion fieldset + fieldset {
+    margin-top: 0.5rem;
+}
+
+.form-adopcion legend {
+    display: none;
+}
+
+.form-adopcion label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-texto);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.form-adopcion label + input {
+    margin-bottom: 1.2rem;
+}
+
+.form-adopcion input {
+    width: 100%;
+    padding: 16px 18px;
+    background-color: var(--color-fondo);
+    border: 1.5px solid var(--color-gris-claro);
+    border-radius: 12px;
+    font-size: 1.1rem;
+    color: var(--color-texto);
+    transition: border-color 0.25s, box-shadow 0.25s;
+    box-sizing: border-box;
+    font-family: var(--fuente-cuerpo);
+}
+
+.form-adopcion input:focus {
+    outline: none;
+    border-color: var(--color-azul);
+    box-shadow: 0 0 0 3px var(--color-texto);
+}
+
+.error-inline {
+    display: block;
+    color: var(--color-magenta);
+    font-size: 0.8rem;
+    margin-top: -0.8rem;
+    margin-bottom: 1.2rem;
+}
+
+.btn-submit-adoptar {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--color-azul);
+    color: var(--color-fondo);
+    text-decoration: none;
+    padding: 1.15rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-family: var(--fuente-titulos);
+}
+
+.btn-submit-adoptar:hover {
+    background: var(--color-azul-oscuro);
+    transform: translateY(-1px);
+}
+
+@media (min-width: 994px) {
+    .formulario-adopcion {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 4rem;
+        align-items: start;
+        max-width: 1680px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .carrusel-indicadores {
+        display: none;
+    }
+
+    .mas-fotos {
+        display: block;
+        margin-top: 1.2rem;
+    }
+
+    .info-formulario {
+        position: sticky;
+        top: 2rem;
+        background-color:var(--color-fondo);
+        border: 1px solid var(--color-gris-claro);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 2px 12px var(--color-texto);
+        margin-top: 0;
+    }
+
+    .drag-handle {
+        display: none;
+    }
+}

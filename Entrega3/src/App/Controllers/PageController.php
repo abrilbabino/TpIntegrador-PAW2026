@@ -19,6 +19,14 @@ class PageController extends Controller
 
         require $this->viewsDir . '/index.view.php';
     }
+    public function iniciarSesion()
+    {
+        $titulo = "Iniciar Sesión";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        $request = $this->request;
+        require $this->viewsDir . '/iniciar-sesion.view.php';
+    }
 
     public function comoAdoptar()
     {
@@ -26,5 +34,12 @@ class PageController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
         require $this->viewsDir . '/como-adoptar.view.php';
+    }
+
+    public function adopcionExitosa()
+    {
+        $menu = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/adopcion-exitosa.view.php';
     }
 }

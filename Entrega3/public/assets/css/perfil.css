@@ -1,0 +1,445 @@
+/* ===== PERFIL CONTAINER ===== */
+.perfil-container {
+  max-width: 700px;
+  margin: 5rem auto 2rem;
+  /* Aumentado para evitar la superposición de la barra fija */
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== HEADER ===== */
+.perfil-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem 1rem;
+}
+
+.perfil-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.perfil-avatar .material-symbols-outlined {
+  font-size: 2.5rem;
+  color: #888;
+}
+
+.perfil-header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.perfil-email {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.perfil-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #e53935;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.perfil-logout:hover {
+  text-decoration: underline;
+}
+
+/* ===== DATOS PERSONALES ===== */
+.perfil-datos {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem 1.5rem;
+}
+
+.perfil-datos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.perfil-datos-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-editar {
+  color: #555;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.btn-editar:hover {
+  color: #111;
+}
+
+.perfil-datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dato-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.dato-label {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #888;
+}
+
+.dato-valor {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* ===== NAV ANCLA (reemplaza los tabs) ===== */
+.perfil-nav {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.perfil-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-bottom-color 0.2s;
+}
+
+.perfil-nav a .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+.perfil-nav a:hover {
+  color: #333;
+}
+
+.perfil-nav a.active {
+  color: #e53935;
+  border-bottom-color: #e53935;
+}
+
+/* ===== SECCIONES ===== */
+.perfil-seccion {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem 1.5rem;
+  scroll-margin-top: 4.5rem;
+}
+
+.perfil-seccion h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+/* ===== VACÍO ===== */
+.perfil-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  color: #aaa;
+  text-align: center;
+}
+
+.perfil-vacio .material-symbols-outlined {
+  font-size: 2.5rem;
+}
+
+.perfil-vacio p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.btn-explorar {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: #e53935;
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== CARDS FAVORITOS ===== */
+.perfil-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.perfil-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  background: #fafafa;
+}
+
+.perfil-card-img {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #e0e0e0;
+  margin: 0;
+}
+
+.perfil-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-quitar-fav {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+}
+
+.btn-corazon {
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-corazon.activo .material-symbols-outlined {
+  color: #e53935;
+  font-variation-settings: "FILL" 1;
+}
+
+.btn-corazon .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.perfil-card h4 {
+  padding: 0.6rem 0.7rem 0;
+  margin: 0 0 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.perfil-card p {
+  padding: 0 0.7rem 0.6rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== LISTA SOLICITUDES / ADOPCIONES ===== */
+.perfil-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.perfil-lista-item {
+  display: grid;
+  grid-template-areas:
+    "titulo estado"
+    "info estado";
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  row-gap: 0.2rem;
+}
+
+.perfil-lista-item h4 {
+  grid-area: titulo;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.perfil-lista-item p {
+  grid-area: info;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.perfil-estado {
+  grid-area: estado;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  background: #e0e0e0;
+  color: #555;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.perfil-estado.estado-aprobado {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.perfil-estado.estado-pendiente {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.perfil-estado.estado-rechazado {
+  background: #ffcdd2;
+  color: #b71c1c;
+}
+
+.btn-ver-detalle {
+  grid-area: estado;
+  color: #555;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.btn-ver-detalle:hover {
+  color: #111;
+}
+
+/* =========================================
+   MEDIA QUERY DESKTOP (min-width: 994px)
+   ========================================= */
+@media (min-width: 994px) {
+
+  /* === COLORES (Variables de generales.css) === */
+  .btn-explorar {
+    background-color: var(--color-violeta);
+    color: var(--color-fondo);
+  }
+
+  .perfil-nav a.active {
+    color: var(--color-violeta);
+    border-bottom-color: var(--color-violeta);
+  }
+
+  .btn-corazon.activo .material-symbols-outlined {
+    color: var(--color-magenta);
+  }
+
+  .perfil-estado {
+    color: var(--color-fondo);
+  }
+
+  .perfil-estado.estado-aprobado {
+    background-color: var(--color-verde);
+  }
+
+  .perfil-estado.estado-pendiente {
+    background-color: var(--color-amarillo);
+    color: var(--color-texto);
+  }
+
+  .perfil-estado.estado-rechazado {
+    background-color: var(--color-magenta);
+  }
+
+  /* === LAYOUT DESKTOP === */
+  .perfil-container {
+    max-width: 1200px;
+    margin: 3.5rem auto 2rem;
+    /* Aumentado porque la barra en desktop es más alta */
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+      "header datos"
+      "nav nav"
+      "favoritos favoritos"
+      "solicitudes solicitudes"
+      "adopciones adopciones";
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .perfil-header {
+    grid-area: header;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0;
+  }
+
+  .perfil-datos {
+    grid-area: datos;
+    height: 100%;
+  }
+
+  .perfil-nav {
+    grid-area: nav;
+  }
+
+  #sec-favoritos {
+    grid-area: favoritos;
+  }
+
+  .perfil-cards-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  #sec-solicitudes {
+    grid-area: solicitudes;
+  }
+
+  #sec-adopciones {
+    grid-area: adopciones;
+  }
+
+  .perfil-seccion {
+    scroll-margin-top: 1rem;
+  }
+
+}

@@ -18,7 +18,7 @@ class SolicitudAdopcionSeeder extends AbstractSeed
                 'id' => 1,
                 'adoptante_id' => 1,
                 'mascota_id' => 1,
-                'refugio_id' => 1,
+                'refugio_id' => 4,
                 'estado' => 'PENDIENTE',
                 'fecha' => date('Y-m-d H:i:s', strtotime('-3 days'))
             ],
@@ -26,7 +26,7 @@ class SolicitudAdopcionSeeder extends AbstractSeed
                 'id' => 2,
                 'adoptante_id' => 2,
                 'mascota_id' => 2,
-                'refugio_id' => 1,
+                'refugio_id' => 5,
                 'estado' => 'APROBADA',
                 'fecha' => date('Y-m-d H:i:s', strtotime('-10 days'))
             ],
@@ -34,7 +34,7 @@ class SolicitudAdopcionSeeder extends AbstractSeed
                 'id' => 3,
                 'adoptante_id' => 3,
                 'mascota_id' => 4,
-                'refugio_id' => 3,
+                'refugio_id' => 9,
                 'estado' => 'APROBADA',
                 'fecha' => date('Y-m-d H:i:s', strtotime('-2 months'))
             ]

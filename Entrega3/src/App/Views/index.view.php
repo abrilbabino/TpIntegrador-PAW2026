@@ -46,7 +46,7 @@
           <header class="cuerpo-incentivar-adopcion">
             <h2>Animate a Adoptar</h2>
           </header>
-          <a href="/formulario-adopcion" class="boton-secundario">Formulario de Adopción</a>
+          <a href="/adoptar" class="boton-secundario">Formulario de Adopción</a>
         </article>
 
       </section>
@@ -59,7 +59,7 @@
                     <?php 
                     $contador = 0;
                     foreach ($mascotas as $mascota): 
-                        if ($contador >= 5) break;
+                        if ($contador >= 4) break;
                         $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
