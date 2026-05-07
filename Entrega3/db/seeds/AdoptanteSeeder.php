@@ -15,7 +15,6 @@ class AdoptanteSeeder extends AbstractSeed
     {
         $data = [
             [
-                'id' => 1,
                 'usuario_id' => 1,
                 'ubicacion_id' => 1,
                 'nombre' => 'Juan',
@@ -24,7 +23,6 @@ class AdoptanteSeeder extends AbstractSeed
                 'fecha_de_nacimiento' => '1990-05-15'
             ],
             [
-                'id' => 2,
                 'usuario_id' => 2,
                 'ubicacion_id' => 2,
                 'nombre' => 'María',
@@ -33,7 +31,6 @@ class AdoptanteSeeder extends AbstractSeed
                 'fecha_de_nacimiento' => '1985-08-22'
             ],
             [
-                'id' => 3,
                 'usuario_id' => 3,
                 'ubicacion_id' => 3,
                 'nombre' => 'Carlos',

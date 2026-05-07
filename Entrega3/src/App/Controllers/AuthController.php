@@ -148,12 +148,16 @@ class AuthController extends Controller
         $adoptante = $this->model->getAdoptante((int) $usuario['id']);
         $refugio   = $this->model->getRefugio((int) $usuario['id']);
 
-        if ($refugio) {
+        if ($refugio && isset($refugio['id'])) {
             $_SESSION['user']['rol']        = 'refugio';
             $_SESSION['user']['refugio_id'] = $refugio['id'];
-        } else {
+        } elseif ($adoptante && isset($adoptante['id'])) {
             $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = $adoptante ? $adoptante['id'] : null;
+            $_SESSION['user']['adoptante_id'] = $adoptante['id'];
+        } else {
+            // Por defecto adoptante si no hay datos
+            $_SESSION['user']['rol']          = 'adoptante';
+            $_SESSION['user']['adoptante_id'] = null;
         }
 
         $this->log->info("Login exitoso", ['username' => $username, 'user_id' => $usuario['id']]);

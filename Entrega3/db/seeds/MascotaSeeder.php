@@ -16,7 +16,7 @@ class MascotaSeeder extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'refugio_id' => 1,
+                'refugio_id' => 4,
                 'nombre' => 'Firulais',
                 'especie' => 'perro',
                 'descripcion' => 'Perro muy activo que busca una familia que le dé mucho amor y paseos.',
@@ -31,7 +31,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 2,
-                'refugio_id' => 1,
+                'refugio_id' => 5,
                 'nombre' => 'Mishi',
                 'especie' => 'gato',
                 'descripcion' => 'Gata siamés muy dulce, ideal para departamentos.',
@@ -46,7 +46,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 3,
-                'refugio_id' => 2,
+                'refugio_id' => 10,
                 'nombre' => 'Rocky',
                 'especie' => 'perro',
                 'descripcion' => 'Labrador muy noble, excelente con niños.',
@@ -61,7 +61,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 4,
-                'refugio_id' => 3,
+                'refugio_id' => 9,
                 'nombre' => 'Toby',
                 'especie' => 'perro',
                 'descripcion' => 'Beagle muy curioso, le encanta explorar el jardín.',
@@ -76,7 +76,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 5,
-                'refugio_id' => 2,
+                'refugio_id' => 6,
                 'nombre' => 'Luna',
                 'especie' => 'gato',
                 'descripcion' => 'Gatita muy mimosa que busca compañía constante y muchos mimos.',
@@ -91,7 +91,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 6,
-                'refugio_id' => 3,
+                'refugio_id' => 7,
                 'nombre' => 'Max',
                 'especie' => 'perro',
                 'descripcion' => 'Cachorro mestizo lleno de energía, ideal para salir a correr o hacer senderismo.',
@@ -106,7 +106,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 7,
-                'refugio_id' => 1,
+                'refugio_id' => 7,
                 'nombre' => 'Bella',
                 'especie' => 'perro',
                 'descripcion' => 'Perrita adulta muy dócil y obediente. Se lleva súper bien con otros animales.',
@@ -121,7 +121,7 @@ class MascotaSeeder extends AbstractSeed
             ],
             [
                 'id' => 8,
-                'refugio_id' => 2,
+                'refugio_id' => 8,
                 'nombre' => 'Simba',
                 'especie' => 'gato',
                 'descripcion' => 'Gato naranja independiente pero que disfruta de una buena siesta al sol en el balcón.',
