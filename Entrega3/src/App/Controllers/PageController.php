@@ -28,14 +28,6 @@ class PageController extends Controller
         require $this->viewsDir . '/iniciar-sesion.view.php';
     }
 
-    public function contacto()
-    {
-        $titulo = "Contacto - PawMap";
-        $menu = $this->menu;
-        $redes = $this->redes;
-        require $this->viewsDir . '/contacto.view.php';
-    }
-
     public function comoAdoptar()
     {
         $titulo = "Como Adoptar - PawMap";

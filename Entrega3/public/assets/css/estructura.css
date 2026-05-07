@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 4px solid var(--color-amarillo);
+  border-bottom: 4px solid var(--color-naranja);
   background-color: var(--color-fondo);
   position: fixed;
   width: 100%;
@@ -33,7 +33,7 @@
 }
 
 .header-logo img {
-  height: 80px;       
+  height: 90px;       
   width: auto;        
   max-width: 200px;
   display: block;
@@ -44,7 +44,6 @@
   display: flex;
   cursor: pointer;
   flex-shrink: 0;
-  margin-left: auto;
   z-index: 10; 
 }
 
@@ -63,10 +62,11 @@
 .nav-lista {
   display: none;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   padding: 1.5rem 1rem;
   border-top: 4px solid var(--color-gris-claro);
   width: 100%;
+  flex-wrap: wrap;
 }
 
 #menu-hamburguesa:checked ~ .menu-principal .nav-lista {
@@ -92,6 +92,7 @@
 
 .nav-link:hover {
   border-radius: 10px;
+  color: var(--color-naranja);
   background-color: var(--color-gris-claro);
 }
 
@@ -145,22 +146,29 @@ main > header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: left;
+  text-align: left;
   color: var(--color-fondo);
   text-shadow: 2px 2px 5px var(--color-texto);
-  border-bottom: 4px solid var(--color-amarillo);
-  background-color: var(--color-amarillo);
+  background-color: var(--color-azul);
 }
 
-main > header h1 { font-size: 3.5rem; margin-bottom: 0.5rem; }
-main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
+main > header h1 { 
+  margin-left: 4rem;
+  font-size: 3.5rem; 
+  line-height: 3.5rem;
+}
+main > header p { 
+  margin-left: 4rem;
+  font-size: 1.5rem; 
+  font-weight: 600; 
+}
 
 .footer-principal {
   background-color: var(--color-fondo);
   color: var(--color-texto);
   padding: 3rem 3rem;
-  border-top: 3px solid var(--color-amarillo);
+  border-top: 4px solid var(--color-naranja);
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
@@ -224,7 +232,7 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     position: fixed;
     top: 0;
     padding: 0.4rem 1rem;
-    border-bottom: 4px solid var(--color-amarillo);
+    border-bottom: 4px solid var(--color-naranja);
     background-color: var(--color-fondo);
   }
 
@@ -238,14 +246,12 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     display: flex;
     flex: 1;
     min-width: 350px;
-    margin: 0 3rem;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
   }
 
   .busqueda-input {
     width: 80%;
-    max-width: 800px;
     padding: 0.8rem 1rem 0.8rem 2.8rem;
     border: 1.5px solid var(--color-azul);
     border-radius: 25px;
@@ -259,8 +265,10 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
 
   .busqueda-btn { display: none; }
 
-  .label-hamburguesa,
-  .icono-usuario { display: none; }
+  .label-hamburguesa 
+  { 
+    display: none; 
+  }
 
   .menu-principal { width: 100%; }
 
@@ -279,7 +287,7 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     display: flex;
     align-items: center;
     font-weight: 800;
-    gap: 20px;
+    gap: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--color-azul);
@@ -294,8 +302,6 @@ main > header p { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; }
     font-size: 31px;
     display: inline-flex;
   }
-
-  main > header { min-height: 50vh; padding-top: 0; } 
 
   .footer-principal {
     flex-direction: row;

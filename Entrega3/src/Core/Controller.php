@@ -94,14 +94,9 @@ class Controller
 
         $this->redes = [
             [
-                'name' => 'Facebook', 
-                'url' => 'https://facebook.com', 
-                'img' => 'facebook.png'
-            ],
-            [
-                'name' => 'Twitter', 
-                'url' => 'https://twitter.com', 
-                'img' => 'twitter.png'
+                'name' => 'TikTok', 
+                'url' => 'https://tiktok.com', 
+                'img' => 'tiktok.png'
             ],
             [
                 'name' => 'Instagram', 
