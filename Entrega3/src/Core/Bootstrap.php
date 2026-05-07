@@ -20,6 +20,11 @@ $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
 $dotenv->safeLoad();
 $config = new Config;
 
+// Iniciar sesión global
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $request = new Request;
 
 $log = new Logger('pawmap-app');
@@ -66,6 +71,18 @@ $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');
 $router->get('/refugio', 'RefugioController@detalle');
+
+// Autenticación
+$router->post('/login', 'AuthController@login');
+$router->get('/logout', 'AuthController@logout');
+$router->post('/register', 'AuthController@register');
+
+// Perfil de usuario
+$router->get('/perfil', 'UserController@perfil');
+
+// Favoritos
+$router->post('/favorito', 'FavoritoController@guardar');
+$router->post('/favorito/eliminar', 'FavoritoController@eliminar');
 
 // Errores
 $router->get('not_found', 'ErrorController@notFound');

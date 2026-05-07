@@ -15,7 +15,7 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <main>
+    <main class="sesion-container">
         <section class="login-section">
             <header class="sesion-header">
                 <h1>Iniciar Sesión</h1>
@@ -26,11 +26,33 @@
 
             </header>
 
-            <form class="login-form">
+            <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
+                <div class="login-error">
+                    <span class="material-symbols-outlined">error</span>
+                    Usuario o contraseña incorrectos.
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'campos'): ?>
+                <div class="login-error">
+                    <span class="material-symbols-outlined">error</span>
+                    Completá todos los campos.
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'usuario_existente'): ?>
+                <div class="login-error">
+                    <span class="material-symbols-outlined">error</span>
+                    El nombre de usuario ya está en uso.
+                </div>
+            <?php endif; ?>
+
+            <form class="login-form" method="POST" action="/login">
                 <label for="user-login">Usuario</label>
                 <input
                     type="text"
-                    id="user-login"
+                    id="nombre_usuario"
+                    name="nombre_usuario"
                     placeholder="Ingresá tu usuario"
                     required
                 />
@@ -39,7 +61,8 @@
                 <div class="campo-contraseña">
                     <input
                         type="password"
-                        id="pass-login"
+                        id="contrasena"
+                        name="contrasena"
                         placeholder="Ingresá tu contraseña"
                         required
                     />
@@ -63,14 +86,15 @@
             <label for="mostrar-registro" class="registro-cerrar">✕</label>
         </header>
 
-        <form class="registro-form">
+        <form class="registro-form" method="POST" action="/register">
             <label for="name">Nombre Completo</label>
-            <input type="text" id="name" placeholder="Ingresá tu nombre" required />
+            <input type="text" id="name" name="name" placeholder="Ingresá tu nombre" required />
 
             <label for="mail">Correo Electrónico</label>
             <input
                 type="email"
                 id="mail"
+                name="email"
                 placeholder="Ingresá tu correo electrónico"
                 required
             />
@@ -79,6 +103,7 @@
             <input
                 type="text"
                 id="user-register"
+                name="username"
                 placeholder="Ingresá un usuario"
                 required
             />
@@ -88,6 +113,7 @@
                 <input
                     type="password"
                     id="pass-register"
+                    name="password"
                     placeholder="Ingresá tu contraseña"
                     required
                 />

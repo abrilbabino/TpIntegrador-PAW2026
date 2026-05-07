@@ -67,12 +67,19 @@ class Controller
                 "type" => "link",
             ],
             [
-                "href" => "/contacto",
-                "name" => "Contacto",
+                "href"  => "/contacto",
+                "name"  => "Contacto",
                 "icon"  => "mail",
                 "type"  => "link"
             ],
-            [
+            (isset($_SESSION['user']))
+            ? [
+                "href" => "/perfil",
+                "name" => "Mi Perfil",
+                "icon" => "account_circle",
+                "type" => "link"
+            ]
+            : [
                 "href" => "/iniciar-sesion",
                 "name" => "Iniciar sesión",
                 "icon" => "account_circle",
