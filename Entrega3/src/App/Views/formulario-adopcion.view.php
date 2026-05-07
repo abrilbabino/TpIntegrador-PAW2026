@@ -17,24 +17,37 @@
             <p>Completá los datos para iniciar el proceso</p>
         </header>
 
-        <article class="formulario-adopcion-wrapper">
-            <section class="galeria-mascota">
+        <article class="formulario-adopcion">
+            <section class="seccion-mascota">
                 <figure class="imagen-principal">
                     <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
                          alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
                 </figure>
-                <nav class="carrusel-indicadores">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+                <nav class="carrusel-indicadores" aria-label="Controles de galería">
+                    <?php 
+                    $cantidadTotalFotos = 1 + count($fotosExtras ?? []); 
+                    if ($cantidadTotalFotos > 1):
+                        for ($i = 0; $i < $cantidadTotalFotos; $i++): 
+                    ?>
+                            <span class="item-carrusel <?= $i === 0 ? 'active' : '' ?>"></span>
+                    <?php 
+                        endfor; 
+                    endif; 
+                    ?>
                 </nav>
 
                 <section class="mas-fotos">
                     <h4>MÁS FOTOS</h4>
                     <ul class="grid-miniaturas">
-                        <li class="miniatura-placeholder"></li>
-                        <li class="miniatura-placeholder"></li>
-                        <li class="miniatura-placeholder"></li>
+                        <?php if (!empty($fotosExtras)): ?>
+                            <?php foreach ($fotosExtras as $foto): ?>
+                                <li>
+                                    <img src="/assets/img/<?= htmlspecialchars($foto->fields['ruta_imagen'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto extra">
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No hay fotos adicionales.</p>
+                        <?php endif; ?>
                     </ul>
                 </section>
             </section>
@@ -43,7 +56,7 @@
                 <div class="drag-handle"></div>
                 <header class="form-header">
                     <h2>Formulario de Adopción</h2>
-                    <p class="form-subtitle">Completá para adoptar</p>
+                    <p class="form-subtitulo">Completá para adoptar</p>
                 </header>
 
                 <form method="POST" action="/formulario-adopcion/enviar" class="form-adopcion">

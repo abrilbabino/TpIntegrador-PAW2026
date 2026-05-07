@@ -27,15 +27,11 @@ class MailService {
             $mail->setFrom($config->get('MAIL_USER'), 'PawMap');
             $mail->addAddress($destinatario);
 
-            $mail->isHTML(true);
-            $mail->Subject = 'Nueva Solicitud de Adopción - PawMap';
-            $mail->Body    = "
-                <h2>Nueva Solicitud de Adopción</h2>
-                <p><strong>Mascota:</strong> {$datosAdopcion['nombre_mascota']}</p>
-                <p><strong>Adoptante:</strong> {$datosAdopcion['nombre']} {$datosAdopcion['apellido']}</p>
-                <p><strong>Email:</strong> {$datosAdopcion['email']}</p>
-                <p>Por favor, contactá al adoptante a la brevedad.</p>
-            ";
+            $mail->isHTML(false);
+            $mail->Subject = "Solicitud de Adopción: " . ($datosAdopcion['nombre_mascota'] ?? 'Mascota');
+            $mail->Body    = "Solicitante: " . ($datosAdopcion['nombre'] ?? '') . " " . ($datosAdopcion['apellido'] ?? '') . "\n" .
+                             "Email: " . ($datosAdopcion['email'] ?? '') . "\n" .
+                             "Mascota: " . ($datosAdopcion['nombre_mascota'] ?? '');
 
             $mail->send();
             return true;
