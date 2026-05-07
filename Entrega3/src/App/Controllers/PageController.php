@@ -35,4 +35,11 @@ class PageController extends Controller
         $redes = $this->redes;
         require $this->viewsDir . '/como-adoptar.view.php';
     }
+
+    public function adopcionExitosa()
+    {
+        $menu = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/adopcion-exitosa.view.php';
+    }
 }
