@@ -14,8 +14,9 @@
 ## Test de Compatibilidad 
 - [] Formulario dinámico que procesa las respuestas del usuario y sugiere mascotas afines según estilo de vida y entorno del adoptante.  
 
-## Solicitudes de adopción
-- [] Contrato digital con cláusula de seguimiento sanitario.   
+## Solicitudes de adopción y contacto
+- [x] Flujo de comunicación entre adoptantes y pawmap. 
+- [x] Contrato digital con cláusula de seguimiento sanitario.   
 
 ## Calendario sanitario integrado
 - [] Recordatorios push/email/SMS para adoptantes: vacunas, desparasitaciones, castración, chequeos.   
