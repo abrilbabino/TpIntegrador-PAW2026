@@ -15,27 +15,16 @@ class RefugioController extends Controller
         $menu    = $this->menu;
         $redes   = $this->redes;
 
-        $refugios = [];
-        $pagination = null;
-        $provincias = [];
-        $ciudades   = [];
+        $filtros = $this->getFiltros();
+        $page = (int) $request->get('pagina') ?: 1;
+        $perPage = 6;
 
-        if ($this->model) {
-            try {
-                $filtros = $this->getFiltros();
-                $page = (int) $request->get('pagina') ?: 1;
-                $perPage = 6;
+        $resultado = $this->model->getPaginated($filtros, $page, $perPage);
+        $refugios = $resultado['items'];
+        $pagination = $resultado['pagination'];
 
-                $resultado = $this->model->getPaginated($filtros, $page, $perPage);
-                $refugios = $resultado['items'];
-                $pagination = $resultado['pagination'];
-
-                $provincias = $this->model->getProvincias();
-                $ciudades   = $this->model->getCiudades();
-            } catch (\Exception $e) {
-                error_log("Error cargando refugios: " . $e->getMessage());
-            }
-        }
+        $provincias = $this->model->getProvincias();
+        $ciudades   = $this->model->getCiudades();
 
         require $this->viewsDir . '/refugios.view.php';
     }
@@ -65,7 +54,6 @@ class RefugioController extends Controller
         return [
             'provincia' => $request->get('provincia'),
             'ciudad'    => $request->get('ciudad'),
-            'ubicacion' => $request->get('ubicacion'),
         ];
     }
 }

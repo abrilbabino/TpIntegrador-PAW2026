@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/assets/img/icon.png">
+    <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link
       rel="stylesheet"
@@ -55,8 +55,11 @@
                 <div class="drag-handle"></div>
                 <header class="info-header">
                     <h2><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h2>
+                    <a href="mascota/libreta?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''),ENT_QUOTES,'UTF-8') ?>" class="libreta">
+                        <span class="material-symbols-outlined">clinical_notes</span>
+                    </a>
                     <form method="POST" action="/favoritos" class="form-favorito">
-                        <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                        <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">    
                         <button type="submit" class="boton-favorito" aria-label="Agregar a favoritos">
                             <span class="material-symbols-outlined"><?= isset($esFavorito) && $esFavorito ? 'favorite' : 'favorite_border' ?></span>
                         </button>
@@ -118,7 +121,7 @@
                     </figcaption>
                 </section>
 
-                <a href="/formulario-adopcion" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+                <a href="/formulario-adopcion?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
             </aside>
         </article>
     </main>

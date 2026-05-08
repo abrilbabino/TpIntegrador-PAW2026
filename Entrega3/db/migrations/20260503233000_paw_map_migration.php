@@ -12,34 +12,36 @@ final class PawMapMigration extends AbstractMigration
         $tableUsuario->addColumn('nombre_usuario', 'string', ['limit' => 50])
                      ->addColumn('email', 'string', ['limit' => 100])
                      ->addColumn('contrasena', 'string', ['limit' => 255])
+                     ->addColumn('rol', 'string', ['limit' => 30, 'default' => 'adoptante'])
                      ->addColumn('contacto', 'string', ['limit' => 100, 'null' => true])
                      ->addIndex(['nombre_usuario'], ['unique' => true])
                      ->addIndex(['email'], ['unique' => true])
                      ->create();
 
-        $tableRefugio = $this->table('refugio');
+        $tableRefugio = $this->table('refugio', ['id' => false, 'primary_key' => 'usuario_id']);
         $tableRefugio->addColumn('usuario_id', 'integer', ['limit' => 11])
-                       ->addColumn('nombre_institucion', 'string', ['limit' => 150])
-                       ->addColumn('cuit', 'string', ['limit' => 20])
-                       ->addColumn('cvu', 'string', ['limit' => 50, 'null' => true])
-                       ->addColumn('alias', 'string', ['limit' => 50, 'null' => true])
-                       ->addColumn('imagen', 'string', ['limit' => 255, 'default' => 'default-refugio.jpg', 'null' => true])
-                       ->addColumn('telefono', 'string', ['limit' => 50, 'null' => true])
-                       ->addForeignKey('usuario_id', 'usuario', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                       ->addIndex(['cuit'], ['unique' => true])
-                       ->create();
+             ->addColumn('nombre_institucion', 'string', ['limit' => 150])
+             ->addColumn('cuit', 'string', ['limit' => 20])
+             ->addColumn('cvu', 'string', ['limit' => 50, 'null' => true])
+             ->addColumn('alias', 'string', ['limit' => 50, 'null' => true])
+             ->addColumn('imagen', 'string', ['limit' => 255, 'default' => 'default-refugio.jpg', 'null' => true])
+             ->addColumn('telefono', 'string', ['limit' => 50, 'null' => true])
+             // Definimos que usuario_id referencia a usuario(id)
+             ->addForeignKey('usuario_id', 'usuario', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+             ->addIndex(['cuit'], ['unique' => true])
+             ->create();
 
         $tableUbicacion = $this->table('ubicacion');
-        $tableUbicacion->addColumn('refugio_id', 'integer', ['limit' => 11])
+        $tableUbicacion->addColumn('refugio_id', 'integer', ['limit' => 11,'null' => true])
                         ->addColumn('latitud', 'decimal', ['precision' => 10, 'scale' => 8])
                         ->addColumn('longitud', 'decimal', ['precision' => 11, 'scale' => 8])
                         ->addColumn('ciudad', 'string', ['limit' => 100])
                         ->addColumn('provincia', 'string', ['limit' => 100])
                         ->addColumn('pais', 'string', ['limit' => 100])
-                        ->addForeignKey('refugio_id', 'refugio', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                        ->addForeignKey('refugio_id', 'refugio', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                         ->create();
 
-        $tableAdoptante = $this->table('adoptante');
+        $tableAdoptante = $this->table('adoptante',['id' => false, 'primary_key' => 'usuario_id']);
         $tableAdoptante->addColumn('usuario_id', 'integer', ['limit' => 11])
                        ->addColumn('ubicacion_id', 'integer', ['limit' => 11, 'null' => true])
                        ->addColumn('nombre', 'string', ['limit' => 100])
@@ -63,7 +65,7 @@ final class PawMapMigration extends AbstractMigration
                        ->addColumn('castrado', 'boolean', ['default' => false])
                        ->addColumn('sexo', 'string', ['limit' => 10, 'default' => 'Desconocido'])
                        ->addColumn('imagen', 'string', ['limit' => 255, 'default' => 'default-pet.jpg'])
-                       ->addForeignKey('refugio_id', 'refugio', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                       ->addForeignKey('refugio_id', 'refugio', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                        ->create();
 
         $tableMedia = $this->table('media_mascota');
@@ -76,7 +78,7 @@ final class PawMapMigration extends AbstractMigration
         $tableFavorito = $this->table('favorito');
         $tableFavorito->addColumn('adoptante_id', 'integer', ['limit' => 11])
                        ->addColumn('mascota_id', 'integer', ['limit' => 11])
-                       ->addForeignKey('adoptante_id', 'adoptante', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                       ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                        ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                        ->create();
 
@@ -86,16 +88,16 @@ final class PawMapMigration extends AbstractMigration
                        ->addColumn('refugio_id', 'integer', ['limit' => 11])
                        ->addColumn('fecha', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                        ->addColumn('estado', 'string', ['limit' => 20, 'default' => 'PENDIENTE'])
-                       ->addForeignKey('adoptante_id', 'adoptante', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                       ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                        ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                       ->addForeignKey('refugio_id', 'refugio', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                       ->addForeignKey('refugio_id', 'refugio', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                        ->create();
 
         $tableTest = $this->table('test_de_compatibilidad');
         $tableTest->addColumn('adoptante_id', 'integer', ['limit' => 11])
                   ->addColumn('respuestas', 'json')
                   ->addColumn('resultado', 'json', ['null' => true])
-                  ->addForeignKey('adoptante_id', 'adoptante', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                  ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                   ->create();
 
         $tableCalendario = $this->table('calendario_sanitario');
@@ -109,7 +111,7 @@ final class PawMapMigration extends AbstractMigration
                          ->addColumn('estado', 'string', ['limit' => 20, 'default' => 'PENDIENTE'])
                          ->addColumn('fecha_creacion', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                          ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                         ->addForeignKey('adoptante_id', 'adoptante', 'id', ['delete'=> 'SET_NULL', 'update'=> 'CASCADE'])
+                         ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'SET_NULL', 'update'=> 'CASCADE'])
                          ->create();
 
         $tableEncuesta = $this->table('encuesta_adopcion');
@@ -122,7 +124,7 @@ final class PawMapMigration extends AbstractMigration
                       ->addColumn('comentarios', 'text', ['null' => true])
                       ->addColumn('necesita_seguimiento', 'boolean', ['default' => false])
                       ->addForeignKey('solicitud_id', 'solicitud_de_adopcion', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                      ->addForeignKey('adoptante_id', 'adoptante', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
+                      ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                       ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                       ->create();
     }

@@ -1,14 +1,17 @@
 :root {
   --color-violeta: #662483;
-  --color-azul: #283583;        /* Azul marino */
+  --color-azul: #283583;
   --color-azul-oscuro: #1a2566;
-  --color-verde: #00a551;
-  --color-amarillo: #f9b233;    /* Naranja/dorado  */
-  --color-naranja: #e87722;     /* Naranja oscuro */
+  --color-verde: #00803e;
+  --color-amarillo: #f9b233;
+  --color-naranja: #e87722;
   --color-magenta: #e3004f;
   --color-texto: #333333;
   --color-fondo: #ffffff;
-  --color-gris-claro: #f5f5f5;
+  --color-gris-claro: #dcdbdb;
+  --color-rojo: #df1f1f;
+  --color-naranja-claro: #ffdd9e;
+  --color-verde-claro: #dcffc9;
 
   --fuente-titulos: "Montserrat", sans-serif;
   --fuente-cuerpo: "Open Sans", sans-serif;
@@ -22,7 +25,7 @@ body {
   color: var(--color-texto);
   font-family: var(--fuente-cuerpo);
   font-size: 1rem;
-  padding-top: 3rem;
+  padding-top: 8rem;
 }
 
 *,

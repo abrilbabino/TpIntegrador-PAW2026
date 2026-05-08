@@ -4,7 +4,9 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
-use \Paw\App\Models\Refugio;
+use Paw\App\Models\RefugioCollection; 
+use Paw\App\Models\RegistroSanitarioCollection;
+
 
 class MascotaController extends Controller
 {
@@ -24,9 +26,11 @@ class MascotaController extends Controller
         $mascotas = $resultado['items'];
         $pagination = $resultado['pagination'];
 
-        $tamanos     = $this->model->getTamanos();
-        $especies     = $this->model->getEspecies();
+        $tamanos       = $this->model->getTamanos();
+        $especies      = $this->model->getEspecies();
         $temperamentos = $this->model->getTemperamentos();
+        $provincias    = $this->model->getProvincias();
+        $ciudades      = $this->model->getCiudades();
 
         require $this->viewsDir . '/adoptar.view.php';
     }
@@ -37,10 +41,11 @@ class MascotaController extends Controller
         return [
             'especie'        => $request->get('especie'),
             'tamano'         => $request->get('tamano'),
-            'temperamento'    => $request->get('temperamento'),
+            'temperamento'   => $request->get('temperamento'),
             'edad_min'       => $request->get('edad_min'),
             'edad_max'       => $request->get('edad_max'),
-            'ubicacion'      => $request->get('ubicacion'),
+            'provincia'      => $request->get('provincia'),
+            'ciudad'         => $request->get('ciudad'),
             'estado_adopcion' => 'DISPONIBLE',
         ];
     }
@@ -54,15 +59,9 @@ class MascotaController extends Controller
 
         $mascota = $this->model->get($id);
 
-        $refugio = new Refugio();
-        $refugio->setQueryBuilder($this->model->getQueryBuilder());
-        if ($mascota && $mascota->fields['refugio_id']) {
-            try {
-                $refugio->load($mascota->fields['refugio_id']);
-            } catch (\Exception $e) {
-                // Manejar error al cargar el refugio
-            }
-        }
+        $refugios = new RefugioCollection();
+        $refugios->setQueryBuilder($this->model->getQueryBuilder());
+        $refugio =$refugios->get($mascota->fields['refugio_id']);
 
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
@@ -89,10 +88,99 @@ class MascotaController extends Controller
         $mascotas = $resultado['items'];
         $pagination = $resultado['pagination'];
 
-        $tamanos     = $this->model->getTamanos();
-        $especies     = $this->model->getEspecies();
+        $tamanos       = $this->model->getTamanos();
+        $especies      = $this->model->getEspecies();
         $temperamentos = $this->model->getTemperamentos();
+        $provincias    = $this->model->getProvincias();
+        $ciudades      = $this->model->getCiudades();
 
         require $this->viewsDir . '/adoptar.view.php';
+    }
+
+    public function libreta()
+    {
+        $request = $this->request;
+        $menu  = $this->menu;
+        $redes = $this->redes;
+        $id = $request->get('id');
+
+        $mascota = $this->model->get($id);
+
+        $filtros = [
+            'anio' => $request->get('anio'),
+            'mes' => $request->get('mes'),
+            'categoria' => $request->get('categoria'),
+        ];
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        $registros = $coleccion->getByMascota((int)$id, $filtros);
+
+        $proximos = [];
+        $historial = [];
+        $hoy = date('Y-m-d');
+
+        $proximos = $coleccion->pendientes($registros,$hoy);
+        $historial = $coleccion->completos($registros,$hoy);
+
+        require $this->viewsDir . '/libreta.view.php';
+    }
+
+    public function guardarRegistro()
+    {
+        $datos = $this->request->post();
+
+        $mascota_id = (int) ($datos['mascota_id'] ?? 0);
+        $tipo = trim($datos['tipo'] ?? '');
+        $titulo = trim($datos['titulo'] ?? '');
+        $fecha_programada = $datos['fecha_programada'] ?? '';
+        $observaciones = trim($datos['observaciones'] ?? '');
+
+        // Validación estricta de campos requeridos
+        if ($mascota_id <= 0 || $tipo === '' || $titulo === '' || $fecha_programada === '') {
+            header('Location: /mascota/libreta?id=' . $mascota_id);
+            return;
+        }
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+
+        $data = [
+            'mascota_id' => $mascota_id,
+            'tipo' => $tipo,
+            'titulo' => $titulo,
+            'fecha_programada' => $fecha_programada,
+            'estado' => 'PENDIENTE',
+            'observaciones' => $observaciones !== '' ? $observaciones : null,
+        ];
+
+        $coleccion->getQueryBuilder()->insert('registro_sanitario', $data);
+
+        header('Location: /mascota/libreta?id=' . $mascota_id);
+    }
+
+    public function completarRegistro()
+    {
+        $datos = $this->request->post();
+
+        $registro_id = (int) ($datos['registro_id'] ?? 0);
+        $mascota_id  = (int) ($datos['mascota_id']  ?? 0);
+
+        // Validación estricta: ambos IDs deben ser enteros positivos
+        if ($registro_id <= 0 || $mascota_id <= 0) {
+            header('Location: /mascota/libreta?id=' . $mascota_id);
+            return;
+        }
+
+        $this->model->getQueryBuilder()->update(
+            'registro_sanitario',
+            [
+                'estado'          => 'COMPLETADO',
+                'fecha_realizada' => date('Y-m-d'),
+            ],
+            ['id' => $registro_id]
+        );
+
+        header('Location: /mascota/libreta?id=' . $mascota_id);
     }
 }

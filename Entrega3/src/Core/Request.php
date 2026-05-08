@@ -35,6 +35,11 @@ class Request
         return $_GET;
     }
 
+    public function post()
+    {
+        return $_POST;
+    }
+
     public function paginaActual()
     {
         $pagina = $_GET['pagina'] ?? 1;

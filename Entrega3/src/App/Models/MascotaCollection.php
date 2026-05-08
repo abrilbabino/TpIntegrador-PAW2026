@@ -18,6 +18,12 @@ class MascotaCollection extends Model
         return $this->mapMascotas($mascotas);
     }
 
+    public function buscarCompatibles(array $filtros): array
+    {
+        $resultadosDB = $this->queryBuilder->selectCompatibles($this->table, $filtros);
+        return $this->mapMascotas($resultadosDB);
+    }
+
     public function get($id)
     {
         $mascota = new Mascota;
@@ -29,6 +35,8 @@ class MascotaCollection extends Model
     public function getTamanos(): array { return $this->getCampoUnico('tamano'); }
     public function getEspecies(): array { return $this->getCampoUnico('especie'); }
     public function getTemperamentos(): array { return $this->getCampoUnico('temperamento'); }
+    public function getProvincias(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'provincia'), 'provincia'); }
+    public function getCiudades(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'ciudad'), 'ciudad'); }
 
     private function getCampoUnico(string $campo): array
     {
@@ -36,66 +44,34 @@ class MascotaCollection extends Model
             return [];
         }
 
-        $sql = "SELECT DISTINCT {$campo} FROM {$this->table} WHERE {$campo} IS NOT NULL AND {$campo} != '' ORDER BY {$campo}";
-        $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
-        $sentencia->execute();
+        $resultados = $this->queryBuilder->obtenerValoresUnicos($this->table, $campo);
         
-        return $this->mapearCampoMascota($sentencia->fetchAll(\PDO::FETCH_ASSOC), $campo);
+        return $this->mapearCampoMascota($resultados, $campo);
     }
 
     public function buscar(string $termino): array
     {
-        $sentencia = $this->prepararConsultaBusqueda($termino);
-        $sentencia->execute();
-        return $this->mapMascotas($sentencia->fetchAll(\PDO::FETCH_ASSOC));
+        $resultados = $this->queryBuilder->buscarMascotasPorTermino($this->table, $termino);
+        return $this->mapMascotas($resultados);
     }
 
     public function buscarPaginated(string $termino, int $pagina, int $porPagina = 6): array
     {
-        $sentenciaCount = $this->prepararConsultaBusqueda($termino, true);
-        $sentenciaCount->execute();
-        $total = (int) $sentenciaCount->fetchColumn(); 
+        $total = $this->queryBuilder->buscarMascotasPorTermino($this->table, $termino, true); 
 
         $paginacion = new Pagination($pagina, $porPagina, $total);
 
-        $sentencia = $this->prepararConsultaBusqueda($termino, false, $paginacion->perPage, $paginacion->offset);
-        $sentencia->execute();
+        $resultados = $this->queryBuilder->buscarMascotasPorTermino($this->table, $termino, false, $paginacion->perPage, $paginacion->offset);
 
         return [
-            'items' => $this->mapMascotas($sentencia->fetchAll(\PDO::FETCH_ASSOC)),
+            'items' => $this->mapMascotas($resultados),
             'pagination' => $paginacion,
         ];
     }
 
-    private function prepararConsultaBusqueda(string $termino, bool $esConteo = false, ?int $limite = null, ?int $offset = null): \PDOStatement
-    {
-        $select = $esConteo ? "COUNT(*)" : "*";
-        $sql = "SELECT {$select} FROM {$this->table} WHERE estado_adopcion = 'DISPONIBLE' 
-                AND (nombre LIKE :term1 OR especie LIKE :term2 OR descripcion LIKE :term3)";
-        
-        if (!$esConteo && $limite !== null && $offset !== null) {
-            $sql .= " LIMIT :limite OFFSET :offset";
-        }
-
-        $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
-        
-        $terminoLike = "%{$termino}%";
-        $sentencia->bindValue(':term1', $terminoLike);
-        $sentencia->bindValue(':term2', $terminoLike);
-        $sentencia->bindValue(':term3', $terminoLike);
-        
-        if (!$esConteo && $limite !== null && $offset !== null) {
-            $sentencia->bindValue(':limite', $limite, \PDO::PARAM_INT);
-            $sentencia->bindValue(':offset', $offset, \PDO::PARAM_INT);
-        }
-
-        return $sentencia;
-    }
-
     public function count(array $filtros = []): int
     {
-        $resultado = $this->queryBuilder->count($this->table, $filtros);
-        return (int) ($resultado['total'] ?? 0);
+        return $this->queryBuilder->obtenerMascotasFiltradas($filtros, true);
     }
 
     public function getPaginated(array $filtros, int $pagina, int $porPagina = 6): array
@@ -103,9 +79,7 @@ class MascotaCollection extends Model
         $total = $this->count($filtros);
         $paginacion = new Pagination($pagina, $porPagina, $total);
         
-        $mascotas = $this->queryBuilder->select(
-            $this->table, $filtros, [], $paginacion->perPage, $paginacion->offset
-        );
+        $mascotas = $this->queryBuilder->obtenerMascotasFiltradas($filtros, false, $paginacion->perPage, $paginacion->offset);
 
         return [
             'items' => $this->mapMascotas($mascotas), 'pagination' => $paginacion,

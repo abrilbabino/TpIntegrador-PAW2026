@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/assets/img/icon.png">
+    <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link
       rel="stylesheet"
@@ -29,9 +29,27 @@
                 </summary>
 
                 <form id="form-filtros" method="GET" action="/adoptar">
-                    <p>Ubicación</p>
-                    <input type="text" name="ubicacion" placeholder="Ciudad o zona..."
-                           value="<?= htmlspecialchars($request->get('ubicacion') ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                    <p>Provincia</p>
+                    <select name="provincia">
+                        <option value="">Todas</option>
+                        <?php foreach ($provincias as $prov): ?>
+                            <option value="<?= htmlspecialchars($prov->fields['provincia'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                <?= ($request->get('provincia') == ($prov->fields['provincia'] ?? '')) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars(ucfirst($prov->fields['provincia'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <p>Ciudad</p>
+                    <select name="ciudad">
+                        <option value="">Todas</option>
+                        <?php foreach ($ciudades as $ciudad): ?>
+                            <option value="<?= htmlspecialchars($ciudad->fields['ciudad'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                <?= ($request->get('ciudad') == ($ciudad->fields['ciudad'] ?? '')) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars(ucfirst($ciudad->fields['ciudad'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
 
                     <p>Rango de Edad</p>
                     <div class="edad-rango">
@@ -85,7 +103,7 @@
         <section class="adoptar-contenido">
                 <article class="grilla-mascotas">
                     <?php foreach ($mascotas as $mascota): ?>
-                        <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
+                        <a href="/mascota?id=<?= htmlspecialchars(($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
                                 <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"

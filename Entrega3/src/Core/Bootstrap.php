@@ -20,6 +20,11 @@ $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
 $dotenv->safeLoad();
 $config = new Config;
 
+// Iniciar sesión global
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $request = new Request;
 
 $log = new Logger('pawmap-app');
@@ -43,6 +48,7 @@ $router->setControllerFactory($controllerFactory);
 
 // Páginas estáticas
 $router->get('/', 'PageController@index');
+$router->get('/iniciar-sesion', 'PageController@iniciarSesion');
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // $router->get('/donar', 'PageController@donar');
 // $router->get('/mapa', 'PageController@mapa');
@@ -50,6 +56,9 @@ $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/mascota', 'MascotaController@detalle');
+$router->get('/mascota/libreta', 'MascotaController@libreta');
+$router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
+$router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
 $router->get('/buscar', 'MascotaController@buscar');
 
 // Formulario de adopción
@@ -65,7 +74,23 @@ $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 $router->get('/refugios', 'RefugioController@lista');
 $router->get('/refugio', 'RefugioController@detalle');
 
+// Autenticación
+$router->post('/login', 'AuthController@login');
+$router->get('/logout', 'AuthController@logout');
+$router->post('/register', 'AuthController@register');
+
+// Perfil de usuario
+$router->get('/perfil', 'UserController@perfil');
+
+// Favoritos
+$router->post('/favorito', 'FavoritoController@guardar');
+$router->post('/favorito/eliminar', 'FavoritoController@eliminar');
+
 // Errores
 $router->get('not_found', 'ErrorController@notFound');
 $router->get('internal_error', 'ErrorController@internalError');
 $router->get('invalid_format', 'ErrorController@invalidFormat');
+
+// Contacto
+$router->get('/contacto', 'PageController@contacto');
+//$router->post('/contacto/enviar', 'PageController@contactoEnviar');
