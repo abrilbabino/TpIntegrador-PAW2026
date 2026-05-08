@@ -418,7 +418,7 @@
 
     .carrusel-slide:first-child {
         grid-column: 1 / -1;
-        max-height: 670px;
+        max-height: 695px;
         border-radius: 16px;
         box-shadow: 0 2px 12px var(--color-texto);
     }
