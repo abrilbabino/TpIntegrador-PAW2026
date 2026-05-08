@@ -12,7 +12,7 @@
 </head>
 <body>  
     <?php require __DIR__ . '/barra-navegacion.view.php'?>
-    <h1 class="error">Page Not Found</h1>
+    <h1 class="error"><?= $mensaje_error ?? 'Página no encontrada' ?></h1>
     <?php require __DIR__ . '/footer.view.php'; ?>
 </body>
 </html>
