@@ -18,6 +18,12 @@ class MascotaCollection extends Model
         return $this->mapMascotas($mascotas);
     }
 
+    public function buscarCompatibles(array $filtros): array
+    {
+        $resultadosDB = $this->queryBuilder->selectCompatibles($this->table, $filtros);
+        return $this->mapMascotas($resultadosDB);
+    }
+
     public function get($id)
     {
         $mascota = new Mascota;
