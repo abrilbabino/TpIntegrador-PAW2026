@@ -31,12 +31,6 @@
 
                     <form id="form-filtros-refugios" method="GET" action="/refugios">
                         <fieldset>
-                            <legend>Ubicación</legend>
-                            <input type="text" name="ubicacion" placeholder="Ciudad o zona..."
-                                   value="<?= htmlspecialchars($request->get('ubicacion') ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        </fieldset>
-
-                        <fieldset>
                             <legend>Provincia</legend>
                             <select name="provincia">
                                 <option value="">Todas</option>

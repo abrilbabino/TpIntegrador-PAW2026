@@ -29,6 +29,8 @@ class MascotaCollection extends Model
     public function getTamanos(): array { return $this->getCampoUnico('tamano'); }
     public function getEspecies(): array { return $this->getCampoUnico('especie'); }
     public function getTemperamentos(): array { return $this->getCampoUnico('temperamento'); }
+    public function getProvincias(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'provincia'), 'provincia'); }
+    public function getCiudades(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'ciudad'), 'ciudad'); }
 
     private function getCampoUnico(string $campo): array
     {
@@ -63,8 +65,7 @@ class MascotaCollection extends Model
 
     public function count(array $filtros = []): int
     {
-        $resultado = $this->queryBuilder->count($this->table, $filtros);
-        return (int) ($resultado['total'] ?? 0);
+        return $this->queryBuilder->obtenerMascotasFiltradas($filtros, true);
     }
 
     public function getPaginated(array $filtros, int $pagina, int $porPagina = 6): array
@@ -72,9 +73,7 @@ class MascotaCollection extends Model
         $total = $this->count($filtros);
         $paginacion = new Pagination($pagina, $porPagina, $total);
         
-        $mascotas = $this->queryBuilder->select(
-            $this->table, $filtros, [], $paginacion->perPage, $paginacion->offset
-        );
+        $mascotas = $this->queryBuilder->obtenerMascotasFiltradas($filtros, false, $paginacion->perPage, $paginacion->offset);
 
         return [
             'items' => $this->mapMascotas($mascotas), 'pagination' => $paginacion,
