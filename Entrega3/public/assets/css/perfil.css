@@ -335,7 +335,7 @@
   white-space: nowrap;
 }
 
-.perfil-estado.estado-aprobado {
+.perfil-estado.estado-aprobada {
   background: #c8e6c9;
   color: #2e7d32;
 }
@@ -345,7 +345,7 @@
   color: #e65100;
 }
 
-.perfil-estado.estado-rechazado {
+.perfil-estado.estado-rechazada {
   background: #ffcdd2;
   color: #b71c1c;
 }
