@@ -123,7 +123,7 @@
             <label for="rol">Tipo de cuenta</label>
             <select id="rol" name="rol" required class="registro-input">
                 <option value="adoptante" selected>Quiero adoptar una mascota</option>
-                <option value="refugio">Soy un refugio / protectora</option>
+                <!-- <option value="refugio">Soy un refugio / protectora</option> -->
             </select>
 
             <button type="submit">Registrarme</button>
@@ -131,5 +131,20 @@
     </aside>
     
     <?php require __DIR__ . '/footer.view.php'; ?>
+
+    <script>
+        document.querySelectorAll('.mostrar-contraseña').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = 'visibility';
+                } else {
+                    input.type = 'password';
+                    this.textContent = 'visibility_off';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

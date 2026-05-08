@@ -51,10 +51,11 @@ class RegistroSanitarioCollection extends Model
         return $proximos;
     }
     
-    public function completos($registros,$hoy){
-        $historial=[];
-        foreach ($registros as $registro){
-            if ($registro->fields['estado'] === 'COMPLETADO' && $registro->fields['fecha_programada'] <= $hoy) {
+    public function completos($registros, $hoy): array
+    {
+        $historial = [];
+        foreach ($registros as $registro) {
+            if ($registro->fields['estado'] === 'COMPLETADO') {
                 $historial[] = $registro;
             }
         }

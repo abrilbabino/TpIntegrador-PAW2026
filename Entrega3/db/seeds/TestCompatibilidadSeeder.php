@@ -8,59 +8,83 @@ class TestCompatibilidadSeeder extends AbstractSeed
 {
     public function getDependencies(): array
     {
-        return ['AdoptanteSeeder'];
+        return [];
     }
 
     public function run(): void
     {
-        $data = [
+        $preguntas = [
             [
-                'id' => 1,
-                'adoptante_id' => 1,
-                'respuestas' => json_encode([
-                    'pregunta1' => 'departamento_chico',
-                    'pregunta2' => 'pocas',
-                    'pregunta3' => 'tranqui',
-                    'pregunta4' => 'ninguno',
-                    'pregunta5' => 'gato'
-                ]),
-                'resultado' => json_encode([
-                    'mascotas_sugeridas' => [2, 5],
-                    'mensaje' => 'Tu perfil es ideal para gatos independientes.'
-                ])
+                'nombre' => 'pregunta1',
+                'titulo' => '¿Dónde vivís?',
+                'orden' => 1,
+                'opciones' => [
+                    ['valor' => 'departamento_chico', 'etiqueta' => 'Departamento chico', 'subtitulo' => 'Monoambiente o 1 ambiente', 'orden' => 1],
+                    ['valor' => 'departamento_grande', 'etiqueta' => 'Departamento grande', 'subtitulo' => '2+ ambientes con balcón', 'orden' => 2],
+                    ['valor' => 'casa_con_patio', 'etiqueta' => 'Casa con patio', 'subtitulo' => 'Patio o jardín', 'orden' => 3],
+                ]
             ],
             [
-                'id' => 2,
-                'adoptante_id' => 2,
-                'respuestas' => json_encode([
-                    'pregunta1' => 'casa_con_patio',
-                    'pregunta2' => 'muchas',
-                    'pregunta3' => 'alta',
-                    'pregunta4' => 'perro',
-                    'pregunta5' => 'perro'
-                ]),
-                'resultado' => json_encode([
-                    'mascotas_sugeridas' => [1, 3, 4],
-                    'mensaje' => 'Tu perfil es ideal para perros activos y grandes.'
-                ])
+                'nombre' => 'pregunta2',
+                'titulo' => '¿Cuántas horas pasás en casa por día?',
+                'orden' => 2,
+                'opciones' => [
+                    ['valor' => 'pocas', 'etiqueta' => 'Pocas (menos de 8hs)', 'subtitulo' => 'Trabajo presencial full-time', 'orden' => 1],
+                    ['valor' => 'mitad', 'etiqueta' => 'Mitad y mitad', 'subtitulo' => 'Híbrido o medio tiempo', 'orden' => 2],
+                    ['valor' => 'muchas', 'etiqueta' => 'Muchas (8hs+)', 'subtitulo' => 'Home office o trabajo desde casa', 'orden' => 3],
+                ]
             ],
             [
-                'id' => 3,
-                'adoptante_id' => 3,
-                'respuestas' => json_encode([
-                    'pregunta1' => 'departamento_grande',
-                    'pregunta2' => 'mitad',
-                    'pregunta3' => 'moderada',
-                    'pregunta4' => 'gato',
-                    'pregunta5' => 'indiferente'
-                ]),
-                'resultado' => json_encode([
-                    'mascotas_sugeridas' => [1, 2, 3],
-                    'mensaje' => 'Tu perfil es flexible, podés adoptar perros o gatos de energía moderada.'
-                ])
-            ]
+                'nombre' => 'pregunta3',
+                'titulo' => '¿Qué nivel de energía tenés?',
+                'orden' => 3,
+                'opciones' => [
+                    ['valor' => 'tranqui', 'etiqueta' => 'Tranqui', 'subtitulo' => 'Prefiero paseos cortos y relax', 'orden' => 1],
+                    ['valor' => 'moderada', 'etiqueta' => 'Moderada', 'subtitulo' => 'Un par de paseos al día está bien', 'orden' => 2],
+                    ['valor' => 'alta', 'etiqueta' => 'Alta', 'subtitulo' => 'Salgo a correr/bici, soy muy activo', 'orden' => 3],
+                ]
+            ],
+            [
+                'nombre' => 'pregunta4',
+                'titulo' => '¿Tenés otras mascotas en casa?',
+                'orden' => 4,
+                'opciones' => [
+                    ['valor' => 'perro', 'etiqueta' => 'Sí, perro/s', 'subtitulo' => '', 'orden' => 1],
+                    ['valor' => 'gato', 'etiqueta' => 'Sí, gato/s', 'subtitulo' => '', 'orden' => 2],
+                    ['valor' => 'ninguno', 'etiqueta' => 'No, sería el primero', 'subtitulo' => '', 'orden' => 3],
+                ]
+            ],
+            [
+                'nombre' => 'pregunta5',
+                'titulo' => '¿Qué preferís?',
+                'orden' => 5,
+                'opciones' => [
+                    ['valor' => 'perro', 'etiqueta' => 'Perro', 'subtitulo' => 'Compañero fiel, paseos, juego', 'orden' => 1],
+                    ['valor' => 'gato', 'etiqueta' => 'Gato', 'subtitulo' => 'Independiente, cariñoso, bajo mantenimiento', 'orden' => 2],
+                    ['valor' => 'indiferente', 'etiqueta' => 'Me da igual', 'subtitulo' => 'Estoy abierto a lo que mejor se adapte', 'orden' => 3],
+                ]
+            ],
         ];
 
-        $this->table('test_de_compatibilidad')->insert($data)->saveData();
+        $filaPregunta = [];
+        $filaOpcion = [];
+        
+        foreach ($preguntas as $p) {
+            // Insertar la pregunta y obtener su ID
+            $this->execute("INSERT INTO test_compatibilidad_pregunta (nombre, titulo, orden) VALUES ('{$p['nombre']}', '{$p['titulo']}', {$p['orden']})");
+            $preguntaId = $this->getAdapter()->getConnection()->lastInsertId();
+
+            foreach ($p['opciones'] as $o) {
+                $filaOpcion[] = [
+                    'pregunta_id' => $preguntaId,
+                    'valor' => $o['valor'],
+                    'etiqueta' => $o['etiqueta'],
+                    'subtitulo' => $o['subtitulo'],
+                    'orden' => $o['orden'],
+                ];
+            }
+        }
+
+        $this->table('test_compatibilidad_opcion')->insert($filaOpcion)->saveData();
     }
 }

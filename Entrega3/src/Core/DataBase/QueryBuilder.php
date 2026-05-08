@@ -325,7 +325,7 @@ class QueryBuilder
         $sql = "SELECT m.id, m.nombre, m.edad, m.tamano, m.temperamento
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
-                WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADO'";
+                WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADA'";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
     }
@@ -347,6 +347,41 @@ class QueryBuilder
         
         $sentencia->execute();
         return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * Actualiza registros en la tabla indicada.
+     * @param string $table    Nombre de la tabla.
+     * @param array  $data     Columnas y valores a actualizar.
+     * @param array  $conditions Condiciones para la cláusula WHERE (AND implícito).
+     * @return int Número de filas afectadas.
+     */
+    public function update(string $table, array $data, array $conditions): int
+    {
+        $setParts  = [];
+        $binds     = [];
+
+        foreach ($data as $column => $value) {
+            $setParts[]                 = "{$column} = :set_{$column}";
+            $binds[":set_{$column}"]    = $value;
+        }
+
+        $whereParts = [];
+        foreach ($conditions as $column => $value) {
+            $whereParts[]               = "{$column} = :where_{$column}";
+            $binds[":where_{$column}"]  = $value;
+        }
+
+        $setClause   = implode(', ', $setParts);
+        $whereClause = implode(' AND ', $whereParts);
+
+        $query = "UPDATE {$table} SET {$setClause} WHERE {$whereClause}";
+
+        $sentencia = $this->pdo->prepare($query);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+
+        return $sentencia->rowCount();
     }
 
     /**
@@ -438,5 +473,49 @@ class QueryBuilder
             $this->pdo->rollBack();
             throw $e;
         }
+    public function selectCompatibles(string $table, array $filtros): array
+    {
+        $conditions = [];
+        $binds = [];
+
+        foreach ($filtros as $column => $value) {
+            if (is_null($value) || $value === '') {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $valid = array_values(array_filter($value, fn($v) => !is_null($v) && $v !== ''));
+                if (empty($valid)) continue;
+
+                $keys = [];
+                foreach ($valid as $i => $v) {
+                    $key = ":{$column}_{$i}";
+                    $keys[] = $key;
+                    $binds[$key] = $v;
+                }
+                $conditions[] = "{$column} IN (" . implode(', ', $keys) . ")";
+                
+            } else {
+                $conditions[] = "{$column} = :{$column}";
+                $binds[":{$column}"] = $value;
+            }
+        }
+
+        $where = !empty($conditions) ? implode(' AND ', $conditions) : '1=1';
+        $sql = "SELECT * FROM {$table} WHERE {$where}";
+
+        $sentencia = $this->pdo->prepare($sql);
+        foreach ($binds as $key => $val) {
+            $sentencia->bindValue($key, $val);
+        }
+        
+        $sentencia->execute();
+
+        return $sentencia->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function obtenerUbicacionesPorRefugio(int $refugioId): array
+    {
+        $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
+        return $this->rawQuery($sql, [':rid' => $refugioId]);
     }
 }

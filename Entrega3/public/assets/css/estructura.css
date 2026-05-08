@@ -44,8 +44,7 @@
 
 .icono-usuario {
   display: grid;
-  grid-template-areas:
-    "icon"
+  grid-template-areas: "icon"
     "desc";
   grid-template-rows: auto auto;
   justify-items: center;
@@ -57,7 +56,7 @@
 .icono-usuario .material-symbols-outlined {
   grid-area: "icon";
   grid-row: 1;
-  font-size: 44px;
+  font-size: 32px;
   color: var(--color-azul);
   border: 2px solid var(--color-azul);
   border-radius: 50%;
@@ -75,7 +74,7 @@
   color: var(--color-azul);
   transform: (1);
   grid-area: "desc";
-  font-size: 1rem;
+  font-size: 0.8rem;
   grid-row: 2;
   pointer-events: none;
 }
@@ -99,12 +98,12 @@
   flex-wrap: wrap;
 }
 
-#menu-hamburguesa:checked ~ .menu-principal .nav-lista {
+#menu-hamburguesa:checked~.menu-principal .nav-lista {
   display: flex;
 }
 
-#menu-hamburguesa:checked ~ .header-logo {
-  visibility: hidden;
+#menu-hamburguesa:checked~.header-logo {
+  visibility: hidden
 }
 
 .nav-link {
@@ -166,45 +165,50 @@
     visibility 0.3s ease-in-out;
 }
 
-.login-check:checked ~ .fondo-login {
+.login-check:checked~.fondo-login {
   display: block;
 }
-.login-check:checked ~ .login-panel {
+
+.login-check:checked~.login-panel {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   visibility: visible;
 }
-.registro-check:checked ~ .fondo-registro {
+
+.registro-check:checked~.fondo-registro {
   display: block;
 }
-.registro-check:checked ~ .registro-panel {
+
+.registro-check:checked~.registro-panel {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   visibility: visible;
 }
-.registro-check:checked ~ .login-panel {
+
+.registro-check:checked~.login-panel {
   display: none;
 }
 
-main > header {
+main>header {
+  width: 100%;
   min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
-  text-align: left;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
   color: var(--color-fondo);
   text-shadow: 2px 2px 5px var(--color-texto);
   background-color: var(--color-azul);
 }
 
-main > header h1 {
-  margin-left: 4rem;
-  font-size: 3.5rem;
-  line-height: 3.5rem;
+main>header h1 {
+  font-size: 3rem;
+  line-height: 1;
 }
-main > header p {
-  margin-left: 4rem;
+
+main>header p {
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -266,10 +270,12 @@ main > header p {
   height: auto;
   display: block;
 }
+
 .icono-red:active {
   transform: scale(0.9);
   box-shadow: 0 2px 4px var(--color-texto);
 }
+
 .texto-red {
   display: none;
 }
@@ -298,6 +304,21 @@ main > header p {
     position: static;
     transform: none;
     margin-right: 1rem;
+  }
+
+  main>header {
+    align-items: flex-start;
+    text-align: left;
+    padding: 3rem 5rem;
+  }
+
+  main>header h1 {
+    font-size: 3.5rem;
+    line-height: 3.5rem;
+  }
+
+  main>header p {
+    font-size: 1.5rem;
   }
 
   .header-busqueda {
@@ -364,6 +385,14 @@ main > header p {
     display: inline-flex;
   }
 
+  .icono-usuario .material-symbols-outlined {
+    font-size: 44px;
+  }
+
+  .icono-usuario p {
+    font-size: 1rem;
+  }
+
   .footer-principal {
     flex-direction: row;
     flex-wrap: nowrap;
@@ -377,39 +406,47 @@ main > header p {
   .footer-principal p {
     font-size: 1rem;
   }
+
   .footer-direccion {
     display: contents;
   }
+
   .footer-email {
     flex: 1;
     display: block;
     margin-right: 0.2rem;
     white-space: nowrap;
   }
+
   .footer-redes {
     flex: 1;
     margin-right: 0.2rem;
     white-space: nowrap;
   }
+
   .footer-redes-lista {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     margin-bottom: 0.5rem;
   }
+
   .icono-red {
     background-color: transparent;
     box-shadow: none;
     border-radius: 0;
     display: inline;
   }
+
   .footer-direccion .img-red {
     display: none;
   }
+
   .texto-red {
     display: inline;
     font-weight: 500;
   }
+
   .footer-copyright {
     flex: 1;
     white-space: nowrap;
