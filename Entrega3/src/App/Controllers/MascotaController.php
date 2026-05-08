@@ -65,11 +65,7 @@ class MascotaController extends Controller
 
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
-            $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
-            $stmt = $this->model->getQueryBuilder()->getConnection()->prepare($sql);
-            $stmt->bindValue(':rid', $mascota->fields['refugio_id'], \PDO::PARAM_INT);
-            $stmt->execute();
-            $ubicaciones = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$mascota->fields['refugio_id']);
         }
 
         require $this->viewsDir . '/mascota.view.php';
