@@ -40,4 +40,35 @@ class MailService {
             return false;
         }
     }
+
+    public function enviarContacto($destinatario, $datosContacto) {
+        global $config;
+        global $log;
+
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = $config->get('MAIL_HOST');
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $config->get('MAIL_USER');
+            $mail->Password   = $config->get('MAIL_PASS');
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = $config->get('MAIL_PORT');
+
+            $mail->setFrom($config->get('MAIL_USER'), 'PawMap Contacto');
+            $mail->addAddress($destinatario);
+
+            $mail->isHTML(false);
+            $mail->Subject = "Nuevo mensaje de contacto: " . ($datosContacto['asunto'] ?? 'Sin Asunto');
+            $mail->Body    = "Nombre: " . ($datosContacto['nombre'] ?? '') . "\n" .
+                             "Email: " . ($datosContacto['email'] ?? '') . "\n" .
+                             "Asunto: " . ($datosContacto['asunto'] ?? '') . "\n" .
+                             "Mensaje: \n" . ($datosContacto['mensaje'] ?? '');
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            $log->error("Error SMTP Contacto: {$mail->ErrorInfo}");
+            return false;
+        }
+    }
 }

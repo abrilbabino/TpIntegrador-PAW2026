@@ -93,4 +93,5 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 
 // Contacto
 $router->get('/contacto', 'PageController@contacto');
-//$router->post('/contacto/enviar', 'PageController@contactoEnviar');
+$router->post('/contacto/enviar', 'PageController@contactoEnviar');
+$router->get('/contacto-exitoso', 'PageController@contactoExitoso');
