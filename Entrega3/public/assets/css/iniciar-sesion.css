@@ -65,17 +65,21 @@
 }
 
 .login-form input,
-.registro-form input {
-  padding: 0.7rem;
+.registro-form input,
+.registro-input {
+  padding: 0.85rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-family: inherit;
   transition: border-color 0.3s ease;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
 }
 
 .login-form input:focus,
-.registro-form input:focus {
+.registro-form input:focus,
+.registro-input:focus {
   outline: none;
   border-color: var(--color-azul);
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
