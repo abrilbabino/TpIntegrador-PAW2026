@@ -15,7 +15,6 @@ class SolicitudAdopcionSeeder extends AbstractSeed
     {
         $data = [
             [
-                'id' => 1,
                 'adoptante_id' => 1,
                 'mascota_id' => 1,
                 'refugio_id' => 4,
@@ -23,7 +22,6 @@ class SolicitudAdopcionSeeder extends AbstractSeed
                 'fecha' => date('Y-m-d H:i:s', strtotime('-3 days'))
             ],
             [
-                'id' => 2,
                 'adoptante_id' => 2,
                 'mascota_id' => 2,
                 'refugio_id' => 5,
@@ -31,7 +29,6 @@ class SolicitudAdopcionSeeder extends AbstractSeed
                 'fecha' => date('Y-m-d H:i:s', strtotime('-10 days'))
             ],
             [
-                'id' => 3,
                 'adoptante_id' => 3,
                 'mascota_id' => 4,
                 'refugio_id' => 9,

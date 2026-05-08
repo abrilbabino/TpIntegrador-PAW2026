@@ -13,9 +13,18 @@ class AdoptanteSeeder extends AbstractSeed
 
     public function run(): void
     {
+        // Obtener IDs de usuarios adoptantes dinámicamente para las claves foráneas
+        $usuarios = $this->fetchAll("SELECT id, nombre_usuario FROM usuario WHERE rol = 'adoptante' ORDER BY id ASC");
+
+        // Mapear por nombre de usuario para mayor seguridad al asignar
+        $userMap = [];
+        foreach ($usuarios as $user) {
+            $userMap[$user['nombre_usuario']] = $user['id'];
+        }
+
         $data = [
             [
-                'usuario_id' => 1,
+                'usuario_id' => $userMap['juanperez'],
                 'ubicacion_id' => 1,
                 'nombre' => 'Juan',
                 'apellido' => 'Pérez',
@@ -23,7 +32,7 @@ class AdoptanteSeeder extends AbstractSeed
                 'fecha_de_nacimiento' => '1990-05-15'
             ],
             [
-                'usuario_id' => 2,
+                'usuario_id' => $userMap['mariagonzalez'],
                 'ubicacion_id' => 2,
                 'nombre' => 'María',
                 'apellido' => 'González',
@@ -31,7 +40,7 @@ class AdoptanteSeeder extends AbstractSeed
                 'fecha_de_nacimiento' => '1985-08-22'
             ],
             [
-                'usuario_id' => 3,
+                'usuario_id' => $userMap['carloslopez'],
                 'ubicacion_id' => 3,
                 'nombre' => 'Carlos',
                 'apellido' => 'López',
