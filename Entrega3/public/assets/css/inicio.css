@@ -4,7 +4,7 @@
 }
 
 .seccion-mapa {
-  padding: 2.5rem 1.5rem;
+  padding: 2.5rem 0rem;
   margin: 0 2rem;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .seccion-incentivar-adopcion {
-  padding: 2rem 1.5rem;
+  padding: 2rem 0rem;
   margin: 0 1.5rem;
 }
 
@@ -129,7 +129,7 @@
 }
 
 .seccion-adopcion {
-  margin: 1rem 3.5rem;
+  margin: 1rem 1.5rem;
   border-radius: 16px;
   padding: 3rem 1.5rem;
   background-color: var(--color-naranja);
@@ -144,7 +144,7 @@
   text-align: left;
 }
 
-.grilla-mascotas {
+.grilla-mascotas-inicio {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -214,6 +214,10 @@
 
 @media screen and (min-width: 994px) {
 
+  .seccion-mapa {
+    padding: 2.5rem 1.5rem;
+  }
+
   .boton-ancho {
     display: none;
   }
@@ -254,11 +258,15 @@
     flex-shrink: 0;
   }
 
+  .seccion-adopcion {
+    margin: 1rem 3.5rem;
+  }
+
   .seccion-adopcion>h2 {
     font-size: 3rem;
   }
 
-  .seccion-adopcion .grilla-mascotas {
+  .seccion-adopcion .grilla-mascotas-inicio {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;

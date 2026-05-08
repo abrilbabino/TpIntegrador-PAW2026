@@ -54,7 +54,7 @@
         <section class="seccion-adopcion">
             <h2>Mascotas en Adopción</h2>
             
-            <section class="grilla-mascotas">
+            <section class="grilla-mascotas-inicio">
                 <?php if (!empty($mascotas)): ?>
                     <?php 
                     $contador = 0;
