@@ -222,10 +222,23 @@
 }
 
 .perfil-card {
+  position: relative;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #eee;
   background: #fafafa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perfil-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.perfil-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .perfil-card-img {
