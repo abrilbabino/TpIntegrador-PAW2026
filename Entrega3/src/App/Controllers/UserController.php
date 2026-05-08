@@ -64,9 +64,11 @@ class UserController extends Controller
             $favoritoModel->setQueryBuilder($this->getQb());
             $favoritos = $favoritoModel->getByAdoptanteId((int) $adoptanteId);
  
-            /* CUANDO ESTE ADOPCION DE SOLICITUDES Y ADOPCIONES FUNCIONE, DESCOMENTAR ESTO:
-            $solicitudes = $this->model->getSolicitudesAdoptante((int) $adoptanteId);
-            $adopciones  = $this->model->getAdopcionesAdoptante((int) $adoptanteId);*/
+            $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
+            $solicitudesCollection->setQueryBuilder($this->getQb());
+            
+            $solicitudes = $solicitudesCollection->getSolicitudesAdoptante((int) $adoptanteId);
+            $adopciones  = $solicitudesCollection->getAdopcionesAdoptante((int) $adoptanteId);
         }
  
         $titulo = "Mi Perfil - PawMap";

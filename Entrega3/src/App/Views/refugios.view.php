@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/assets/img/icon.png">
+    <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link
       rel="stylesheet"
@@ -30,12 +30,6 @@
                     </summary>
 
                     <form id="form-filtros-refugios" method="GET" action="/refugios">
-                        <fieldset>
-                            <legend>Ubicación</legend>
-                            <input type="text" name="ubicacion" placeholder="Ciudad o zona..."
-                                   value="<?= htmlspecialchars($request->get('ubicacion') ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        </fieldset>
-
                         <fieldset>
                             <legend>Provincia</legend>
                             <select name="provincia">

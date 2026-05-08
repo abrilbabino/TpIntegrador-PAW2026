@@ -56,7 +56,7 @@ class Controller
             ],
             [
                 "href" => "/como-adoptar",
-                "name" => "Cómo Adoptar?",
+                "name" => "¿Cómo Adoptar?",
                 "icon" => "help",
                 "type" => "link",
             ],

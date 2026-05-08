@@ -72,7 +72,7 @@ class AuthController extends Controller
                 'nombre_usuario' => $username,
                 'email'          => $email,
                 'rol'            => 'refugio',
-                'refugio_id'     => $refugio ? $refugio['id'] : null,
+                'refugio_id'     => $refugio ? $refugio['usuario_id'] : null,
             ];
 
         } else {
@@ -89,7 +89,7 @@ class AuthController extends Controller
                 'nombre_usuario' => $username,
                 'email'          => $email,
                 'rol'            => 'adoptante',
-                'adoptante_id'   => $adoptante ? $adoptante['id'] : null,
+                'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
             ];
         }
 

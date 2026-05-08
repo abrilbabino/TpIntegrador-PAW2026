@@ -6,7 +6,7 @@
     </label>
 
     <figure class="header-logo">
-        <img src="/assets/img/logo.png" alt="PawMap" />
+        <img src="/assets/img/logo.png" alt="" />
     </figure>
 
     <form action="/buscar" method="GET" class="header-busqueda">

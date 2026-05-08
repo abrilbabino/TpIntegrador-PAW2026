@@ -26,9 +26,11 @@ class MascotaController extends Controller
         $mascotas = $resultado['items'];
         $pagination = $resultado['pagination'];
 
-        $tamanos     = $this->model->getTamanos();
-        $especies     = $this->model->getEspecies();
+        $tamanos       = $this->model->getTamanos();
+        $especies      = $this->model->getEspecies();
         $temperamentos = $this->model->getTemperamentos();
+        $provincias    = $this->model->getProvincias();
+        $ciudades      = $this->model->getCiudades();
 
         require $this->viewsDir . '/adoptar.view.php';
     }
@@ -39,10 +41,11 @@ class MascotaController extends Controller
         return [
             'especie'        => $request->get('especie'),
             'tamano'         => $request->get('tamano'),
-            'temperamento'    => $request->get('temperamento'),
+            'temperamento'   => $request->get('temperamento'),
             'edad_min'       => $request->get('edad_min'),
             'edad_max'       => $request->get('edad_max'),
-            'ubicacion'      => $request->get('ubicacion'),
+            'provincia'      => $request->get('provincia'),
+            'ciudad'         => $request->get('ciudad'),
             'estado_adopcion' => 'DISPONIBLE',
         ];
     }
@@ -85,9 +88,11 @@ class MascotaController extends Controller
         $mascotas = $resultado['items'];
         $pagination = $resultado['pagination'];
 
-        $tamanos     = $this->model->getTamanos();
-        $especies     = $this->model->getEspecies();
+        $tamanos       = $this->model->getTamanos();
+        $especies      = $this->model->getEspecies();
         $temperamentos = $this->model->getTemperamentos();
+        $provincias    = $this->model->getProvincias();
+        $ciudades      = $this->model->getCiudades();
 
         require $this->viewsDir . '/adoptar.view.php';
     }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/assets/img/icon.png">
+    <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="stylesheet" href="/assets/css/print.css" media="print" />
     <link
@@ -46,7 +46,7 @@
           <header class="cuerpo-incentivar-adopcion">
             <h2>Animate a Adoptar</h2>
           </header>
-          <a href="/adoptar" class="boton-secundario">Formulario de Adopción</a>
+          <a href="/como-adoptar" class="boton-secundario">Guía de Adopción</a>
         </article>
 
       </section>
