@@ -99,7 +99,11 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: linear-gradient(145deg, var(--color-fondo) 0%, var(--color-fondo) 100%);
+  background: linear-gradient(
+    145deg,
+    var(--color-fondo) 0%,
+    var(--color-fondo) 100%
+  );
   border: 2px solid var(--color-amarillo);
   border-radius: 24px;
   padding: 2rem 1.5rem;
@@ -135,7 +139,7 @@
   background-color: var(--color-naranja);
 }
 
-.seccion-adopcion>h2 {
+.seccion-adopcion > h2 {
   font-size: 2.5rem;
   margin-left: 1rem;
   margin-bottom: 1.5rem;
@@ -162,7 +166,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
   background-color: var(--color-fondo);
   box-shadow: 0 2px 12px var(--color-texto);
 }
@@ -173,7 +179,11 @@
 }
 
 .tarjeta-imagen {
-  background: linear-gradient(135deg, var(--color-fondo) 0%, var(--color-fondo) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-fondo) 0%,
+    var(--color-fondo) 100%
+  );
   height: 200px;
   position: relative;
   display: flex;
@@ -213,7 +223,11 @@
 }
 
 @media screen and (min-width: 994px) {
-
+  .hero-inicio {
+    text-align: left;
+    align-items: flex-start;
+  }
+  
   .hero-inicio h1,
   .hero-inicio p {
     margin-left: 4rem;
@@ -267,7 +281,7 @@
     margin: 1rem 3.5rem;
   }
 
-  .seccion-adopcion>h2 {
+  .seccion-adopcion > h2 {
     font-size: 3rem;
   }
 

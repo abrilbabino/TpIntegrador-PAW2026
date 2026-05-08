@@ -307,8 +307,8 @@ main>header p {
   }
 
   main>header {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
     padding: 3rem 5rem;
   }
 

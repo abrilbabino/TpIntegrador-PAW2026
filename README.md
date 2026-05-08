@@ -92,3 +92,10 @@ php vendor/bin/phinx migration:run -e development
 cd Entrega3
 php -S localhost:3000 -t public
 ```
+### Comando para probar el cron_notificaciones
+```bash
+cd Entrega3
+php bin/cron_recordatorios.php
+```
+## Deploy
+![Pawmap](https://tpintegrador-paw2026-1.onrender.com/)
