@@ -419,4 +419,45 @@ class QueryBuilder
     {
         return $this->selectOne($table, $conditions) !== false;
     }
+
+    public function selectCompatibles(string $table, array $filtros): array
+    {
+        $conditions = [];
+        $binds = [];
+
+        foreach ($filtros as $column => $value) {
+            if (is_null($value) || $value === '') {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $valid = array_values(array_filter($value, fn($v) => !is_null($v) && $v !== ''));
+                if (empty($valid)) continue;
+
+                $keys = [];
+                foreach ($valid as $i => $v) {
+                    $key = ":{$column}_{$i}";
+                    $keys[] = $key;
+                    $binds[$key] = $v;
+                }
+                $conditions[] = "{$column} IN (" . implode(', ', $keys) . ")";
+                
+            } else {
+                $conditions[] = "{$column} = :{$column}";
+                $binds[":{$column}"] = $value;
+            }
+        }
+
+        $where = !empty($conditions) ? implode(' AND ', $conditions) : '1=1';
+        $sql = "SELECT * FROM {$table} WHERE {$where}";
+
+        $sentencia = $this->pdo->prepare($sql);
+        foreach ($binds as $key => $val) {
+            $sentencia->bindValue($key, $val);
+        }
+        
+        $sentencia->execute();
+
+        return $sentencia->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
