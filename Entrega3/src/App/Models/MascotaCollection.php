@@ -55,6 +55,12 @@ class MascotaCollection extends Model
         return $this->mapMascotas($resultados);
     }
 
+    public function getAdopcionesByAdoptante(int $adoptanteId): array
+    {
+        $resultados = $this->queryBuilder->obtenerAdopcionesPorAdoptante('solicitud_de_adopcion', $adoptanteId);
+        return $this->mapMascotas($resultados);
+    }
+
     public function buscarPaginated(string $termino, int $pagina, int $porPagina = 6): array
     {
         $total = $this->queryBuilder->buscarMascotasPorTermino($this->table, $termino, true); 

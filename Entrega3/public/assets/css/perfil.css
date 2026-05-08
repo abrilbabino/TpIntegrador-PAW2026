@@ -51,7 +51,7 @@
   align-items: center;
   gap: 0.3rem;
   font-size: 0.85rem;
-  color: #e53935;
+  color: var(--color-rojo);
   text-decoration: none;
   margin-top: 0.5rem;
 }
@@ -149,21 +149,21 @@
 }
 
 .perfil-nav a:hover {
-  color: #333;
+  color: var(--color-azul-oscuro);
 }
 
 .perfil-nav a.active {
-  color: #e53935;
-  border-bottom-color: #e53935;
+  color: var(--color-azul-oscuro);
+  border-bottom-color: var(--color-azul-oscuro);
 }
 
 /* ===== SECCIONES ===== */
 .perfil-seccion {
-  background: #fff;
+  background: var(--color-fondo);
   border-radius: 12px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   padding: 1.2rem 1.5rem;
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: 180px;
 }
 
 .perfil-seccion h3 {
@@ -195,12 +195,20 @@
 .btn-explorar {
   margin-top: 0.5rem;
   padding: 0.5rem 1.2rem;
-  background: #e53935;
-  color: #fff;
+  background: var(--color-azul-oscuro);
+  color: var(--color-fondo);
   border-radius: 20px;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  display: inline-block;
+}
+
+.btn-explorar:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  color: var(--color-fondo);
 }
 
 /* ===== CARDS FAVORITOS ===== */
@@ -214,10 +222,23 @@
 }
 
 .perfil-card {
+  position: relative;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #eee;
   background: #fafafa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perfil-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.perfil-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .perfil-card-img {
@@ -253,7 +274,7 @@
 }
 
 .btn-corazon.activo .material-symbols-outlined {
-  color: #e53935;
+  color: var(--color-rojo);
   font-variation-settings: "FILL" 1;
 }
 
@@ -322,12 +343,12 @@
   padding: 0.3rem 0.7rem;
   border-radius: 4px;
   background: #e0e0e0;
-  color: #555;
+  color: var(--color-fondo);
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.perfil-estado.estado-aprobado {
+.perfil-estado.estado-aprobada {
   background: #c8e6c9;
   color: #2e7d32;
 }
@@ -337,7 +358,7 @@
   color: #e65100;
 }
 
-.perfil-estado.estado-rechazado {
+.perfil-estado.estado-rechazada {
   background: #ffcdd2;
   color: #b71c1c;
 }
@@ -351,32 +372,13 @@
 }
 
 .btn-ver-detalle:hover {
-  color: #111;
+  color: var(--color-texto);
 }
 
 /* =========================================
    MEDIA QUERY DESKTOP (min-width: 994px)
    ========================================= */
 @media (min-width: 994px) {
-
-  /* === COLORES (Variables de generales.css) === */
-  .btn-explorar {
-    background-color: var(--color-violeta);
-    color: var(--color-fondo);
-  }
-
-  .perfil-nav a.active {
-    color: var(--color-violeta);
-    border-bottom-color: var(--color-violeta);
-  }
-
-  .btn-corazon.activo .material-symbols-outlined {
-    color: var(--color-magenta);
-  }
-
-  .perfil-estado {
-    color: var(--color-fondo);
-  }
 
   /* === LAYOUT DESKTOP === */
   .perfil-container {
@@ -428,6 +430,6 @@
   }
 
   .perfil-seccion {
-    scroll-margin-top: 1rem;
+    scroll-margin-top: 200px;
   }
 }

@@ -92,24 +92,26 @@
                 <ul class="perfil-cards-grid">
                     <?php foreach ($favoritos as $fav): ?>
                         <li class="perfil-card">
-                            <figure class="perfil-card-img">
-                                <img
-                                    src="/assets/img/<?= htmlspecialchars($fav['imagen'] ?? 'default-pet.jpg') ?>"
-                                    alt="<?= htmlspecialchars($fav['nombre'] ?? 'Mascota') ?>"
-                                />
-                                <form method="POST" action="/favorito/eliminar" class="form-quitar-fav">
-                                    <input type="hidden" name="favorito_id" value="<?= $fav['favorito_id'] ?>" />
-                                    <button type="submit" class="btn-corazon activo" title="Quitar favorito">
-                                        <span class="material-symbols-outlined">favorite</span>
-                                    </button>
-                                </form>
-                            </figure>
-                            <h4><?= htmlspecialchars($fav['nombre'] ?? 'Sin nombre') ?></h4>
-                            <p>
-                                <?= htmlspecialchars($fav['edad'] ?? '?') ?> año(s)
-                                · <?= htmlspecialchars($fav['tamano'] ?? '—') ?>
-                                · <?= htmlspecialchars($fav['temperamento'] ?? '—') ?>
-                            </p>
+                            <a href="/mascota?id=<?= htmlspecialchars($fav['id']) ?>" class="perfil-card-link" title="Ver detalle de <?= htmlspecialchars($fav['nombre'] ?? 'Mascota') ?>">
+                                <figure class="perfil-card-img">
+                                    <img
+                                        src="/assets/img/<?= htmlspecialchars($fav['imagen'] ?? 'default-pet.jpg') ?>"
+                                        alt="<?= htmlspecialchars($fav['nombre'] ?? 'Mascota') ?>"
+                                    />
+                                </figure>
+                                <h4><?= htmlspecialchars($fav['nombre'] ?? 'Sin nombre') ?></h4>
+                                <p>
+                                    <?= htmlspecialchars($fav['edad'] ?? '?') ?> año(s)
+                                    · <?= htmlspecialchars($fav['tamano'] ?? '—') ?>
+                                    · <?= htmlspecialchars($fav['temperamento'] ?? '—') ?>
+                                </p>
+                            </a>
+                            <form method="POST" action="/favorito/eliminar" class="form-quitar-fav">
+                                <input type="hidden" name="favorito_id" value="<?= $fav['favorito_id'] ?>" />
+                                <button type="submit" class="btn-corazon activo" title="Quitar favorito">
+                                    <span class="material-symbols-outlined">favorite</span>
+                                </button>
+                            </form>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -161,7 +163,7 @@
                                 · <?= htmlspecialchars($ad['tamano'] ?? '—') ?>
                                 · <?= htmlspecialchars($ad['temperamento'] ?? '—') ?>
                             </p>
-                            <a href="/mascota?id=<?= $ad['id'] ?>" class="btn-ver-detalle" title="Ver detalle">
+                            <a href="/seguimiento?id=<?= $ad['id'] ?>" class="btn-ver-detalle" title="Ver detalle">
                                 <span class="material-symbols-outlined">directions_walk</span>
                             </a>
                         </li>

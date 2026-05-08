@@ -56,7 +56,7 @@
 .icono-usuario .material-symbols-outlined {
   grid-area: "icon";
   grid-row: 1;
-  font-size: 44px;
+  font-size: 32px;
   color: var(--color-azul);
   border: 2px solid var(--color-azul);
   border-radius: 50%;
@@ -66,7 +66,7 @@
 .icono-usuario .material-symbols-outlined:hover {
   color: var(--color-naranja);
   border: 2px solid var(--color-naranja);
-  transform: scale(1.03);
+  transform: scale(1.12);
 }
 
 .icono-usuario p,
@@ -74,7 +74,7 @@
   color: var(--color-azul);
   transform: (1);
   grid-area: "desc";
-  font-size: 1rem;
+  font-size: 0.8rem;
   grid-row: 2;
   pointer-events: none;
 }
@@ -159,7 +159,10 @@
   transform: translate(-50%, -50%) scale(0.7);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
 }
 
 .login-check:checked~.fondo-login {
@@ -187,20 +190,22 @@
 }
 
 main>header {
+  width: 100%;
   min-height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
-  text-align: left;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
   color: var(--color-fondo);
   text-shadow: 2px 2px 5px var(--color-texto);
   background-color: var(--color-azul);
 }
 
 main>header h1 {
-  font-size: 3.5rem;
-  line-height: 3.5rem;
+  font-size: 3rem;
+  line-height: 1;
 }
 
 main>header p {
@@ -301,6 +306,21 @@ main>header p {
     margin-right: 1rem;
   }
 
+  main>header {
+    align-items: center;
+    text-align: center;
+    padding: 3rem 5rem;
+  }
+
+  main>header h1 {
+    font-size: 3.5rem;
+    line-height: 3.5rem;
+  }
+
+  main>header p {
+    font-size: 1.5rem;
+  }
+
   .header-busqueda {
     display: flex;
     flex: 1;
@@ -363,6 +383,14 @@ main>header p {
   .menu-principal .simbolos {
     font-size: 31px;
     display: inline-flex;
+  }
+
+  .icono-usuario .material-symbols-outlined {
+    font-size: 44px;
+  }
+
+  .icono-usuario p {
+    font-size: 1rem;
   }
 
   .footer-principal {

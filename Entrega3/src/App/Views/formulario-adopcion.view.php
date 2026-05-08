@@ -12,7 +12,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
     <main>
-        <header>
+        <header class="hero-formulario">
             <h1>Formulario de Adopción</h1>
             <p>Completá los datos para iniciar el proceso</p>
         </header>
@@ -67,21 +67,21 @@
 
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" required
-                               value="<?= htmlspecialchars($_POST['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                               value="<?= htmlspecialchars($_POST['nombre'] ?? $adoptanteData['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         <?php if (isset($errores['nombre'])): ?>
                             <span class="error-inline"><?= htmlspecialchars($errores['nombre']) ?></span>
                         <?php endif; ?>
 
                         <label for="apellido">Apellido</label>
                         <input type="text" id="apellido" name="apellido" required
-                               value="<?= htmlspecialchars($_POST['apellido'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                               value="<?= htmlspecialchars($_POST['apellido'] ?? $adoptanteData['apellido'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         <?php if (isset($errores['apellido'])): ?>
                             <span class="error-inline"><?= htmlspecialchars($errores['apellido']) ?></span>
                         <?php endif; ?>
 
                         <label for="email">Mail</label>
                         <input type="email" id="email" name="email" required
-                               value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                               value="<?= htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         <?php if (isset($errores['email'])): ?>
                             <span class="error-inline"><?= htmlspecialchars($errores['email']) ?></span>
                         <?php endif; ?>
@@ -92,10 +92,11 @@
 
                         <label for="telefono">Teléfono celular</label>
                         <input type="tel" id="telefono" name="telefono" required
-                               value="<?= htmlspecialchars($_POST['telefono'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-
+                               value="<?= htmlspecialchars($_POST['telefono'] ?? $userData['contacto'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        
                         <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required
+                               value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? $adoptanteData['fecha_de_nacimiento'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     </fieldset>
 
                     <fieldset class="fieldset-contrato">

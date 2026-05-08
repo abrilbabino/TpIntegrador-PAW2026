@@ -58,6 +58,7 @@ class AuthController extends Controller
         ]);
 
         // Crear refugio o adoptante según el rol
+        /* Comentado temporalmente: aún no se permite el registro de refugios
         if ($rol === 'refugio') {
             $this->model->crearRefugio([
                 'usuario_id'         => $userId,
@@ -76,6 +77,7 @@ class AuthController extends Controller
             ];
 
         } else {
+        */
             $this->model->crearAdoptante([
                 'usuario_id' => $userId,
                 'nombre'     => $name,
@@ -91,7 +93,9 @@ class AuthController extends Controller
                 'rol'            => 'adoptante',
                 'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
             ];
+        /*
         }
+        */
 
         $this->log->info("Registro exitoso", ['username' => $username]);
 
@@ -148,14 +152,14 @@ class AuthController extends Controller
         $adoptante = $this->model->getAdoptante((int) $usuario['id']);
         $refugio   = $this->model->getRefugio((int) $usuario['id']);
 
-        if ($refugio && isset($refugio['id'])) {
+        if ($refugio) {
             $_SESSION['user']['rol']        = 'refugio';
-            $_SESSION['user']['refugio_id'] = $refugio['id'];
-        } elseif ($adoptante && isset($adoptante['id'])) {
+            $_SESSION['user']['refugio_id'] = $refugio['usuario_id'];
+        } elseif ($adoptante) {
             $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = $adoptante['id'];
+            $_SESSION['user']['adoptante_id'] = $adoptante['usuario_id'];
         } else {
-            // Por defecto adoptante si no hay datos
+            // Por defecto adoptante si no hay datos vinculados (p.ej. admin o incompleto)
             $_SESSION['user']['rol']          = 'adoptante';
             $_SESSION['user']['adoptante_id'] = null;
         }
