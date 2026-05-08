@@ -55,6 +55,19 @@
                 <div class="drag-handle"></div>
                 <header class="info-header">
                     <h2><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h2>
+                    <?php 
+                    $nombreSvg = strtolower(trim($mascota->fields['nombre'] ?? ''));
+                    $rutaFisica = __DIR__ . '/../../../public/assets/svg/' . $nombreSvg . '.svg';
+                        
+                    if (!empty($nombreSvg) && file_exists($rutaFisica)): ?>
+                        <figure class="svg-mascota">
+                        <img src="/assets/svg/<?= htmlspecialchars($nombreSvg, ENT_QUOTES, 'UTF-8') ?>.svg"
+                             alt="Animación de <?= htmlspecialchars($mascota->fields['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                             class="svg-mascota-img">
+                    </figure>
+                    <?php endif; ?>
+                </div>
+
                     <a href="mascota/libreta?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''),ENT_QUOTES,'UTF-8') ?>" class="libreta">
                         <span class="material-symbols-outlined">clinical_notes</span>
                     </a>
