@@ -22,7 +22,7 @@ RUN chown -R www-data:www-data /var/www/html \
     && mkdir -p /var/www/html/Entrega3/logs \
     && chmod 777 /var/www/html/Entrega3/logs
 
-RUN printf '#!/bin/sh\nsed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\nexec "$@"\n' > /entrypoint.sh && chmod +x /entrypoint.sh
+RUN printf '#!/bin/sh\nmkdir -p /var/www/html/Entrega3/logs\nsed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\ncd /var/www/html/Entrega3 && php vendor/bin/phinx migrate -e production 2>/dev/null; php vendor/bin/phinx seed:run -e production 2>/dev/null\nexec "$@"\n' > /entrypoint.sh && chmod +x /entrypoint.sh
 
 EXPOSE 80
 
