@@ -18,7 +18,9 @@ RUN cd /var/www/html/Entrega3 && composer install --no-interaction --no-scripts 
 COPY . .
 RUN cd Entrega3 && composer dump-autoload --optimize
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html \
+    && mkdir -p /var/www/html/Entrega3/logs \
+    && chmod 777 /var/www/html/Entrega3/logs
 
 RUN printf '#!/bin/sh\nsed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\nexec "$@"\n' > /entrypoint.sh && chmod +x /entrypoint.sh
 
