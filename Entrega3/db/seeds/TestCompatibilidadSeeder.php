@@ -68,27 +68,23 @@ class TestCompatibilidadSeeder extends AbstractSeed
 
         $filaPregunta = [];
         $filaOpcion = [];
-        $pid = 1;
+        
         foreach ($preguntas as $p) {
-            $filaPregunta[] = [
-                'id' => $pid,
-                'nombre' => $p['nombre'],
-                'titulo' => $p['titulo'],
-                'orden' => $p['orden'],
-            ];
+            // Insertar la pregunta y obtener su ID
+            $this->execute("INSERT INTO test_compatibilidad_pregunta (nombre, titulo, orden) VALUES ('{$p['nombre']}', '{$p['titulo']}', {$p['orden']})");
+            $preguntaId = $this->getAdapter()->getConnection()->lastInsertId();
+
             foreach ($p['opciones'] as $o) {
                 $filaOpcion[] = [
-                    'pregunta_id' => $pid,
+                    'pregunta_id' => $preguntaId,
                     'valor' => $o['valor'],
                     'etiqueta' => $o['etiqueta'],
                     'subtitulo' => $o['subtitulo'],
                     'orden' => $o['orden'],
                 ];
             }
-            $pid++;
         }
 
-        $this->table('test_compatibilidad_pregunta')->insert($filaPregunta)->saveData();
         $this->table('test_compatibilidad_opcion')->insert($filaOpcion)->saveData();
     }
 }

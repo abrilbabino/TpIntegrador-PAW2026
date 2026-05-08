@@ -15,7 +15,6 @@ class MascotaSeeder extends AbstractSeed
     {
         $data = [
             [
-                'id' => 1,
                 'refugio_id' => 4,
                 'nombre' => 'Firulais',
                 'especie' => 'perro',
@@ -30,7 +29,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'firulais.jpg'
             ],
             [
-                'id' => 2,
                 'refugio_id' => 5,
                 'nombre' => 'Mishi',
                 'especie' => 'gato',
@@ -45,7 +43,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'mishi.jpg'
             ],
             [
-                'id' => 3,
                 'refugio_id' => 10,
                 'nombre' => 'Rocky',
                 'especie' => 'perro',
@@ -60,7 +57,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'rocky.jpg'
             ],
             [
-                'id' => 4,
                 'refugio_id' => 9,
                 'nombre' => 'Toby',
                 'especie' => 'perro',
@@ -75,7 +71,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'toby.jpg'
             ],
             [
-                'id' => 5,
                 'refugio_id' => 6,
                 'nombre' => 'Luna',
                 'especie' => 'gato',
@@ -90,7 +85,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'luna.jpg'
             ],
             [
-                'id' => 6,
                 'refugio_id' => 7,
                 'nombre' => 'Max',
                 'especie' => 'perro',
@@ -105,7 +99,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'max.jpg'
             ],
             [
-                'id' => 7,
                 'refugio_id' => 7,
                 'nombre' => 'Bella',
                 'especie' => 'perro',
@@ -120,7 +113,6 @@ class MascotaSeeder extends AbstractSeed
                 'imagen' => 'bella.jpg'
             ],
             [
-                'id' => 8,
                 'refugio_id' => 8,
                 'nombre' => 'Simba',
                 'especie' => 'gato',
