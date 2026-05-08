@@ -12,7 +12,6 @@ class QueryBuilder
     protected ?Logger $log;
     protected $pdo;
 
-
     public function __construct(PDO $connection, ?Logger $log = null)
     {
         $this->pdo = $connection;
@@ -44,7 +43,6 @@ class QueryBuilder
         [$where, $binds] = $this->buildWhere($conditions, 'AND', $precios);
         
         $query = "SELECT COUNT(*) as total FROM {$table} WHERE {$where}";
-       
             
         $sentencia = $this->pdo->prepare($query);
         $this->bindValues($sentencia, $binds);
@@ -246,5 +244,61 @@ class QueryBuilder
         $sql .= " ORDER BY fecha_programada DESC";
 
         return $this->rawQuery($sql, $binds);
+    }
+
+    /**
+     * Inserta un registro en la tabla indicada.
+     * @return string|false El ID del registro insertado o false si falla.
+     */
+    public function insert(string $table, array $data): string|false
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_map(fn($col) => ":{$col}", array_keys($data)));
+        
+        $query = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
+        $sentencia = $this->pdo->prepare($query);
+        
+        foreach ($data as $key => $value) {
+            $sentencia->bindValue(":{$key}", $value);
+        }
+        
+        $sentencia->execute();
+        return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * Retorna un solo registro que coincida con las condiciones exactas.
+     */
+    public function selectOne(string $table, array $conditions = []): array|false
+    {
+        $where = [];
+        $binds = [];
+        
+        foreach ($conditions as $column => $value) {
+            if (is_null($value) || $value === '') {
+                continue;
+            }
+            $where[] = "{$column} = :{$column}";
+            $binds[":{$column}"] = $value;
+        }
+        
+        $whereClause = !empty($where) ? implode(' AND ', $where) : '1=1';
+        $query = "SELECT * FROM {$table} WHERE {$whereClause} LIMIT 1";
+        
+        $sentencia = $this->pdo->prepare($query);
+        foreach ($binds as $key => $val) {
+            $sentencia->bindValue($key, $val);
+        }
+        
+        $sentencia->execute();
+        return $sentencia->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Verifica si existe un registro que coincida con las condiciones.
+     */
+    public function exists(string $table, array $conditions): bool
+    {
+        return $this->selectOne($table, $conditions) !== false;
     }
 }
