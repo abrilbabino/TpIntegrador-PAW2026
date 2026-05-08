@@ -4,6 +4,7 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
+use Paw\Core\MailService;
 
 class PageController extends Controller
 {
@@ -49,5 +50,31 @@ class PageController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
         require $this->viewsDir . '/contacto.view.php';
+    }
+
+    public function contactoEnviar()
+    {
+        global $config;
+        $titulo = "Contacto - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        $mailService = new MailService;
+        $mailService->enviarContacto(
+            $config->get('MAIL_PERSONAL'),
+            [
+                'nombre' => $this->request->post('nombre'),
+                'email' => $this->request->post('email'),
+                'asunto' => $this->request->post('asunto'),
+                'mensaje' => $this->request->post('mensaje'),
+            ]
+        );
+        header("Location: /contacto-exitoso");
+    }
+    public function contactoExitoso()
+    {
+        $titulo = "Contacto Exitoso - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/contacto-exitoso.view.php';
     }
 }
