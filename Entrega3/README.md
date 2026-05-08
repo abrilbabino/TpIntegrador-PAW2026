@@ -12,7 +12,7 @@
 - [x] Filtros de búsqueda: Especie, tamaño, edad, temperamento, ubicación.  
 
 ## Test de Compatibilidad 
-- [] Formulario dinámico que procesa las respuestas del usuario y sugiere mascotas afines según estilo de vida y entorno del adoptante.  
+- [x] Formulario dinámico que procesa las respuestas del usuario y sugiere mascotas afines según estilo de vida y entorno del adoptante.  
 
 ## Solicitudes de adopción y contacto
 - [x] Flujo de comunicación entre adoptantes y pawmap. 
