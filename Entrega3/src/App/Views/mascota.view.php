@@ -24,9 +24,9 @@
                 </figure>
                 <nav class="carrusel-indicadores" aria-label="Controles de galería">
                     <?php 
-                    $cantidadTotalFotos = 1 + count($fotosExtras ?? []); 
-                    if ($cantidadTotalFotos > 1):
-                        for ($i = 0; $i < $cantidadTotalFotos; $i++): 
+                    $cantidadTotal = 1 + count($mediaExtras ?? []); 
+                    if ($cantidadTotal > 1):
+                        for ($i = 0; $i < $cantidadTotal; $i++): 
                     ?>
                             <span class="item-carrusel <?= $i === 0 ? 'active' : '' ?>"></span>
                     <?php 
@@ -35,20 +35,28 @@
                     ?>
                 </nav>
 
-                <section class="mas-fotos">
-                    <h4>MÁS FOTOS</h4>
-                    <ul class="grid-miniaturas">
-                        <?php if (!empty($fotosExtras)): ?>
-                            <?php foreach ($fotosExtras as $foto): ?>
-                                <li>
-                                    <img src="/assets/img/<?= htmlspecialchars($foto->fields['ruta_imagen'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto extra">
-                                </li>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No hay fotos adicionales.</p>
-                        <?php endif; ?>
-                    </ul>
+                <?php if (!empty($mediaExtras)): ?>
+                <section class="galeria">
+                    <h4 class="galeria__titulo">GALERÍA</h4>
+                    <div class="galeria__grid">
+                        <?php foreach ($mediaExtras as $media): ?>
+                            
+                            <figure class="galeria__item <?= $media->tipo === 'video' ? 'galeria__item--video' : '' ?>">
+                                <?php if ($media->tipo === 'video'): ?>
+                                    <video controls preload="metadata" 
+                                        poster="<?= htmlspecialchars($media->poster ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        <source src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>" type="video/mp4">
+                                    </video>
+                                <?php else: ?>
+                                    <img src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>" 
+                                        alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'mascota') ?>" loading="lazy">
+                                <?php endif; ?>
+                            </figure>
+
+                        <?php endforeach; ?>
+                    </div>
                 </section>
+                <?php endif; ?>
             </section>
 
             <aside class="info-mascota">
@@ -66,7 +74,6 @@
                              class="svg-mascota-img">
                     </figure>
                     <?php endif; ?>
-                </div>
 
                     <a href="mascota/libreta?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''),ENT_QUOTES,'UTF-8') ?>" class="libreta">
                         <span class="material-symbols-outlined">clinical_notes</span>

@@ -5,6 +5,7 @@ namespace Paw\App\Controllers;
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RefugioCollection; 
+use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
 
 
@@ -63,14 +64,18 @@ class MascotaController extends Controller
         $refugios->setQueryBuilder($this->model->getQueryBuilder());
         $refugio =$refugios->get($mascota->fields['refugio_id']);
 
+        
         $ubicaciones = [];
         if ($mascota && $mascota->fields['refugio_id']) {
-            $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
-            $stmt = $this->model->getQueryBuilder()->getConnection()->prepare($sql);
-            $stmt->bindValue(':rid', $mascota->fields['refugio_id'], \PDO::PARAM_INT);
-            $stmt->execute();
-            $ubicaciones = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$mascota->fields['refugio_id']);
         }
+
+        $mediaCol = new MediaMascotaCollection();
+        $mediaCol->setQueryBuilder($this->model->getQueryBuilder());
+        $mediaExtras = $mediaCol->getMultimedia(
+            (int)$mascota->fields['id'],
+            $mascota->fields['imagen'] ?? null
+        );
 
         require $this->viewsDir . '/mascota.view.php';
     }

@@ -460,4 +460,9 @@ class QueryBuilder
 
         return $sentencia->fetchAll(\PDO::FETCH_ASSOC);
     }
+    public function obtenerUbicacionesPorRefugio(int $refugioId): array
+    {
+        $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
+        return $this->rawQuery($sql, [':rid' => $refugioId]);
+    }
 }
