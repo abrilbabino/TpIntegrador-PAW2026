@@ -1,6 +1,6 @@
 # Checklist funcionalidades
 ## Perfil de usuario
-- [] Información personal, mascotas favoritas, solicitudes de adopción realizadas.  
+- [x] Información personal, mascotas favoritas, solicitudes de adopción realizadas.  
 - [] Historial de adopciones y seguimiento sanitario.  
 
 ## Perfiles de mascotas 
