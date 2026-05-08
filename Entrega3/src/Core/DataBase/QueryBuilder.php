@@ -328,6 +328,7 @@ class QueryBuilder
                 WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADO'";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
+    }
     /**
      * Inserta un registro en la tabla indicada.
      * @return string|false El ID del registro insertado o false si falla.
