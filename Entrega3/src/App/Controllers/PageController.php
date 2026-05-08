@@ -62,10 +62,10 @@ class PageController extends Controller
         $mailService->enviarContacto(
             $config->get('MAIL_PERSONAL'),
             [
-                'nombre' => $this->request->post('nombre'),
-                'email' => $this->request->post('email'),
-                'asunto' => $this->request->post('asunto'),
-                'mensaje' => $this->request->post('mensaje'),
+                'nombre' => $this->request->get('nombre'),
+                'email' => $this->request->get('email'),
+                'asunto' => $this->request->get('asunto'),
+                'mensaje' => $this->request->get('mensaje'),
             ]
         );
         header("Location: /contacto-exitoso");
