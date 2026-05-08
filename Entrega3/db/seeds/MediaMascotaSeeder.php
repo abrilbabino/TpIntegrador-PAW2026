@@ -24,7 +24,13 @@ class MediaMascotaSeeder extends AbstractSeed
 
             ['mascota_id' => 5, 'tipo' => 'video', 'url' => 'assets/videos/luna.mp4'],
 
+            ['mascota_id' => 5, 'tipo' => 'video', 'url' => 'assets/videos/luna.mp4'],
+
+            ['mascota_id' => 6, 'tipo' => 'video', 'url' => 'assets/videos/max.mp4'],
+
             ['mascota_id' => 7, 'tipo' => 'video', 'url' => 'assets/videos/bella.mp4'],
+
+            ['mascota_id' => 8, 'tipo' => 'video', 'url' => 'assets/videos/simba.mp4'],
         ];
 
         $this->table('media_mascota')->insert($data)->saveData();
