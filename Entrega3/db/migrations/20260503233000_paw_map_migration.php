@@ -113,20 +113,6 @@ final class PawMapMigration extends AbstractMigration
                          ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
                          ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'SET_NULL', 'update'=> 'CASCADE'])
                          ->create();
-
-        $tableEncuesta = $this->table('encuesta_adopcion');
-        $tableEncuesta->addColumn('solicitud_id', 'integer', ['limit' => 11])
-                      ->addColumn('adoptante_id', 'integer', ['limit' => 11])
-                      ->addColumn('mascota_id', 'integer', ['limit' => 11])
-                      ->addColumn('fecha_encuesta', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-                      ->addColumn('preguntas_respuestas', 'json')
-                      ->addColumn('puntuacion', 'integer', ['null' => true])
-                      ->addColumn('comentarios', 'text', ['null' => true])
-                      ->addColumn('necesita_seguimiento', 'boolean', ['default' => false])
-                      ->addForeignKey('solicitud_id', 'solicitud_de_adopcion', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                      ->addForeignKey('adoptante_id', 'adoptante', 'usuario_id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                      ->addForeignKey('mascota_id', 'mascota', 'id', ['delete'=> 'CASCADE', 'update'=> 'CASCADE'])
-                      ->create();
     }
 
     public function down(): void

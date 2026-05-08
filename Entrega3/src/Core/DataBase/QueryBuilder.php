@@ -473,6 +473,7 @@ class QueryBuilder
             $this->pdo->rollBack();
             throw $e;
         }
+    }
     public function selectCompatibles(string $table, array $filtros): array
     {
         $conditions = [];
