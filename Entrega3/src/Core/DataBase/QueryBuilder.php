@@ -310,6 +310,24 @@ class QueryBuilder
         return $this->rawQuery($sql, $binds);
     }
 
+    public function obtenerSolicitudesPorAdoptante(string $tabla, int $adoptanteId): array
+    {
+        $sql = "SELECT s.estado, m.nombre, m.edad, m.tamano, m.temperamento
+                FROM {$tabla} s
+                JOIN mascota m ON s.mascota_id = m.id
+                WHERE s.adoptante_id = :adoptante_id";
+                
+        return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
+    }
+
+    public function obtenerAdopcionesPorAdoptante(string $tabla, int $adoptanteId): array
+    {
+        $sql = "SELECT m.id, m.nombre, m.edad, m.tamano, m.temperamento
+                FROM {$tabla} s
+                JOIN mascota m ON s.mascota_id = m.id
+                WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADO'";
+                
+        return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
     /**
      * Inserta un registro en la tabla indicada.
      * @return string|false El ID del registro insertado o false si falla.
