@@ -62,7 +62,7 @@
 
 /* ===== DATOS PERSONALES ===== */
 .perfil-datos {
-  background: #fff;
+  background: var(--color-fondo);
   border-radius: 12px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   padding: 1.2rem 1.5rem;
@@ -82,14 +82,14 @@
 }
 
 .btn-editar {
-  color: #555;
+  color: var(--color-gris-claro);
   text-decoration: none;
   display: flex;
   align-items: center;
 }
 
 .btn-editar:hover {
-  color: #111;
+  color: var(--color-texto);
 }
 
 .perfil-datos-grid {
@@ -115,13 +115,13 @@
 .dato-valor {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #222;
+  color: var(--color-texto);
 }
 
 /* ===== NAV ANCLA (reemplaza los tabs) ===== */
 .perfil-nav {
   display: flex;
-  background: #fff;
+  background: var(--color-fondo);
   border-radius: 12px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -139,7 +139,9 @@
   color: #888;
   text-decoration: none;
   border-bottom: 3px solid transparent;
-  transition: color 0.2s, border-bottom-color 0.2s;
+  transition:
+    color 0.2s,
+    border-bottom-color 0.2s;
 }
 
 .perfil-nav a .material-symbols-outlined {
@@ -376,19 +378,6 @@
     color: var(--color-fondo);
   }
 
-  .perfil-estado.estado-aprobado {
-    background-color: var(--color-verde);
-  }
-
-  .perfil-estado.estado-pendiente {
-    background-color: var(--color-amarillo);
-    color: var(--color-texto);
-  }
-
-  .perfil-estado.estado-rechazado {
-    background-color: var(--color-magenta);
-  }
-
   /* === LAYOUT DESKTOP === */
   .perfil-container {
     max-width: 1200px;
@@ -441,5 +430,4 @@
   .perfil-seccion {
     scroll-margin-top: 1rem;
   }
-
 }

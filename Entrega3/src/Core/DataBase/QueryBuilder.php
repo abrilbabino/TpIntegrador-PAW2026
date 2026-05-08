@@ -325,7 +325,7 @@ class QueryBuilder
         $sql = "SELECT m.id, m.nombre, m.edad, m.tamano, m.temperamento
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
-                WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADO'";
+                WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADA'";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
     }

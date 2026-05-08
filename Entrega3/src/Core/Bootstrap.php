@@ -88,3 +88,7 @@ $router->post('/favorito/eliminar', 'FavoritoController@eliminar');
 $router->get('not_found', 'ErrorController@notFound');
 $router->get('internal_error', 'ErrorController@internalError');
 $router->get('invalid_format', 'ErrorController@invalidFormat');
+
+// Contacto
+$router->get('/contacto', 'PageController@contacto');
+//$router->post('/contacto/enviar', 'PageController@contactoEnviar');
