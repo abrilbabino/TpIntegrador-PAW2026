@@ -125,4 +125,62 @@ class MascotaController extends Controller
 
         require $this->viewsDir . '/libreta.view.php';
     }
+
+    public function guardarRegistro()
+    {
+        $datos = $this->request->post();
+
+        $mascota_id = (int) ($datos['mascota_id'] ?? 0);
+        $tipo = trim($datos['tipo'] ?? '');
+        $titulo = trim($datos['titulo'] ?? '');
+        $fecha_programada = $datos['fecha_programada'] ?? '';
+        $observaciones = trim($datos['observaciones'] ?? '');
+
+        // Validación estricta de campos requeridos
+        if ($mascota_id <= 0 || $tipo === '' || $titulo === '' || $fecha_programada === '') {
+            header('Location: /mascota/libreta?id=' . $mascota_id);
+            return;
+        }
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+
+        $data = [
+            'mascota_id' => $mascota_id,
+            'tipo' => $tipo,
+            'titulo' => $titulo,
+            'fecha_programada' => $fecha_programada,
+            'estado' => 'PENDIENTE',
+            'observaciones' => $observaciones !== '' ? $observaciones : null,
+        ];
+
+        $coleccion->getQueryBuilder()->insert('registro_sanitario', $data);
+
+        header('Location: /mascota/libreta?id=' . $mascota_id);
+    }
+
+    public function completarRegistro()
+    {
+        $datos = $this->request->post();
+
+        $registro_id = (int) ($datos['registro_id'] ?? 0);
+        $mascota_id  = (int) ($datos['mascota_id']  ?? 0);
+
+        // Validación estricta: ambos IDs deben ser enteros positivos
+        if ($registro_id <= 0 || $mascota_id <= 0) {
+            header('Location: /mascota/libreta?id=' . $mascota_id);
+            return;
+        }
+
+        $this->model->getQueryBuilder()->update(
+            'registro_sanitario',
+            [
+                'estado'          => 'COMPLETADO',
+                'fecha_realizada' => date('Y-m-d'),
+            ],
+            ['id' => $registro_id]
+        );
+
+        header('Location: /mascota/libreta?id=' . $mascota_id);
+    }
 }

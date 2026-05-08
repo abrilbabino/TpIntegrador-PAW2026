@@ -16,7 +16,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php' ?>
     
     <main>
-      <header>
+      <header class="hero-inicio">
         <h1>Encuentra a tu nuevo<br>mejor amigo</h1>
         <p>Explora mascotas cerca de tu ubicación.</p>
       </header>
@@ -63,22 +63,30 @@
                         $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
-                        <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil"> 
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
-                                <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+                                <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="link-imagen">
+                                    <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>" alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+                                </a>
+                                <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                    <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="btn-favorito" aria-label="Agregar a favoritos">
+                                        <span class="material-symbols-outlined">favorite</span>
+                                    </button>
+                                </form>
                             </figure>
 
-                            <section class="tarjeta-info">
-                                <h3><?= htmlspecialchars($mascota->fields['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
-                                <p>
-                                    <?= htmlspecialchars((string)($mascota->fields['edad'] ?? ''), ENT_QUOTES, 'UTF-8') ?> años - 
-                                    <?= htmlspecialchars(ucfirst($mascota->fields['tamano'] ?? ''), ENT_QUOTES, 'UTF-8') ?> - 
-                                    <?= htmlspecialchars(ucfirst($mascota->fields['temperamento'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
-                                </p>
-                            </section>
+                            <a href="/mascota?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil"> 
+                                <section class="tarjeta-info">
+                                    <h3><?= htmlspecialchars($mascota->fields['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
+                                    <p>
+                                        <?= htmlspecialchars((string)($mascota->fields['edad'] ?? ''), ENT_QUOTES, 'UTF-8') ?> años - 
+                                        <?= htmlspecialchars(ucfirst($mascota->fields['tamano'] ?? ''), ENT_QUOTES, 'UTF-8') ?> - 
+                                        <?= htmlspecialchars(ucfirst($mascota->fields['temperamento'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                    </p>
+                                </section>
+                            </a>
                         </article>
-                      </a>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>No hay mascotas en adopción en este momento.</p>
