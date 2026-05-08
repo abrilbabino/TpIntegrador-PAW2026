@@ -123,7 +123,7 @@
             <label for="rol">Tipo de cuenta</label>
             <select id="rol" name="rol" required class="registro-input">
                 <option value="adoptante" selected>Quiero adoptar una mascota</option>
-                <option value="refugio">Soy un refugio / protectora</option>
+                <!-- <option value="refugio">Soy un refugio / protectora</option> -->
             </select>
 
             <button type="submit">Registrarme</button>
