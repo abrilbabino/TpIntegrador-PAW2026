@@ -1,0 +1,29 @@
+FROM php:8.4-apache
+
+RUN apt-get update && apt-get install -y libpq-dev git unzip \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && a2enmod rewrite
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/Entrega3/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+COPY Entrega3/composer.json Entrega3/composer.lock* Entrega3/
+RUN cd /var/www/html/Entrega3 && composer install --no-interaction --no-scripts --no-autoloader
+
+COPY . .
+RUN cd Entrega3 && composer dump-autoload --optimize
+
+RUN chown -R www-data:www-data /var/www/html
+
+RUN printf '#!/bin/sh\nsed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\nexec "$@"\n' > /entrypoint.sh && chmod +x /entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["apache2-foreground"]
