@@ -134,7 +134,7 @@
 
 .filtros form button:hover {
   background-color: var(--color-naranja);
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 .adoptar-contenido {
@@ -271,7 +271,7 @@
 .paginacion a:hover {
   color: var(--color-fondo);
   background-color: var(--color-naranja);
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 .paginacion a.pagina-activa {
@@ -289,7 +289,7 @@
 
 .paginacion a.Boton:hover {
   background-color: var(--color-azul);
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 @media screen and (min-width: 994px) {

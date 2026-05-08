@@ -1,0 +1,426 @@
+/* --- Panel Principal --- */
+.seguimiento-main {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    gap: 1rem;
+}
+
+/* Tarjeta Mascota */
+.pet-card {
+    grid-area: mascota;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 2px var(--color-gris-claro);
+    margin: 3rem 0 1rem 0;
+}
+
+.imagen-mascota {
+    width: 100%;
+    max-width: 250px;
+}
+
+.imagen-mascota img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+.pet-card-info {
+    flex: 1;
+    text-transform: capitalize;
+    margin: 0 0 0.5rem 0;
+}
+
+.pet-card-info h1 {
+    font-size: 4rem;
+}
+
+.pet-card-info p {
+    font-size: 2rem;
+}
+
+/* Banner Dinámico */
+.banner-alerta {
+    grid-area: alerta;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--color-texto);
+    gap: 2rem;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.banner-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+}
+
+.banner-content p {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.banner-alerta .material-symbols-outlined {
+    font-size: 3rem;
+}
+
+.status-dia {
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-verde-claro);
+    color: var(--color-verde);
+}
+
+.status-alerta {
+    background-color: var(--color-naranja-claro);
+    border: 1px solid var(--color-naranja);
+    color: var(--color-naranja);
+}
+
+.btn-historial {
+    background-color: var(--color-verde);
+    color: var(--color-fondo);
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-historial:hover {
+    background-color: var(--color-naranja);
+    transform: scale(0.98);
+    color: var(--color-fondo);
+}
+
+/* Modificadores */
+.btn-encuesta {
+    background-color: var(--color-primario);
+}
+
+.btn-encuesta:hover:not(:disabled) {
+    background-color: var(--color-hover);
+}
+
+.btn-encuesta:disabled {
+    background-color: var(--color-gris-claro);
+    color: var(--color-texto);
+    cursor: not-allowed;
+    border: 1px solid var(--color-gris-claro);
+}
+
+.fecha-vencida {
+    color: var(--color-rojo);
+    font-weight: bold;
+}
+
+.fecha-normal {
+    color: var(--color-texto);
+}
+
+/* Roadmap de Encuestas */
+.roadmap-encuestas {
+    grid-area: encuestas;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border-radius: 8px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 4px var(--color-texto);
+}
+
+.roadmap-encuestas header {
+    margin-bottom: 1.5rem;
+}
+
+.roadmap-encuestas header h2 {
+    font-size: 2.5rem;
+}
+
+.roadmap-encuestas header p {
+    font-size: 1.5rem;
+}
+
+.encuestas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.encuesta-card {
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-fondo);
+    margin: 0.5rem;
+}
+
+.encuesta-card.estado-bloqueada {
+    opacity: 0.6;
+}
+
+.encuesta-card.estado-completada {
+    border-color: var(--color-verde);
+    background-color: var(--color-fondo);
+}
+
+.encuesta-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.encuesta-card h4 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.badge-dias {
+    background-color: var(--color-gris-claro);
+    color: var(--color-texto);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.estado-texto {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.estado-texto.exito {
+    color: var(--color-verde);
+}
+
+.estado-texto.bloqueado {
+    color: var(--color-texto);
+}
+
+/* Contenedor de Comprobantes */
+.comprobantes-container {
+    padding: 1.5rem;
+    grid-area: archivos;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 0.5rem;
+}
+
+.comprobantes-container header h2 {
+    font-size: 2.5rem;
+}
+
+.btn-comprobante {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primario);
+    color: var(--color-texto);
+    padding: 1.5rem 2.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 4px var(--color-texto);
+}
+
+.btn-comprobante:hover {
+    background-color: var(--color-gris-claro);
+    transform: scale(0.98);
+}
+
+.btn-comprobante .icono-comprobante {
+    transform: rotate(45deg);
+    font-size: 2.4rem;
+}
+
+/* Acciones */
+.seguimiento-actions {
+    grid-area: archivos;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-accion {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--color-azul);
+    color: var(--color-fondo);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-accion:hover {
+    background-color: var(--color-naranja);
+    transform: scale(0.98);
+}
+
+/* Timeline */
+.timeline-section {
+    grid-area: recordatorios;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--color-texto);
+    border: 1px solid var(--color-gris-claro);
+}
+
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    position: relative;
+}
+
+.timeline-section header {
+    font-size: 2.5rem;
+}
+
+.timeline-section p {
+    font-size: 1.5rem;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content {
+    background: var(--color-fondo);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-gris-claro);
+}
+
+.timeline-content header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content header h4 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.timeline-content p {
+    font-size: 1rem;
+}
+
+.estado-badge {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    color: var(--color-fondo);
+}
+
+.badge-pendiente {
+    font-weight: bold;
+    align-self: center;
+    background-color: var(--color-naranja-claro);
+    color: var(--color-texto);
+}
+
+/* Modales HTML5 (dialog) */
+dialog {
+    padding: 2rem;
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px var(--color-texto);
+    margin: auto;
+}
+
+dialog::backdrop {
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+dialog header h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+fieldset label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+fieldset input,
+fieldset select,
+fieldset textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 4px;
+}
+
+footer.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cerrar {
+    background: var(--color-rojo);
+    color: var(--color-fondo);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-cerrar:hover {
+    background: var(--color-naranja);
+    transform: scale(0.98);
+}
+
+@media (min-width: 994px) {
+    .seguimiento-main {
+        display: grid;
+        grid-template-areas: "mascota mascota"
+            "encuestas recordatorios"
+            "alerta archivos";
+        grid-template-columns: 1fr 1fr;
+        margin: 0 3rem 2rem 3rem;
+        gap: 1rem;
+    }
+}

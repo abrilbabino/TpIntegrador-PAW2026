@@ -12,7 +12,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
     <main>
-        <header>
+        <header class="hero-formulario">
             <h1>Formulario de Adopción</h1>
             <p>Completá los datos para iniciar el proceso</p>
         </header>

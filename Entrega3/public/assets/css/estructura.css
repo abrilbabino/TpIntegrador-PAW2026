@@ -66,7 +66,7 @@
 .icono-usuario .material-symbols-outlined:hover {
   color: var(--color-naranja);
   border: 2px solid var(--color-naranja);
-  transform: scale(1.03);
+  transform: scale(1.12);
 }
 
 .icono-usuario p,
@@ -159,7 +159,10 @@
   transform: translate(-50%, -50%) scale(0.7);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
 }
 
 .login-check:checked~.fondo-login {

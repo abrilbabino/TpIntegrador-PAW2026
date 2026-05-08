@@ -420,6 +420,59 @@ class QueryBuilder
         return $this->selectOne($table, $conditions) !== false;
     }
 
+    public function actualizarArchivoRegistroSanitario(int $registroId, string $rutaRelativa, string $fecha): void
+    {
+        $sql = "UPDATE registro_sanitario SET archivo_adjunto = :ruta, estado = 'COMPLETADO', fecha_realizada = :fecha WHERE id = :id";
+        $this->rawQuery($sql, [
+            ':ruta' => $rutaRelativa,
+            ':fecha' => $fecha,
+            ':id' => $registroId
+        ]);
+    }
+
+    public function obtenerRegistrosPendientesCercanos(): array
+    {
+        $sql = "SELECT rs.id as registro_id, rs.titulo, rs.fecha_programada, rs.mascota_id, 
+                       m.nombre as mascota_nombre, a.usuario_id as adoptante_id, 
+                       u.email as adoptante_email, u.nombre_usuario as adoptante_nombre
+                FROM registro_sanitario rs
+                JOIN mascota m ON rs.mascota_id = m.id
+                JOIN solicitud_de_adopcion s ON m.id = s.mascota_id AND s.estado = 'APROBADO'
+                JOIN adoptante a ON s.adoptante_id = a.usuario_id
+                JOIN usuario u ON a.usuario_id = u.id
+                WHERE rs.estado = 'PENDIENTE' 
+                  AND (rs.notificado = FALSE OR rs.notificado IS NULL)
+                  AND rs.fecha_programada BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '7 days')";
+        return $this->rawQuery($sql);
+    }
+
+    public function marcarRegistroNotificado(int $id): void
+    {
+        $updateSql = "UPDATE registro_sanitario SET notificado = TRUE WHERE id = :id";
+        $this->rawQuery($updateSql, [':id' => $id]);
+    }
+
+    /**
+     * Lógica de automatización: Aprueba una solicitud y cambia el estado de la mascota
+     * asumiendo la fecha de adopción con el timestamp actual de la base de datos.
+     */
+    public function aprobarSolicitudAdopcion(int $solicitudId, int $mascotaId): void
+    {
+        $this->pdo->beginTransaction();
+        try {
+            // Aprobar la solicitud
+            $sqlSolicitud = "UPDATE solicitud_de_adopcion SET estado = 'APROBADO' WHERE id = :id";
+            $this->rawQuery($sqlSolicitud, [':id' => $solicitudId]);
+
+            // Cambiar estado de mascota y asentar la fecha de adopción
+            $sqlMascota = "UPDATE mascota SET estado_adopcion = 'ADOPTADO', fecha_adopcion = CURRENT_TIMESTAMP WHERE id = :id";
+            $this->rawQuery($sqlMascota, [':id' => $mascotaId]);
+
+            $this->pdo->commit();
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
     public function selectCompatibles(string $table, array $filtros): array
     {
         $conditions = [];

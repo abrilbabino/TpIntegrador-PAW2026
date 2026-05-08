@@ -1,3 +1,7 @@
+.hero-formulario{
+    justify-content: center;
+    text-align: center;
+}
 .formulario-adopcion {
     display: flex;
     flex-direction: column;
@@ -103,7 +107,7 @@
 
 .btn-link:hover {
     color: var(--color-naranja);
-    transform: scale(1.02);
+    transform: scale(0.98);
 }
 
 .modal-nativo {
@@ -182,7 +186,7 @@
 
 .btn-submit-adoptar:hover {
     background: var(--color-azul-oscuro);
-    transform: translateY(-1px);
+    transform: scale(0.98);
 }
 
 .contenido-contrato ul {

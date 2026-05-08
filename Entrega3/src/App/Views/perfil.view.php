@@ -163,7 +163,7 @@
                                 · <?= htmlspecialchars($ad['tamano'] ?? '—') ?>
                                 · <?= htmlspecialchars($ad['temperamento'] ?? '—') ?>
                             </p>
-                            <a href="/mascota?id=<?= $ad['id'] ?>" class="btn-ver-detalle" title="Ver detalle">
+                            <a href="/seguimiento?id=<?= $ad['id'] ?>" class="btn-ver-detalle" title="Ver detalle">
                                 <span class="material-symbols-outlined">directions_walk</span>
                             </a>
                         </li>
