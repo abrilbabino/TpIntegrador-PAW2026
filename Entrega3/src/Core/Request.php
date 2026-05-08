@@ -40,6 +40,21 @@ class Request
         return $_POST;
     }
 
+    public function files()
+    {
+        return $_FILES;
+    }
+
+    public function file($key)
+    {
+        return $_FILES[$key] ?? null;
+    }
+
+    public function session($key)
+    {
+        return $_SESSION[$key] ?? null;
+    }
+
     public function paginaActual()
     {
         $pagina = $_GET['pagina'] ?? 1;

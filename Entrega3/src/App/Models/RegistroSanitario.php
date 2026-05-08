@@ -20,6 +20,8 @@ abstract class RegistroSanitario extends Model
         'fecha_realizada' => null,
         'estado' => 'PENDIENTE',
         'observaciones' => null,
+        'archivo_adjunto' => null,
+        'notificado' => false,
     ];
 
     public function setId($id)
@@ -63,6 +65,16 @@ abstract class RegistroSanitario extends Model
     public function setObservaciones(?string $obs)
     {
         $this->fields['observaciones'] = $obs;
+    }
+
+    public function setArchivoAdjunto(?string $archivo)
+    {
+        $this->fields['archivo_adjunto'] = $archivo;
+    }
+
+    public function setNotificado($notificado)
+    {
+        $this->fields['notificado'] = (bool)$notificado;
     }
 
     public function set(array $values)

@@ -24,6 +24,7 @@ class Mascota extends Model
         'castrado' => null,
         'imagen' => 'default-pet.jpg',
         'sexo' => 'Desconocido',
+        'fecha_adopcion' => null,
     ];
 
     public function setId($id){
