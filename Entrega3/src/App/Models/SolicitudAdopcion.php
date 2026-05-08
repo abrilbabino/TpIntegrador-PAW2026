@@ -15,6 +15,7 @@ class SolicitudAdopcion extends Model
         'telefono' => null,
         'fecha_nacimiento' => null,
         'mascota_id' => null,
+        'acepta_contrato' => false,
     ];
 
     public function set(array $datos)
@@ -25,6 +26,7 @@ class SolicitudAdopcion extends Model
         $this->fields['telefono'] = $datos['telefono'] ?? null;
         $this->fields['fecha_nacimiento'] = $datos['fecha_nacimiento'] ?? null;
         $this->fields['mascota_id'] = $datos['mascota_id'] ?? null;
+        $this->fields['acepta_contrato'] = isset($datos['acepta_contrato']) && $datos['acepta_contrato'] === 'on';
     }
 
     public function validar()
@@ -46,18 +48,25 @@ class SolicitudAdopcion extends Model
         if (empty($this->fields['mascota_id'])) {
             $errores['mascota_id'] = 'La mascota no es válida.';
         }
+        if (empty($this->fields['acepta_contrato'])) {
+            $errores['acepta_contrato'] = 'Debe aceptar los términos del contrato de adopción y seguimiento sanitario.';
+        }
 
         return $errores;
     }
 
     public function guardar(int $refugio_id)
     {
-        $stmt = $this->queryBuilder->getConnection()->prepare(
-            "INSERT INTO {$this->table} (mascota_id, refugio_id, fecha, estado)
-             VALUES (:mascota_id, :refugio_id, CURRENT_TIMESTAMP, 'PENDIENTE')"
-        );
-        $stmt->bindValue(':mascota_id', $this->fields['mascota_id'], \PDO::PARAM_INT);
-        $stmt->bindValue(':refugio_id', $refugio_id, \PDO::PARAM_INT);
-        $stmt->execute();
+        $data = [
+            'mascota_id' => $this->fields['mascota_id'],
+            'refugio_id' => $refugio_id,
+            'fecha' => date('Y-m-d H:i:s'),
+            'estado' => 'PENDIENTE',
+            'contrato_aceptado' => 1,
+            'fecha_aceptacion' => date('Y-m-d H:i:s')
+        ];
+
+        // Also save adopter details that are mapped
+        $this->queryBuilder->insert($this->table, $data);
     }
 }

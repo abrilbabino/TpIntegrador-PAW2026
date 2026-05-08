@@ -98,6 +98,17 @@
                         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
                     </fieldset>
 
+                    <fieldset class="fieldset-contrato">
+                        <label for="acepta_contrato" class="checkbox-label">
+                            <input type="checkbox" id="acepta_contrato" name="acepta_contrato" required
+                                   <?= isset($_POST['acepta_contrato']) ? 'checked' : '' ?>>
+                            Acepto el <button type="button" class="btn-link" onclick="event.preventDefault(); document.getElementById('modal-contrato').showModal();">contrato de adopción y seguimiento sanitario</button>
+                        </label>
+                        <?php if (isset($errores['acepta_contrato'])): ?>
+                            <span class="error-inline"><?= htmlspecialchars($errores['acepta_contrato']) ?></span>
+                        <?php endif; ?>
+                    </fieldset>
+
                     <button type="submit" class="btn-submit-adoptar">¡QUIERO ADOPTAR!</button>
                 </form>
             </aside>
@@ -105,5 +116,24 @@
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
+
+    <dialog id="modal-contrato" class="modal-nativo">
+        <header>
+            <h2>Contrato de Adopción y Seguimiento Sanitario</h2>
+        </header>
+        <article class="contenido-contrato">
+            <p>Al adoptar a esta mascota, te comprometes a:</p>
+            <ul>
+                <li>Brindarle un hogar seguro, alimento adecuado y atención veterinaria cuando lo requiera.</li>
+                <li>Mantener al día su libreta sanitaria, aplicando las vacunas correspondientes.</li>
+                <li>Notificar al refugio ante cualquier cambio de domicilio o pérdida.</li>
+                <li>Permitir y facilitar el seguimiento de la mascota por parte del refugio, respondiendo a encuestas o visitas programadas para verificar su bienestar.</li>
+            </ul>
+            <p>El incumplimiento de este contrato puede resultar en la revocación de la adopción.</p>
+        </article>
+        <form method="dialog" class="acciones-modal">
+            <button type="submit" class="btn-cerrar-modal">Entendido y Cerrar</button>
+        </form>
+    </dialog>
 </body>
 </html>
