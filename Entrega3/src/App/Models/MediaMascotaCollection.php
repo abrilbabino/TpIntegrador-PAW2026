@@ -8,17 +8,19 @@ class MediaMascotaCollection extends Model
 {
     public string $table = 'media_mascota';
 
-    public function getByMascotaId(int $mascotaId): array
+    public function getMultimedia(int $mascotaId, ?string $imagenPrincipal): array
     {
-        $rows = $this->queryBuilder->select($this->table, ['mascota_id' => $mascotaId]);
+        $rows = $this->queryBuilder->select('media_mascota', ['mascota_id' => $mascotaId]);
 
-        $items = [];
+        $media = [];
         foreach ($rows as $row) {
-            $media = new MediaMascota();
-            $media->set($row);
-            $items[] = $media;
+            $item = (object) $row;
+            if ($row['tipo'] === 'video') {
+                $item->poster = $imagenPrincipal ? "/assets/img/{$imagenPrincipal}" : null;
+            }
+            $media[] = $item;
         }
-        
-        return $items;
+
+        return $media;
     }
 }

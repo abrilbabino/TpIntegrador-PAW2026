@@ -18,15 +18,35 @@
 
         <article class="seccion-detalle-mascota">
             <section class="galeria-mascota">
-                <figure class="imagen-principal">
-                    <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
-                         alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
-                </figure>
+                <div class="carrusel-contenedor">
+                    <figure class="carrusel-slide">
+                        <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
+                             alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+                    </figure>
+                    <?php if (!empty($mediaExtras)): ?>
+                    <h4 class="galeria__titulo">GALERÍA</h4>
+                        <?php foreach ($mediaExtras as $media): ?>
+                            <?php if ($media->tipo === 'video'): ?>
+                            <figure class="carrusel-slide carrusel-slide--video">
+                                <video controls preload="metadata" playsinline muted
+                                    poster="<?= htmlspecialchars($media->poster ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                    <source src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>" type="video/mp4">
+                                </video>
+                            </figure>
+                            <?php else: ?>
+                            <figure class="carrusel-slide">
+                                <img src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>"
+                                     alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'mascota') ?>" loading="lazy">
+                            </figure>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
                 <nav class="carrusel-indicadores" aria-label="Controles de galería">
                     <?php 
-                    $cantidadTotalFotos = 1 + count($fotosExtras ?? []); 
-                    if ($cantidadTotalFotos > 1):
-                        for ($i = 0; $i < $cantidadTotalFotos; $i++): 
+                    $cantidadTotal = 1 + count($mediaExtras ?? []); 
+                    if ($cantidadTotal > 1):
+                        for ($i = 0; $i < $cantidadTotal; $i++): 
                     ?>
                             <span class="item-carrusel <?= $i === 0 ? 'active' : '' ?>"></span>
                     <?php 
@@ -34,21 +54,6 @@
                     endif; 
                     ?>
                 </nav>
-
-                <section class="mas-fotos">
-                    <h4>MÁS FOTOS</h4>
-                    <ul class="grid-miniaturas">
-                        <?php if (!empty($fotosExtras)): ?>
-                            <?php foreach ($fotosExtras as $foto): ?>
-                                <li>
-                                    <img src="/assets/img/<?= htmlspecialchars($foto->fields['ruta_imagen'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto extra">
-                                </li>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No hay fotos adicionales.</p>
-                        <?php endif; ?>
-                    </ul>
-                </section>
             </section>
 
             <aside class="info-mascota">
@@ -66,7 +71,6 @@
                              class="svg-mascota-img">
                     </figure>
                     <?php endif; ?>
-                </div>
 
                     <a href="mascota/libreta?id=<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''),ENT_QUOTES,'UTF-8') ?>" class="libreta">
                         <span class="material-symbols-outlined">clinical_notes</span>
@@ -139,6 +143,7 @@
         </article>
     </main>
 
+    <script src="/assets/js/mascota.js"></script>
     <?php require __DIR__ . '/footer.view.php'; ?>
 </body>
 </html>
