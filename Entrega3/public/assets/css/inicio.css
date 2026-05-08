@@ -1,3 +1,8 @@
+.hero-inicio h1,
+.hero-inicio p {
+  margin-left: 4rem;
+}
+
 .seccion-mapa {
   padding: 2.5rem 1.5rem;
   margin: 0 2rem;
@@ -39,7 +44,7 @@
 }
 
 .boton-principal {
-  background-color :var(--color-azul);
+  background-color: var(--color-azul);
   color: var(--color-fondo);
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -130,7 +135,7 @@
   background-color: var(--color-naranja);
 }
 
-.seccion-adopcion > h2 {
+.seccion-adopcion>h2 {
   font-size: 2.5rem;
   margin-left: 1rem;
   margin-bottom: 1.5rem;
@@ -147,7 +152,7 @@
 }
 
 .verPerfil {
-  display:block;
+  display: block;
 }
 
 .tarjeta-mascota {
@@ -156,7 +161,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height:100%;
+  height: 100%;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   background-color: var(--color-fondo);
   box-shadow: 0 2px 12px var(--color-texto);
@@ -180,8 +185,8 @@
 
 .tarjeta-imagen img {
   width: 100%;
-  height: 100%; 
-  object-fit: cover; 
+  height: 100%;
+  object-fit: cover;
   border-radius: 14px 14px 0 0;
 }
 
@@ -249,7 +254,7 @@
     flex-shrink: 0;
   }
 
-  .seccion-adopcion > h2 {
+  .seccion-adopcion>h2 {
     font-size: 3rem;
   }
 

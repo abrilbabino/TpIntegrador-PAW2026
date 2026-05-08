@@ -350,6 +350,41 @@ class QueryBuilder
     }
 
     /**
+     * Actualiza registros en la tabla indicada.
+     * @param string $table    Nombre de la tabla.
+     * @param array  $data     Columnas y valores a actualizar.
+     * @param array  $conditions Condiciones para la cláusula WHERE (AND implícito).
+     * @return int Número de filas afectadas.
+     */
+    public function update(string $table, array $data, array $conditions): int
+    {
+        $setParts  = [];
+        $binds     = [];
+
+        foreach ($data as $column => $value) {
+            $setParts[]                 = "{$column} = :set_{$column}";
+            $binds[":set_{$column}"]    = $value;
+        }
+
+        $whereParts = [];
+        foreach ($conditions as $column => $value) {
+            $whereParts[]               = "{$column} = :where_{$column}";
+            $binds[":where_{$column}"]  = $value;
+        }
+
+        $setClause   = implode(', ', $setParts);
+        $whereClause = implode(' AND ', $whereParts);
+
+        $query = "UPDATE {$table} SET {$setClause} WHERE {$whereClause}";
+
+        $sentencia = $this->pdo->prepare($query);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+
+        return $sentencia->rowCount();
+    }
+
+    /**
      * Retorna un solo registro que coincida con las condiciones exactas.
      */
     public function selectOne(string $table, array $conditions = []): array|false

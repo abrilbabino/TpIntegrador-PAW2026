@@ -13,7 +13,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
     <main class="libreta-main">
-        <header class="libreta-header">
+        <header class="hero-libreta">
             <h1>Libreta Sanitaria de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h1>
         </header>
 
@@ -99,7 +99,7 @@
                         elseif ($tipoStr === 'cirugia') $iconName = $registro->getIconoHtml();
                         elseif ($tipoStr === 'chequeo') $iconName = $registro->getIconoHtml();
                     ?>
-                    <article class="card-registro">
+                    <article class="card-registro card-pendiente">
                         <figure class="card-icon-container icon-pendiente">
                             <span class="material-symbols-outlined"><?= $iconName ?></span>
                         </figure>
@@ -118,6 +118,13 @@
                                 </article>
                             <?php endif; ?>
                         </section>
+                        <form method="POST" action="/mascota/registro/completar" class="form-completar">
+                            <input type="hidden" name="registro_id" value="<?= htmlspecialchars((string)($registro->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                            <input type="hidden" name="mascota_id"  value="<?= htmlspecialchars((string)($mascota->fields['id']  ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                            <button type="submit" class="btn-completar" title="Marcar como completado">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </button>
+                        </form>
                         <footer class="badge badge-pendiente">Pendiente</footer>
                     </article>
                 <?php endforeach; ?>
@@ -141,7 +148,7 @@
                         elseif ($tipoStr === 'cirugia') $iconName = $registro->getIconoHtml();
                         elseif ($tipoStr === 'chequeo') $iconName = $registro->getIconoHtml();
                     ?>
-                    <article class="card-registro">
+                    <article class="card-registro card-completado">
                         <figure class="card-icon-container icon-completado">
                             <span class="material-symbols-outlined"><?= $iconName ?></span>
                         </figure>
@@ -160,13 +167,51 @@
                                 </article>
                             <?php endif; ?>
                         </section>
+                        <span class="icono-completado material-symbols-outlined" aria-label="Completado">check_circle</span>
                         <footer class="badge badge-completado">Completado</footer>
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
+
+        <button type="button" class="btn-agregar-registro" onclick="document.getElementById('modal-agregar-registro').showModal();">
+            <span class="material-symbols-outlined">add</span> Agregar Registro
+        </button>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
+
+    <dialog id="modal-agregar-registro" class="modal-nativo">
+        <header>
+            <h2>Agregar Registro Sanitario</h2>
+        </header>
+        <form method="POST" action="/mascota/registro/guardar" class="form-registro">
+            <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+
+            <label for="tipo">Tipo de registro</label>
+            <select name="tipo" id="tipo" required>
+                <option value="" disabled selected>Seleccioná un tipo</option>
+                <option value="vacuna">Vacunación</option>
+                <option value="desparasitacion">Desparasitación</option>
+                <option value="cirugia">Cirugía</option>
+                <option value="tratamiento">Tratamiento</option>
+                <option value="chequeo">Chequeo</option>
+            </select>
+
+            <label for="titulo">Título / Descripción</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Ej: Antirrábica" required>
+
+            <label for="fecha_programada">Fecha programada</label>
+            <input type="date" id="fecha_programada" name="fecha_programada" required>
+
+            <label for="observaciones">Observaciones (opcional)</label>
+            <textarea id="observaciones" name="observaciones" rows="3" placeholder="Notas adicionales..."></textarea>
+
+            <footer class="acciones-modal">
+                <button type="button" class="btn-cancelar" onclick="document.getElementById('modal-agregar-registro').close();">Cancelar</button>
+                <button type="submit" class="btn-guardar-registro">Guardar Registro</button>
+            </footer>
+        </form>
+    </dialog>
 </body>
 </html>

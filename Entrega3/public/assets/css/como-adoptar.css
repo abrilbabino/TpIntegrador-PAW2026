@@ -1,5 +1,6 @@
-.hero-como-adoptar{
+.hero-como-adoptar {
   text-align: center;
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -8,16 +9,16 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap:0.5rem;
+  gap: 0.5rem;
   padding: 3rem 0;
-  width:100%;
+  width: 100%;
   margin: 0 auto;
 }
 
 .paso-individual {
   grid-template-areas: "paso icono ."
-                       "titulo titulo titulo"
-                       "descripcion descripcion descripcion";
+    "titulo titulo titulo"
+    "descripcion descripcion descripcion";
   display: grid;
   grid-template-columns: 0.9fr 1fr;
   text-align: center;
@@ -28,16 +29,16 @@
 }
 
 .paso-numero {
-  grid-area:paso;
+  grid-area: paso;
   background: var(--color-naranja);
   color: var(--color-azul);
   font-weight: 800;
   font-size: 2rem;
   width: 80px;
-  margin:0 2rem 0.5rem 0;
+  margin: 0 2rem 0.5rem 0;
   height: 80px;
   border-radius: 50%;
-  justify-self:right;
+  justify-self: right;
   display: flex;
   align-self: center;
   align-items: center;
@@ -45,16 +46,16 @@
 }
 
 .paso-individual .material-symbols-outlined {
-  grid-area:icono;
+  grid-area: icono;
   font-size: 64px;
   color: var(--color-azul);
-  padding:0 0 0.5rem 0;
+  padding: 0 0 0.5rem 0;
   justify-self: left;
   align-self: center;
 }
 
 .paso-individual h2 {
-  grid-area:titulo;
+  grid-area: titulo;
   grid-column: 1/-1;
   justify-self: center;
   align-self: center;
@@ -65,7 +66,7 @@
 }
 
 .paso-individual .descripcion {
-  grid-area:descripcion;
+  grid-area: descripcion;
   grid-column: 1/-1;
   justify-self: center;
   align-self: center;
@@ -87,7 +88,7 @@
     font-size: 100px;
   }
 
-  .paso-numero{
+  .paso-numero {
     justify-self: center;
   }
 
@@ -95,7 +96,7 @@
     font-size: 2.2rem;
   }
 
-  .descripcion{
+  .descripcion {
     text-align: justify;
   }
 }

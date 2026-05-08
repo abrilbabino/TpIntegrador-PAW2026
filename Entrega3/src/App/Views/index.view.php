@@ -16,7 +16,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php' ?>
     
     <main>
-      <header>
+      <header class="hero-inicio">
         <h1>Encuentra a tu nuevo<br>mejor amigo</h1>
         <p>Explora mascotas cerca de tu ubicación.</p>
       </header>

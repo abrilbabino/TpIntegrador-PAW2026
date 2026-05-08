@@ -57,6 +57,8 @@ $router->get('/como-adoptar', 'PageController@comoAdoptar');
 $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
+$router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
+$router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
 $router->get('/buscar', 'MascotaController@buscar');
 
 // Formulario de adopción
