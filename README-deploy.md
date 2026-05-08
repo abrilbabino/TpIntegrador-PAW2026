@@ -8,14 +8,13 @@ La página está hecha con PHP y PostgreSQL. Para subirla a Render (un servicio 
 
 ### `FROM php:8.4-apache`
 
-Arrancamos desde una imagen oficial que ya viene con PHP 8.4 y Apache instalado. No inventamos nada, usamos algo que ya existe.
+Arrancamos desde una imagen oficial que ya viene con PHP 8.4 y Apache instalado. 
 
 ### `RUN apt-get update && apt-get install -y libpq-dev git unzip && docker-php-ext-install pdo pdo_pgsql && a2enmod rewrite`
 
 - `libpq-dev`: librería para que PHP pueda hablar con PostgreSQL
 - `git` y `unzip`: los necesita Composer para descargar dependencias
 - `docker-php-ext-install pdo pdo_pgsql`: instala la extensión de PHP para conectar a PostgreSQL
-- `a2enmod rewrite`: habilita un módulo de Apache por si usamos URLs lindas (tipo `/mascota/5` en vez de `?id=5`)
 
 ### `COPY --from=composer:latest /usr/bin/composer /usr/bin/composer`
 
