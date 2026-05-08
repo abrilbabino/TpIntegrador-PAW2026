@@ -8,8 +8,8 @@ class Config
 
     public function __construct()
     {
-        $this->configs["LOG_LEVEL"] = getenv("LOG_LEVEL", "INFO");
-        $path = getenv("LOG_PATH", "/logs/app.log");
+        $this->configs["LOG_LEVEL"] = getenv("LOG_LEVEL") ?: "INFO";
+        $path = getenv("LOG_PATH") ?: "logs/app.log";
         $this->configs["LOG_PATH"] = $this->joinPaths(__DIR__ . '/../../', $path);
 
         $this->configs["DB_ADAPTER"]  = getenv("DB_ADAPTER")  ?? 'pgsql';
