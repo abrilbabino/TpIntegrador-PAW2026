@@ -87,6 +87,12 @@ phinx rollback -e development -t 0
 php vendor/bin/phinx migration:run -e development
 ```
 
+### Variables de Entorno
+Configurar las variables de entorno necesarias
+```bash
+cp .env.example.env
+```
+
 ### Comando para levantar el server
 ```bash
 cd Entrega3
