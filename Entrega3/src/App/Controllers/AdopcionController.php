@@ -13,13 +13,28 @@ class AdopcionController extends Controller
 
     public function formulario()
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Si no está logueado o no es adoptante, redirigir a login
+        if (!isset($_SESSION['user']) || $_SESSION['user']['rol'] !== 'adoptante') {
+            header('Location: /iniciar-sesion?error=perfil_requerido');
+            exit;
+        }
+
         $menu = $this->menu;
         $redes = $this->redes;
         $errores = [];
 
         $id = $this->request->get('id');
-
         $mascota = $this->cargarMascota($id);
+
+        // Obtener datos del adoptante para pre-completar el formulario
+        $userModel = new \Paw\App\Models\User;
+        $userModel->setQueryBuilder(new \Paw\Core\Database\QueryBuilder($this->connection, $this->log));
+        $adoptanteData = $userModel->getAdoptante((int)$_SESSION['user']['id']);
+        $userData = $userModel->findById((int)$_SESSION['user']['id']);
 
         require $this->viewsDir . '/formulario-adopcion.view.php';
     }
@@ -28,16 +43,28 @@ class AdopcionController extends Controller
     {
         global $config;
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Seguridad: Verificar sesión en el envío también
+        if (!isset($_SESSION['user']) || $_SESSION['user']['rol'] !== 'adoptante') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
         $menu = $this->menu;
         $redes = $this->redes;
 
-        $this->model->set($this->request->post());
+        $datos = $this->request->post();
+        // Inyectar el ID del adoptante desde la sesión (como favoritos)
+        $datos['adoptante_id'] = $_SESSION['user']['id'];
+
+        $this->model->set($datos);
         $errores = $this->model->validar();
 
         $mascota_id = $this->model->fields['mascota_id'];
-
         $mascota = $this->cargarMascota($mascota_id);
-    
 
         if (count($errores) > 0) {
             require $this->viewsDir . '/formulario-adopcion.view.php';
