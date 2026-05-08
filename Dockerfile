@@ -13,7 +13,7 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 COPY Entrega3/composer.json Entrega3/composer.lock* Entrega3/
-RUN cd /var/www/html/Entrega3 && composer install --no-interaction --no-scripts --no-autoloader
+RUN cd /var/www/html/Entrega3 && composer install --no-interaction --no-scripts --no-autoloader --ignore-platform-req=ext-pdo_mysql
 
 COPY . .
 RUN cd Entrega3 && composer dump-autoload --optimize
