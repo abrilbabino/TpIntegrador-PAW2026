@@ -1,374 +1,373 @@
 .hero-libreta {
-    text-align: center;
+  text-align: center;
 }
 
 /* Sección de Filtros */
 .filtros-seccion {
-    display: flex;
-    flex-direction: row;
-    border-radius: 12px;
-    padding: 3rem;
-    gap: 1.5rem;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  border-radius: 12px;
+  padding: 3rem;
+  gap: 1.5rem;
+  justify-content: space-between;
 }
 
 .filtros-seccion {
-    grid-template-columns: 1fr 1fr auto;
-    align-items: end;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
 }
 
 fieldset {
-    border: none;
-    padding: 0;
-    margin: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .filtro-grupo {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .filtro-grupo label {
-    font-weight: 600;
-    font-size: 2rem;
-    color: var(--color-azul);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-azul);
 }
 
 .filtro-grupo select {
-    padding: 1rem;
-    border: 1px solid var(--color-gris-claro);
-    border-radius: 8px;
-    font-size: 1.5rem;
-    color: var(--color-azul);
+  padding: 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--color-azul);
 }
 
 .filtro-grupo select:focus {
-    border: 1px solid var(--color-naranja);
+  border: 1px solid var(--color-naranja);
 }
 
 .btn-filtrar {
-    background-color: var(--color-naranja);
-    color: var(--color-fondo);
-    border: none;
-    border-radius: 25px;
-    padding: 0.75rem 2rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+  background-color: var(--color-naranja);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-filtrar:hover {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .pendientes {
-    display: flex;
-    flex-direction: column;
-    align-content: start;
-    gap: 1.25rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .historial {
-    display: flex;
-    flex-direction: column;
-    align-content: start;
-    gap: 1.25rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .titulo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-azul);
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--color-gris-claro);
-    margin: 0;
-    margin: 0 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-azul);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-gris-claro);
+  margin: 0;
+  margin: 0 3rem;
 }
 
 .titulo .material-symbols-outlined {
-    font-size: 3rem;
-    color: var(--color-azul);
+  font-size: 3rem;
+  color: var(--color-azul);
 }
 
 /* Tarjetas */
 .card-registro {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    padding: 1.25rem;
-    box-shadow: 0 1px 4px var(--color-texto);
-    position: relative;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 4px var(--color-texto);
+  position: relative;
 
-    /* Layout interno de la tarjeta */
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.25rem;
-    align-items: start;
+  /* Layout interno de la tarjeta */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: start;
 
-    margin: 1rem 3rem;
+  margin: 1rem 3rem;
 }
 
 .card-registro:hover {
-    transform: scale(1.0025);
-    box-shadow: 0 2px 6px var(--color-texto);
+  transform: scale(1.0025);
+  box-shadow: 0 2px 6px var(--color-texto);
 }
 
 .card-icon-container {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-icon-container .material-symbols-outlined {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .icon-pendiente {
-    background-color: var(--color-naranja-claro);
-    color: var(--color-rojo);
+  background-color: var(--color-naranja-claro);
+  color: var(--color-rojo);
 }
 
 .icon-completado {
-    background-color: var(--color-verde-claro);
-    color: var(--color-verde);
+  background-color: var(--color-verde-claro);
+  color: var(--color-verde);
 }
 
 .card-content {
-    display: grid;
-    gap: 0.8rem;
-    padding-bottom: 1.5rem;
-    /* Espacio para el badge absoluto */
+  display: grid;
+  gap: 0.8rem;
+  padding-bottom: 1.5rem;
+  /* Espacio para el badge absoluto */
 }
 
 .card-content header h3 {
-    margin: 0 0 0.4rem 0;
-    font-size: 1.3rem;
-    font-weight: 700;
+  margin: 0 0 0.4rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
 }
 
 .card-date {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--color-azul);
-    font-size: 1rem;
-    margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-azul);
+  font-size: 1rem;
+  margin: 0;
 }
 
 .card-date .material-symbols-outlined {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
 
 .card-obs {
-    font-size: 1rem;
-    color: var(--color-texto);
-    padding: 0.75rem;
-    border-radius: 6px;
-    border-left: 3px solid var(--color-gris-claro);
+  font-size: 1rem;
+  color: var(--color-texto);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--color-gris-claro);
 }
 
 .card-obs strong {
-    display: block;
-    margin-bottom: 0.25rem;
-    color: var(--color-azul);
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-azul);
 }
 
 .card-obs p {
-    margin: 0;
-    line-height: 1.4;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* Badges */
 .badge {
-    position: absolute;
-    bottom: 1.25rem;
-    right: 1.25rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .badge-pendiente {
-    background-color: var(--color-naranja-claro);
-    color: var(--color-rojo);
+  background-color: var(--color-naranja-claro);
+  color: var(--color-rojo);
 }
 
 .badge-completado {
-    background-color: var(--color-verde-claro);
-    color: var(--color-verde);
+  background-color: var(--color-verde-claro);
+  color: var(--color-verde);
 }
 
 .no-registros {
-    text-align: left;
-    color: var(--color-azul);
-    margin: 1rem 4rem;
-    background: var(--color-fondo);
-    border-radius: 12px;
-    font-style: italic;
-    font-size: 1.5rem;
+  text-align: left;
+  color: var(--color-azul);
+  margin: 1rem 4rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  font-style: italic;
+  font-size: 1.5rem;
 }
 
 /* ── Botón Agregar Registro ── */
 .btn-agregar-registro {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    background-color: var(--color-naranja);
-    color: var(--color-fondo);
-    border: none;
-    border-radius: 25px;
-    padding: 0.7rem 1.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 2rem 3rem;
-    width: 50%;
-    justify-self: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-naranja);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 25px;
+  padding: 0.7rem 1.8rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 2rem 3rem;
+  width: 50%;
+  justify-self: center;
+  justify-content: center;
 }
 
 .btn-agregar-registro:hover {
-    background-color: var(--color-naranja);
-    transform: scale(0.98);
+  background-color: var(--color-naranja);
+  transform: scale(0.98);
 }
 
 .btn-agregar-registro .material-symbols-outlined {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
-
 
 /* ── Modal Nativo ── */
 .modal-nativo {
-    margin: auto;
-    padding: 0;
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-    width: 92%;
-    max-width: 520px;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  width: 92%;
+  max-width: 520px;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
 }
 
 .modal-nativo::backdrop {
-    background-color: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(4px);
+  background-color: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
 }
 
 .modal-nativo header {
-    padding: 1.5rem 1.75rem;
-    border-bottom: 1px solid var(--color-gris-claro);
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--color-gris-claro);
 }
 
 .modal-nativo header h2 {
-    margin: 0;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--color-azul);
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-azul);
 }
 
 /* ── Formulario interno del modal ── */
 .form-registro {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.5rem 1.75rem;
 }
 
 .form-registro label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-azul);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-azul);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.6rem;
 }
 
 .form-registro select,
 .form-registro input[type="text"],
 .form-registro input[type="date"],
 .form-registro textarea {
-    width: 100%;
-    padding: 0.85rem 1rem;
-    border: 1.5px solid var(--color-gris-claro);
-    border-radius: 10px;
-    font-size: 1rem;
-    color: var(--color-texto);
-    background-color: var(--color-fondo);
-    font-family: var(--fuente-cuerpo);
-    box-sizing: border-box;
-    transition: border-color 0.2s;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--color-gris-claro);
+  border-radius: 10px;
+  font-size: 1rem;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  font-family: var(--fuente-cuerpo);
+  box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
 .form-registro select:focus,
 .form-registro input:focus,
 .form-registro textarea:focus {
-    outline: none;
-    border-color: var(--color-naranja);
+  outline: none;
+  border-color: var(--color-naranja);
 }
 
 .form-registro textarea {
-    resize: vertical;
-    min-height: 70px;
+  resize: vertical;
+  min-height: 70px;
 }
 
 /* ── Acciones del modal ── */
 .acciones-modal {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    padding-top: 1.25rem;
-    margin-top: 0.5rem;
-    border-top: 1px solid var(--color-gris-claro);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-gris-claro);
 }
 
 .btn-cancelar {
-    background: none;
-    border: 1.5px solid var(--color-gris-claro);
-    border-radius: 10px;
-    padding: 0.7rem 1.4rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--color-texto);
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-family: var(--fuente-cuerpo);
+  background: none;
+  border: 1.5px solid var(--color-gris-claro);
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: var(--fuente-cuerpo);
 }
 
 .btn-cancelar:hover {
-    background-color: var(--color-gris-claro);
+  background-color: var(--color-gris-claro);
 }
 
 .btn-guardar-registro {
-    background-color: var(--color-azul);
-    color: var(--color-fondo);
-    border: none;
-    border-radius: 10px;
-    padding: 0.7rem 1.4rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-family: var(--fuente-cuerpo);
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: var(--fuente-cuerpo);
 }
 
 .btn-guardar-registro:hover {
-    background-color: var(--color-azul-oscuro, #1a3a6e);
+  background-color: var(--color-azul-oscuro, #1a3a6e);
 }
 
 /* ── Botón Completar Registro ── */
@@ -376,64 +375,88 @@ fieldset {
 /* Expande el grid de las tarjetas pendientes a 3 columnas
    sin afectar las tarjetas del historial (que usan .card-registro sin .card-pendiente) */
 .card-pendiente {
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
 .form-completar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
 }
 
 .btn-completar {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.4rem;
-    border-radius: 50%;
-    color: var(--color-verde);
-    transition: background-color 0.2s, transform 0.15s, color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  color: var(--color-verde);
+  transition:
+    background-color 0.2s,
+    transform 0.15s,
+    color 0.2s;
 }
 
 .btn-completar .material-symbols-outlined {
-    font-size: 2rem;
-    /* Ícono relleno al hacer hover usando la variable de fuente de Material Symbols */
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    transition: font-variation-settings 0.2s;
+  font-size: 2rem;
+  /* Ícono relleno al hacer hover usando la variable de fuente de Material Symbols */
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  transition: font-variation-settings 0.2s;
 }
 
 .btn-completar:hover {
-    background-color: var(--color-verde-claro);
-    transform: scale(1.12);
+  background-color: var(--color-verde-claro);
+  transform: scale(1.12);
 }
 
 .btn-completar:hover .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 /* ── Ícono estático en tarjetas del historial ── */
 .card-completado {
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
 .material-symbols-outlined.icono-completado {
-    font-size: 2rem;
-    color: var(--color-verde);
-    /* Ícono siempre relleno — sin interacción */
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    cursor: default;
-    user-select: none;
+  font-size: 2rem;
+  color: var(--color-verde);
+  /* Ícono siempre relleno — sin interacción */
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  cursor: default;
+  user-select: none;
 }
 
 @media screen and (min-width: 994px) {
-    .btn-agregar-registro {
-        width: 30%;
-    }
+  .btn-agregar-registro {
+    width: 30%;
+  }
+  .filtro-grupo select {
+    font-size: 1.5rem;
+  }
+  .filtro-grupo label {
+    font-size: 2rem;
+  }
+  .btn-filtrar {
+    font-size: 2rem;
+  }
 }
