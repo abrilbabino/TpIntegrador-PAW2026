@@ -11,11 +11,7 @@ class Config
         $this->configs["LOG_LEVEL"] = getenv("LOG_LEVEL", "INFO");
         $path = getenv("LOG_PATH", "/logs/app.log");
 
-        if (strpos($path, 'php://') === 0) {
-            $this->configs["LOG_PATH"] = $path;
-        } else {
-            $this->configs["LOG_PATH"] = $this->joinPaths(__DIR__ . '/../../', $path);
-        }
+        $this->configs["LOG_PATH"] = $this->joinPaths(__DIR__ . '/../../', $path);
 
         $this->configs["DB_ADAPTER"]  = getenv("DB_ADAPTER")  ?? 'pgsql';
         $this->configs["DB_HOSTNAME"] = getenv("DB_HOSTNAME") ?? 'localhost';
