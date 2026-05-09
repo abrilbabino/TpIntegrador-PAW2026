@@ -30,7 +30,7 @@
     "vlucas/phpdotenv": "^5.6",
     "robmorgan/phinx": "^0.16.11",
     "phpmailer/phpmailer": "^7.0",
-    "ext-pdo_mysql": "*"
+    "ext-pdo_pgsql": "*"
   },
   "autoload": {
     "psr-4": {
