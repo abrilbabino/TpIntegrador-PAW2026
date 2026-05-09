@@ -9,6 +9,7 @@ use Paw\App\Models\TestCompatibilidadPreguntaCollection;
 
 class TestController extends Controller
 {
+    public ?string $modelName = TestDeCompatibilidad::class;
     public function test()
     {
         $menu = $this->menu;
