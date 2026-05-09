@@ -1,10 +1,10 @@
 # Checklist funcionalidades
 ## Perfil de usuario
 - [x] Información personal, mascotas favoritas, solicitudes de adopción realizadas.  
-- [] Historial de adopciones y seguimiento sanitario.  
+- [x] Historial de adopciones y seguimiento sanitario.  
 
 ## Perfiles de mascotas 
-- [] Información detallada, fotos, vídeos, elementos interactivos. 
+- [x] Información detallada, fotos, vídeos, elementos interactivos. 
 - [x] Libreta sanitaria digital vinculada al calendario: vacunas, desparasitaciones, castración, controles médicos, tratamientos.  
 
 ## Listado General (Grilla de Mascotas) 
@@ -19,7 +19,7 @@
 - [x] Contrato digital con cláusula de seguimiento sanitario.   
 
 ## Calendario sanitario integrado
-- [] Recordatorios push/email/SMS para adoptantes: vacunas, desparasitaciones, castración, chequeos.   
-- [] Encuestas breves en los primeros días tras la adopción, para registrar la adaptación del perro al nuevo hogar (alimentación, sueño, conducta).   
-- [] Subida de fotos, boletas y certificados.  
-- [] Alertas automáticas al refugio si hay incumplimientos o problemas.  
+- [x] Recordatorios push/email/SMS para adoptantes: vacunas, desparasitaciones, castración, chequeos.   
+- [x] Encuestas breves en los primeros días tras la adopción, para registrar la adaptación del perro al nuevo hogar (alimentación, sueño, conducta).   
+- [x] Subida de fotos, boletas y certificados.  
+- [x] Alertas automáticas al refugio si hay incumplimientos o problemas.  

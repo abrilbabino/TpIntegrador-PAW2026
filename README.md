@@ -104,7 +104,7 @@ cd Entrega3
 php bin/cron_recordatorios.php
 ```
 ## Deploy
-[Pawmap](https://tpintegrador-paw2026-pawmap.up.railway.app/)
+[Pawmap](https://tpintegrador-paw2026-pawmap.up.railway.app/)  
 *Aclaración: La funcionalidad de envío de correos electrónicos no está disponible en este entorno debido a que el plan gratuito de Railway restringe el puerto SMTP. 
 
 ### Ngrok
