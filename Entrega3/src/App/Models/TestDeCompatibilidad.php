@@ -2,7 +2,9 @@
 
 namespace Paw\App\Models;
 
-class TestDeCompatibilidad
+use Paw\Core\Model;
+
+class TestDeCompatibilidad extends Model
 {
     private array $respuestas = [];
     private ?string $resultado = null;
