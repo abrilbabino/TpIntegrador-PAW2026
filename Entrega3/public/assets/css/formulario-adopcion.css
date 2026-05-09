@@ -2,35 +2,18 @@
     justify-content: center;
     text-align: center;
 }
-.formulario-adopcion {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 0;
-}
-
-.seccion-mascota {
-    width: 100%;
-}
-
-.carrusel-indicadores {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 1rem 0;
-}
 
 .info-formulario {
     background-color: var(--color-fondo);
     border-radius: 32px 32px 0 0;
-    padding: 2.5rem 2rem 2rem;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    box-shadow: 0 -4px 20px var(--color-texto);
-    margin-top: -2rem;
+    gap: 1.25rem;
+    box-shadow: 0 -1px 10px var(--color-texto);
     position: relative;
     z-index: 10;
+    margin: 0 1rem;
 }
 
 .drag-handle {
@@ -222,21 +205,6 @@
 }
 
 @media (min-width: 994px) {
-    .formulario-adopcion {
-        display: grid;
-        grid-template-columns: 1.3fr 1fr;
-        gap: 4rem;
-        align-items: start;
-        max-width: 1680px;
-        margin: 0 auto;
-        padding: 3rem 2rem;
-    }
-
-    .mas-fotos {
-        display: block;
-        margin-top: 1.2rem;
-    }
-
     .info-formulario {
         position: sticky;
         top: 2rem;
@@ -246,13 +214,5 @@
         padding: 3rem;
         box-shadow: 0 2px 12px var(--color-texto);
         margin-top: 0;
-    }
-
-    .carrusel-indicadores {
-        display: none;
-    }
-
-    .drag-handle {
-        display: none;
     }
 }

@@ -4,6 +4,7 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\Mascota;
+use Paw\App\Models\MediaMascotaCollection;
 use Paw\Core\MailService;
 
 class AdopcionController extends Controller
@@ -27,7 +28,7 @@ class AdopcionController extends Controller
         $errores = [];
 
         $id = $this->request->get('id');
-        $mascota = $this->cargarMascota($id);
+        [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
 
         // Obtener datos del adoptante para pre-completar el formulario
         $userModel = new \Paw\App\Models\User;
@@ -63,11 +64,12 @@ class AdopcionController extends Controller
         $errores = $this->model->validar();
 
         $mascota_id = $this->model->fields['mascota_id'];
-        $mascota = $this->cargarMascota($mascota_id);
 
         if (count($errores) > 0) {
+            [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
             require $this->viewsDir . '/formulario-adopcion.view.php';
         } else {
+            $mascota = $this->cargarMascota($mascota_id);
             $this->model->guardar($mascota->fields['refugio_id']);
 
             $mailService = new MailService;
@@ -91,5 +93,19 @@ class AdopcionController extends Controller
         $mascota->setQueryBuilder($this->model->getQueryBuilder());
         $mascota->load($id);
         return $mascota;
+    }
+
+    private function cargarMediaMascota($id): array
+    {
+        $mascota = $this->cargarMascota($id);
+
+        $mediaCol = new MediaMascotaCollection;
+        $mediaCol->setQueryBuilder($mascota->getQueryBuilder());
+        $mediaExtras = $mediaCol->getMultimedia(
+            (int)$mascota->fields['id'],
+            $mascota->fields['imagen'] ?? null
+        );
+
+        return [$mascota, $mediaExtras];
     }
 }
