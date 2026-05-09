@@ -7,7 +7,6 @@ use Paw\App\Models\User;
 use Paw\App\Models\Adoptante;
 use Paw\App\Models\Refugio;
 use Paw\App\Models\Favorito;
-use Paw\Core\Database\QueryBuilder;
  
 class UserController extends Controller
 {
@@ -34,14 +33,6 @@ class UserController extends Controller
         }
     }
  
-    private function getQb(): QueryBuilder
-    {
-        return new QueryBuilder(
-            $this->model->getQueryBuilder()->getConnection(),
-            $this->log
-        );
-    }
- 
     private function cargarPerfilAdoptante(array $user): void
     {
         $menu  = $this->menu;
@@ -49,7 +40,7 @@ class UserController extends Controller
  
         // Cargar modelo Adoptante
         $adoptanteModel = new Adoptante();
-        $adoptanteModel->setQueryBuilder($this->getQb());
+        $adoptanteModel->setQueryBuilder($this->model->getQueryBuilder());
         $adoptanteModel->load((int) $user['id']);
         $adoptante = $adoptanteModel->fields;
  
@@ -61,11 +52,11 @@ class UserController extends Controller
  
         if ($adoptanteId) {
             $favoritoModel = new Favorito();
-            $favoritoModel->setQueryBuilder($this->getQb());
+            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
             $favoritos = $favoritoModel->getByAdoptanteId((int) $adoptanteId);
  
             $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
-            $solicitudesCollection->setQueryBuilder($this->getQb());
+            $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
             
             $solicitudes = $solicitudesCollection->getSolicitudesAdoptante((int) $adoptanteId);
             $adopciones  = $solicitudesCollection->getAdopcionesAdoptante((int) $adoptanteId);
@@ -82,7 +73,7 @@ class UserController extends Controller
  
         // Cargar modelo Refugio
         $refugioModel = new Refugio();
-        $refugioModel->setQueryBuilder($this->getQb());
+        $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
         $refugioModel->load((int) $user['id']);
         $refugio = $refugioModel->fields;
  

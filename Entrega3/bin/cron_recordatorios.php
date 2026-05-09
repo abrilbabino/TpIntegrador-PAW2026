@@ -3,8 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Paw\Core\Config;
-use Paw\Core\Database\ConnectionBuilder;
-use Paw\Core\Database\QueryBuilder;
+use Paw\Core\DataBase\ConnectionBuilder;
+use Paw\Core\DataBase\QueryBuilder;
 use Paw\Core\MailService;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;

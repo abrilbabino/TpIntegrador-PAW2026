@@ -3,7 +3,6 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
-use Paw\Core\Database\QueryBuilder;
 use Paw\App\Models\Mascota;
 use Paw\Core\MailService;
 
@@ -32,7 +31,7 @@ class AdopcionController extends Controller
 
         // Obtener datos del adoptante para pre-completar el formulario
         $userModel = new \Paw\App\Models\User;
-        $userModel->setQueryBuilder(new \Paw\Core\Database\QueryBuilder($this->connection, $this->log));
+        $userModel->setQueryBuilder($this->model->getQueryBuilder());
         $adoptanteData = $userModel->getAdoptante((int)$_SESSION['user']['id']);
         $userData = $userModel->findById((int)$_SESSION['user']['id']);
 
@@ -89,7 +88,7 @@ class AdopcionController extends Controller
     private function cargarMascota($id)
     {
         $mascota = new Mascota;
-        $mascota->setQueryBuilder(new QueryBuilder($this->connection, $this->log));
+        $mascota->setQueryBuilder($this->model->getQueryBuilder());
         $mascota->load($id);
         return $mascota;
     }

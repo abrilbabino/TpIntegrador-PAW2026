@@ -12,7 +12,7 @@ use Dotenv\Dotenv;
 use Paw\Core\Router;
 use Paw\Core\Request;
 
-use Paw\Core\Database\ConnectionBuilder;
+use Paw\Core\DataBase\ConnectionBuilder;
 
 use Paw\Core\ControllerFactory;
 

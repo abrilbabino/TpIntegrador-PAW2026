@@ -1,5 +1,5 @@
 <?php
-namespace Paw\Core\Database;
+namespace Paw\Core\DataBase;
 
 use PDO;
 use PDOException;

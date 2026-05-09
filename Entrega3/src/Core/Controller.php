@@ -3,7 +3,7 @@
 namespace Paw\Core;
 
 use Paw\Core\Model;
-use Paw\Core\Database\QueryBuilder;
+use Paw\Core\DataBase\QueryBuilder;
 
 class Controller
 {

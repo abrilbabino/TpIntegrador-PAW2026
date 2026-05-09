@@ -14,7 +14,7 @@ class TestController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
 
-        $qb = new \Paw\Core\Database\QueryBuilder($this->connection, $this->log);
+        $qb = $this->model->getQueryBuilder();
         $preguntaCollection = new TestCompatibilidadPreguntaCollection();
         $preguntaCollection->setQueryBuilder($qb);
         $preguntas = $preguntaCollection->getAll();
@@ -36,7 +36,7 @@ class TestController extends Controller
         $test->setRespuestas(json_encode($respuestas));
         $filtrosSQL = $test->construirFiltrosBusqueda();
 
-        $qb = new \Paw\Core\Database\QueryBuilder($this->connection, $this->log);
+        $qb = $this->model->getQueryBuilder();
         $mascotaCollection = new MascotaCollection();
         $mascotaCollection->setQueryBuilder($qb);
 
