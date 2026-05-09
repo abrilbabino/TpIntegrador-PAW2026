@@ -104,4 +104,15 @@ cd Entrega3
 php bin/cron_recordatorios.php
 ```
 ## Deploy
-![Pawmap](https://tpintegrador-paw2026-1.onrender.com/)
+[Pawmap](https://tpintegrador-paw2026-pawmap.up.railway.app/)
+*Aclaración: La funcionalidad de envío de correos electrónicos no está disponible en este entorno debido a que el plan gratuito de Railway restringe el puerto SMTP. 
+
+### Ngrok
+*Para probar la aplicación con todas sus funcionalidades activas (incluyendo el servicio de correo):*  
+La aplicación se encuentra disponible de forma temporal a través de un túnel de ngrok.  
+**Solicitud de acceso**: Por favor, contactar para obtener el enlace activo de la sesión actual.
+
+## Autores
+Abril Babino  
+Naiara Collazo  
+Tobias Avila
