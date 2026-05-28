@@ -10,7 +10,18 @@ class User extends Model
         'email' => null,
         'contrasena' => null,
         'contacto' => null,
+        'foto_perfil' => null,
     ];
+
+    public function getFotoPerfil(): ?string
+    {
+        return $this->fields['foto_perfil'] ?? null;
+    }
+
+    public function setFotoPerfil(?string $path): void
+    {
+        $this->fields['foto_perfil'] = $path;
+    }
 
     public function crearUsuario($fields)
     {

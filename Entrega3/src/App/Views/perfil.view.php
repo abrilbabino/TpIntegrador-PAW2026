@@ -17,8 +17,13 @@
         <!-- Cabecera -->
         <section class="perfil-header">
             <figure class="perfil-avatar">
-                <span class="material-symbols-outlined">person</span>
+                <?php if (!empty($user['foto_perfil'])): ?>
+                    <img src="/assets/img/<?= htmlspecialchars($user['foto_perfil']) ?>" alt="">
+                <?php else: ?>
+                    <span class="material-symbols-outlined">person</span>
+                <?php endif; ?>
             </figure>
+
             <h1>Hola, <?= htmlspecialchars($user['nombre_usuario']) ?>!</h1>
             <p class="perfil-email"><?= htmlspecialchars($user['email'] ?? '') ?></p>
             <a href="/logout" class="perfil-logout">

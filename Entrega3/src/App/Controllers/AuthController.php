@@ -92,6 +92,7 @@ class AuthController extends Controller
                 'email'          => $email,
                 'rol'            => 'adoptante',
                 'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
+                'foto_perfil'    => null,
             ];
         /*
         }
@@ -146,6 +147,7 @@ class AuthController extends Controller
             'id'             => $usuario['id'],
             'nombre_usuario' => $usuario['nombre_usuario'],
             'email'          => $usuario['email'],
+            'foto_perfil'    => $usuario['foto_perfil'],
         ];
 
         // Detectar rol según qué tabla tiene registro vinculado
