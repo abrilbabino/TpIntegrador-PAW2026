@@ -229,7 +229,7 @@
 }
 
 .estadistica-box {
-    background-color: var(--color-gris-claro);
+    background-color: var(--color-azul);
     border-radius: 10px;
     padding: 0.55rem 0.4rem;
     text-align: center;
@@ -247,7 +247,7 @@
 
 .estadistica-label {
     font-size: 1.5rem;
-    color: var(--color-texto);
+    color: var(--color-fondo);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -256,7 +256,7 @@
 .estadistica-valor {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--color-azul);
+    color: var(--color-naranja);
 }
 
 .etiquetas-mascota h4 {
@@ -275,19 +275,19 @@
 }
 
 .etiqueta {
-    background-color: var(--color-gris-claro);
+    background-color: var(--color-fondo);
     padding: 0.4rem 0.85rem;
     border-radius: 50px;
     font-size: 1.2rem;
     color: var(--color-texto);
     font-weight: 500;
-    border: 1px solid transparent;
+    border: 1px solid var(--color-naranja);
     transition: border-color 0.2s, background-color 0.2s;
 }
 
 .etiqueta:hover {
     border-color: var(--color-naranja);
-    background-color: var(--color-fondo);
+    background-color: var(--color-naranja-claro);
 }
 
 .sobre-mi h4 {
