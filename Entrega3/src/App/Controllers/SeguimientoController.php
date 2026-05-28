@@ -3,12 +3,9 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
-use Paw\App\Models\RegistroSanitario;
 use Paw\App\Models\EncuestaAdaptacion;
 use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
-use Paw\Core\Database\QueryBuilder;
-use Exception;
 
 class SeguimientoController extends Controller
 {
