@@ -77,4 +77,11 @@ class PageController extends Controller
         $redes = $this->redes;
         require $this->viewsDir . '/contacto-exitoso.view.php';
     }
+    public function donacion()
+    {
+        $titulo = "Donaciones - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        require $this->viewsDir . '/donacion.view.php';
+    }
 }

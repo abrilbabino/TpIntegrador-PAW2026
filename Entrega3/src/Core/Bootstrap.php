@@ -98,3 +98,6 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 $router->get('/contacto', 'PageController@contacto');
 $router->post('/contacto/enviar', 'PageController@contactoEnviar');
 $router->get('/contacto-exitoso', 'PageController@contactoExitoso');
+
+// Donaciones
+$router->get('/donar', 'PageController@donacion');

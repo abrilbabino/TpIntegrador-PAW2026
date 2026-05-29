@@ -7,13 +7,17 @@
 El objetivo de PawMap es centralizar la información de animales en adopción y simplificar el proceso de búsqueda y contacto con refugios. La aplicación permite explorar mascotas disponibles mediante un mapa, aplicar filtros según características del animal y visualizar perfiles con contenido multimedia.
 
 ## Funcionalidades principales
+
 ### Modulo de Usuario y Acceso
+
 **Gestion de Sesiones:** Login y registro diferenciado para Adoptantes y Refugios.  
 **Perfil de Usuario:**
-- Adoptante: Edición de datos, "Favoritos" y estado de solicitudes.  
-- Refugio: Datos institucionales, contacto y ubicación.  
+
+- Adoptante: Edición de datos, "Favoritos" y estado de solicitudes.
+- Refugio: Datos institucionales, contacto y ubicación.
 
 ### Modulo de Navegacion e Información
+
 **Página "¿Cómo Adoptar?":** con contenido informativo sobre los pasos y responsabilidades de la
 adopción.
 
@@ -21,12 +25,14 @@ adopción.
 o links externos de pago) recuperados de la base de datos.
 
 ### Modulo de Refugios
+
 **Listado dinámico de todos los refugios registrados.**
 
 **Filtros de Refugios:** Buscador por nombre o localidad ( Mercedes, Lujan, etc.) para que el
 usuario encuentre los mas cercanos.
 
 ### Módulo de Mascotas
+
 **Mapa Interactivo:** Pines dinamicos usando Google Maps API basados en la tabla Ubicacion.
 
 **Listado de Mascotas:** Grilla con fotos, nombres y etiquetas.
@@ -36,6 +42,7 @@ usuario encuentre los mas cercanos.
 **Ficha de Detalle:** Galería de imágenes (MediaMascota) y descripción técnica.
 
 ### Módulo de Vinculación (Test y Solicitudes)
+
 **Test de Compatibilidad:** Formulario dinámico que procesa las respuestas del usuario y sugiere
 mascotas afines segun estilo de vida y entorno del adoptante.
 
@@ -43,6 +50,7 @@ mascotas afines segun estilo de vida y entorno del adoptante.
 envía la petición al Refugio.
 
 ### NUEVO: Modulo de Seguimiento Post-Adopción
+
 **Calendario Sanitario:** Cronograma de vacunas y desparasitaciones generado automáticamente.
 
 **Recordatorios:** Notificaciones (Email/SMS) sobre fechas sanitarias y castración.
@@ -57,6 +65,7 @@ certificados.
 vacunas.
 
 ### Panel de Gestión (Refugios)
+
 **CRUD de Mascotas:** Administración total de los animales (Alta/Baja/Modificación).
 
 **Gestion de Solicitudes:** Aprobar o rechazar adopciones.
@@ -65,12 +74,15 @@ vacunas.
 adoptantes.
 
 ## Intrucciones de ejecución
+
 ### composer
 
 ```bash
 composer install
 ```
-*Si ya instalaste el composer.json y se agregaron dependencias:*
+
+_Si ya instalaste el composer.json y se agregaron dependencias:_
+
 ```bash
 composer update
 ```
@@ -82,37 +94,45 @@ phinx migrate -e development
 phinx seed:run
 phinx rollback -e development -t 0
 ```
-*Si no tenes phinx instalado en tu compu:*
+
+_Si no tenes phinx instalado en tu compu:_
+
 ```bash
 php vendor/bin/phinx migration:run -e development
 ```
 
 ### Variables de Entorno
+
 Configurar las variables de entorno necesarias
+
 ```bash
 cp .env.example.env
 ```
 
 ### Comando para levantar el server
+
 ```bash
 cd Entrega3
 php -S localhost:3000 -t public
 ```
+
 ### Comando para probar el cron_notificaciones
+
 ```bash
 cd Entrega3
 php bin/cron_recordatorios.php
 ```
+
 ## Deploy
-[Pawmap](https://tpintegrador-paw2026-pawmap.up.railway.app/)  
-*Aclaración: La funcionalidad de envío de correos electrónicos no está disponible en este entorno debido a que el plan gratuito de Railway restringe el puerto SMTP. 
 
 ### Ngrok
-*Para probar la aplicación con todas sus funcionalidades activas (incluyendo el servicio de correo):*  
+
+_Para probar la aplicación con todas sus funcionalidades activas (incluyendo el servicio de correo):_  
 La aplicación se encuentra disponible de forma temporal a través de un túnel de ngrok.  
 **Solicitud de acceso**: Por favor, contactar para obtener el enlace activo de la sesión actual.
 
 ## Autores
+
 Abril Babino  
 Naiara Collazo  
 Tobias Avila
