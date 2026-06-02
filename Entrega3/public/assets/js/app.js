@@ -7,6 +7,7 @@ class AppPAW {
 
   init() {
     this._initMenu();
+    this._initCarousel();
   }
 
   _initMenu() {
@@ -23,6 +24,21 @@ class AppPAW {
       );
     }
   }
+
+  _initCarousel() {
+    const carruseles = document.querySelectorAll("[data-paw-carousel]");
+    if (carruseles.length === 0) return;
+    PAW.cargarScript(
+      "PAW-Carousel-Script",
+      "/assets/js/components/paw-carousel.js",
+      () => {
+        carruseles.forEach((container) => {
+          new PAWCarousel(container);
+        });
+      },
+    );
+  }
+
 }
 // Se instancia el objeto global para disparar el ciclo de vida de la aplicación
 const app = new AppPAW();

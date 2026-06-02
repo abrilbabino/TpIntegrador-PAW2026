@@ -160,7 +160,6 @@
 }
 
 .tarjeta-mascota:hover {
-  box-shadow: 0 10px 30px var(--color-texto);
   transform: translateY(-4px);
 }
 

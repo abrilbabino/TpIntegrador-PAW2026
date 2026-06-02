@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <link rel="stylesheet" href="/assets/css/print.css" media="print" />
     <link
       rel="stylesheet"
@@ -56,13 +57,10 @@
         <section class="seccion-adopcion">
             <h2>Mascotas en Adopción</h2>
             
-            <section class="grilla-mascotas-inicio">
+            <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 <?php if (!empty($mascotas)): ?>
                     <?php 
-                    $contador = 0;
                     foreach ($mascotas as $mascota): 
-                        if ($contador >= 4) break;
-                        $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
                         <article class="tarjeta-mascota">
