@@ -76,4 +76,9 @@ class RefugioCollection extends Model
         $refugio->load($id);
         return $refugio;
     }
+
+    public function getRefugiosConUbicacion(array $filtros = []): array
+    {
+        return $this->queryBuilder->obtenerRefugiosConUbicacion($this->table, $filtros);
+    }
 }

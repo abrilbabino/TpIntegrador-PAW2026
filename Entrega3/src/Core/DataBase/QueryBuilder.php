@@ -95,6 +95,30 @@ class QueryBuilder
             $binds[':ciudad'] = $filtros['ciudad'];
         }
 
+        if (!empty($filtros['temperamento'])) {
+            $sql .= " AND m.temperamento = :temperamento";
+            $binds[':temperamento'] = $filtros['temperamento'];
+        }
+
+        if (!empty($filtros['ubicacion'])) {
+            $sql .= " AND EXISTS (
+                SELECT 1 FROM ubicacion u 
+                WHERE u.refugio_id = m.refugio_id 
+                AND (u.ciudad ILIKE :ubicacion OR u.provincia ILIKE :ubicacion)
+            )";
+            $binds[':ubicacion'] = '%' . $filtros['ubicacion'] . '%';
+        }
+
+        if (!empty($filtros['lat_usuario']) && !empty($filtros['lng_usuario'])) {
+            $sql .= " AND EXISTS (
+                SELECT 1 FROM ubicacion u 
+                WHERE u.refugio_id = m.refugio_id 
+                AND (SQRT(POWER(u.latitud - :lat, 2) + POWER(u.longitud - :lng, 2)) * 111.32) <= 50
+            )";
+            $binds[':lat'] = (float)$filtros['lat_usuario'];
+            $binds[':lng'] = (float)$filtros['lng_usuario'];
+        }
+
         if ($esConteo) {
             return (int) $this->rawQueryValue($sql, $binds);
         }
@@ -518,5 +542,50 @@ class QueryBuilder
     {
         $sql = "SELECT ciudad, provincia FROM ubicacion WHERE refugio_id = :rid ORDER BY ciudad";
         return $this->rawQuery($sql, [':rid' => $refugioId]);
+    }
+
+    public function obtenerRefugiosConUbicacion(string $tabla, array $filtros = []): array
+    {
+        $sql = "SELECT r.usuario_id as id, r.nombre_institucion, r.telefono, r.imagen, 
+                       u.latitud, u.longitud, u.ciudad, u.provincia
+                FROM {$tabla} r
+                INNER JOIN ubicacion u ON r.usuario_id = u.refugio_id
+                WHERE u.latitud IS NOT NULL AND u.longitud IS NOT NULL";
+
+        $binds = [];
+
+        // Búsqueda por texto simple (ILIKE ignora mayúsculas/minúsculas en PostgreSQL)
+        if (!empty($filtros['ubicacion'])) {
+            $sql .= " AND (u.ciudad ILIKE :ubicacion OR u.provincia ILIKE :ubicacion)";
+            $binds[':ubicacion'] = '%' . $filtros['ubicacion'] . '%';
+        }
+
+        // Ejecutamos la consulta y obtenemos los refugios
+        $refugios = $this->rawQuery($sql, $binds);
+
+        // Si el usuario permitió usar su GPS, calculamos la distancia y ordenamos
+        if (!empty($filtros['lat_usuario']) && !empty($filtros['lng_usuario'])) {
+            $latUsuario = (float) $filtros['lat_usuario'];
+            $lngUsuario = (float) $filtros['lng_usuario'];
+
+            foreach ($refugios as &$refugio) {
+                // Usamos el Teorema de Pitágoras (mucho más simple de explicar que Haversine)
+                $difLat = $refugio['latitud'] - $latUsuario;
+                $difLng = $refugio['longitud'] - $lngUsuario;
+                
+                $distanciaEnGrados = sqrt(($difLat * $difLat) + ($difLng * $difLng));
+                
+                // 1 grado de latitud/longitud equivale a aproximadamente 111 kilómetros
+                $refugio['distancia_km'] = $distanciaEnGrados * 111.32;
+            }
+            unset($refugio);
+
+            // Ordenamos la lista de refugios de menor a mayor distancia
+            usort($refugios, function($a, $b) {
+                return $a['distancia_km'] <=> $b['distancia_km'];
+            });
+        }
+
+        return $refugios;
     }
 }

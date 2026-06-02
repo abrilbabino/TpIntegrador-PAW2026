@@ -20,6 +20,35 @@ class PageController extends Controller
 
         require $this->viewsDir . '/index.view.php';
     }
+
+    public function mapa()
+    {
+        $titulo = "Mapa Interactivo - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        $request = $this->request;
+
+        $filtros = [
+            'especie' => $request->get('especie'),
+            'tamano' => $request->get('tamano'),
+            'temperamento' => $request->get('temperamento'),
+            'edad_min' => $request->get('edad_min'),
+            'edad_max' => $request->get('edad_max'),
+            'ubicacion' => $request->get('ubicacion'),
+            'lat_usuario' => $request->get('lat_usuario'),
+            'lng_usuario' => $request->get('lng_usuario')
+        ];
+
+        // Obtener refugios con ubicaciones para el mapa
+        $refugioCollection = new \Paw\App\Models\RefugioCollection();
+        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugiosMapa = $refugioCollection->getRefugiosConUbicacion($filtros);
+
+        $mascotas = $this->model->getFiltered($filtros);
+
+        require $this->viewsDir . '/mapa.view.php';
+    }
+
     public function iniciarSesion()
     {
         $titulo = "Iniciar Sesión";

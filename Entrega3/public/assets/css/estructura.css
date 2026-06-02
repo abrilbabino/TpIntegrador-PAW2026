@@ -4,7 +4,7 @@
   align-items: center;
   border-bottom: 4px solid var(--color-naranja);
   background-color: var(--color-fondo);
-  position: fixed;
+  position: sticky;
   width: 100%;
   top: 0;
   z-index: 1000;
@@ -292,7 +292,7 @@ main>header p {
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    position: fixed;
+    position: sticky;
     top: 0;
     padding: 0.4rem 1rem;
     border-bottom: 4px solid var(--color-naranja);
