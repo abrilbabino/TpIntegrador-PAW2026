@@ -1,10 +1,4 @@
 <header class="Barra-navegacion">
-    <input type="checkbox" id="menu-hamburguesa" class="menu-hamburguesa-check" />
-
-    <label for="menu-hamburguesa" class="label-hamburguesa">
-        <span class="material-symbols-outlined">menu</span>
-    </label>
-
     <figure class="header-logo">
         <img src="/assets/img/logo.png" alt="" />
     </figure>

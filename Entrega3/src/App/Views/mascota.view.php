@@ -10,6 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
     <title><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?> - PawMap</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>

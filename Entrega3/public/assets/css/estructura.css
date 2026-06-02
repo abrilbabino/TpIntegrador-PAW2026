@@ -12,22 +12,22 @@
   flex-wrap: wrap;
 }
 
-.menu-hamburguesa-check {
-  display: none;
-}
-
-.label-hamburguesa {
+.PAW-MenuAbrir,
+.PAW-MenuCerrar {
   display: block;
   cursor: pointer;
-  flex-shrink: 0;
-  z-index: 10;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  justify-content: center;
+  background-color: transparent; 
+  border: none;
 }
 
-.label-hamburguesa .material-symbols-outlined {
-  font-size: 42px;
+.PAW-MenuAbrir span,
+.PAW-MenuCerrar span{
   color: var(--color-azul);
+  font-size: 2.5rem;
 }
-
 .header-logo {
   position: static;
   transform: none;
@@ -97,12 +97,8 @@
   flex-wrap: wrap;
 }
 
-#menu-hamburguesa:checked~.menu-principal .nav-lista {
+.PAW-MenuAbierto .nav-lista {
   display: flex;
-}
-
-#menu-hamburguesa:checked~.header-logo {
-  visibility: hidden
 }
 
 .nav-link {
@@ -128,64 +124,6 @@
 
 .menu-principal .simbolos {
   font-size: 36px;
-}
-
-.fondo-login,
-.fondo-registro {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1100;
-}
-
-.login-panel,
-.registro-panel {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: min(95vw, 400px);
-  height: auto;
-  max-height: 85vh;
-  overflow-y: auto;
-  background: var(--color-fondo);
-  z-index: 1200;
-  display: flex;
-  flex-direction: column;
-  padding: 2.5rem;
-  gap: 1rem;
-  border-radius: 15px;
-  box-shadow: 0px 10px 30px var(--color-texto);
-  transform: translate(-50%, -50%) scale(0.7);
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.3s ease-in-out,
-    transform 0.3s ease-in-out,
-    visibility 0.3s ease-in-out;
-}
-
-.login-check:checked~.fondo-login {
-  display: block;
-}
-
-.login-check:checked~.login-panel {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  visibility: visible;
-}
-
-.registro-check:checked~.fondo-registro {
-  display: block;
-}
-
-.registro-check:checked~.registro-panel {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  visibility: visible;
-}
-
-.registro-check:checked~.login-panel {
-  display: none;
 }
 
 main>header {
@@ -345,7 +283,8 @@ main>header p {
     display: none;
   }
 
-  .label-hamburguesa {
+  .PAW-MenuAbrir,
+  .PAW-MenuCerrar{
     display: none;
   }
 

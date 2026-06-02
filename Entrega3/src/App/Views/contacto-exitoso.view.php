@@ -5,18 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Estilos generales del proyecto -->
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/contactoexitoso.css" />
     
-    <!-- Fuentes y Material Symbols -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     
-    <title><?= htmlspecialchars($titulo ?? 'Contacto Exitoso - PawMap') ?></title>
+    <title>Contacto Exitoso</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
@@ -38,7 +36,5 @@
 
     <?php require __DIR__ . '/footer.view.php'; ?>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

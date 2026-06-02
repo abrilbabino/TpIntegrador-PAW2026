@@ -9,6 +9,8 @@
     />
     <link rel="stylesheet" href="/assets/css/style.css" />
     <title>Error Interno del Servidor</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>  
     <?php require __DIR__ . '/barra-navegacion.view.php'?>
