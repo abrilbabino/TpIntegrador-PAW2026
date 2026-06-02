@@ -50,4 +50,24 @@ class Refugio extends Model
             throw new \Exception("No se encontró un refugio con el ID proporcionado");
         }
     }
+
+    public function getId(): int
+    {
+        return (int) $this->fields['usuario_id'];
+    }
+
+    public function getNombre(): string
+    {
+        return $this->fields['nombre_institucion'];
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->fields['alias'];
+    }
+
+    public function getCvu(): ?string
+    {
+        return $this->fields['cvu'];
+    }
 }

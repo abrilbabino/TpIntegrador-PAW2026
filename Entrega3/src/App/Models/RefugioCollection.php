@@ -15,6 +15,11 @@ class RefugioCollection extends Model
         return $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, true);
     }
 
+    public function getAll() {
+        $rows = $this->queryBuilder->rawQuery("SELECT * FROM {$this->table} ORDER BY nombre_institucion ASC");
+        return $this->mapRefugios($rows);
+    }
+
     public function getProvincias(): array { return $this->obtenerUbicacionUnica('provincia'); }
     public function getCiudades(): array { return $this->obtenerUbicacionUnica('ciudad'); }
 

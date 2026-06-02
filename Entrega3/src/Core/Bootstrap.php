@@ -100,4 +100,5 @@ $router->post('/contacto/enviar', 'PageController@contactoEnviar');
 $router->get('/contacto-exitoso', 'PageController@contactoExitoso');
 
 // Donaciones
-$router->get('/donar', 'PageController@donacion');
+$router->get('/donar', 'DonacionController@index');
+$router->post('/procesar-donacion', 'DonacionController@enviar');
