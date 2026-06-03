@@ -94,6 +94,64 @@ class DonacionController extends Controller
         require $this->viewsDir . '/donacion-exitosa.view.php';
     }
 
+    public function enviarComprobante()
+    {
+        $titulo = "Donación Procesada - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+
+        $refugioId = $this->request->get('refugio_id');
+        $montoRaw = $this->request->get('monto');
+        $monto = number_format((float) $montoRaw, 2, ',', '.');
+
+        try {
+            $refugio = $this->model->get((int) $refugioId);
+        } catch (\Exception $e) {
+            header("Location: /donar");
+            return;
+        }
+
+        $comprobante = $_FILES['comprobante'] ?? null;
+        $envioExitoso = false;
+        $errorEnvio = null;
+
+        if ($comprobante && $comprobante['error'] === UPLOAD_ERR_OK) {
+            $tmpPath = $comprobante['tmp_name'];
+            $fileName = $comprobante['name'];
+
+            $mailService = new \Paw\Core\MailService();
+            $destinatario = $refugio->getEmail();
+
+            if (!empty($destinatario)) {
+                $datosDonacion = [
+                    'monto' => $monto,
+                    'refugio' => $refugio->getNombre()
+                ];
+                $envioExitoso = $mailService->enviarComprobanteDonacion($destinatario, $datosDonacion, $tmpPath, $fileName);
+                if (!$envioExitoso) {
+                    $errorEnvio = "Hubo un problema al enviar el correo al refugio.";
+                }
+            } else {
+                $errorEnvio = "El refugio no tiene una dirección de correo registrada.";
+            }
+        } else {
+            $errorEnvio = "No se pudo cargar el archivo del comprobante.";
+        }
+
+        $valores = [
+            'metodo_pago' => 'transferencia',
+            'monto' => $montoRaw,
+        ];
+        
+        $comprobanteStatus = [
+            'success' => $envioExitoso,
+            'error' => $errorEnvio
+        ];
+
+        require $this->viewsDir . '/donacion-exitosa.view.php';
+    }
+
+
     private function validar(array $valores): array
     {
         $errores = [];
@@ -112,10 +170,9 @@ class DonacionController extends Controller
 
         return $errores;
     }
-
+    //por ahora viene toda la plata para mi cuenta, cuando tenga el perfil del refugio hacemos el split
     private function redirigirACheckoutMercadoPago(Refugio $refugio, float $monto): void
     {
-        //hardcodeo por ahora
         $accessToken = getenv('MERCADO_PAGO_ACCESS_TOKEN') ?: '';
 
         MercadoPagoConfig::setAccessToken($accessToken);
