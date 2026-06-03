@@ -593,4 +593,13 @@ class QueryBuilder
 
         return $refugios;
     }
+
+    public function selectByRefugioId(string $table, int $refugioId): array
+    {
+        $sql = "SELECT * FROM {$table} WHERE refugio_id = :refugio_id";
+        $sentencia = $this->pdo->prepare($sql);
+        $sentencia->bindValue(':refugio_id', $refugioId, PDO::PARAM_INT);
+        $sentencia->execute();
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

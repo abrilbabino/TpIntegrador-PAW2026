@@ -77,10 +77,15 @@ class UserController extends Controller
         $refugioModel->load((int) $user['id']);
         $refugio = $refugioModel->fields;
  
+        $refugioId = $user['id'] ?? null;
         $mascotas = [];
-        // cuando tengas MascotaModel:
-        // $refugioId = $user['refugio_id'] ?? null;
-        // $mascotas = $mascotaModel->getByRefugioId((int) $refugioId);
+        
+        if ($refugioId) {
+            $mascotaCollection = new \Paw\App\Models\MascotaCollection();
+            $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
+        }
+
  
         $titulo = "Mi Refugio - PawMap";
         require $this->viewsDir . '/perfil-refugio.view.php';

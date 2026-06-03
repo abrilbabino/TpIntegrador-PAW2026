@@ -119,4 +119,10 @@ class MascotaCollection extends Model
         }
         return $coleccion;
     }
+    
+    public function getByRefugioId(int $refugioId): array
+    {
+        $mascotas = $this->queryBuilder->selectByRefugioId($this->table, $refugioId);
+        return $this->mapMascotas($mascotas);
+    }
 }

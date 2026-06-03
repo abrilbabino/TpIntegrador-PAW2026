@@ -1,0 +1,126 @@
+/* ===== PERFIL CONTAINER ===== */
+.perfil-refugio-container {
+    max-width: 700px;
+    margin: 5rem auto 2rem;
+    padding: 0 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ===== HEADER ===== */
+.perfil-refugio-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1.5rem 1rem 1rem;
+}
+
+.perfil-refugio-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--color-gris-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.perfil-refugio-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.perfil-refugio-avatar .material-symbols-outlined {
+    font-size: 2.5rem;
+    color: #888;
+}
+
+.perfil-refugio-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.perfil-refugio-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--color-rojo);
+    text-decoration: none;
+    margin-top: 0.5rem;
+}
+
+.perfil-refugio-logout:hover {
+    text-decoration: underline;
+}
+
+/* ===== DATOS PERSONALES ===== */
+.perfil-refugio-datos {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    padding: 1.2rem 1.5rem;
+}
+
+.perfil-refugio-datos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.perfil-refugio-datos-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.btn-editar {
+    color: var(--color-gris-claro);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.btn-editar:hover {
+    color: var(--color-texto);
+}
+
+.perfil-datos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dato-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.dato-label {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #888;
+}
+
+.dato-valor {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-texto);
+}
+
+.perfil-seccion h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
