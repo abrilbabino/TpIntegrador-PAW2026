@@ -126,7 +126,8 @@
   font-size: 36px;
 }
 
-main>header {
+main>header,
+.hero {
   width: 100%;
   min-height: 300px;
   display: flex;
@@ -143,7 +144,8 @@ main>header {
   background-repeat: no-repeat;
 }
 
-main>header h1 {
+main>header h1,
+.hero h1 {
   font-size: 3rem;
   line-height: 1;
 }
