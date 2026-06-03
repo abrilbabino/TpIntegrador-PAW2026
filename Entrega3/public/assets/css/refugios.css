@@ -196,6 +196,7 @@
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   background-color: var(--color-fondo);
   box-shadow: 0 2px 12px var(--color-texto);
+  position: relative;
 }
 
 .tarjeta-refugio:hover {
@@ -236,8 +237,25 @@
 
 .tarjeta-refugio-header h3 {
   font-size: 1.2rem;
+  font-weight: 700;
   color: var(--color-azul);
   margin: 0;
+  flex-grow: 1;
+}
+
+.stretched-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.stretched-link::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  content: "";
 }
 
 .icono-telefono {

@@ -24,6 +24,12 @@ class MascotaCollection extends Model
         return $this->mapMascotas($resultadosDB);
     }
 
+    public function getFiltered(array $filtros): array
+    {
+        $resultados = $this->queryBuilder->obtenerMascotasFiltradas($filtros);
+        return $this->mapMascotas($resultados);
+    }
+
     public function get($id)
     {
         $mascota = new Mascota;

@@ -37,15 +37,23 @@ class RefugioController extends Controller
         $id    = $request->get('id');
 
         $refugio = null;
+        $mascotas = [];
         if ($this->model) {
             try {
                 $refugio = $this->model->get($id);
+                
+                $mascotaCollection = new \Paw\App\Models\MascotaCollection();
+                $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+                $resultado = $mascotaCollection->getPaginated(['refugio_id' => $id], 1, 100);
+                $mascotas = $resultado['items'];
+                
+                $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
             } catch (\Exception $e) {
                 error_log("Error cargando detalle de refugio: " . $e->getMessage());
             }
         }
 
-        require $this->viewsDir . '/refugio.view.php';
+        require $this->viewsDir . '/detalleRefugio.view.php';
     }
 
     private function getFiltros()

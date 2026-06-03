@@ -1,0 +1,503 @@
+.contenedor-mapa-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.sidebar-mapa {
+    background-color: var(--color-fondo);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px var(--color-gris-claro);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-con-icono {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-con-icono input {
+    flex: 1;
+}
+
+.sidebar-mapa .filtros {
+    margin-bottom: 0;
+}
+
+.refugios-cercanos {
+    background-color: var(--color-fondo);
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid var(--color-naranja);
+    box-shadow: 0 4px 12px var(--color-texto);
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-refugios-cercanos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 0.3rem;
+    color: var(--color-azul);
+}
+
+.titulo-refugios-cercanos h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.lista-refugios-sidebar {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    color: var(--color-texto);
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.refugio-cercano-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-gris-claro);
+    text-align: left;
+}
+
+.refugio-cercano-item:last-child {
+    border-bottom: none;
+}
+
+.refugio-mini-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--color-violeta);
+}
+
+.refugio-mini-info h4 {
+    margin: 0 0 0.2rem 0;
+    font-size: 1rem;
+    color: var(--color-azul);
+}
+
+.refugio-mini-info p {
+    margin: 0 0 0.3rem 0;
+    font-size: 0.8rem;
+    color: var(--color-texto);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.refugio-mini-info .icon-small {
+    font-size: 14px;
+    color: var(--color-naranja);
+}
+
+.refugio-distancia {
+    font-size: 0.8rem;
+    color: var(--color-fondo);
+    background-color: var(--color-naranja);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.boton-ver-todos {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+    color: var(--color-fondo);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 0.9rem 2.2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px var(--color-naranja);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+}
+
+.boton-ver-todos:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px var(--color-naranja);
+}
+
+.contenido-mapa {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mapa-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px var(--color-gris-claro);
+}
+
+.mapa-interactivo {
+    width: 100%;
+    height: 70vh;
+    border-radius: 16px;
+    z-index: 1; 
+}
+
+.btn-gps-flotante {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 400; 
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-gris-claro);
+    border-radius: 4px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-gris-claro);
+    transition: background-color 0.3s, color 0.3s;
+    padding: 0;
+}
+
+.btn-gps-flotante:hover {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+.btn-gps-flotante span {
+    font-size: 20px;
+}
+
+.mapa-nota-gps {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 400;
+    background: var(--color-fondo);
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--color-texto);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    pointer-events: none;
+    max-width: 250px;
+}
+
+.mapa-nota-gps .icon-small {
+    font-size: 16px;
+    color: var(--color-azul);
+}
+
+.popup-refugio-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--fuente-cuerpo);
+    min-width: 260px;
+    padding: 6px;
+    background: linear-gradient(to right, var(--color-fondo), var(--color-fondo));
+    border-radius: 12px;
+}
+
+.popup-refugio-img {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-naranja);
+    flex-shrink: 0;
+    box-shadow: 0 3px 6px var(--color-naranja);
+}
+
+.leaflet-popup-content .popup-refugio-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.leaflet-popup-content .popup-refugio-body h3 {
+    margin: 0 0 4px 0 ;
+    font-size: 1.15rem;
+    color: var(--color-azul);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.leaflet-popup-content .popup-refugio-loc, 
+.leaflet-popup-content .popup-refugio-tel {
+    margin: 0 0 2px 0;
+    font-size: 0.85rem;
+    color: var(--color-texto);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    line-height: 1.2;
+}
+
+.leaflet-popup-content .popup-refugio-loc .material-symbols-outlined, 
+.leaflet-popup-content .popup-refugio-tel .material-symbols-outlined {
+    font-size: 15px;
+    color: var(--color-naranja);
+}
+
+.popup-refugio-btn {
+    display: inline-block;
+    margin-top: 5px;
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    padding: 5px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--color-naranja);
+}
+
+.popup-refugio-btn:hover {
+    background-color: var(--color-naranja);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px var(--color-naranja);
+}
+
+.mascotas-zona {
+    margin: 1.5rem 0.3rem 0 0.3rem; 
+    background-color: var(--color-fondo);
+    border-radius: 24px 24px 0 0; 
+    position: relative;
+    box-shadow: 0 -8px 25px var(--color-gris-claro); 
+}
+
+.decorador-linea {
+    width: 50px;
+    height: 4px;
+    background-color: var(--color-gris-claro);
+    border-radius: 2px;
+    margin: 0 auto 1rem auto;
+}
+
+.mascotas-zona h2 {
+    font-size: 2.5rem;
+    margin-left: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    color: var(--color-azul);
+    text-shadow: 1px 1px 1px var(--color-fondo);
+    text-align: left;
+}
+
+.carrusel-mascotas {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding: 0 1rem 1rem 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.carrusel-mascotas::-webkit-scrollbar {
+    height: 8px;
+}
+.carrusel-mascotas::-webkit-scrollbar-thumb {
+    background-color: var(--color-gris-claro);
+    border-radius: 4px;
+}
+
+.carrusel-mascotas .tarjeta-mascota {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    background-color: var(--color-fondo);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px var(--color-gris-claro);
+    margin-bottom: 0.5rem;
+}
+
+.carrusel-mascotas .tarjeta-info {
+    padding: 16px;
+    border-top: 3px solid var(--color-amarillo);
+    background-color: transparent;
+}
+
+.tarjeta-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.tarjeta-info-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--color-azul);
+    font-weight: 800;
+}
+
+.btn-ver-perfil-mobile {
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px var(--color-naranja);
+}
+
+.carrusel-mascotas .tarjeta-info p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-texto);
+}
+
+.sidebar-mapa .refugios-cercanos {
+    display: none;
+}
+
+.contenido-mapa .refugios-cercanos {
+    display: flex;
+}
+
+@media screen and (min-width: 992px) {
+    .contenedor-mapa-page {
+        flex-direction: row;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .sidebar-mapa {
+        width: 340px;
+        flex-shrink: 0;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .contenido-mapa {
+        flex: 1;
+        min-width: 0;
+        padding-top: 0.7rem;
+    }
+
+    .mapa-interactivo {
+        height: 77.8vh;
+    }
+
+    .mascotas-zona {
+        border-radius: 0;
+        background-color: transparent;
+        padding-top: 2.5rem;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .mascotas-zona h2 {
+        font-size: 3rem;
+    }
+
+    .decorador-linea {
+        display: none;
+    }
+
+    .sidebar-mapa .refugios-cercanos {
+        display: flex; 
+    }
+
+    .contenido-mapa .refugios-cercanos {
+        display: none;
+    }
+
+    .carrusel-mascotas {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1.5rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .carrusel-mascotas::-webkit-scrollbar {
+        height: 8px;
+    }
+    .carrusel-mascotas::-webkit-scrollbar-thumb {
+        background-color: var(--color-gris-claro);
+        border-radius: 4px;
+    }
+
+    .carrusel-mascotas .tarjeta-mascota {
+        flex: 0 0 280px;
+        background-color: var(--color-fondo);
+        border-radius: 14px;
+        box-shadow: 0 2px 12px var(--color-texto);
+        margin-bottom: 0.5rem;
+    }
+    
+    .carrusel-mascotas .tarjeta-mascota:hover {
+        box-shadow: 0 10px 30px var(--color-texto);
+        transform: translateY(-4px);
+    }
+
+    .carrusel-mascotas .tarjeta-imagen {
+        display: flex;
+    }
+
+    .carrusel-mascotas .tarjeta-info {
+        padding: 20px;
+        border-top: 3px solid var(--color-amarillo);
+    }
+    
+    .btn-ver-perfil-mobile {
+        display: none;
+    }
+    
+    .tarjeta-info-header h3 {
+        color: var(--color-azul);
+    }
+    
+    .refugios-zona-mobile {
+        display: none;
+    }
+}
+
+.user-location-marker {
+    background: transparent;
+    border: none;
+}
+.custom-marker-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: var(--color-azul);
+    border: 4px solid var(--color-fondo);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px var(--color-gris-claro);
+    position: relative;
+}

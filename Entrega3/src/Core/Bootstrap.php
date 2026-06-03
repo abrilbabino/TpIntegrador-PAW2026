@@ -51,7 +51,7 @@ $router->get('/', 'PageController@index');
 $router->get('/iniciar-sesion', 'PageController@iniciarSesion');
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // $router->get('/donar', 'PageController@donar');
-// $router->get('/mapa', 'PageController@mapa');
+$router->get('/mapa', 'PageController@mapa');
 
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
@@ -73,6 +73,7 @@ $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');
 $router->get('/refugio', 'RefugioController@detalle');
+$router->get('/refugio/perfil', 'RefugioController@detalle');
 
 // Autenticación
 $router->post('/login', 'AuthController@login');
@@ -98,3 +99,7 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 $router->get('/contacto', 'PageController@contacto');
 $router->post('/contacto/enviar', 'PageController@contactoEnviar');
 $router->get('/contacto-exitoso', 'PageController@contactoExitoso');
+
+// Donaciones
+$router->get('/donar', 'DonacionController@index');
+$router->post('/procesar-donacion', 'DonacionController@enviar');

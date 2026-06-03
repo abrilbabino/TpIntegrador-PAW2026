@@ -16,8 +16,10 @@ class Refugio extends Model
         'alias' => null,
         'imagen' => 'default-refugio.jpg',
         'telefono' => '',
+        'email' => null,
         'ciudad' => null,
         'provincia' => null,
+        'descripcion' => null,
         'adoptables_disponibles' => 0,
     ];
 
@@ -49,5 +51,35 @@ class Refugio extends Model
         } else {
             throw new \Exception("No se encontró un refugio con el ID proporcionado");
         }
+    }
+
+    public function getId(): int
+    {
+        return (int) $this->fields['usuario_id'];
+    }
+
+    public function getNombre(): string
+    {
+        return $this->fields['nombre_institucion'];
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->fields['alias'];
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->fields['descripcion'] ?? 'Este refugio aún no tiene una descripción detallada, pero trabaja arduamente día a día para rescatar y cuidar a los animales que más lo necesitan.';
+    }
+
+    public function getCvu(): ?string
+    {
+        return $this->fields['cvu'];
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->fields['email'];
     }
 }
