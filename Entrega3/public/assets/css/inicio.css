@@ -4,8 +4,8 @@
 }
 
 .seccion-mapa {
-  padding: 2.5rem 0rem;
-  margin: 0 2rem;
+  padding: 0;
+  margin: 1rem 2rem 0 2rem;
 }
 
 .seccion-mapa figure {
@@ -24,7 +24,7 @@
 
 .boton-ancho {
   width: 100%;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
 }
 
 .boton-secundario,
@@ -90,7 +90,7 @@
 
 .titulo-incentivar-adopcion {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   color: var(--color-azul);
   text-align: left;
 }
@@ -141,11 +141,9 @@
 
 .seccion-adopcion > h2 {
   font-size: 2.5rem;
-  margin-left: 1rem;
-  margin-bottom: 1.5rem;
   color: var(--color-azul);
   text-shadow: 1px 1px 1px var(--color-fondo);
-  text-align: left;
+  text-align: center;
 }
 
 .grilla-mascotas-inicio {
@@ -238,7 +236,7 @@
   }
 
   .seccion-mapa {
-    padding: 2.5rem 1.5rem;
+    padding: 1rem 0;
   }
 
   .boton-ancho {
@@ -287,6 +285,8 @@
 
   .seccion-adopcion > h2 {
     font-size: 3rem;
+    margin-left: 4.5rem;
+    text-align: left;
   }
 
   .seccion-adopcion .grilla-mascotas-inicio {
