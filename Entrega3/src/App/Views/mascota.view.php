@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -20,43 +21,40 @@
 
         <article class="seccion-detalle-mascota">
             <section class="galeria-mascota">
-                <div class="carrusel-contenedor">
-                    <figure class="carrusel-slide">
-                        <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
-                             alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
-                    </figure>
-                    <?php if (!empty($mediaExtras)): ?>
-                    <h4 class="galeria__titulo">GALERÍA</h4>
-                        <?php foreach ($mediaExtras as $media): ?>
-                            <?php if ($media->tipo === 'video'): ?>
-                            <figure class="carrusel-slide carrusel-slide--video">
-                                <video controls preload="metadata" playsinline muted
-                                    poster="<?= htmlspecialchars($media->poster ?? '', ENT_QUOTES, 'UTF-8') ?>">
+            <figure class="imagen-principal-desktop">
+                <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
+                     alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+            </figure>
+
+            <?php if (!empty($mediaExtras)): ?>
+                <h4>GALERÍA</h4>
+            <?php endif; ?>
+
+            <div class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+                
+                <figure class="carrusel-slide-item slide-principal-movil">
+                    <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default-pet.jpg', ENT_QUOTES, 'UTF-8') ?>"
+                         alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
+                </figure>
+
+                <?php if (!empty($mediaExtras)): ?>
+                    <?php foreach ($mediaExtras as $media): ?>
+                        <?php if ($media->tipo === 'video'): ?>
+                            <figure class="carrusel-slide-item carrusel-slide--video">
+                                <video controls autoplay loop preload="metadata" playsinline muted poster="<?= htmlspecialchars($media->poster ?? '', ENT_QUOTES, 'UTF-8') ?>">
                                     <source src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>" type="video/mp4">
                                 </video>
                             </figure>
-                            <?php else: ?>
-                            <figure class="carrusel-slide">
-                                <img src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>"
-                                     alt="Foto de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'mascota') ?>" loading="lazy">
+                        <?php else: ?>
+                            <figure class="carrusel-slide-item">
+                                <img src="/<?= htmlspecialchars($media->url, ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                             </figure>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-                <nav class="carrusel-indicadores" aria-label="Controles de galería">
-                    <?php 
-                    $cantidadTotal = 1 + count($mediaExtras ?? []); 
-                    if ($cantidadTotal > 1):
-                        for ($i = 0; $i < $cantidadTotal; $i++): 
-                    ?>
-                            <span class="item-carrusel <?= $i === 0 ? 'active' : '' ?>"></span>
-                    <?php 
-                        endfor; 
-                    endif; 
-                    ?>
-                </nav>
-            </section>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+        </section>
 
             <aside class="info-mascota">
                 <div class="drag-handle"></div>

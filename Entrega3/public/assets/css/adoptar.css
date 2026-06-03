@@ -156,7 +156,7 @@
   flex-direction: column;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   background-color: var(--color-fondo);
-  box-shadow: 0 2px 12px var(--color-texto);
+  box-shadow: 0 2px 4px var(--color-texto);
 }
 
 .tarjeta-mascota:hover {

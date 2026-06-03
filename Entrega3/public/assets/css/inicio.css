@@ -221,6 +221,11 @@
   color: #555;
 }
 
+.paw-carousel .paw-carousel-prev,
+.paw-carousel .paw-carousel-next {
+    display: none;
+}
+
 @media screen and (min-width: 994px) {
   .hero-inicio {
     text-align: left;
@@ -292,5 +297,10 @@
 
   .tarjeta-imagen {
     height: 220px;
+  }
+
+  .paw-carousel .paw-carousel-prev,
+  .paw-carousel .paw-carousel-next {
+      display: flex;
   }
 }
