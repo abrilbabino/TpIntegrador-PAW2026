@@ -36,6 +36,32 @@ class MascotaController extends Controller
         require $this->viewsDir . '/adoptar.view.php';
     }
 
+    public function apiMascotas() {
+        header('Content-Type: application/json');
+        
+        $resultado = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']); 
+        
+        $mascotasData = [];
+        foreach ($resultado as $mascota) {
+            
+            $mascotasData[] = [
+                'id'           => $mascota->fields['id'],
+                'nombre'       => $mascota->fields['nombre'],
+                'imagen'       => $mascota->fields['imagen'],
+                'edad'         => $mascota->fields['edad'],
+                'tamano'       => $mascota->fields['tamano'],
+                'temperamento' => $mascota->fields['temperamento'],
+                'especie'      => $mascota->fields['especie']
+            ];
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $mascotasData
+        ]);
+        exit;
+    }
+
     private function getFiltros()
     {
         $request = $this->request;

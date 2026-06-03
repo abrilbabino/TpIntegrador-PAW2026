@@ -55,6 +55,7 @@ $router->get('/mapa', 'PageController@mapa');
 
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
+$router->get('/api/mascotas', 'MascotaController@apiMascotas');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
 $router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');

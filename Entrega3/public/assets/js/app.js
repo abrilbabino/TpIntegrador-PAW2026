@@ -8,6 +8,7 @@ class AppPAW {
   init() {
     this._initMenu();
     this._initCarousel();
+    this._initVisualizacion();
   }
 
   _initMenu() {
@@ -39,6 +40,32 @@ class AppPAW {
     );
   }
 
+  _initVisualizacion() {
+    const contenedorGrilla = document.getElementById("contenedor-grilla");
+    const contenedorPaginacion = document.getElementById("contenedor-paginacion");
+
+    if (!contenedorGrilla || !contenedorPaginacion) return; 
+
+    PAW.cargarScript(
+      "PAW-Paginacion-Script",
+      "/assets/js/components/paw-paginacion.js",
+      () => {
+        PAW.cargarScript(
+          "PAW-Visualizacion-Script",
+          "/assets/js/components/PAWVisualizacion.js",
+          () => {
+            const visualizador = new PAWVisualizacion(
+                contenedorGrilla, 
+                contenedorPaginacion, 
+                6
+            );
+            
+            visualizador.init('/api/mascotas');
+          }
+        );
+      }
+    );
+  }
 }
 // Se instancia el objeto global para disparar el ciclo de vida de la aplicación
 const app = new AppPAW();

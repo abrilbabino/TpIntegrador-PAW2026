@@ -101,45 +101,13 @@
                 </form>
             </details>
         </section>
-
-        <section class="adoptar-contenido">
-                <article class="grilla-mascotas">
-                    <?php foreach ($mascotas as $mascota): ?>
-                        <article class="tarjeta-mascota">
-                            <figure class="tarjeta-imagen">
-                                <a href="/mascota?id=<?= htmlspecialchars(($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="link-imagen">
-                                    <img src="/assets/img/<?= htmlspecialchars($mascota->fields['imagen'] ?? 'default.jpg', ENT_QUOTES, 'UTF-8') ?>"
-                                         alt="<?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?>">
-                                </a>
-                                <form method="POST" action="/favorito" class="form-favorito-tarjeta">
-                                    <input type="hidden" name="mascota_id" value="<?= htmlspecialchars(($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                                    <button type="submit" class="btn-favorito" aria-label="Agregar a favoritos">
-                                        <span class="material-symbols-outlined">favorite</span>
-                                    </button>
-                                </form>
-                            </figure>
-
-                            <a href="/mascota?id=<?= htmlspecialchars(($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="verPerfil">
-                                <div class="tarjeta-info">
-                                    <h3><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Sin nombre', ENT_QUOTES, 'UTF-8') ?></h3>
-                                    <p>
-                                        <?= htmlspecialchars((string)($mascota->fields['edad'] ?? '0'), ENT_QUOTES, 'UTF-8') ?> años -
-                                        <?= htmlspecialchars(ucfirst($mascota->fields['tamano'] ?? 'Desconocido'), ENT_QUOTES, 'UTF-8') ?> -
-                                        <?= htmlspecialchars(ucfirst($mascota->fields['temperamento'] ?? 'Desconocido'), ENT_QUOTES, 'UTF-8') ?>
-                                    </p>
-                                </div>
-                            </a>
-                        </article>
-                    <?php endforeach; ?>
-
-                    <?php if (empty($mascotas)): ?>
-                        <p class="no-resultados">No se encontraron mascotas con los filtros seleccionados.</p>
-                    <?php endif; ?>
-                </article>
-
-                <?php require __DIR__ . '/paginacion.view.php'; ?>
-            </section>
-
+        </section> <section class="adoptar-contenido">
+            <div id="contenedor-grilla" class="grilla-mascotas">
+            </div>
+            
+            <div id="contenedor-paginacion" class="paginacion">
+            </div>
+        </section>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
