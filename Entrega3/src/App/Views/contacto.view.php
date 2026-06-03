@@ -20,7 +20,7 @@
 
     <main class="container contact-form-section">
         <header class="hero-banner">
-            <h1>CONTACTANOS</h1>
+            <h1>Contactanos</h1>
         </header>
 
         <section class="row g-5">

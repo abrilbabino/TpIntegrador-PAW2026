@@ -15,7 +15,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
     <main class="donar-main">
         <header class="hero-donaciones">
-            <h1>DONAR A UN REFUGIO</h1>
+            <h1>Donar a un refugio</h1>
             <p>Tu ayuda transforma vidas peludas</p>
         </header> 
         <section class="formulario-donacion">
