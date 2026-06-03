@@ -1,10 +1,11 @@
 class PAWVisualizacion {
-    constructor(contenedorMascotas, contenedorPaginacion, itemsPorPagina = 6) {
-        this.contenedorMascotas = contenedorMascotas;
+    constructor(contenedorItems, contenedorPaginacion, itemsPorPagina = 6, tipoVista) {
+        this.contenedorItems = contenedorItems;
         this.contenedorPaginacion = contenedorPaginacion;
         this.itemsPorPagina = itemsPorPagina;
         this.currentPage = 1;
-        this.mascotas = [];
+        this.items = [];
+        this.tipoVista = tipoVista;
 
         this.paginador = new PAWPaginacion(this.contenedorPaginacion, {
             itemsPorPagina: this.itemsPorPagina,
@@ -13,13 +14,13 @@ class PAWVisualizacion {
     }
 
     init(apiUrl) {
-        if (!this.contenedorMascotas) return;
+        if (!this.contenedorItems) return;
 
         fetch(apiUrl)
             .then(res => res.json())
             .then(respuesta => {
                 if (respuesta.success) {
-                    this.mascotas = respuesta.data;
+                    this.items = respuesta.data;
                     this.render();
                 }
             })
@@ -28,27 +29,32 @@ class PAWVisualizacion {
 
     // Actúa como puente entre la capa lógica (Filtros) y la Vista. 
     // Reinicia el estado de paginación (currentPage = 1) para evitar índices fuera de rango al recibir un nuevo set de datos filtrados.
-    actualizarDatos(nuevasMascotas) {
-        this.mascotas = nuevasMascotas;
+    actualizarDatos(nuevasItems) {
+        this.items = nuevasItems;
         this.currentPage = 1;
         this.render();
     }
 
     render() {
-        this.renderizarMascotas();
-        this.paginador.actualizar(this.mascotas.length, this.currentPage);
+        this.renderizarItems();
+        this.paginador.actualizar(this.items.length, this.currentPage);
     }
 
     // Borra el DOM previo (innerHTML = "").
     // Emplea Template Literals (``) de ES6 para inyectar dinámicamente el contador.
-    // Utiliza Array.prototype.slice() para extraer funcionalmente la sublista de mascotas que corresponde estrictamente a la ventana matemática de la página actual.
-    renderizarMascotas() {
-        this.contenedorMascotas.innerHTML = "";
+    // Utiliza Array.prototype.slice() para extraer funcionalmente la sublista de items que corresponde estrictamente a la ventana matemática de la página actual.
+    renderizarItems() {
+        this.contenedorItems.innerHTML = "";
         const inicio = (this.currentPage - 1) * this.itemsPorPagina;
-        const mascotasAMostrar = this.mascotas.slice(inicio, inicio + this.itemsPorPagina);
+        const itemsAMostrar = this.items.slice(inicio, inicio + this.itemsPorPagina);
 
-        mascotasAMostrar.forEach(m => {
-            this.contenedorMascotas.appendChild(this.crearTarjetaMascota(m));
+        itemsAMostrar.forEach(m => {
+            if(this.tipoVista === 'mascotas'){
+                this.contenedorItems.appendChild(this.crearTarjetaMascota(m));
+            }
+            else{
+                this.contenedorItems.appendChild(this.crearTarjetaRefugio(m));
+            }
         });
     }
 
@@ -120,14 +126,64 @@ class PAWVisualizacion {
         return articulo;
     }
 
+    crearTarjetaRefugio(refugio) {
+        const articulo = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio" });
+
+        const figure = PAW.nuevoElemento("figure", "", { class: "tarjeta-refugio-imagen" });
+        const img = PAW.nuevoElemento("img", "", {
+            src: `/assets/img/${refugio.imagen || 'default-refugio.jpg'}`,
+            alt: refugio.nombre_institucion || "Refugio"
+        });
+        figure.appendChild(img);
+
+        const info = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio-info" });
+        const header = PAW.nuevoElemento("header", "", { class: "tarjeta-refugio-header" });
+        
+        const h3 = PAW.nuevoElemento("h3", "", {});
+        const linkPerfil = PAW.nuevoElemento("a", refugio.nombre_institucion || 'Sin nombre', {
+            href: `/refugio/perfil?id=${refugio.id}`,
+            class: "stretched-link"
+        });
+        h3.appendChild(linkPerfil);
+
+        const linkTel = PAW.nuevoElemento("a", "", {
+            href: `tel:${refugio.telefono || ''}`,
+            class: "icono-telefono",
+            "aria-label": "Llamar al refugio",
+            style: "position: relative; z-index: 2;"
+        });
+        const iconCall = PAW.nuevoElemento("span", "call", { class: "material-symbols-outlined" });
+        linkTel.appendChild(iconCall);
+
+        header.appendChild(h3);
+        header.appendChild(linkTel);
+
+        const ubicacion = PAW.nuevoElemento("p", `${refugio.ciudad || 'Desconocido'}, ${refugio.provincia || 'Desconocido'}`, {
+            class: "refugio-ubicacion"
+        });
+
+        const adoptables = PAW.nuevoElemento("p", "", { class: "refugio-adoptables" });
+        const strong = PAW.nuevoElemento("strong", `Adoptables disponibles: ${refugio.adoptables_disponibles || 0}`, {});
+        adoptables.appendChild(strong);
+
+        info.appendChild(header);
+        info.appendChild(ubicacion);
+        info.appendChild(adoptables);
+
+        articulo.appendChild(figure);
+        articulo.appendChild(info);
+
+        return articulo;
+    }
+
     // Ejecuta la validación de límites matemáticos antes de mutar el estado.
     irAPagina(pagina) {
-    const totalPaginas = Math.ceil(this.mascotas.length / this.itemsPorPagina);
+    const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);
         if (pagina >= 1 && pagina <= totalPaginas) {
             this.currentPage = pagina;
             this.render();
             
-            this.contenedorMascotas.scrollIntoView({
+            this.contenedorItems.scrollIntoView({
                 behavior: "smooth",
                 block: "start" 
             });

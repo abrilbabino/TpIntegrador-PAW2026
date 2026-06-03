@@ -7,7 +7,6 @@
   text-align: center;
   padding: 3rem 1.5rem;
   background-color: var(--color-azul);
-  gap: 1rem;
   color: var(--color-fondo);
 }
 
@@ -178,6 +177,9 @@
 
 .refugios-contenido {
   width: 100%;
+  min-height: 120vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .grilla-refugios {

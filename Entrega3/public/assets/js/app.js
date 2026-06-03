@@ -44,7 +44,10 @@ class AppPAW {
     const contenedorGrilla = document.getElementById("contenedor-grilla");
     const contenedorPaginacion = document.getElementById("contenedor-paginacion");
 
-    if (!contenedorGrilla || !contenedorPaginacion) return; 
+    const contenedorRefugios = document.getElementById("contenedor-grilla-refugios");
+    const paginacionRefugios = document.getElementById("contenedor-paginacion-refugios");
+
+    if (!contenedorGrilla && !contenedorRefugios) return; 
 
     PAW.cargarScript(
       "PAW-Paginacion-Script",
@@ -54,13 +57,25 @@ class AppPAW {
           "PAW-Visualizacion-Script",
           "/assets/js/components/PAWVisualizacion.js",
           () => {
-            const visualizador = new PAWVisualizacion(
-                contenedorGrilla, 
-                contenedorPaginacion, 
-                6
-            );
-            
-            visualizador.init('/api/mascotas');
+            if (contenedorGrilla && contenedorPaginacion) {
+              const visualizador = new PAWVisualizacion(
+                  contenedorGrilla, 
+                  contenedorPaginacion, 
+                  6,
+                  'mascotas'
+              );
+              visualizador.init('/api/mascotas');
+          }
+
+            if (contenedorRefugios && paginacionRefugios) {
+                const visualizadorRefugios = new PAWVisualizacion(
+                    contenedorRefugios, 
+                    paginacionRefugios, 
+                    6,
+                    'refugios'
+                );
+                visualizadorRefugios.init('/api/refugios');
+            }
           }
         );
       }

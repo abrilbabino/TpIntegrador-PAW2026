@@ -5,7 +5,7 @@
 
 .hero-adoptar {
   text-align: center;
-  gap: 2rem;
+  gap: 0.5rem;
 }
 
 .adoptar-wrapper {
@@ -137,10 +137,6 @@
   transform: scale(0.98);
 }
 
-.adoptar-contenido {
-  width: 100%;
-}
-
 .grilla-mascotas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -252,6 +248,8 @@
   gap: 15px;
   margin: 2rem 0;
   flex-wrap: wrap;
+  margin-top: auto;
+  min-height: 80px;
 }
 
 .paw-paginacion-btn {
@@ -301,9 +299,16 @@
 .paw-paginacion-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background-color: var(--color-gris);
-    border-color: var(--color-gris);
+    background-color: var(--color-amarillo);
+    border-color: var(--color-amarillo);
     pointer-events: none; 
+}
+
+.adoptar-contenido {
+  width: 100%;
+  min-height: 120vh;
+  display: flex;
+  flex-direction: column;
 }
 
 @media screen and (min-width: 994px) {

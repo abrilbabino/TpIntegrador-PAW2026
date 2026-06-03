@@ -73,6 +73,7 @@ $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');
+$router->get('/api/refugios', 'RefugioController@apiRefugios');
 $router->get('/refugio', 'RefugioController@detalle');
 $router->get('/refugio/perfil', 'RefugioController@detalle');
 

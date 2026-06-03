@@ -76,39 +76,11 @@
             </aside>
 
             <section class="refugios-contenido">
-                <article class="grilla-refugios">
-                    <?php foreach ($refugios as $refugio): ?>
-                        <article class="tarjeta-refugio">
-                            <figure class="tarjeta-refugio-imagen">
-                                <img src="/assets/img/<?= htmlspecialchars($refugio->fields['imagen'] ?? 'default-refugio.jpg', ENT_QUOTES, 'UTF-8') ?>"
-                                     alt="<?= htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Refugio', ENT_QUOTES, 'UTF-8') ?>">
-                            </figure>
-
-                            <article class="tarjeta-refugio-info">
-                                <header class="tarjeta-refugio-header">
-                                    <h3>
-                                        <a href="/refugio/perfil?id=<?= htmlspecialchars($refugio->fields['usuario_id'] ?? $refugio->fields['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="stretched-link">
-                                            <?= htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Sin nombre', ENT_QUOTES, 'UTF-8') ?>
-                                        </a>
-                                    </h3>
-                                    <a href="tel:<?= htmlspecialchars($refugio->fields['telefono'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="icono-telefono" aria-label="Llamar al refugio" style="position: relative; z-index: 2;">
-                                        <span class="material-symbols-outlined">call</span>
-                                    </a>
-                                </header>
-                                <p class="refugio-ubicacion"><?= htmlspecialchars(($refugio->fields['ciudad'] ?? 'Desconocido') . ', ' . ($refugio->fields['provincia'] ?? 'Desconocido'), ENT_QUOTES, 'UTF-8') ?></p>
-                                <p class="refugio-adoptables">
-                                    <strong>Adoptables disponibles: <?= htmlspecialchars((string)($refugio->fields['adoptables_disponibles'] ?? '0'), ENT_QUOTES, 'UTF-8') ?></strong>
-                                </p>
-                            </article>
-                        </article>
-                    <?php endforeach; ?>
-
-                    <?php if (empty($refugios)): ?>
-                        <p class="no-resultados">No se encontraron refugios con los filtros seleccionados.</p>
-                    <?php endif; ?>
-                </article>
-
-                <?php require __DIR__ . '/paginacion.view.php'; ?>
+                <div id="contenedor-grilla-refugios" class="grilla-refugios">
+                </div>
+                
+                <div id="contenedor-paginacion-refugios" class="paginacion">
+                </div>
 
                 <article class="cta-refugio mobile">
                     <h3>

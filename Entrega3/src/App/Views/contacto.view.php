@@ -18,11 +18,11 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <header class="hero-banner">
-        <h1>Contactanos</h1>
-    </header>
-
     <main class="container contact-form-section">
+        <header class="hero-banner">
+            <h1>CONTACTANOS</h1>
+        </header>
+
         <section class="row g-5">
             <!-- Columna Izquierda: Formulario -->
             <article class="col-lg-7 col-md-8">
