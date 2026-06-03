@@ -30,15 +30,17 @@
         var refugiosJSON = mapElement.getAttribute('data-refugios');
         var refugios = refugiosJSON ? JSON.parse(refugiosJSON) : [];
 
-        var refugioIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34]
+        var refugioIcon = L.divIcon({
+            className: 'map-pin-container',
+            html: '<div class="custom-map-pin"><span class="material-symbols-outlined pin-icon">pets</span></div>',
+            iconSize: [36, 48],
+            iconAnchor: [18, 48],
+            popupAnchor: [0, -48]
         });
 
+        var bounds = [];
+
         if (refugios && refugios.length > 0) {
-            var bounds = [];
             refugios.forEach(function(r) {
                 var lat = parseFloat(r.latitud);
                 var lng = parseFloat(r.longitud);
