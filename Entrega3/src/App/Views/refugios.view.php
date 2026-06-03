@@ -84,8 +84,12 @@
 
                             <article class="tarjeta-refugio-info">
                                 <header class="tarjeta-refugio-header">
-                                    <h3><?= htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Sin nombre', ENT_QUOTES, 'UTF-8') ?></h3>
-                                    <a href="tel:<?= htmlspecialchars($refugio->fields['telefono'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="icono-telefono" aria-label="Llamar al refugio">
+                                    <h3>
+                                        <a href="/refugio/perfil?id=<?= htmlspecialchars($refugio->fields['usuario_id'] ?? $refugio->fields['id'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="stretched-link">
+                                            <?= htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Sin nombre', ENT_QUOTES, 'UTF-8') ?>
+                                        </a>
+                                    </h3>
+                                    <a href="tel:<?= htmlspecialchars($refugio->fields['telefono'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="icono-telefono" aria-label="Llamar al refugio" style="position: relative; z-index: 2;">
                                         <span class="material-symbols-outlined">call</span>
                                     </a>
                                 </header>

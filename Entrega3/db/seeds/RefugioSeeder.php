@@ -29,7 +29,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'patitas_felices',
                 'imagen' => 'refugioPatitas.jpg',
-                'telefono' => '011-1234-5678'
+                'telefono' => '011-1234-5678',
+                'email' => 'contacto@patitasfelices.org',
+                'descripcion' => 'Somos una ONG dedicada al rescate, recuperación y reubicación de animales en situación de calle o maltrato. Nuestro objetivo es brindarles una segunda oportunidad a aquellos que más lo necesitan, asegurando su bienestar físico y emocional antes de darlos en adopción.'
             ],
             [
                 'usuario_id' => $userMap['hogar.mercedes'],
@@ -38,7 +40,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'hogar_animal',
                 'imagen' => 'refugioHogar.jpg',
-                'telefono' => '011-8765-4321'
+                'telefono' => '011-8765-4321',
+                'email' => 'adopciones@hogaranimal.com.ar',
+                'descripcion' => 'En Hogar Animal trabajamos día a día para rescatar mascotas abandonadas y encontrarles familias amorosas. Contamos con un equipo de voluntarios comprometidos que cuidan a cada animalito como si fuera propio.'
             ],
             [
                 'usuario_id' => $userMap['lujan.animal'],
@@ -47,7 +51,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'sos_mascotas',
                 'imagen' => 'refugioSOS.jpg',
-                'telefono' => '011-1122-3344'
+                'telefono' => '011-1122-3344',
+                'email' => 'info@sosmascotas.org.ar',
+                'descripcion' => 'Un refugio creado por vecinos unidos por el amor a los animales. Nos especializamos en la rehabilitación de perros y gatos rescatados de situaciones extremas, dándoles el amor y cuidado veterinario que merecen.'
             ],
             [
                 'usuario_id' => $userMap['Paw-Protection'],
@@ -56,7 +62,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'paw_protection',
                 'imagen' => 'refugioPaw.jpg',
-                'telefono' => '011-5566-7788'
+                'telefono' => '011-5566-7788',
+                'email' => 'hello@pawprotection.org',
+                'descripcion' => 'Dedicados a la protección animal desde hace más de 10 años. Promovemos la adopción responsable, la esterilización y concientizamos sobre el cuidado y respeto hacia todas las especies de compañía.'
             ],
             [
                 'usuario_id' => $userMap['Albergue.Dog'],
@@ -65,7 +73,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'albergue_dog',
                 'imagen' => 'refugioAlbergue.jpg',
-                'telefono' => '011-9988-7766'
+                'telefono' => '011-9988-7766',
+                'email' => 'contacto@alberguedog.com',
+                'descripcion' => 'Un albergue de tránsito enfocado en dar asilo temporal a perros rescatados. Nuestro equipo evalúa el comportamiento y la salud de cada perro para asegurar que la familia adoptante sea el match perfecto.'
             ],
             [
                 'usuario_id' => $userMap['Amigos.Peludos'],
@@ -74,7 +84,9 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'amigos_peludos',
                 'imagen' => 'refugioAmigos.jpg',
-                'telefono' => '011-2233-4455'
+                'telefono' => '011-2233-4455',
+                'email' => 'hola@amigospeludos.ar',
+                'descripcion' => 'Somos un pequeño refugio familiar que acoge animales en estado vulnerable. Nos aseguramos de que cada perro o gato se vaya castrado, vacunado y lleno de amor a su nuevo hogar definitivo.'
             ],
             [
                 'usuario_id' => $userMap['Refugio-Esperanza'],
@@ -83,10 +95,28 @@ class RefugioSeeder extends AbstractSeed
                 'cvu' => null,
                 'alias' => 'refugio_esperanza',
                 'imagen' => 'refugioEsperanza.jpg',
-                'telefono' => '011-6677-8899'
+                'telefono' => '011-6677-8899',
+                'email' => 'refugioesperanza@gmail.com',
+                'descripcion' => 'Un refugio a puertas abiertas que invita a las familias a conocer a los animales en su entorno natural. Creemos que la conexión sincera entre un humano y un animal es el primer paso hacia una adopción exitosa.'
             ]
         ];
 
-        $this->table('refugio')->insert($refugios)->saveData();
+        $table = $this->table('refugio');
+        
+        foreach ($refugios as $ref) {
+            $exists = $this->fetchRow("SELECT 1 FROM refugio WHERE usuario_id = " . $ref['usuario_id']);
+            if (empty($exists)) {
+                $table->insert($ref);
+            } else {
+                $stmt = $this->getAdapter()->getConnection()->prepare("UPDATE refugio SET descripcion = :descripcion, email = :email WHERE usuario_id = :id");
+                $stmt->execute([
+                    ':descripcion' => $ref['descripcion'],
+                    ':email' => $ref['email'],
+                    ':id' => $ref['usuario_id']
+                ]);
+            }
+        }
+        
+        $table->saveData();
     }
 }

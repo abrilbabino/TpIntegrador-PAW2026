@@ -100,6 +100,11 @@ class QueryBuilder
             $binds[':temperamento'] = $filtros['temperamento'];
         }
 
+        if (!empty($filtros['refugio_id'])) {
+            $sql .= " AND m.refugio_id = :refugio_id";
+            $binds[':refugio_id'] = $filtros['refugio_id'];
+        }
+
         if (!empty($filtros['ubicacion'])) {
             $sql .= " AND EXISTS (
                 SELECT 1 FROM ubicacion u 
