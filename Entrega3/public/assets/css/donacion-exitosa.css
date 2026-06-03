@@ -35,7 +35,7 @@
 fieldset.comprobante-wrapper {
     margin-top: 20px;
     border: 0;
-    border-top: 1px dashed #ccc;
+    border-top: 1px dashed var(--color-gris-claro);
     padding: 15px 0 0 0;
 }
 
@@ -54,7 +54,6 @@ fieldset.comprobante-wrapper legend {
     padding: 8px 12px;
     border-radius: 20px;
     cursor: pointer;
-
 }
 
 .codigo-inline {

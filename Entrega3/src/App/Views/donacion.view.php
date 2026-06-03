@@ -21,7 +21,8 @@
         <section class="formulario-donacion">
             <figure class="imagen-refugio">
                 <img id="imagen-refugio" src="/assets/img/animalesTiernos.jpg" alt="Imagen de mascotas tiernas">
-                <figcaption id="descripcion-refugio">Tu donación nos ayuda a comprar alimento, pagar gastos veterinarios y seguir rescatando animalitos de la calle. ¡Gracias por sumar tu granito de arena!</figcaption>
+                <figcaption id="descripcion-refugio">Tu donación nos ayuda a comprar alimento, pagar gastos veterinarios y seguir rescatando animalitos de la calle.</figcaption>
+                <figcaption id="gracias">¡Gracias por sumar tu granito de arena!</figcaption>
             </figure>
             <form class="formulario-donaciones" action="/procesar-donacion" method="POST">
                 <!-- Selector de Refugio -->
