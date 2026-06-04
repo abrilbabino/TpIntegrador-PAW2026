@@ -86,7 +86,7 @@ class AuthController extends Controller
 
             $adoptante = $this->model->getAdoptante((int) $userId);
 
-            $_SESSION['user'] = [
+            $sessionUser = [
                 'id'             => $userId,
                 'nombre_usuario' => $username,
                 'email'          => $email,
@@ -95,6 +95,8 @@ class AuthController extends Controller
                 'foto_perfil'    => null,
                 'contacto'       => null,
             ];
+            
+            $this->request->setSession('user', $sessionUser);
         /*
         }
         */
@@ -144,7 +146,7 @@ class AuthController extends Controller
         }
 
         // Login exitoso: guardar datos en sesión
-        $_SESSION['user'] = [
+        $sessionUser = [
             'id'             => $usuario['id'],
             'nombre_usuario' => $usuario['nombre_usuario'],
             'email'          => $usuario['email'],
@@ -157,16 +159,18 @@ class AuthController extends Controller
         $refugio   = $this->model->getRefugio((int) $usuario['id']);
 
         if ($refugio) {
-            $_SESSION['user']['rol']        = 'refugio';
-            $_SESSION['user']['refugio_id'] = $refugio['usuario_id'];
+            $sessionUser['rol']        = 'refugio';
+            $sessionUser['refugio_id'] = $refugio['usuario_id'];
         } elseif ($adoptante) {
-            $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = $adoptante['usuario_id'];
+            $sessionUser['rol']          = 'adoptante';
+            $sessionUser['adoptante_id'] = $adoptante['usuario_id'];
         } else {
             // Por defecto adoptante si no hay datos vinculados (p.ej. admin o incompleto)
-            $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = null;
+            $sessionUser['rol']          = 'adoptante';
+            $sessionUser['adoptante_id'] = null;
         }
+
+        $this->request->setSession('user', $sessionUser);
 
         $this->log->info("Login exitoso", ['username' => $username, 'user_id' => $usuario['id']]);
 
@@ -183,8 +187,7 @@ class AuthController extends Controller
             session_start();
         }
 
-        $_SESSION = [];
-        session_destroy();
+        $this->request->destroySession();
 
         header('Location: /iniciar-sesion');
         exit;

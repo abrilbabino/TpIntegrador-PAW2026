@@ -27,7 +27,8 @@ class Request
 
     public function get($key)
     {
-        return $_POST[$key] ?? $_GET[$key] ?? null;
+        $postData = $this->post();
+        return $postData[$key] ?? $_GET[$key] ?? null;
     }
 
     public function getAll()
@@ -37,7 +38,14 @@ class Request
 
     public function post()
     {
-        return $_POST;
+        $postData = $_POST;
+        if (isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json')) {
+            $jsonData = json_decode(file_get_contents('php://input'), true);
+            if (is_array($jsonData)) {
+                $postData = array_merge($postData, $jsonData);
+            }
+        }
+        return $postData;
     }
 
     public function files()
@@ -53,6 +61,17 @@ class Request
     public function session($key)
     {
         return $_SESSION[$key] ?? null;
+    }
+
+    public function setSession($key, $value)
+    {
+        $_SESSION[$key] = $value;
+    }
+
+    public function destroySession()
+    {
+        $_SESSION = [];
+        session_destroy();
     }
 
     public function paginaActual()

@@ -54,10 +54,12 @@ class MascotaController extends Controller
             ];
         }
 
-        echo json_encode([
+        $response = [
             'success' => true,
-            'data' => $mascotasData
-        ]);
+            'data'    => $mascotasData
+        ];
+        http_response_code(200);
+        echo json_encode($response);
         exit;
     }
     

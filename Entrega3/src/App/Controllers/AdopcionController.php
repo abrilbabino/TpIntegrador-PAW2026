@@ -17,8 +17,10 @@ class AdopcionController extends Controller
             session_start();
         }
 
+        $userSession = $this->request->session('user');
+
         // Si no está logueado o no es adoptante, redirigir a login
-        if (!isset($_SESSION['user']) || $_SESSION['user']['rol'] !== 'adoptante') {
+        if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
             header('Location: /iniciar-sesion?error=perfil_requerido');
             exit;
         }
@@ -33,8 +35,8 @@ class AdopcionController extends Controller
         // Obtener datos del adoptante para pre-completar el formulario
         $userModel = new \Paw\App\Models\User;
         $userModel->setQueryBuilder($this->model->getQueryBuilder());
-        $adoptanteData = $userModel->getAdoptante((int)$_SESSION['user']['id']);
-        $userData = $userModel->findById((int)$_SESSION['user']['id']);
+        $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+        $userData = $userModel->findById((int)$userSession['id']);
 
         require $this->viewsDir . '/formulario-adopcion.view.php';
     }
@@ -47,8 +49,10 @@ class AdopcionController extends Controller
             session_start();
         }
 
+        $userSession = $this->request->session('user');
+
         // Seguridad: Verificar sesión en el envío también
-        if (!isset($_SESSION['user']) || $_SESSION['user']['rol'] !== 'adoptante') {
+        if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
             header('Location: /iniciar-sesion');
             exit;
         }
@@ -58,7 +62,7 @@ class AdopcionController extends Controller
 
         $datos = $this->request->post();
         // Inyectar el ID del adoptante desde la sesión (como favoritos)
-        $datos['adoptante_id'] = $_SESSION['user']['id'];
+        $datos['adoptante_id'] = $userSession['id'];
 
         $this->model->set($datos);
         $errores = $this->model->validar();

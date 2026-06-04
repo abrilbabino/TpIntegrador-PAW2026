@@ -17,14 +17,15 @@ class UserController extends Controller
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
- 
-        if (empty($_SESSION['user'])) {
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession)) {
             header('Location: /iniciar-sesion');
             exit;
         }
 
-        $dbUser = $this->model->findById((int) $_SESSION['user']['id']);
-        $user = array_merge($_SESSION['user'], $dbUser);
+        $dbUser = $this->model->findById((int) $userSession['id']);
+        $user = array_merge($userSession, $dbUser);
         $rol  = $user['rol'] ?? 'adoptante';
  
         if ($rol === 'refugio') {
@@ -98,12 +99,14 @@ class UserController extends Controller
             session_start();
         }
 
-        if (empty($_SESSION['user']) || $this->request->method() !== 'POST') {
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession) || $this->request->method() !== 'POST') {
             header('Location: /iniciar-sesion');
             exit;
         }
 
-        $user   = $_SESSION['user'];
+        $user   = $userSession;
         $userId = (int) $user['id'];
         $errores = $this->model->actualizarPerfilCompleto(
             $userId, 
@@ -119,7 +122,8 @@ class UserController extends Controller
 
         $updatedUser = $this->model->findById($userId);
         if ($updatedUser) {
-            $_SESSION['user'] = array_merge($_SESSION['user'], $updatedUser);
+            $userSession = array_merge($userSession, $updatedUser);
+            $this->request->setSession('user', $userSession);
         }
 
         header("Location: /perfil?update=success");
