@@ -18,7 +18,14 @@
         var mapElement = document.getElementById('leaflet-map');
         if (!mapElement) return;
 
-        var map = L.map('leaflet-map').setView([latCenter, lngCenter], zoomLevel); 
+        // Si ya hay un mapa instanciado en este contenedor (ej. por doble ejecución del script), lo removemos
+        if (window.map) {
+            window.map.off();
+            window.map.remove();
+        }
+
+        window.map = L.map('leaflet-map').setView([latCenter, lngCenter], zoomLevel); 
+        var map = window.map;
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,

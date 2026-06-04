@@ -334,6 +334,10 @@ class PAWFiltros {
     }
 
     aplicarFiltros() {
+        const queryUbicacion = (this.estadoFiltros['ubicacion'] || "").toLowerCase().trim();
+        const todasLasCiudades = [...new Set(this.items.map(i => (i.ciudad || "").toLowerCase().trim()).filter(c=>c))];
+        const queryTieneCiudadExacta = queryUbicacion ? todasLasCiudades.some(c => queryUbicacion.includes(c)) : false;
+
         this.itemsFiltrados = this.items.filter(item => {
             let cumple = true;
             for (const prop in this.estadoFiltros) {
@@ -359,19 +363,26 @@ class PAWFiltros {
                 }
             }
 
-            // 3. Filtrar por ubicación (texto de la ciudad o provincia del refugio)
-            if (cumple && this.estadoFiltros['ubicacion']) {
-                const query = this.estadoFiltros['ubicacion'].toLowerCase().trim();
+            // 3. Filtrar por ubicación (prioridad ciudad sobre provincia)
+            if (cumple && queryUbicacion) {
                 const ciudad = (item.ciudad || "").toLowerCase().trim();
                 const provincia = (item.provincia || "").toLowerCase().trim();
                 
-                // Verificamos si lo que escribió el usuario está contenido en la ciudad/provincia
-                // o si la ciudad/provincia está contenida en lo que escribió (por si selecciona sugerencias muy largas del autocompletado)
-                const matchCiudad = ciudad && (query.includes(ciudad) || ciudad.includes(query));
-                const matchProvincia = provincia && (query.includes(provincia) || provincia.includes(query));
+                const matchCiudad = ciudad && (queryUbicacion.includes(ciudad) || ciudad.includes(queryUbicacion));
+                const matchProvincia = provincia && (queryUbicacion.includes(provincia) || provincia.includes(queryUbicacion));
                 
-                if (!matchCiudad && !matchProvincia) {
-                    cumple = false;
+                if (queryTieneCiudadExacta) {
+                    // Si el usuario especificó una ciudad que existe en nuestra base, exigimos que sea esa ciudad.
+                    // Esto evita que "Mercedes, Buenos Aires" muestre mascotas de "Luján, Buenos Aires" solo porque comparten provincia.
+                    if (!matchCiudad) {
+                        cumple = false;
+                    }
+                } else {
+                    // Si no hay ciudad exacta (ej: búsqueda parcial "Merce" o búsqueda genérica "Buenos Aires"),
+                    // permitimos que coincida por ciudad o por provincia.
+                    if (!matchCiudad && !matchProvincia) {
+                        cumple = false;
+                    }
                 }
             }
 
