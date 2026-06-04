@@ -108,6 +108,9 @@
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--color-texto);
+    overflow-wrap: break-word;
+    word-break: break-all;
+    min-width: 0;
 }
 
 /* ===== NAV ANCLA ===== */
