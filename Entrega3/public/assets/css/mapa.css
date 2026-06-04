@@ -11,8 +11,6 @@
 .sidebar-mapa {
     background-color: var(--color-fondo);
     border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 4px 12px var(--color-gris-claro);
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -32,6 +30,54 @@
     margin-bottom: 0;
 }
 
+.contenedor-mapa-page .seccion-filtros-aside{
+    margin:0;
+}
+
+.contenedor-mapa-page .filtros summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    justify-content: center;
+    list-style: none;
+    padding: 1rem;
+    background-color: var(--color-azul);
+    color: var(--color-fondo);
+    border-radius: 12px;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+}
+
+.filtros[open] summary {
+    border-radius: 12px 12px 0 0;
+}
+
+.filtros-chevron {
+    transition: transform 0.3s ease;
+}
+
+.filtros[open] .filtros-chevron {
+    transform: rotate(180deg);
+}
+
+.filtros form {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+}
+
+.filtros[open] form {
+    display: flex;
+}
+
 .refugios-cercanos {
     background-color: var(--color-fondo);
     padding: 1.5rem;
@@ -43,9 +89,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 460px;
     width: 100%;
     box-sizing: border-box;
+    margin: 1rem 0;
 }
 
 .titulo-refugios-cercanos {
@@ -298,7 +344,8 @@
     background-color: var(--color-fondo);
     border-radius: 24px 24px 0 0; 
     position: relative;
-    box-shadow: 0 -8px 25px var(--color-gris-claro); 
+    box-shadow: 0 -8px 25px var(--color-gris-claro);
+    padding: 1rem; 
 }
 
 .decorador-linea {
@@ -312,7 +359,6 @@
 .mascotas-zona h2 {
     font-size: 2.5rem;
     margin-left: 1rem;
-    margin-bottom: 1.5rem;
     padding: 0;
     color: var(--color-azul);
     text-shadow: 1px 1px 1px var(--color-fondo);
@@ -327,7 +373,7 @@
     display: flex;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 994px) {
     .contenedor-mapa-page {
         flex-direction: row;
         padding: 2rem;
@@ -339,6 +385,18 @@
         flex-shrink: 0;
         box-shadow: none;
         padding: 0;
+    }
+
+    .contenedor-mapa-page .filtros summary {
+        display: none;
+    }
+
+    .filtros form {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--color-gris-claro);
+        border-radius: 12px;
+        padding: 1.65rem;
     }
 
     .contenido-mapa {
@@ -368,6 +426,8 @@
 
     .sidebar-mapa .refugios-cercanos {
         display: flex; 
+        min-height: 460px;
+        margin: 0;
     }
 
     .contenido-mapa .refugios-cercanos {

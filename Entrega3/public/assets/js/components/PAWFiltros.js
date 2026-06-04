@@ -67,9 +67,15 @@ class PAWFiltros {
         const sectionPrincipal = PAW.nuevoElemento("section", "", { class: "seccion-filtros" });
 
         const aside = PAW.nuevoElemento("aside", "", { class: "seccion-filtros-aside" });
-        const details = PAW.nuevoElemento("details", "", { class: "filtros", open: "true" });
+        
+        const detailsOptions = { class: "filtros" };
+        if (window.innerWidth >= 994) {
+            detailsOptions.open = "true";
+        }
+        const details = PAW.nuevoElemento("details", "", detailsOptions);
+        
         const summary = PAW.nuevoElemento("summary", "");
-        summary.innerHTML = `<span class="material-symbols-outlined">filter_list</span><span>Filtros</span><span class="material-symbols-outlined filtros-simbolo">expand_more</span>`;
+        summary.innerHTML = `<span class="material-symbols-outlined">filter_list</span><span>Filtros</span><span class="material-symbols-outlined filtros-chevron">expand_more</span>`;
         details.appendChild(summary);
 
         const form = PAW.nuevoElemento("form", "", { onsubmit: "return false;" });
@@ -249,7 +255,7 @@ class PAWFiltros {
         if (this.tipoVista !== "mapa") {
             const sectionContenido = PAW.nuevoElemento("section", "", { class: this.tipoVista === "mascotas" ? "adoptar-contenido" : "refugios-contenido" });
             this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
-            this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion" });
+            this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion-wrapper" });
             
             sectionContenido.appendChild(this.contenedorGrilla);
             sectionContenido.appendChild(this.contenedorPaginacion);

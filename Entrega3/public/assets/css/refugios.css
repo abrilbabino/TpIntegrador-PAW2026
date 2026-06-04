@@ -177,7 +177,7 @@
 
 .refugios-contenido {
   width: 100%;
-  min-height: 120vh;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
 }
@@ -390,6 +390,7 @@
   .grilla-refugios {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
+    min-height: 784px; /* 2 rows de 380px + 1 gap de 24px */
   }
 
   .tarjeta-refugio-imagen {

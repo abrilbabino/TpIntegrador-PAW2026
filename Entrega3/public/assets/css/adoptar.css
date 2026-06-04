@@ -19,6 +19,10 @@
   width: 100%;
 }
 
+.seccion-filtros-aside {
+  margin: 1rem;
+}
+
 .filtros summary {
   display: flex;
   align-items: center;
@@ -29,8 +33,11 @@
   justify-content: center;
   list-style: none;
   padding: 1rem;
-  background-color: var(--color-gris-claro);
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
   border-radius: 12px;
+  border: none;
+  box-shadow: none;
 }
 
 .filtros[open] summary {
@@ -141,7 +148,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.2rem;
-  margin: 0.7rem;
+  margin: 1rem;
 }
 
 .tarjeta-mascota {
@@ -152,18 +159,24 @@
   flex-direction: column;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   background-color: var(--color-fondo);
-  box-shadow: 0 2px 4px var(--color-texto);
+  box-shadow: 0 2px 12px var(--color-texto);
+  position: relative;
 }
 
 .tarjeta-mascota:hover {
+  box-shadow: 0 10px 30px var(--color-texto);
   transform: translateY(-4px);
 }
 
 .tarjeta-imagen {
-  height: 200px;
+  height: 180px;
   position: relative;
   margin: 0;
   overflow: hidden;
+  background-color: var(--color-fondo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tarjeta-imagen a {
@@ -181,6 +194,8 @@
 
 .verPerfil {
   display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .form-favorito-tarjeta {
@@ -225,12 +240,18 @@
   font-size: 1.1rem;
   margin: 0 0 10px 0;
   color: var(--color-azul);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tarjeta-info p {
   font-size: 0.9rem;
   color: var(--color-texto);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .no-resultados {
@@ -241,17 +262,21 @@
   font-size: 1.2rem;
 }
 
+.paginacion-wrapper {
+  margin-top: auto;
+  width: 100%;
+}
+
 .paginacion {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
   flex-wrap: wrap;
-  margin-top: auto;
   min-height: 80px;
 }
 
-nav .paginacion{
+nav.paginacion {
   margin: 2rem 0;
 }
 
@@ -309,7 +334,7 @@ nav .paginacion{
 
 .adoptar-contenido {
   width: 100%;
-  min-height: 122vh;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
 }
@@ -322,6 +347,7 @@ nav .paginacion{
       "hero hero hero"
       ". contenido .";
     gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-adoptar {
@@ -339,15 +365,18 @@ nav .paginacion{
     display: grid;
     grid-template-columns: minmax(auto, 300px) 1fr;
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
   }
 
   .seccion-filtros-aside {
     min-width: 280px;
+    height: 100%;
   }
 
   .adoptar-contenido {
     width: 100%;
+    height: 100%;
+    min-height: 0; /* Override mobile */
   }
 
   .filtros summary {
@@ -356,9 +385,15 @@ nav .paginacion{
 
   .filtros form {
     display: flex;
+    flex-direction: column;
+    height: 100%;
     border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     padding: 1.65rem;
+  }
+  
+  .filtros form .btn-limpiar {
+    margin-top: auto;
   }
 
   .grilla-mascotas {

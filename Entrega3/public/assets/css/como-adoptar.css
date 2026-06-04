@@ -28,6 +28,7 @@
   position: relative;
   border: 1px solid var(--color-gris-claro);
   box-shadow: 0 2px 4px var(--color-gris-claro);
+  margin: 0 1.5rem;
 }
 
 .paso-individual:hover{
@@ -84,6 +85,7 @@
 
 @media screen and (min-width: 994px) {
   .paso-individual {
+    margin: 0;
     width: 33%;
     max-width: 480px;
   }

@@ -87,7 +87,7 @@
                 });
 
                 if (bounds.length > 0 && !(latUsuario && lngUsuario)) {
-                    map.fitBounds(bounds);
+                    map.fitBounds(bounds, { animate: false });
                 }
             }
         }
