@@ -60,7 +60,7 @@ class RefugioController extends Controller
                 
                 $mascotaCollection = new \Paw\App\Models\MascotaCollection();
                 $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
-                $mascotas = $mascotaCollection->getAll(['refugio_id' => $id]);
+                $mascotas = $mascotaCollection->getAll(['refugio_id' => $id, 'estado_adopcion' => 'DISPONIBLE']);
                 
                 $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
             } catch (\Exception $e) {
