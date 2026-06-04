@@ -334,7 +334,7 @@
     display: block;
     width: 100%;
     text-align: center;
-    background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+    background: var(--color-azul);
     color: var(--color-fondo);
     text-decoration: none;
     padding: 0.95rem;
@@ -345,14 +345,13 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 15px var(--color-naranja);
     text-shadow: 0 1px 2px var(--color-texto);
     font-family: var(--fuente-titulos);
 }
 
 .boton-adoptar:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 25px var(--color-naranja);
+    transform: scale(0.98);
+    background-color: var(--color-naranja);
     color: var(--color-fondo);
 }
 
