@@ -276,10 +276,6 @@
   min-height: 80px;
 }
 
-nav.paginacion {
-  margin: 2rem 0;
-}
-
 .paw-paginacion-btn {
   display: inline-flex;
   justify-content: center;
@@ -369,6 +365,7 @@ nav.paginacion {
   }
 
   .seccion-filtros-aside {
+    margin:0;
     min-width: 280px;
     height: 100%;
   }
