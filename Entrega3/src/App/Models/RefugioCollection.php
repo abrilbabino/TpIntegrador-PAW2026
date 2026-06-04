@@ -2,7 +2,7 @@
 
 namespace Paw\App\Models;
 
-use Paw\Core\Pagination;
+
 use Paw\App\Models\Refugio;
 use Paw\Core\Model;
 
@@ -39,18 +39,7 @@ class RefugioCollection extends Model
         return $this->mapearCampoRefugio($resultados, $campo);
     }
 
-    public function getPaginated(array $filtros, int $pagina, int $porPagina = 6): array
-    {
-        $total = $this->count($filtros);
-        $paginacion = new Pagination($pagina, $porPagina, $total);
 
-        $resultados = $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, false, $paginacion->perPage, $paginacion->offset);
-
-        return [
-            'items' => $this->mapRefugios($resultados),
-            'pagination' => $paginacion,
-        ];
-    }
 
     private function mapRefugios(array $rows): array
     {

@@ -15,16 +15,7 @@ class RefugioController extends Controller
         $menu    = $this->menu;
         $redes   = $this->redes;
 
-        $filtros = $this->getFiltros();
-        $page = (int) $request->get('pagina') ?: 1;
-        $perPage = 6;
 
-        $resultado = $this->model->getPaginated($filtros, $page, $perPage);
-        $refugios = $resultado['items'];
-        $pagination = $resultado['pagination'];
-
-        $provincias = $this->model->getProvincias();
-        $ciudades   = $this->model->getCiudades();
 
         require $this->viewsDir . '/refugios.view.php';
     }
@@ -69,8 +60,7 @@ class RefugioController extends Controller
                 
                 $mascotaCollection = new \Paw\App\Models\MascotaCollection();
                 $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
-                $resultado = $mascotaCollection->getPaginated(['refugio_id' => $id], 1, 100);
-                $mascotas = $resultado['items'];
+                $mascotas = $mascotaCollection->getAll(['refugio_id' => $id]);
                 
                 $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
             } catch (\Exception $e) {

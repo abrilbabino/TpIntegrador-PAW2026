@@ -3,7 +3,7 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
-use Paw\Core\Pagination;
+
 use Paw\App\Models\Mascota;
 
 class MascotaCollection extends Model
