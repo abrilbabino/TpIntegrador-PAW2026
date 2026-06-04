@@ -7,6 +7,7 @@ use Paw\App\Models\User;
 use Paw\App\Models\Adoptante;
 use Paw\App\Models\Refugio;
 use Paw\App\Models\Favorito;
+use Paw\App\Models\MascotaCollection;
  
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
 
         $dbUser = $this->model->findById((int) $_SESSION['user']['id']);
         $user = array_merge($_SESSION['user'], $dbUser);
-        $rol  = $user['rol'] ?? 'adoptante';
+        $user['rol'] = $_SESSION['user']['rol'] ?? 'adoptante'; // ← preservar el rol de la sesión
+        $rol = $user['rol'];
  
         if ($rol === 'refugio') {
             $this->cargarPerfilRefugio($user);
@@ -67,30 +69,43 @@ class UserController extends Controller
         require $this->viewsDir . '/perfil.view.php';
     }
  
-    private function cargarPerfilRefugio(array $user): void
-    {
-        $menu  = $this->menu;
-        $redes = $this->redes;
- 
-        // Cargar modelo Refugio
-        $refugioModel = new Refugio();
-        $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
-        $refugioModel->load((int) $user['id']);
-        $refugio = $refugioModel->fields;
- 
-        $refugioId = $user['id'] ?? null;
-        $mascotas = [];
-        
-        if ($refugioId) {
-            $mascotaCollection = new \Paw\App\Models\MascotaCollection();
-            $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
-            $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
-        }
+   private function cargarPerfilRefugio(array $user): void
+   {
+       $menu  = $this->menu;
+       $redes = $this->redes;
+       $request = $this->request;
+       // Cargar modelo Refugio
+       $refugioModel = new Refugio();
+       $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
+       $refugioModel->load((int) $user['id']);
+       $refugio = $refugioModel->fields;
+       $refugioId = $user['id'] ?? null;
+       $mascotas = [];
+       $solicitudes = [];
+       $tamanos=[];
+       $especies=[];
+       $temperamentos=[];
+       
+      
+       if ($refugioId) {
+           $mascotaCollection = new \Paw\App\Models\MascotaCollection();
+           $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+           $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
 
- 
-        $titulo = "Mi Refugio - PawMap";
-        require $this->viewsDir . '/perfil-refugio.view.php';
+
+           $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
+           $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
+           $solicitudes = $solicitudesCollection->getSolicitudesRefugio((int) $refugioId);
+
+
+           $tamanos       = $mascotaCollection->getTamanos();
+           $especies      = $mascotaCollection->getEspecies();
+           $temperamentos = $mascotaCollection->getTemperamentos();
+       }
+       $titulo = "Mi Refugio - PawMap";
+       require $this->viewsDir . '/perfil-refugio.view.php';
     }
+
 
     public function guardar()
     {

@@ -56,15 +56,16 @@ class AuthController extends Controller
             'contrasena'     => $passwordHash,
             'contacto'       => null,
         ]);
+        $this->log->info("Usuario creado", ['userId' => $userId]); /// temporal
 
         // Crear refugio o adoptante según el rol
-        /* Comentado temporalmente: aún no se permite el registro de refugios
         if ($rol === 'refugio') {
             $this->model->crearRefugio([
                 'usuario_id'         => $userId,
                 'nombre_institucion' => $name,
-                'cuit'               => '',
+                'cuit'               => null,
             ]);
+            $this->log->info("Refugio creado", ['refugio_id' => $userId]); /// temporal
 
             $refugio = $this->model->getRefugio((int) $userId);
 
@@ -77,12 +78,12 @@ class AuthController extends Controller
             ];
 
         } else {
-        */
             $this->model->crearAdoptante([
                 'usuario_id' => $userId,
                 'nombre'     => $name,
                 'apellido'   => '',
             ]);
+            $this->log->info("Adoptante creado", ['adoptante_id' => $userId]); /// temporal
 
             $adoptante = $this->model->getAdoptante((int) $userId);
 
@@ -95,9 +96,7 @@ class AuthController extends Controller
                 'foto_perfil'    => null,
                 'contacto'       => null,
             ];
-        /*
         }
-        */
 
         $this->log->info("Registro exitoso", ['username' => $username]);
 

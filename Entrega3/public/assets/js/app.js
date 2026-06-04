@@ -14,6 +14,7 @@ class AppPAW {
     this._initMapa();
     this._initBusquedas();
     this.initValidador();
+    this._initPerfilRefugio();
   }
 
   _initMenu() {
@@ -52,7 +53,7 @@ class AppPAW {
     const contenedorRefugios = document.getElementById("contenedor-grilla-refugios");
     const paginacionRefugios = document.getElementById("contenedor-paginacion-refugios");
 
-    if (!contenedorGrilla && !contenedorRefugios) return; 
+    if (!contenedorGrilla && !contenedorRefugios) return;
 
     // Si PAWFiltros va a gestionar mascotas, no crear un visualizador duplicado
     const filtrosMascotas = document.querySelector('[data-paw-filtros="mascotas"]');
@@ -67,22 +68,22 @@ class AppPAW {
           () => {
             if (contenedorGrilla && contenedorPaginacion && !filtrosMascotas) {
               const visualizador = new PAWVisualizacion(
-                  contenedorGrilla, 
-                  contenedorPaginacion, 
-                  6,
-                  'mascotas'
+                contenedorGrilla,
+                contenedorPaginacion,
+                6,
+                'mascotas'
               );
               visualizador.init('/api/mascotas');
-          }
+            }
 
             if (contenedorRefugios && paginacionRefugios) {
-                const visualizadorRefugios = new PAWVisualizacion(
-                    contenedorRefugios, 
-                    paginacionRefugios, 
-                    6,
-                    'refugios'
-                );
-                visualizadorRefugios.init('/api/refugios');
+              const visualizadorRefugios = new PAWVisualizacion(
+                contenedorRefugios,
+                paginacionRefugios,
+                6,
+                'refugios'
+              );
+              visualizadorRefugios.init('/api/refugios');
             }
           }
         );
@@ -97,65 +98,65 @@ class AppPAW {
     PAW.cargarScript("PAW-Paginacion-Script", "/assets/js/components/paw-paginacion.js", () => {
       PAW.cargarScript("PAW-Visualizacion-Script", "/assets/js/components/PAWVisualizacion.js", () => {
         PAW.cargarScript("PAW-Filtros-Script", "/assets/js/components/PAWFiltros.js", () => {
-          
+
           contenedores.forEach(container => {
-              const tipoVista = container.dataset.pawFiltros; 
-              
-              if (tipoVista === "mascotas") {
-                  new PAWFiltros(container, {
-                      urlAPI: "/api/mascotas",
-                      tipoVista: "mascotas",
-                      filtrosConfig: [
-                          { prop: "ciudad", label: "Ciudad", type: "select", sourceURL: "/api/refugios" },
-                          { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
-                          { prop: "edad", label: "Edad", type:"rango"},
-                          { prop: "tamano", label: "Tamaño", type: "select" },
-                          { prop: "especie", label: "Especie", type: "radio" },
-                          { prop: "temperamento", label: "Temperamento", type: "select" }
-                      ]
-                  });
-              } else if (tipoVista === "refugios") {
-                  new PAWFiltros(container, {
-                      urlAPI: "/api/refugios",
-                      tipoVista: "refugios",
-                      filtrosConfig: [
-                          { prop: "provincia", label: "Provincia", type: "select" },
-                          { prop: "ciudad", label: "Ciudad", type: "select" }
-                      ]
-                  });
-              } else if (tipoVista === "mapa") {
-                  const filtroMapa = new PAWFiltros(container, {
-                      urlAPI: "/api/mascotas",
-                      tipoVista: "mapa",
-                      filtrosConfig: [
-                          { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
-                          { prop: "edad", label: "Rango de Edad", type:"rango"},
-                          { prop: "tamano", label: "Tamaño", type: "select" },
-                          { prop: "especie", label: "Especie", type: "radio" },
-                          { prop: "temperamento", label: "Temperamento", type: "select" }
-                      ]
-                  });
+            const tipoVista = container.dataset.pawFiltros;
 
-                  filtroMapa.visualizacion = {
-                      actualizarDatos: (itemsFiltrados) => {
-                          const carruselTrack = document.querySelector('.paw-carousel-track');
-                          if (carruselTrack) {
-                              carruselTrack.innerHTML = '';
-                              if (itemsFiltrados.length === 0) {
-                                  carruselTrack.innerHTML = '<li class="paw-carousel-slide"><p>No se encontraron mascotas.</p></li>';
-                              } else {
-                                  itemsFiltrados.forEach(m => {
-                                      const li = document.createElement('li');
-                                      li.className = 'paw-carousel-slide';
-                                      
-                                      const edad = m.edad || '0';
-                                      const tamanoStr = m.tamano ? String(m.tamano) : 'Desconocido';
-                                      const temperamentoStr = m.temperamento ? String(m.temperamento) : 'Desconocido';
-                                      
-                                      const tamanoText = tamanoStr.charAt(0).toUpperCase() + tamanoStr.slice(1);
-                                      const temperamentoText = temperamentoStr.charAt(0).toUpperCase() + temperamentoStr.slice(1);
+            if (tipoVista === "mascotas") {
+              new PAWFiltros(container, {
+                urlAPI: "/api/mascotas",
+                tipoVista: "mascotas",
+                filtrosConfig: [
+                  { prop: "ciudad", label: "Ciudad", type: "select", sourceURL: "/api/refugios" },
+                  { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
+                  { prop: "edad", label: "Edad", type: "rango" },
+                  { prop: "tamano", label: "Tamaño", type: "select" },
+                  { prop: "especie", label: "Especie", type: "radio" },
+                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                ]
+              });
+            } else if (tipoVista === "refugios") {
+              new PAWFiltros(container, {
+                urlAPI: "/api/refugios",
+                tipoVista: "refugios",
+                filtrosConfig: [
+                  { prop: "provincia", label: "Provincia", type: "select" },
+                  { prop: "ciudad", label: "Ciudad", type: "select" }
+                ]
+              });
+            } else if (tipoVista === "mapa") {
+              const filtroMapa = new PAWFiltros(container, {
+                urlAPI: "/api/mascotas",
+                tipoVista: "mapa",
+                filtrosConfig: [
+                  { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
+                  { prop: "edad", label: "Rango de Edad", type: "rango" },
+                  { prop: "tamano", label: "Tamaño", type: "select" },
+                  { prop: "especie", label: "Especie", type: "radio" },
+                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                ]
+              });
 
-                                      li.innerHTML = `
+              filtroMapa.visualizacion = {
+                actualizarDatos: (itemsFiltrados) => {
+                  const carruselTrack = document.querySelector('.paw-carousel-track');
+                  if (carruselTrack) {
+                    carruselTrack.innerHTML = '';
+                    if (itemsFiltrados.length === 0) {
+                      carruselTrack.innerHTML = '<li class="paw-carousel-slide"><p>No se encontraron mascotas.</p></li>';
+                    } else {
+                      itemsFiltrados.forEach(m => {
+                        const li = document.createElement('li');
+                        li.className = 'paw-carousel-slide';
+
+                        const edad = m.edad || '0';
+                        const tamanoStr = m.tamano ? String(m.tamano) : 'Desconocido';
+                        const temperamentoStr = m.temperamento ? String(m.temperamento) : 'Desconocido';
+
+                        const tamanoText = tamanoStr.charAt(0).toUpperCase() + tamanoStr.slice(1);
+                        const temperamentoText = temperamentoStr.charAt(0).toUpperCase() + temperamentoStr.slice(1);
+
+                        li.innerHTML = `
                                         <article class="tarjeta-mascota">
                                             <figure class="tarjeta-imagen">
                                                 <a href="/mascota?id=${m.id}" class="link-imagen">
@@ -172,25 +173,25 @@ class AppPAW {
                                             </a>
                                         </article>
                                       `;
-                                      carruselTrack.appendChild(li);
-                                  });
-                              }
-                              
-                              const contenedorCarrusel = document.querySelector('[data-paw-carousel]');
-                              if (contenedorCarrusel && contenedorCarrusel.pawCarousel) {
-                                  contenedorCarrusel.pawCarousel.diapositivas = [...carruselTrack.children];
-                                  contenedorCarrusel.pawCarousel.irA(0, false);
-                                  contenedorCarrusel.pawCarousel.crearPuntos(); // recrear puntos si cambian
-                              }
-                          }
+                        carruselTrack.appendChild(li);
+                      });
+                    }
 
-                          // Llamar al mapa para que filtre los pines
-                          if (window.actualizarPinesMapa) {
-                              window.actualizarPinesMapa(itemsFiltrados);
-                          }
-                      }
-                  };
-              }
+                    const contenedorCarrusel = document.querySelector('[data-paw-carousel]');
+                    if (contenedorCarrusel && contenedorCarrusel.pawCarousel) {
+                      contenedorCarrusel.pawCarousel.diapositivas = [...carruselTrack.children];
+                      contenedorCarrusel.pawCarousel.irA(0, false);
+                      contenedorCarrusel.pawCarousel.crearPuntos(); // recrear puntos si cambian
+                    }
+                  }
+
+                  // Llamar al mapa para que filtre los pines
+                  if (window.actualizarPinesMapa) {
+                    window.actualizarPinesMapa(itemsFiltrados);
+                  }
+                }
+              };
+            }
           });
 
         });
@@ -219,7 +220,7 @@ class AppPAW {
     );
   }
 
-   _initBusquedas() {
+  _initBusquedas() {
     const contenedores = document.querySelectorAll("[data-paw-busquedas]");
     if (contenedores.length === 0) return;
     PAW.cargarScript(
@@ -233,7 +234,7 @@ class AppPAW {
     );
   }
 
-    initValidador() {
+  initValidador() {
     const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form");
     if (forms.length === 0) {
       return;
@@ -244,6 +245,19 @@ class AppPAW {
       "/assets/js/components/paw-validador.js",
       () => {
         forms.forEach(form => new PAWValidador(form));
+      },
+    );
+  }
+
+  _initPerfilRefugio() {
+    const contenedor = document.querySelector(".perfil-refugio-container");
+    if (!contenedor) return;
+    PAW.cargarScript(
+      "PAW-PerfilRefugio-Script",
+      "/assets/js/components/paw-perfil-refugio.js",
+      () => {
+        const perfilRefugio = new PAWRefugioPerfil(contenedor);
+        perfilRefugio.render();
       },
     );
   }
