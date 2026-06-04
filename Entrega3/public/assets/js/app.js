@@ -151,44 +151,20 @@ class AppPAW {
                       actualizarDatos: (itemsFiltrados) => {
                           const carruselTrack = document.querySelector('.paw-carousel-track');
                           if (carruselTrack) {
-                              carruselTrack.innerHTML = '';
+                              while (carruselTrack.firstChild) {
+                                  carruselTrack.removeChild(carruselTrack.firstChild);
+                              }
+                              
                               if (itemsFiltrados.length === 0) {
-                                  carruselTrack.innerHTML = '<li class="paw-carousel-slide"><p>No se encontraron mascotas.</p></li>';
+                                  const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
+                                  const p = PAW.nuevoElemento('p', 'No se encontraron mascotas.', {});
+                                  li.appendChild(p);
+                                  carruselTrack.appendChild(li);
                               } else {
                                   itemsFiltrados.forEach(m => {
-                                      const li = document.createElement('li');
-                                      li.className = 'paw-carousel-slide';
-                                      
-                                      const edad = m.edad || '0';
-                                      const tamanoStr = m.tamano ? String(m.tamano) : 'Desconocido';
-                                      const temperamentoStr = m.temperamento ? String(m.temperamento) : 'Desconocido';
-                                      
-                                      const tamanoText = tamanoStr.charAt(0).toUpperCase() + tamanoStr.slice(1);
-                                      const temperamentoText = temperamentoStr.charAt(0).toUpperCase() + temperamentoStr.slice(1);
-
-                                      li.innerHTML = `
-                                        <article class="tarjeta-mascota">
-                                            <figure class="tarjeta-imagen">
-                                                <a href="/mascota?id=${m.id}" class="link-imagen">
-                                                    <img src="/assets/img/${m.imagen || 'default-pet.jpg'}" alt="${m.nombre || 'Mascota'}">
-                                                </a>
-                                                <form method="POST" action="/favorito" class="form-favorito-tarjeta">
-                                                    <input type="hidden" name="mascota_id" value="${m.id}">
-                                                    <button type="submit" class="btn-favorito ${m.es_favorito ? 'favorito-activo' : ''}" aria-label="Agregar a favoritos">
-                                                        <span class="material-symbols-outlined">favorite</span>
-                                                    </button>
-                                                </form>
-                                            </figure>
-                                            <a href="/mascota?id=${m.id}" class="verPerfil">
-                                                <section class="tarjeta-info">
-                                                    <header class="tarjeta-info-header">
-                                                        <h3>${m.nombre || 'Sin nombre'}</h3>
-                                                    </header>
-                                                    <p>${edad} años - ${tamanoText} - ${temperamentoText}</p>
-                                                </section>
-                                            </a>
-                                        </article>
-                                      `;
+                                      const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
+                                      const tarjeta = PAWVisualizacion.crearTarjetaMascota(m);
+                                      li.appendChild(tarjeta);
                                       carruselTrack.appendChild(li);
                                   });
                               }

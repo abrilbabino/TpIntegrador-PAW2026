@@ -55,16 +55,15 @@ class PAWVisualizacion {
         const itemsAMostrar = this.items.slice(inicio, inicio + this.itemsPorPagina);
 
         itemsAMostrar.forEach(m => {
-            if(this.tipoVista === 'mascotas' || m.tipo_entidad === 'mascota'){
-                this.contenedorItems.appendChild(this.crearTarjetaMascota(m));
-            }
-            else{
-                this.contenedorItems.appendChild(this.crearTarjetaRefugio(m));
+            if (this.tipoVista === 'mascotas' || m.tipo_entidad === 'mascota') {
+                this.contenedorItems.appendChild(PAWVisualizacion.crearTarjetaMascota(m));
+            } else {
+                this.contenedorItems.appendChild(PAWVisualizacion.crearTarjetaRefugio(m));
             }
         });
     }
 
-    crearTarjetaMascota(mascota) {
+    static crearTarjetaMascota(mascota) {
         const articulo = PAW.nuevoElemento("article", "", { class: "tarjeta-mascota" });
 
         const figure = PAW.nuevoElemento("figure", "", { class: "tarjeta-imagen" });
@@ -75,7 +74,7 @@ class PAWVisualizacion {
         });
 
         const img = PAW.nuevoElemento("img", "", {
-            src: `/assets/img/${mascota.imagen}`,
+            src: `/assets/img/${mascota.imagen || 'default-pet.jpg'}`,
             alt: "",
         });
 
@@ -132,7 +131,7 @@ class PAWVisualizacion {
         return articulo;
     }
 
-    crearTarjetaRefugio(refugio) {
+    static crearTarjetaRefugio(refugio) {
         const articulo = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio" });
 
         const figure = PAW.nuevoElemento("figure", "", { class: "tarjeta-refugio-imagen" });
