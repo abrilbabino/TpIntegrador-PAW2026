@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png">
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="/assets/js/mapa.js" defer></script>
@@ -142,7 +143,7 @@
                 <span class="decorador-linea"></span>
                 <h2>Mascotas en la zona</h2>
                 
-                <section class="carrusel-mascotas">
+                <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                     <?php if (!empty($mascotas)): ?>
                         <?php foreach ($mascotas as $mascota): 
                             if (!is_object($mascota) || !isset($mascota->fields)) continue;
