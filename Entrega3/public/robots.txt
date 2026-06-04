@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Secciones Privadas y Formularios Internos
+Disallow: /perfil
+Disallow: /iniciar-sesion
+Disallow: /register
+Disallow: /logout
+Disallow: /seguimiento
+Disallow: /formulario-adopcion
+Disallow: /procesar-donacion
+Disallow: /enviar-comprobante
+Disallow: /contacto/enviar
+Disallow: /mascota/registro/
+Disallow: /encuesta/guardar
+Disallow: /favorito
+Disallow: /api/
+
+# Sitemap
+Sitemap: http://localhost:3000/sitemap.xml

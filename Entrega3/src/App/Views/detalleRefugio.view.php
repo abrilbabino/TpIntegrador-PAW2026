@@ -40,11 +40,12 @@
         ?>
 
         <script type="application/ld+json">
+        <?php $baseUrl = ($_SERVER['REQUEST_SCHEME'] ?? 'http') . '://' . $_SERVER['HTTP_HOST']; ?>
         {
             "@context": "https://schema.org",
             "@type": "AnimalShelter",
             "name": <?= json_encode($refugio->getNombre()) ?>,
-            "image": <?= json_encode('https://pawmap.com.ar/assets/img/' . ($refugio->fields['imagen'] ?? 'default-refugio.jpg')) ?>,
+            "image": <?= json_encode($baseUrl . '/assets/img/' . ($refugio->fields['imagen'] ?? 'default-refugio.jpg')) ?>,
             "description": <?= json_encode($refugio->getDescripcion() ?: 'Sin descripción disponible.') ?>,
             "telephone": <?= json_encode($refugio->fields['telefono'] ?? '') ?>,
             "address": {
