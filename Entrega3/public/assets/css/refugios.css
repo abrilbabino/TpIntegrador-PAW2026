@@ -250,6 +250,10 @@
   text-decoration: none;
 }
 
+.stretched-link:hover{
+  color: var(--color-azul);
+}
+
 .stretched-link::after {
   position: absolute;
   top: 0;

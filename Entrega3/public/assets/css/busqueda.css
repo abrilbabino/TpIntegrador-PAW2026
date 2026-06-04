@@ -22,9 +22,18 @@
 
 @media screen and (min-width: 994px) {
     .grilla-items {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 300px);
         gap: 1.5rem;
-    }
+   }
+
+   .contenedor-busqueda .tarjeta-mascota,
+   .contenedor-busqueda .tarjeta-refugio {
+        max-height: 320px;
+   }
+
+   .contenedor-busqueda .tarjeta-refugio-info{
+    padding:1rem;
+   }
 }
 
 .paginacion-js-controles {
