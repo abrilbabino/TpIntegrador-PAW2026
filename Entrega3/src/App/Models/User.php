@@ -74,6 +74,11 @@ class User extends Model
                 $errores['fecha_de_nacimiento'] = "La fecha de nacimiento no tiene un formato válido.";
             } elseif ($d > new \DateTime()) {
                 $errores['fecha_de_nacimiento'] = "La fecha de nacimiento no puede ser futura.";
+            } else {
+                $hace16Anios = (new \DateTime())->modify('-16 years');
+                if ($d > $hace16Anios) {
+                    $errores['fecha_de_nacimiento'] = "Debes tener al menos 16 años de edad.";
+                }
             }
         }
 
@@ -197,6 +202,19 @@ class User extends Model
             }
         }
 
+        $newPassword = $postData['contrasena'] ?? '';
+        if (!empty($newPassword)) {
+            $oldPassword = $postData['contrasena_actual'] ?? '';
+            if (empty($oldPassword)) {
+                $errores['contrasena_actual'] = "Debes ingresar tu contraseña actual para cambiarla.";
+            } else {
+                $currentUser = $this->findById($userId);
+                if (!$currentUser || !password_verify($oldPassword, $currentUser['contrasena'])) {
+                    $errores['contrasena_actual'] = "La contraseña actual es incorrecta.";
+                }
+            }
+        }
+
         if (count($errores) > 0) {
             return $errores;
         }
@@ -207,7 +225,6 @@ class User extends Model
             'contacto'       => htmlspecialchars(trim($postData['contacto'] ?? ''), ENT_QUOTES, 'UTF-8'),
         ];
 
-        $newPassword = $postData['contrasena'] ?? '';
         if (!empty($newPassword)) {
             $fieldsUsuario['contrasena'] = password_hash($newPassword, PASSWORD_DEFAULT);
         }
@@ -226,9 +243,20 @@ class User extends Model
             $fieldsUsuario['foto_perfil'] = null;
         } else {
             if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
-                $extension = pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION);
-                if (!in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $errores['foto_perfil_o_logo'] = 'La imagen debe ser JPG, PNG, WEBP o GIF.';
+                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
+                
+                // Validar MIME y que sea una imagen real
+                $esImagenValida = false;
+                if (file_exists($archivo['tmp_name'])) {
+                    $mime = mime_content_type($archivo['tmp_name']);
+                    $info = getimagesize($archivo['tmp_name']);
+                    if ($info !== false && strpos($mime, 'image/') === 0) {
+                        $esImagenValida = true;
+                    }
+                }
+
+                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible (solo JPG, PNG, WEBP, GIF).';
                     return $errores;
                 }
                 

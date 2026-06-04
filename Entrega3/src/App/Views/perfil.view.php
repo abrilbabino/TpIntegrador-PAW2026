@@ -61,6 +61,15 @@
 
             <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
             <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
+            <?php if (isset($errores['foto_perfil_o_logo'])): ?>
+                <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+                    <span class="material-symbols-outlined">error</span>
+                    <section>
+                        <strong>Error con la foto de perfil:</strong>
+                        <p><?= htmlspecialchars($errores['foto_perfil_o_logo'], ENT_QUOTES, 'UTF-8') ?></p>
+                    </section>
+                </aside>
+            <?php endif; ?>
 
             <ul class="perfil-datos-grid">
                 <li class="dato-item">
@@ -117,6 +126,13 @@
                     <input type="tel" name="contacto" value="<?= htmlspecialchars($oldData['contacto'] ?? $user['contacto'] ?? '') ?>" data-original="<?= htmlspecialchars($user['contacto'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['contacto']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
                     <?php if (isset($errores['contacto'])): ?>
                         <span class="msg-error input-value"><?= htmlspecialchars($errores['contacto'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
+                </li>
+                <li class="dato-item input-value">
+                    <span class="dato-label">Contraseña Actual</span>
+                    <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input <?= isset($errores['contrasena_actual']) ? 'input-invalido' : '' ?>" data-original="">
+                    <?php if (isset($errores['contrasena_actual'])): ?>
+                        <span class="msg-error"><?= htmlspecialchars($errores['contrasena_actual'], ENT_QUOTES, 'UTF-8') ?></span>
                     <?php endif; ?>
                 </li>
                 <li class="dato-item input-value">

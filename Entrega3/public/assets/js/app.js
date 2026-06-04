@@ -13,6 +13,7 @@ class AppPAW {
     this._initPerfil();
     this._initMapa();
     this._initBusquedas();
+    this.initValidador();
   }
 
   _initMenu() {
@@ -228,6 +229,21 @@ class AppPAW {
         contenedores.forEach(function (container) {
           new PAWBusquedas(container);
         });
+      },
+    );
+  }
+
+    initValidador() {
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form");
+    if (forms.length === 0) {
+      return;
+    }
+
+    PAW.cargarScript(
+      "paw-validador",
+      "/assets/js/components/paw-validador.js",
+      () => {
+        forms.forEach(form => new PAWValidador(form));
       },
     );
   }
