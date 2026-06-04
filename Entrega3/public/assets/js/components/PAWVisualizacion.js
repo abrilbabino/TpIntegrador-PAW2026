@@ -146,8 +146,9 @@ class PAWVisualizacion {
         const header = PAW.nuevoElemento("header", "", { class: "tarjeta-refugio-header" });
         
         const h3 = PAW.nuevoElemento("h3", "", {});
+        const idRefugio = refugio.id || refugio.usuario_id;
         const linkPerfil = PAW.nuevoElemento("a", refugio.nombre_institucion || 'Sin nombre', {
-            href: `/refugio/perfil?id=${refugio.id}`,
+            href: `/refugio/perfil?id=${idRefugio}`,
             class: "stretched-link"
         });
         h3.appendChild(linkPerfil);
