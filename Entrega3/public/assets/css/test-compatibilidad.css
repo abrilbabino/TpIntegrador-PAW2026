@@ -29,7 +29,7 @@
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--color-texto);
+  color: var(--color-azul-oscuro);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin: 0 0 1.5rem;
@@ -48,7 +48,7 @@
   color: var(--color-texto);
   text-align: center;
   margin: 0 0 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .options-container {
@@ -88,11 +88,22 @@
 
 .contenido-opcion {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.emoji-opcion {
+  font-size: 1.8rem;
+}
+
+.textos-opcion {
+  display: flex;
   flex-direction: column;
 }
 
 .opcion-titulo {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-texto);
   transition: color 0.25s;
@@ -104,7 +115,8 @@
 
 .opcion-subtitulo {
   font-size: 1rem;
-  color: var(--color-texto);
+  font-weight: 500;
+  color: var(--color-gris);
   margin-top: 3px;
   line-height: 1.4;
 }
@@ -135,38 +147,34 @@
 }
 
 .btn-anterior {
-  background: var(--color-azul);
+  background: var(--color-naranja);
   color: var(--color-fondo);
-  border: 2px solid var(--color-azul);
 }
 
 .btn-anterior:hover {
   background: var(--color-azul);
   color: var(--color-fondo);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--color-texto);
+  transform: scale(0.98);
 }
 
 .btn-siguiente {
-  background: linear-gradient(135deg, var(--color-naranja), var(--color-amarillo));
+  background: var(--color-azul);
   color: var(--color-fondo);
-  box-shadow: 0 4px 15px var(--color-naranja);
 }
 
 .btn-siguiente:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--color-naranja);
+  transform: scale(0.98);
+  background-color: var(--color-naranja);
 }
 
 .btn-resultados {
-  background: linear-gradient(135deg, var(--color-verde), var(--color-verde));
+  background: var(--color-verde);
   color: var(--color-fondo);
-  box-shadow: 0 4px 15px var(--color-verde);
 }
 
 .btn-resultados:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--color-verde);
+  transform: scale(0.98);
+  background-color: var(--color-naranja);
 }
 
 @media screen and (min-width: 994px) {

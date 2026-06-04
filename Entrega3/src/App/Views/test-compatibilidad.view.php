@@ -40,10 +40,13 @@
                             <label class="tarjeta-opcion">
                                 <input type="radio" name="<?= htmlspecialchars($pregunta['name']) ?>" value="<?= htmlspecialchars($opcion['valor']) ?>">
                                 <span class="contenido-opcion">
-                                    <strong class="opcion-titulo"><?= htmlspecialchars($opcion['etiqueta']) ?></strong>
-                                    <?php if (!empty($opcion['subtitulo'])): ?>
-                                    <small class="opcion-subtitulo"><?= htmlspecialchars($opcion['subtitulo']) ?></small>
-                                    <?php endif; ?>
+                                    <span class="emoji-opcion"><?= htmlspecialchars($opcion['emoji'] ?? '👉') ?></span>
+                                    <span class="textos-opcion">
+                                        <strong class="opcion-titulo"><?= htmlspecialchars($opcion['etiqueta']) ?></strong>
+                                        <?php if (!empty($opcion['subtitulo'])): ?>
+                                        <small class="opcion-subtitulo"><?= htmlspecialchars($opcion['subtitulo']) ?></small>
+                                        <?php endif; ?>
+                                    </span>
                                 </span>
                             </label>
                         </li>

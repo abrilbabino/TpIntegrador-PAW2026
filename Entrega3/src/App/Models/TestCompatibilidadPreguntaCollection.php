@@ -9,14 +9,13 @@ class TestCompatibilidadPreguntaCollection extends Model
     public function getAll(): array
     {
         $sql = "
-            SELECT p.nombre AS pregunta_nombre, p.titulo AS pregunta_titulo, o.valor, o.etiqueta, o.subtitulo 
+            SELECT p.nombre AS pregunta_nombre, p.titulo AS pregunta_titulo, o.valor, o.etiqueta, o.subtitulo, o.emoji 
             FROM test_compatibilidad_pregunta p
             LEFT JOIN test_compatibilidad_opcion o ON p.id = o.pregunta_id
             ORDER BY p.orden, o.orden
         ";
 
-        $stmt = $this->queryBuilder->getConnection()->query($sql);
-        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $this->queryBuilder->rawQuery($sql);
 
         $preguntas = [];
 
@@ -35,7 +34,8 @@ class TestCompatibilidadPreguntaCollection extends Model
                 $preguntas[$name]['opciones'][] = [
                     'valor' => $row['valor'],
                     'etiqueta' => $row['etiqueta'],
-                    'subtitulo' => $row['subtitulo']
+                    'subtitulo' => $row['subtitulo'],
+                    'emoji' => $row['emoji']
                 ];
             }
         }
