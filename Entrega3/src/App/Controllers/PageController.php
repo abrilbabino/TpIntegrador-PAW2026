@@ -53,6 +53,37 @@ class PageController extends Controller
         require $this->viewsDir . '/mapa.view.php';
     }
 
+    public function buscar()
+    {
+        $titulo = "Resultados de búsqueda - PawMap";
+        $menu = $this->menu;
+        $redes = $this->redes;
+        $request = $this->request;
+        $q = $request->get('busqueda'); // Viene del input con name="busqueda"
+
+        $resultados_mixtos = [];
+
+        // Mascotas
+        $mascotas = $this->model->buscar($q ?? '');
+        foreach ($mascotas as $m) {
+            $item = $m->fields ?? [];
+            $item['tipo_entidad'] = 'mascota';
+            $resultados_mixtos[] = $item;
+        }
+
+        // Refugios
+        $refugioCollection = new \Paw\App\Models\RefugioCollection();
+        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugios = $refugioCollection->buscar($q ?? '');
+        foreach ($refugios as $r) {
+            $item = $r->fields ?? [];
+            $item['tipo_entidad'] = 'refugio';
+            $resultados_mixtos[] = $item;
+        }
+
+        require $this->viewsDir . '/busqueda.view.php';
+    }
+
     public function iniciarSesion()
     {
         $titulo = "Iniciar Sesión";

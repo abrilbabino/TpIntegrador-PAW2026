@@ -37,7 +37,7 @@ class PAWPaginacion {
   renderizar() {
     this.container.innerHTML = "";
         const totalPaginas = Math.ceil(this.totalItems / this.opciones.itemsPorPagina);
-        if (totalPaginas <= 1) return;
+        if (totalPaginas <= 0) return;
 
         const nav = PAW.nuevoElemento("nav", "", { class: "paginacion" });
 
@@ -65,7 +65,7 @@ class PAWPaginacion {
         } else {
             nav.appendChild(this.crearBoton(1));
 
-            let inicio = this.currentPage - Math.floor(maxPaginas / 2);
+            let inicio = this.paginaActual - Math.floor(maxPaginas / 2);
             let fin = inicio + maxPaginas - 1;
 
             if (inicio < 2) {

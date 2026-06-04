@@ -1,0 +1,49 @@
+.contenedor-busqueda {
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 60vh;
+}
+
+#titulo-busqueda {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-azul);
+}
+
+.grilla-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin: 0.7rem;
+}
+
+@media screen and (min-width: 994px) {
+    .grilla-items {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.paginacion-js-controles {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.paginacion-js-controles button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-gris-claro);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.paginacion-js-controles button.activo {
+    background: var(--color-azul);
+    color: white;
+    border-color: var(--color-azul);
+}

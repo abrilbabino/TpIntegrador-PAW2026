@@ -12,6 +12,7 @@ class AppPAW {
     this._initFiltros();
     this._initPerfil();
     this._initMapa();
+    this._initBusquedas();
   }
 
   _initMenu() {
@@ -214,6 +215,20 @@ class AppPAW {
     PAW.cargarScript(
       "PAW-Mapa-Script",
       "/assets/js/mapa.js"
+    );
+  }
+
+   _initBusquedas() {
+    const contenedores = document.querySelectorAll("[data-paw-busquedas]");
+    if (contenedores.length === 0) return;
+    PAW.cargarScript(
+      "PAW-Busquedas-Script",
+      "/assets/js/components/paw-busquedas.js",
+      () => {
+        contenedores.forEach(function (container) {
+          new PAWBusquedas(container);
+        });
+      },
     );
   }
 

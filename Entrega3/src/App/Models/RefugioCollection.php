@@ -63,6 +63,12 @@ class RefugioCollection extends Model
         return $coleccion;
     }
 
+    public function buscar(string $termino): array
+    {
+        $resultados = $this->queryBuilder->buscarRefugiosPorTermino($this->table, $termino);
+        return $this->mapRefugios($resultados);
+    }
+
     private function mapearCampoRefugio(array $rows, string $field): array
     {
         $refugios = [];

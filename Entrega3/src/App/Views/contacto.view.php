@@ -23,30 +23,30 @@
             <h1>Contactanos</h1>
         </header>
 
-        <section class="row g-5">
+        <section class="contacto">
             <!-- Columna Izquierda: Formulario -->
-            <article class="col-lg-7 col-md-8">
-                <h2 class="mb-4">Envianos un mensaje</h2>
-                <p class="mb-4 text-muted">¿Tenés alguna duda o querés colaborar con nosotros? Completá el siguiente formulario y nos pondremos en contacto a la brevedad.</p>
+            <article class="formulario">
+                <h2 class="envia-mensaje">Envianos un mensaje</h2>
+                <p class="texto">¿Tenés alguna duda o querés colaborar con nosotros? Completá el siguiente formulario y nos pondremos en contacto a la brevedad.</p>
                 
                 <form action="/contacto/enviar" method="POST">
                     <section class="row">
-                        <fieldset class="col-md-6 mb-3">
+                        <fieldset class="nombre">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Tu nombre" required>
                         </fieldset>
-                        <fieldset class="col-md-6 mb-3">
+                        <fieldset class="email">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="nombre@ejemplo.com" required>
                         </fieldset>
                     </section>
                     
-                    <fieldset class="mb-3">
+                    <fieldset class="asunto">
                         <label for="asunto" class="form-label">Organización / Asunto</label>
                         <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Motivo de tu contacto">
                     </fieldset>
                     
-                    <fieldset class="mb-4">
+                    <fieldset class="mensaje">
                         <label for="mensaje" class="form-label">Mensaje</label>
                         <textarea class="form-control" id="mensaje" name="mensaje" rows="6" placeholder="Escribí tu mensaje aquí..." required></textarea>
                     </fieldset>
@@ -56,42 +56,35 @@
             </article>
 
             <!-- Columna Derecha: Información -->
-            <aside class="col-lg-5 col-md-4">
+            <aside class="informacion">
                 <section class="info-sidebar">
                     <h3>Información de Contacto</h3>
                     
-                    <ul class="list-unstyled p-0 m-0">
+                    <ul class="contact-list">    
                         <li class="contact-item">
                             <span class="material-symbols-outlined">location_on</span>
-                            <address class="m-0">
+                            <address class="direccion">
                                 <strong>Dirección</strong><br>
-                                Av. Principal 1234, Ciudad Autónoma de Buenos Aires, Argentina
+                                Calle 105 n3060, Mercedes, Bs. As.
                             </address>
                         </li>
-                        
+
                         <li class="contact-item">
                             <span class="material-symbols-outlined">mail</span>
-                            <p class="m-0">
+                            <p class="email">
                                 <strong>Email</strong><br>
-                                <a href="mailto:pawmap2026@gmail.com">pawmap2026@gmail.com</a>
+                                pawmap2026@gmail.com
                             </p>
                         </li>
                         
                         <li class="contact-item">
                             <span class="material-symbols-outlined">call</span>
-                            <p class="m-0">
+                            <p class="telefono">
                                 <strong>Teléfono</strong><br>
-                                +54 11 4567-8901
+                                +54 2324 513983
                             </p>
                         </li>
                     </ul>
-                    
-                    <footer class="mt-4">
-                        <a href="https://maps.google.com" target="_blank" class="map-link d-flex align-items-center">
-                            <span class="material-symbols-outlined me-2">map</span>
-                            Cómo llegar / Ver Mapa
-                        </a>
-                    </footer>
                 </section>
             </aside>
         </section>

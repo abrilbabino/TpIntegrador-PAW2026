@@ -91,27 +91,6 @@ class MascotaController extends Controller
         require $this->viewsDir . '/mascota.view.php';
     }
 
-    public function buscar()
-    {
-        $request = $this->request;
-        $menu  = $this->menu;
-        $redes = $this->redes;
-        $q     = $request->get('q');
-        $page = (int) $request->get('pagina') ?: 1;
-        $perPage = 6;
-
-        $resultado = $this->model->buscarPaginated($q, $page, $perPage);
-        $mascotas = $resultado['items'];
-        $pagination = $resultado['pagination'];
-
-        $tamanos       = $this->model->getTamanos();
-        $especies      = $this->model->getEspecies();
-        $temperamentos = $this->model->getTemperamentos();
-        $provincias    = $this->model->getProvincias();
-        $ciudades      = $this->model->getCiudades();
-
-        require $this->viewsDir . '/adoptar.view.php';
-    }
 
     public function libreta()
     {

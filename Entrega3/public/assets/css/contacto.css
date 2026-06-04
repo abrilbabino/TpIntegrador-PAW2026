@@ -1,10 +1,29 @@
-.contact-form-section {
-    padding-bottom: 5rem;
+.contacto{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin: 3rem;
+    gap:1rem;
+}
+
+.envia-mensaje{
+    color: var(--color-naranja);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.texto{
+    margin-bottom: 1rem;
 }
 
 .form-label {
     font-weight: 600;
     color: var(--color-azul);
+}
+
+.mensaje .form-control{
+    font-family: var(--fuente-titulo);
 }
 
 .btn-enviar {
@@ -16,20 +35,26 @@
     text-transform: uppercase;
     border-radius: 5px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .btn-enviar:hover {
     background-color: var(--color-naranja);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--color-texto);
+    transform: scale(0.98);
     color: var(--color-fondo);
 }
 
 .info-sidebar {
-    background-color: #f9f9f9;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 2rem;
     border-radius: 10px;
     border-left: 5px solid var(--color-naranja);
+}
+
+.info-sidebar:hover{
+    transform: scale(1.01);
 }
 
 .info-sidebar h3 {
@@ -57,11 +82,14 @@
 }
 
 @media (max-width: 768px) {
+    .contacto{
+        flex-direction: column;
+    }
     .hero-banner h1 {
         font-size: 2.5rem;
     }
 
     .info-sidebar {
-        margin-top: 3rem;
+        margin: 0;
     }
 }

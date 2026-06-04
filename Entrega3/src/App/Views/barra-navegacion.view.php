@@ -3,8 +3,8 @@
         <img src="/assets/img/logo.png" alt="" />
     </figure>
 
-    <form action="/buscar" method="GET" class="header-busqueda">
-        <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" />
+    <form action="/buscar" method="GET" class="header-busqueda" data-paw-busquedas>
+        <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" value="<?= htmlspecialchars($_GET['busqueda'] ?? '') ?>" autocomplete="off" />
     </form>
     
     <?php if (isset($_SESSION['user'])): ?>

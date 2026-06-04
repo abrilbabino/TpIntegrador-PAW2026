@@ -243,7 +243,7 @@ class QueryBuilder
     {
         $select = $esConteo ? "COUNT(*)" : "*";
         $sql = "SELECT {$select} FROM {$tabla} WHERE estado_adopcion = 'DISPONIBLE' 
-                AND (nombre LIKE :term1 OR especie LIKE :term2 OR descripcion LIKE :term3)";
+                AND (nombre ILIKE :term1 OR especie ILIKE :term2 OR descripcion ILIKE :term3)";
         
         if (!$esConteo && $limite !== null && $offset !== null) {
             $sql .= " LIMIT :limite OFFSET :offset";
@@ -256,6 +256,34 @@ class QueryBuilder
             ':term3' => $terminoLike
         ];
         
+        if (!$esConteo && $limite !== null && $offset !== null) {
+            $binds[':limite'] = ['value' => $limite, 'type' => \PDO::PARAM_INT];
+            $binds[':offset'] = ['value' => $offset, 'type' => \PDO::PARAM_INT];
+        }
+
+        if ($esConteo) {
+            return (int) $this->rawQueryValue($sql, $binds);
+        } else {
+            return $this->rawQuery($sql, $binds);
+        }
+    }
+
+    public function buscarRefugiosPorTermino(string $tabla, string $termino, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
+    {
+        $select = $esConteo ? "COUNT(*)" : "*";
+        $sql = "SELECT {$select} FROM {$tabla} WHERE nombre_institucion ILIKE :term1 OR descripcion ILIKE :term2 OR alias ILIKE :term3";
+        
+        if (!$esConteo && $limite !== null && $offset !== null) {
+            $sql .= " LIMIT :limite OFFSET :offset";
+        }
+
+        $term = "%{$termino}%";
+        $binds = [
+            ':term1' => $term,
+            ':term2' => $term,
+            ':term3' => $term
+        ];
+
         if (!$esConteo && $limite !== null && $offset !== null) {
             $binds[':limite'] = ['value' => $limite, 'type' => \PDO::PARAM_INT];
             $binds[':offset'] = ['value' => $offset, 'type' => \PDO::PARAM_INT];

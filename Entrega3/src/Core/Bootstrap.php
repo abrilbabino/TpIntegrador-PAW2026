@@ -60,7 +60,7 @@ $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
 $router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
 $router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
-$router->get('/buscar', 'MascotaController@buscar');
+$router->get('/buscar', 'PageController@buscar');
 
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');

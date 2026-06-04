@@ -244,6 +244,58 @@ main>header p {
   font-size: 1.25rem;
 }
 
+/* Historial de búsquedas */
+.paw-busquedas-dropdown {
+  display: none;
+  position: absolute;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--color-texto);
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.paw-busquedas-titulo {
+  font-size: 1rem;
+  color: var(--color-azul);
+  margin: 0 0 0.5rem 0;
+  border-bottom: 2px solid var(--color-amarillo);
+  padding-bottom: 0.3rem;
+}
+
+.paw-busquedas-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.paw-busquedas-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.paw-busquedas-icono {
+  font-size: 1.2rem;
+  color: var(--color-naranja);
+}
+
+.paw-busquedas-link {
+  text-decoration: none;
+  color: var(--color-texto);
+  font-weight: 500;
+  transition: color 0.2s;
+  width: 100%;
+}
+
+.paw-busquedas-link:hover {
+  color: var(--color-naranja);
+}
+
 @media screen and (min-width: 994px) {
   .Barra-navegacion {
     display: flex;

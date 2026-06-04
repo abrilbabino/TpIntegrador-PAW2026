@@ -45,11 +45,17 @@ class PAWVisualizacion {
     // Utiliza Array.prototype.slice() para extraer funcionalmente la sublista de items que corresponde estrictamente a la ventana matemática de la página actual.
     renderizarItems() {
         this.contenedorItems.innerHTML = "";
+        
+        if (!this.items || this.items.length === 0) {
+            this.contenedorItems.innerHTML = "<p>No se encontraron resultados.</p>";
+            return;
+        }
+
         const inicio = (this.currentPage - 1) * this.itemsPorPagina;
         const itemsAMostrar = this.items.slice(inicio, inicio + this.itemsPorPagina);
 
         itemsAMostrar.forEach(m => {
-            if(this.tipoVista === 'mascotas'){
+            if(this.tipoVista === 'mascotas' || m.tipo_entidad === 'mascota'){
                 this.contenedorItems.appendChild(this.crearTarjetaMascota(m));
             }
             else{
