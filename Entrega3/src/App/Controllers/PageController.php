@@ -23,6 +23,17 @@ class PageController extends Controller
         $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
         $refugiosMapa = $refugioCollection->getRefugiosConUbicacion([]);
 
+        $favoritosIds = [];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'adoptante') {
+            $favoritoModel = new \Paw\App\Models\Favorito();
+            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+            $favoritos = $favoritoModel->getByAdoptanteId((int)$_SESSION['user']['id']);
+            $favoritosIds = array_column($favoritos, 'id'); // id es mascota_id
+        }
+
         require $this->viewsDir . '/index.view.php';
     }
 
@@ -51,6 +62,17 @@ class PageController extends Controller
         $refugiosMapa = $refugioCollection->getRefugiosConUbicacion($filtros);
 
         $mascotas = $this->model->getFiltered($filtros);
+
+        $favoritosIds = [];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'adoptante') {
+            $favoritoModel = new \Paw\App\Models\Favorito();
+            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+            $favoritos = $favoritoModel->getByAdoptanteId((int)$_SESSION['user']['id']);
+            $favoritosIds = array_column($favoritos, 'id');
+        }
 
         require $this->viewsDir . '/mapa.view.php';
     }

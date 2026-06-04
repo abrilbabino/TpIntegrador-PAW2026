@@ -96,7 +96,7 @@ class PAWVisualizacion {
 
         const btnFavorito = PAW.nuevoElemento("button", "", {
             type: "submit",
-            class: "btn-favorito",
+            class: mascota.es_favorito ? "btn-favorito favorito-activo" : "btn-favorito",
             "aria-label": "Agregar a favoritos"
         });
 

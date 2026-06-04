@@ -230,6 +230,10 @@
   font-size: 20px;
 }
 
+.btn-favorito.favorito-activo .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
 .tarjeta-info {
   padding: 20px;
   background-color: var(--color-fondo);

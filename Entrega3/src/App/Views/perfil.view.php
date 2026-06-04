@@ -219,8 +219,8 @@
                                     · <?= htmlspecialchars($fav['temperamento'] ?? '—') ?>
                                 </p>
                             </a>
-                            <form method="POST" action="/favorito/eliminar" class="form-quitar-fav">
-                                <input type="hidden" name="favorito_id" value="<?= $fav['favorito_id'] ?>" />
+                            <form method="POST" action="/api/favorito/toggle" class="form-quitar-fav">
+                                <input type="hidden" name="mascota_id" value="<?= htmlspecialchars($fav['id']) ?>" />
                                 <button type="submit" class="btn-corazon activo" title="Quitar favorito">
                                     <span class="material-symbols-outlined">favorite</span>
                                 </button>

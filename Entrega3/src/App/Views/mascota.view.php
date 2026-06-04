@@ -78,8 +78,8 @@
                     </a>
                     <form method="POST" action="/favorito" class="form-favorito">
                         <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">    
-                        <button type="submit" class="boton-favorito" aria-label="Agregar a favoritos">
-                            <span class="material-symbols-outlined"><?= isset($esFavorito) && $esFavorito ? 'favorite' : 'favorite_border' ?></span>
+                        <button type="submit" class="boton-favorito <?= isset($esFavorito) && $esFavorito ? 'favorito-activo' : '' ?>" aria-label="Agregar a favoritos">
+                            <span class="material-symbols-outlined">favorite</span>
                         </button>
                     </form>
                 </header>

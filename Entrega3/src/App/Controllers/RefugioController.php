@@ -75,6 +75,17 @@ class RefugioController extends Controller
             }
         }
 
+        $favoritosIds = [];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'adoptante') {
+            $favoritoModel = new \Paw\App\Models\Favorito();
+            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+            $favoritos = $favoritoModel->getByAdoptanteId((int)$_SESSION['user']['id']);
+            $favoritosIds = array_column($favoritos, 'id');
+        }
+
         require $this->viewsDir . '/detalleRefugio.view.php';
     }
 

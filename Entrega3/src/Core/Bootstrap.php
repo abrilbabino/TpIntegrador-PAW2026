@@ -90,8 +90,7 @@ $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo'
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
 
 // Favoritos
-$router->post('/favorito', 'FavoritoController@guardar');
-$router->post('/favorito/eliminar', 'FavoritoController@eliminar');
+$router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 
 // Errores
 $router->get('not_found', 'ErrorController@notFound');
