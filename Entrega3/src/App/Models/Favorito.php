@@ -59,4 +59,13 @@ class Favorito extends Model
 
         return $sentencia->rowCount() > 0;
     }
+    public function getFavoritosIds(?array $sessionUser): array
+    {
+        if (empty($sessionUser) || !isset($sessionUser['rol']) || $sessionUser['rol'] !== 'adoptante' || empty($sessionUser['id'])) {
+            return [];
+        }
+
+        $favoritos = $this->getByAdoptanteId((int)$sessionUser['id']);
+        return array_column($favoritos, 'id');
+    }
 }

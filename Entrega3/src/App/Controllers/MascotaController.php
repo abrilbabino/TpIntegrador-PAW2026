@@ -30,16 +30,9 @@ class MascotaController extends Controller
         
         $refugioCollection = $this->loadCollection(RefugioCollection::class);
         
-        $favoritosIds = [];
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'adoptante') {
-            $favoritoModel = new \Paw\App\Models\Favorito();
-            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
-            $favoritos = $favoritoModel->getByAdoptanteId((int)$_SESSION['user']['id']);
-            $favoritosIds = array_column($favoritos, 'id');
-        }
+        $favoritoModel = new \Paw\App\Models\Favorito();
+        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
         $mascotasData = [];
         foreach ($resultado as $mascota) {
@@ -105,16 +98,10 @@ class MascotaController extends Controller
             $mascota->fields['imagen'] ?? null
         );
 
-        $esFavorito = false;
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        if (isset($_SESSION['user']) && $_SESSION['user']['rol'] === 'adoptante') {
-            $favoritoModel = new \Paw\App\Models\Favorito();
-            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
-            $favoritos = $favoritoModel->getByAdoptanteId((int)$_SESSION['user']['id']);
-            $esFavorito = in_array($id, array_column($favoritos, 'id'));
-        }
+        $favoritoModel = new \Paw\App\Models\Favorito();
+        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
+        $esFavorito = in_array($id, $favoritosIds);
 
         require $this->viewsDir . '/mascota.view.php';
     }

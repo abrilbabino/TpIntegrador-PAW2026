@@ -13,9 +13,8 @@
 
 /* Separador sutil entre secciones */
 .contenedor-exito hr {
-    margin: 25px 0;
     border: 0;
-    border-top: 1px solid var(--color-naranja);
+    border-top: 1px solid var(--color-fondo);
 }
 
 /* Enlace de retorno con color azul y hover suave */
@@ -75,10 +74,11 @@ fieldset.comprobante-wrapper legend {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s ease;
+    box-shadow: none;
 }
 
 .info-transferencia .btn-comprobante:hover {
-    background: var(--color-naranja-claro);
+    background: var(--color-azul);
 }
 
 /* Código alias y CVU con fondo gris claro */
