@@ -630,4 +630,24 @@ class QueryBuilder
         $sentencia->execute();
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function obtenerSolicitudesPorRefugio(string $table, int $refugioId): array
+    {
+        $sql = "SELECT s.id, s.fecha, s.estado,
+        m.nombre as mascota_nombre,
+        m.edad, m.tamano, m.temperamento,
+        a.nombre as adoptante_nombre,
+        a.apellido as adoptante_apellido
+        FROM solicitud_de_adopcion s
+        JOIN mascota m ON s.mascota_id = m.id
+        JOIN adoptante a ON s.adoptante_id = a.usuario_id
+        WHERE m.refugio_id = :refugio_id
+        ORDER BY s.fecha DESC";
+        
+        $sentencia = $this->pdo->prepare($sql);
+        $sentencia->bindValue(':refugio_id', $refugioId, PDO::PARAM_INT);
+        $sentencia->execute();
+        
+        return $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
