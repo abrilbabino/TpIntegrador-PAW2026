@@ -18,59 +18,13 @@ class AppPAW {
   }
 
   _initFavoritos() {
-    document.body.addEventListener('submit', (e) => {
-      const form = e.target.closest('.form-favorito-tarjeta, .form-favorito, .form-quitar-fav');
-      if (!form) return;
-      
-      e.preventDefault();
-      
-      const formData = new FormData(form);
-      const mascotaId = formData.get('mascota_id');
-      const btn = form.querySelector('.btn-favorito, .boton-favorito, .btn-corazon');
-      
-      if (!mascotaId || !btn) return;
-      
-      fetch('/api/favorito/toggle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ mascota_id: mascotaId })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          if (form.classList.contains('form-quitar-fav')) {
-            // Eliminar la tarjeta del perfil
-            const card = form.closest('li');
-            if (card) {
-                card.remove();
-                // Si ya no quedan favoritos, podríamos mostrar el mensaje de vacío,
-                // pero un simple recargo manual o dejarlo vacío temporalmente es aceptable
-                const ul = document.querySelector('.perfil-cards-grid');
-                if (ul && ul.children.length === 0) {
-                    window.location.reload();
-                }
-            }
-          } else {
-            if (data.action === 'added') {
-              btn.classList.add('favorito-activo');
-            } else if (data.action === 'removed') {
-              btn.classList.remove('favorito-activo');
-            }
-          }
-        } else {
-          if (data.error === 'No autorizado') {
-            window.location.href = '/iniciar-sesion';
-          } else {
-            console.error('Error al modificar favoritos:', data.error);
-          }
-        }
-      })
-      .catch(err => {
-        console.error('Error de red al alternar favorito:', err);
-      });
-    });
+    PAW.cargarScript(
+      "paw-favoritos",
+      "/assets/js/components/paw-favoritos.js",
+      () => {
+        new PAWFavoritos();
+      }
+    );
   }
 
   _initMenu() {

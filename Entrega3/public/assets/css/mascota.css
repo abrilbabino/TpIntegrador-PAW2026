@@ -136,6 +136,7 @@
 
 .boton-favorito .material-symbols-outlined {
     font-size: inherit;
+    cursor: pointer;
 }
 
 .boton-favorito.favorito-activo .material-symbols-outlined {
