@@ -68,6 +68,23 @@
   transform: scale(1.12);
 }
 
+.nav-foto-perfil {
+  grid-area: "icon";
+  grid-row: 1;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-azul);
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.icono-usuario:hover .nav-foto-perfil {
+  border-color: var(--color-naranja);
+  transform: scale(1.12);
+}
+
 .icono-usuario p,
 .icono-usuario p:hover {
   color: var(--color-azul);

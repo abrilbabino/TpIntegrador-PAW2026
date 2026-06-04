@@ -11,3 +11,6 @@ Entrega3/logs/app.log
 # Archivos de configuración de entorno de trabajo
 .vscode/
 .DS_Store
+# Ignorar imgenes subidas por usuarios
+Entrega3/public/assets/img/uploads/*
+!Entrega3/public/assets/img/uploads/.gitkeep

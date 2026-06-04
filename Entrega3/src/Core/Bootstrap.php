@@ -82,6 +82,7 @@ $router->post('/register', 'AuthController@register');
 
 // Perfil de usuario
 $router->get('/perfil', 'UserController@perfil');
+$router->post('/perfil/guardar', 'UserController@guardar');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');

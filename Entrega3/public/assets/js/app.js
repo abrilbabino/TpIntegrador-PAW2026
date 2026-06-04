@@ -8,6 +8,7 @@ class AppPAW {
   init() {
     this._initMenu();
     this._initCarousel();
+    this._initPerfil();
   }
 
   _initMenu() {
@@ -35,6 +36,19 @@ class AppPAW {
         carruseles.forEach((container) => {
           new PAWCarousel(container);
         });
+      },
+    );
+  }
+
+  _initPerfil() {
+    const contenedor = document.querySelector(".perfil-container");
+    if (!contenedor) return;
+    PAW.cargarScript(
+      "PAW-Perfil-Script",
+      "/assets/js/components/paw-perfil.js",
+      () => {
+        const perfil = new PAWPerfil(contenedor);
+        perfil.render();
       },
     );
   }
