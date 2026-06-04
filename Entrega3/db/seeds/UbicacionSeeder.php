@@ -13,8 +13,9 @@ class UbicacionSeeder extends AbstractSeed
 
     public function run(): void
     {
-        // Truncate table first to avoid duplicate key errors
-        $this->execute('TRUNCATE TABLE ubicacion RESTART IDENTITY CASCADE');
+        // Limpiar tabla de forma segura (DELETE respeta ON DELETE SET_NULL en adoptante)
+        $this->execute('DELETE FROM ubicacion');
+        $this->execute("SELECT setval('ubicacion_id_seq', 1, false)");
 
         $data = [
             [

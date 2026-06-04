@@ -168,7 +168,7 @@
 }
 
 .btn-submit-adoptar:hover {
-    background: var(--color-azul-oscuro);
+    background: var(--color-naranja);
     transform: scale(0.98);
 }
 
