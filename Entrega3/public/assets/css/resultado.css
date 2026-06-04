@@ -20,12 +20,12 @@
 }
 
 .resultado-match {
-  font-size: 0.95rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-naranja);
   text-transform: uppercase;
   letter-spacing: 3px;
-  margin: 0 0 1.2rem;
+  margin: 0 0 0.5rem;
 }
 
 .resultado-emoji {
@@ -53,36 +53,34 @@
 
 .resultado-actions {
   text-align: center;
-  margin: 2rem 0 0.5rem;
+  margin: 0.5rem;
 }
 
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+  background: var(--color-azul);
   color: var(--color-fondo);
-  font-weight: 800;
-  font-size: 1.05rem;
+  font-weight: bold;
+  font-size: 1rem;
   padding: 1rem 2.5rem;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 4px 18px var(--color-naranja);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--color-naranja);
+  transform: scale(0.98);
+  background-color: var(--color-naranja);
   color: var(--color-fondo);
 }
 
 .resultado-divider {
   border: none;
   border-top: 2px solid var(--color-fondo);
-  margin: 2.8rem 0 1.5rem;
 }
 
 .resultado-mascotas {
@@ -160,33 +158,31 @@
 
 .resultado-volver {
   text-align: center;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   padding-top: 0.5rem;
 }
 
-.btn-volver {
+.resultado-volver .btn-volver {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: var(--color-texto);
+  color: var(--color-fondo);
   font-size: 0.95rem;
   font-weight: 600;
-  padding: 0.6rem 1.2rem;
-  border-color: var(--color-texto);
-  border: 2px solid var(--color-texto);
+  padding: 1rem 2.5rem;
   border-radius: 40px;
   transition: all 0.3s;
 }
 
 .btn-volver .material-symbols-outlined {
+  margin-bottom: 0.2rem;
   font-size: 1.2rem;
 }
 
-.btn-volver:hover {
-  color: var(--color-texto);
-  border-color: var(--color-texto);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px var(--color-texto);
+.resultado-volver .btn-volver:hover {
+  background-color: var(--color-naranja);
+  color: var(--color-fondo);
+  transform: scale(0.98);
 }
 
 @media screen and (min-width: 994px) {
