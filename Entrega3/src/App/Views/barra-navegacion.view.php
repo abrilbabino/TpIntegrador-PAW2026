@@ -9,7 +9,11 @@
     
     <?php if (isset($_SESSION['user'])): ?>
         <a href="/perfil" class="icono-usuario">
-            <span class="material-symbols-outlined">person</span>
+            <?php if (!empty($_SESSION['user']['foto_perfil'])): ?>
+                <img src="/assets/img/<?= htmlspecialchars($_SESSION['user']['foto_perfil']) ?>" alt="Perfil" class="nav-foto-perfil">
+            <?php else: ?>
+                <span class="material-symbols-outlined">person</span>
+            <?php endif; ?>
             <p>Perfil</p>
         </a>
     <?php else: ?>

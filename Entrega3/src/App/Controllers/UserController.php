@@ -23,7 +23,8 @@ class UserController extends Controller
             exit;
         }
 
-        $user = $_SESSION['user'];
+        $dbUser = $this->model->findById((int) $_SESSION['user']['id']);
+        $user = array_merge($_SESSION['user'], $dbUser);
         $rol  = $user['rol'] ?? 'adoptante';
  
         if ($rol === 'refugio') {
@@ -33,7 +34,7 @@ class UserController extends Controller
         }
     }
  
-    private function cargarPerfilAdoptante(array $user): void
+    private function cargarPerfilAdoptante(array $user, array $errores = [], array $oldData = []): void
     {
         $menu  = $this->menu;
         $redes = $this->redes;
@@ -43,7 +44,7 @@ class UserController extends Controller
         $adoptanteModel->setQueryBuilder($this->model->getQueryBuilder());
         $adoptanteModel->load((int) $user['id']);
         $adoptante = $adoptanteModel->fields;
- 
+
         $favoritos   = [];
         $solicitudes = [];
         $adopciones  = [];
@@ -89,5 +90,39 @@ class UserController extends Controller
  
         $titulo = "Mi Refugio - PawMap";
         require $this->viewsDir . '/perfil-refugio.view.php';
+    }
+
+    public function guardar()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (empty($_SESSION['user']) || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $user   = $_SESSION['user'];
+        $userId = (int) $user['id'];
+        $errores = $this->model->actualizarPerfilCompleto(
+            $userId, 
+            $this->request->post(), 
+            $this->request->file('foto_perfil_o_logo'), 
+            $user
+        );
+
+        if (!empty($errores)) {
+            $this->cargarPerfilAdoptante($user, $errores, $this->request->post());
+            return;
+        }
+
+        $updatedUser = $this->model->findById($userId);
+        if ($updatedUser) {
+            $_SESSION['user'] = array_merge($_SESSION['user'], $updatedUser);
+        }
+
+        header("Location: /perfil?update=success");
+        exit;
     }
 }

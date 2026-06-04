@@ -10,6 +10,8 @@ class AppPAW {
     this._initCarousel();
     this._initVisualizacion();
     this._initFiltros();
+    this._initPerfil();
+    this._initMapa();
   }
 
   _initMenu() {
@@ -193,6 +195,28 @@ class AppPAW {
       });
     });
   }
+  _initPerfil() {
+    const contenedor = document.querySelector(".perfil-container");
+    if (!contenedor) return;
+    PAW.cargarScript(
+      "PAW-Perfil-Script",
+      "/assets/js/components/paw-perfil.js",
+      () => {
+        const perfil = new PAWPerfil(contenedor);
+        perfil.render();
+      },
+    );
+  }
+
+  _initMapa() {
+    const mapElement = document.getElementById("leaflet-map");
+    if (!mapElement) return;
+    PAW.cargarScript(
+      "PAW-Mapa-Script",
+      "/assets/js/mapa.js"
+    );
+  }
+
 }
 // Se instancia el objeto global para disparar el ciclo de vida de la aplicación
 const app = new AppPAW();
