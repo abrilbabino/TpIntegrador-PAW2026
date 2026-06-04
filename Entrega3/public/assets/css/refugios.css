@@ -108,13 +108,14 @@
 
 .cta-refugio {
   background-color: var(--color-fondo);
+  width: 100%;
+  height: fit-content;
   padding: 2rem;
   border-radius: 16px;
   text-align: center;
   border: 2px solid var(--color-naranja);
   box-shadow: 0 4px 12px var(--color-texto);
   margin-top: 1.5rem;
-  min-height: 320px;
   align-content: center;
 }
 
@@ -418,6 +419,5 @@
 
   .mobile {
     display: block;
-    margin-top: 2rem;
   }
 }

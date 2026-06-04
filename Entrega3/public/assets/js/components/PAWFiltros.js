@@ -45,12 +45,14 @@ class PAWFiltros {
 
             this.construirHTML();
 
-            this.visualizacion = new PAWVisualizacion(
-                this.contenedorGrilla,
-                this.contenedorPaginacion,
-                6, 
-                this.tipoVista
-            );
+            if (this.tipoVista !== "mapa") {
+                this.visualizacion = new PAWVisualizacion(
+                    this.contenedorGrilla,
+                    this.contenedorPaginacion,
+                    6, 
+                    this.tipoVista
+                );
+            }
 
             this.registrarEventos();
             this.aplicarFiltros();
@@ -144,9 +146,96 @@ class PAWFiltros {
                 divRango.appendChild(inputMin);
                 divRango.appendChild(span);
                 divRango.appendChild(inputMax);
-                fieldset.appendChild(divRango);
                 
+                fieldset.appendChild(divRango);
                 this.inputsUI[filtro.prop].push(inputMin, inputMax);
+            }
+            // --- NUEVA LÓGICA PARA UBICACIÓN (AUTOCOMPLETE) ---
+            else if (filtro.type === "ubicacion") {
+                const divUbi = PAW.nuevoElemento("div", "", { class: "input-con-icono" });
+                const inputUbi = PAW.nuevoElemento("input", "", {
+                    type: "text",
+                    "data-prop": filtro.prop,
+                    placeholder: "Ingresá tu ubicación",
+                    autocomplete: "off"
+                });
+                
+                const ulSugerencias = PAW.nuevoElemento("ul", "", { class: "sugerencias-ubicacion", style: "display:none; position:absolute; z-index:1000; background:white; list-style:none; padding:0; margin:0; border:1px solid #ccc; max-height:200px; overflow-y:auto; width:100%; top:100%; left:0;" });
+                
+                divUbi.style.position = "relative";
+                divUbi.appendChild(inputUbi);
+                divUbi.appendChild(ulSugerencias);
+                fieldset.appendChild(divUbi);
+                
+                this.inputsUI[filtro.prop].push(inputUbi);
+                
+                let timeoutId;
+                inputUbi.addEventListener("input", (e) => {
+                    const query = e.target.value;
+                    this.estadoFiltros[filtro.prop] = query; // Actualizamos estado normal
+                    
+                    clearTimeout(timeoutId);
+                    if (query.length < 3) {
+                        ulSugerencias.style.display = "none";
+                        // Si borró, reiniciamos coordenadas y aplicamos filtros normales
+                        if (query.length === 0) {
+                            delete this.estadoFiltros['ubicacion_lat'];
+                            delete this.estadoFiltros['ubicacion_lon'];
+                            this.aplicarFiltros();
+                        }
+                        return;
+                    }
+                    timeoutId = setTimeout(() => {
+                        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`)
+                            .then(r => r.json())
+                            .then(data => {
+                                ulSugerencias.innerHTML = "";
+                                if (data.length === 0) {
+                                    ulSugerencias.style.display = "none";
+                                    return;
+                                }
+                                data.forEach(item => {
+                                    const li = PAW.nuevoElemento("li", item.display_name, { style: "padding:8px; cursor:pointer; border-bottom:1px solid #eee; font-size:0.85rem;" });
+                                    li.addEventListener("click", () => {
+                                        inputUbi.value = item.display_name;
+                                        ulSugerencias.style.display = "none";
+                                        
+                                        const lat = parseFloat(item.lat);
+                                        const lon = parseFloat(item.lon);
+                                        
+                                        this.estadoFiltros['ubicacion_lat'] = lat;
+                                        this.estadoFiltros['ubicacion_lon'] = lon;
+                                        this.estadoFiltros[filtro.prop] = inputUbi.value;
+
+                                        if (window.map) {
+                                            window.map.setView([lat, lon], 13);
+                                            if (window.userMarker) {
+                                                window.map.removeLayer(window.userMarker);
+                                            }
+                                            const userIcon = L.divIcon({
+                                                className: 'user-location-marker',
+                                                html: '<span class="custom-marker-icon"></span>',
+                                                iconSize: [24, 24],
+                                                iconAnchor: [12, 12]
+                                            });
+                                            window.userMarker = L.marker([lat, lon], {icon: userIcon}).addTo(window.map)
+                                             .bindPopup("<strong>Ubicación seleccionada</strong>").openPopup();
+                                        }
+                                        
+                                        this.aplicarFiltros();
+                                    });
+                                    ulSugerencias.appendChild(li);
+                                });
+                                ulSugerencias.style.display = "block";
+                            });
+                    }, 400);
+                });
+                
+                document.addEventListener("click", (e) => {
+                    if (!divUbi.contains(e.target)) {
+                        ulSugerencias.style.display = "none";
+                    }
+                });
             }
 
             form.appendChild(fieldset);
@@ -157,32 +246,37 @@ class PAWFiltros {
         details.appendChild(form);
         aside.appendChild(details);
 
-        const sectionContenido = PAW.nuevoElemento("section", "", { class: this.tipoVista === "mascotas" ? "adoptar-contenido" : "refugios-contenido" });
-        this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
-        this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion" });
-        
-        sectionContenido.appendChild(this.contenedorGrilla);
-        sectionContenido.appendChild(this.contenedorPaginacion);
+        if (this.tipoVista !== "mapa") {
+            const sectionContenido = PAW.nuevoElemento("section", "", { class: this.tipoVista === "mascotas" ? "adoptar-contenido" : "refugios-contenido" });
+            this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
+            this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion" });
+            
+            sectionContenido.appendChild(this.contenedorGrilla);
+            sectionContenido.appendChild(this.contenedorPaginacion);
 
-        if (this.tipoVista === "refugios") {
-            const createCTA = (isMobile) => {
-                const cta = PAW.nuevoElemento("article", "", { class: `cta-refugio ${isMobile ? 'mobile' : 'desktop'}` });
-                cta.innerHTML = `
-                    <h3><span class="material-symbols-outlined">pets</span> ¿Representás a un Refugio?</h3>
-                    <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
-                    <a href="/registro-refugio" class="btn-registro-refugio">
-                        <span class="material-symbols-outlined">add_circle</span> Registrate
-                    </a>
-                `;
-                return cta;
-            };
-            aside.appendChild(createCTA(false)); // Desktop CTA en aside
-            sectionContenido.appendChild(createCTA(true)); // Mobile CTA en contenido
+            if (this.tipoVista === "refugios") {
+                const createCTA = (isMobile) => {
+                    const cta = PAW.nuevoElemento("article", "", { class: `cta-refugio ${isMobile ? 'mobile' : 'desktop'}` });
+                    cta.innerHTML = `
+                        <h3><span class="material-symbols-outlined">pets</span> ¿Representás a un Refugio?</h3>
+                        <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
+                        <a href="/registro-refugio" class="btn-registro-refugio">
+                            <span class="material-symbols-outlined">add_circle</span> Registrate
+                        </a>
+                    `;
+                    return cta;
+                };
+                aside.appendChild(createCTA(false)); // Desktop CTA en aside
+                sectionContenido.appendChild(createCTA(true)); // Mobile CTA en contenido
+            }
+
+            sectionPrincipal.appendChild(aside);
+            sectionPrincipal.appendChild(sectionContenido);
+            this.container.appendChild(sectionPrincipal);
+        } else {
+            // Para el mapa, solo inyectamos los filtros
+            this.container.appendChild(aside);
         }
-
-        sectionPrincipal.appendChild(aside);
-        sectionPrincipal.appendChild(sectionContenido);
-        this.container.appendChild(sectionPrincipal);
     }
 
     registrarEventos() {
@@ -212,16 +306,29 @@ class PAWFiltros {
                 }
                 
                 // Reseteamos la vista
-                this.inputsUI[prop].forEach(nodo => {
-                    if (nodo.type === "radio" && nodo.value === "") {
-                        nodo.checked = true;
-                    } else if (nodo.tagName === "SELECT") {
-                        nodo.value = "";
-                    } else if (nodo.type === "number") {
-                        nodo.value = "";
-                    }
-                });
+                if (this.inputsUI[prop]) {
+                    this.inputsUI[prop].forEach(nodo => {
+                        if (nodo.type === "radio" && nodo.value === "") {
+                            nodo.checked = true;
+                        } else if (nodo.tagName === "SELECT") {
+                            nodo.value = "";
+                        } else if (nodo.type === "number") {
+                            nodo.value = "";
+                        } else if (nodo.type === "text") {
+                            nodo.value = "";
+                        }
+                    });
+                }
             });
+
+            delete this.estadoFiltros['ubicacion_lat'];
+            delete this.estadoFiltros['ubicacion_lon'];
+            
+            if (window.map && window.userMarker) {
+                window.map.removeLayer(window.userMarker);
+                window.userMarker = null;
+            }
+
             this.aplicarFiltros();
         });
     }
@@ -230,6 +337,8 @@ class PAWFiltros {
         this.itemsFiltrados = this.items.filter(item => {
             let cumple = true;
             for (const prop in this.estadoFiltros) {
+                if (prop === 'ubicacion_lat' || prop === 'ubicacion_lon' || prop === 'ubicacion') continue;
+                
                 const valorBuscado = this.estadoFiltros[prop];
                 
                 // 1. Evaluación matemática para RANGOS (ej: edad)
@@ -249,6 +358,23 @@ class PAWFiltros {
                     }
                 }
             }
+
+            // 3. Filtrar por ubicación (texto de la ciudad o provincia del refugio)
+            if (cumple && this.estadoFiltros['ubicacion']) {
+                const query = this.estadoFiltros['ubicacion'].toLowerCase().trim();
+                const ciudad = (item.ciudad || "").toLowerCase().trim();
+                const provincia = (item.provincia || "").toLowerCase().trim();
+                
+                // Verificamos si lo que escribió el usuario está contenido en la ciudad/provincia
+                // o si la ciudad/provincia está contenida en lo que escribió (por si selecciona sugerencias muy largas del autocompletado)
+                const matchCiudad = ciudad && (query.includes(ciudad) || ciudad.includes(query));
+                const matchProvincia = provincia && (query.includes(provincia) || provincia.includes(query));
+                
+                if (!matchCiudad && !matchProvincia) {
+                    cumple = false;
+                }
+            }
+
             return cumple;
         });
 

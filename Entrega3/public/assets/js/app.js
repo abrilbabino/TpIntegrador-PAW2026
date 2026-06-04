@@ -119,6 +119,73 @@ class AppPAW {
                           { prop: "ciudad", label: "Ciudad", type: "select" }
                       ]
                   });
+              } else if (tipoVista === "mapa") {
+                  const filtroMapa = new PAWFiltros(container, {
+                      urlAPI: "/api/mascotas",
+                      tipoVista: "mapa",
+                      filtrosConfig: [
+                          { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
+                          { prop: "edad", label: "Rango de Edad", type:"rango"},
+                          { prop: "tamano", label: "Tamaño", type: "select" },
+                          { prop: "especie", label: "Especie", type: "radio" },
+                          { prop: "temperamento", label: "Temperamento", type: "select" }
+                      ]
+                  });
+
+                  filtroMapa.visualizacion = {
+                      actualizarDatos: (itemsFiltrados) => {
+                          const carruselTrack = document.querySelector('.paw-carousel-track');
+                          if (carruselTrack) {
+                              carruselTrack.innerHTML = '';
+                              if (itemsFiltrados.length === 0) {
+                                  carruselTrack.innerHTML = '<li class="paw-carousel-slide"><p>No se encontraron mascotas.</p></li>';
+                              } else {
+                                  itemsFiltrados.forEach(m => {
+                                      const li = document.createElement('li');
+                                      li.className = 'paw-carousel-slide';
+                                      
+                                      const edad = m.edad || '0';
+                                      const tamanoStr = m.tamano ? String(m.tamano) : 'Desconocido';
+                                      const temperamentoStr = m.temperamento ? String(m.temperamento) : 'Desconocido';
+                                      
+                                      const tamanoText = tamanoStr.charAt(0).toUpperCase() + tamanoStr.slice(1);
+                                      const temperamentoText = temperamentoStr.charAt(0).toUpperCase() + temperamentoStr.slice(1);
+
+                                      li.innerHTML = `
+                                        <article class="tarjeta-mascota">
+                                            <figure class="tarjeta-imagen">
+                                                <a href="/mascota?id=${m.id}" class="link-imagen">
+                                                    <img src="/assets/img/${m.imagen || 'default-pet.jpg'}" alt="${m.nombre || 'Mascota'}">
+                                                </a>
+                                            </figure>
+                                            <a href="/mascota?id=${m.id}" class="verPerfil">
+                                                <section class="tarjeta-info">
+                                                    <header class="tarjeta-info-header">
+                                                        <h3>${m.nombre || 'Sin nombre'}</h3>
+                                                    </header>
+                                                    <p>${edad} años - ${tamanoText} - ${temperamentoText}</p>
+                                                </section>
+                                            </a>
+                                        </article>
+                                      `;
+                                      carruselTrack.appendChild(li);
+                                  });
+                              }
+                              
+                              const contenedorCarrusel = document.querySelector('[data-paw-carousel]');
+                              if (contenedorCarrusel && contenedorCarrusel.pawCarousel) {
+                                  contenedorCarrusel.pawCarousel.diapositivas = [...carruselTrack.children];
+                                  contenedorCarrusel.pawCarousel.irA(0, false);
+                                  contenedorCarrusel.pawCarousel.crearPuntos(); // recrear puntos si cambian
+                              }
+                          }
+
+                          // Llamar al mapa para que filtre los pines
+                          if (window.actualizarPinesMapa) {
+                              window.actualizarPinesMapa(itemsFiltrados);
+                          }
+                      }
+                  };
               }
           });
 

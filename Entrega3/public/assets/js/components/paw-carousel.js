@@ -116,6 +116,9 @@ class PAWCarousel {
   }
 
   crearPuntos() {
+    if (this.puntos) {
+        this.puntos.remove();
+    }
     this.puntos = PAW.nuevoElemento("nav", "", { class: "paw-carousel-dots", "aria-label": "Diapositivas" });
     for (let i = 0; i < this.diapositivas.length; i++) {
       const punto = PAW.nuevoElemento("button", "", {

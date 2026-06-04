@@ -21,66 +21,7 @@
     </header>
     <main class="contenedor-mapa-page">
         <aside class="sidebar-mapa seccion-filtros">
-            <details class="filtros" open>
-                <summary>
-                    <span class="material-symbols-outlined">filter_list</span>
-                    <span>Filtros</span>
-                    <span class="material-symbols-outlined filtros-chevron">expand_more</span>
-                </summary>
-                
-                <form action="/mapa" method="GET" id="form-filtros">
-                    <p>Ubicación</p>
-                    <fieldset class="input-con-icono">
-                        <input type="text" name="ubicacion" placeholder="Ingresá tu ubicación" value="<?= htmlspecialchars($_GET['ubicacion'] ?? '') ?>">
-                    </fieldset>
-                    
-                    <input type="hidden" name="lat_usuario" id="lat_usuario" value="<?= htmlspecialchars($_GET['lat_usuario'] ?? '') ?>">
-                    <input type="hidden" name="lng_usuario" id="lng_usuario" value="<?= htmlspecialchars($_GET['lng_usuario'] ?? '') ?>">
-                    
-                    <p>Rango de Edad</p>
-                    <fieldset class="edad-rango">
-                        <input type="number" name="edad_min" placeholder="Mín" min="0" value="<?= htmlspecialchars($_GET['edad_min'] ?? '') ?>">
-                        <span>a</span>
-                        <input type="number" name="edad_max" placeholder="Máx" min="0" value="<?= htmlspecialchars($_GET['edad_max'] ?? '') ?>">
-                    </fieldset>
-
-                    <p>Tamaño</p>
-                    <select name="tamano">
-                        <option value="">Todos</option>
-                        <option value="pequeño" <?= ($_GET['tamano'] ?? '') === 'pequeño' ? 'selected' : '' ?>>Pequeño</option>
-                        <option value="mediano" <?= ($_GET['tamano'] ?? '') === 'mediano' ? 'selected' : '' ?>>Mediano</option>
-                        <option value="grande" <?= ($_GET['tamano'] ?? '') === 'grande' ? 'selected' : '' ?>>Grande</option>
-                    </select>
-
-                    <p>Especie</p>
-                    <fieldset class="filtro-especie-grupo">
-                        <label class="especie-radio">
-                            <input type="radio" name="especie" value="perro" <?= ($_GET['especie'] ?? '') === 'perro' ? 'checked' : '' ?>>
-                            <span>Perro</span>
-                        </label>
-                        <label class="especie-radio">
-                            <input type="radio" name="especie" value="gato" <?= ($_GET['especie'] ?? '') === 'gato' ? 'checked' : '' ?>>
-                            <span>Gato</span>
-                        </label>
-                        <label class="especie-radio">
-                            <input type="radio" name="especie" value="" <?= empty($_GET['especie']) ? 'checked' : '' ?>>
-                            <span>Todos</span>
-                        </label>
-                    </fieldset>
-
-                    <p>Temperamento</p>
-                    <select name="temperamento">
-                        <option value="">Todos</option>
-                        <option value="tranquilo" <?= ($_GET['temperamento'] ?? '') === 'tranquilo' ? 'selected' : '' ?>>Tranquilo</option>
-                        <option value="jugueton" <?= ($_GET['temperamento'] ?? '') === 'jugueton' ? 'selected' : '' ?>>Juguetón</option>
-                        <option value="protector" <?= ($_GET['temperamento'] ?? '') === 'protector' ? 'selected' : '' ?>>Protector</option>
-                        <option value="amigable" <?= ($_GET['temperamento'] ?? '') === 'amigable' ? 'selected' : '' ?>>Amigable</option>
-                        <option value="energetico" <?= ($_GET['temperamento'] ?? '') === 'energetico' ? 'selected' : '' ?>>Energético</option>
-                    </select>
-
-                    <button type="submit">Aplicar Filtros</button>
-                </form>
-            </details>
+            <div data-paw-filtros="mapa" style="display: contents;"></div>
 
             <section class="refugios-cercanos sidebar-only-desktop">
                 <header class="titulo-refugios-cercanos">

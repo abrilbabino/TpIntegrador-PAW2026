@@ -40,41 +40,68 @@
 
         var bounds = [];
 
-        if (refugios && refugios.length > 0) {
-            refugios.forEach(function(r) {
-                var lat = parseFloat(r.latitud);
-                var lng = parseFloat(r.longitud);
-                
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    var marker = L.marker([lat, lng], {icon: refugioIcon}).addTo(map);
-                    
-                    var imgUrl = r.imagen ? '/assets/img/' + r.imagen : '/assets/img/default-refugio.jpg';
-                    var telHtml = r.telefono ? '<p class="popup-refugio-tel"><span class="material-symbols-outlined">call</span> ' + r.telefono + '</p>' : '';
-                    
-                    var popupContent = `
-                        <article class="popup-refugio-card">
-                            <img src="${imgUrl}" class="popup-refugio-img" alt="Logo Refugio">
-                            <section class="popup-refugio-body">
-                                <h3>${r.nombre_institucion || 'Refugio'}</h3>
-                                <p class="popup-refugio-loc"><span class="material-symbols-outlined">location_on</span> ${r.ciudad || ''}</p>
-                                ${telHtml}
-                                <a href="/refugio/perfil?id=${r.id}" class="popup-refugio-btn">Ver Perfil</a>
-                            </section>
-                        </article>
-                    `;
-                    marker.bindPopup(popupContent, {
-                        closeButton: true,
-                        minWidth: 200,
-                        className: 'custom-popup'
-                    });
-                    bounds.push([lat, lng]);
-                }
-            });
+        window.mapMarkers = [];
+        
+        function dibujarPines(refugiosAMostrar) {
+            // Limpiar pines viejos
+            window.mapMarkers.forEach(function(marker) { map.removeLayer(marker); });
+            window.mapMarkers = [];
+            bounds = [];
 
-            if (bounds.length > 0 && !(latUsuario && lngUsuario)) {
-                map.fitBounds(bounds);
+            if (refugiosAMostrar && refugiosAMostrar.length > 0) {
+                refugiosAMostrar.forEach(function(r) {
+                    var lat = parseFloat(r.latitud);
+                    var lng = parseFloat(r.longitud);
+                    
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        var marker = L.marker([lat, lng], {icon: refugioIcon}).addTo(map);
+                        
+                        var imgUrl = r.imagen ? '/assets/img/' + r.imagen : '/assets/img/default-refugio.jpg';
+                        var telHtml = r.telefono ? '<p class="popup-refugio-tel"><span class="material-symbols-outlined">call</span> ' + r.telefono + '</p>' : '';
+                        
+                        var popupContent = `
+                            <article class="popup-refugio-card">
+                                <img src="${imgUrl}" class="popup-refugio-img" alt="Logo Refugio">
+                                <section class="popup-refugio-body">
+                                    <h3>${r.nombre_institucion || 'Refugio'}</h3>
+                                    <p class="popup-refugio-loc"><span class="material-symbols-outlined">location_on</span> ${r.ciudad || ''}</p>
+                                    ${telHtml}
+                                    <a href="/refugio/perfil?id=${r.id}" class="popup-refugio-btn">Ver Perfil</a>
+                                </section>
+                            </article>
+                        `;
+                        marker.bindPopup(popupContent, {
+                            closeButton: true,
+                            minWidth: 200,
+                            className: 'custom-popup'
+                        });
+                        bounds.push([lat, lng]);
+                        window.mapMarkers.push(marker);
+                    }
+                });
+
+                if (bounds.length > 0 && !(latUsuario && lngUsuario)) {
+                    map.fitBounds(bounds);
+                }
             }
         }
+
+        // Dibujar todos al inicio
+        dibujarPines(refugios);
+
+        // Exponer función para que PAWFiltros la llame
+        window.actualizarPinesMapa = function(mascotasFiltradas) {
+            var refugiosValidos = new Set();
+            mascotasFiltradas.forEach(function(m) {
+                if (m.refugio_id) refugiosValidos.add(m.refugio_id.toString());
+            });
+
+            var refugiosFiltrados = refugios.filter(function(r) {
+                return refugiosValidos.has(r.id.toString());
+            });
+
+            dibujarPines(refugiosFiltrados);
+        };
 
         if (latUsuario && lngUsuario) {
             var userIcon = L.divIcon({
@@ -98,8 +125,13 @@
                     navigator.geolocation.getCurrentPosition(function(position) {
                         if (inputLat) inputLat.value = position.coords.latitude;
                         if (inputLng) inputLng.value = position.coords.longitude;
-                        var form = document.getElementById('form-filtros');
-                        if (form) form.submit();
+                        
+                        var newLat = position.coords.latitude;
+                        var newLng = position.coords.longitude;
+                        
+                        // Recargar la página con la ubicación en la URL para que PHP renderice la barra lateral de refugios cercanos
+                        window.location.href = '/mapa?lat_usuario=' + newLat + '&lng_usuario=' + newLng;
+
                     }, function(error) {
                         alert("No se pudo obtener la ubicación exacta. Verifica los permisos de tu navegador.");
                         if (icon) icon.innerText = "my_location";

@@ -42,6 +42,7 @@ class MascotaController extends Controller
                 'tamano'       => $mascota->fields['tamano'],
                 'temperamento' => $mascota->fields['temperamento'],
                 'especie'      => $mascota->fields['especie'],
+                'refugio_id'   => $mascota->fields['refugio_id'],
                 'provincia'    => $refugio->fields['provincia'] ?? null,
                 'ciudad'       => $refugio->fields['ciudad'] ?? null
             ];

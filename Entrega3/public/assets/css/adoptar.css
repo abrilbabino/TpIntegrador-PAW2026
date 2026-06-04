@@ -246,10 +246,13 @@
   justify-content: center;
   align-items: center;
   gap: 15px;
-  margin: 2rem 0;
   flex-wrap: wrap;
   margin-top: auto;
   min-height: 80px;
+}
+
+nav .paginacion{
+  margin: 2rem 0;
 }
 
 .paw-paginacion-btn {
