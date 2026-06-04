@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="/assets/js/mapa.js" defer></script>
 
-    <title>Mapa Interactivo</title>
+    <title>Mapa Interactivo - PawMap</title>
     <script src="/assets/js/components/paw.js"></script>
     <script src="/assets/js/app.js"></script>
 </head>
