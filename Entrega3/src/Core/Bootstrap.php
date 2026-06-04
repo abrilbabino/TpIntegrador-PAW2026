@@ -107,3 +107,6 @@ $router->get('/contacto-exitoso', 'PageController@contactoExitoso');
 $router->get('/donar', 'DonacionController@index');
 $router->post('/procesar-donacion', 'DonacionController@enviar');
 $router->post('/enviar-comprobante', 'DonacionController@enviarComprobante');
+
+// SEO
+$router->get('/sitemap.xml', 'PageController@sitemap');

@@ -154,4 +154,22 @@ class PageController extends Controller
         $redes = $this->redes;
         require $this->viewsDir . '/donacion.view.php';
     }
+
+    public function sitemap()
+    {
+        // Obtener mascotas disponibles
+        $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
+
+        // Obtener refugios
+        $refugioCollection = new \Paw\App\Models\RefugioCollection();
+        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugios = $refugioCollection->getAll();
+
+        // Configurar el Content-Type para XML
+        header('Content-Type: application/xml; charset=utf-8');
+
+        // El view se encargará de renderizar el XML puro
+        require $this->viewsDir . '/sitemap.view.php';
+        exit;
+    }
 }
