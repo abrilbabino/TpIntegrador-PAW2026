@@ -39,7 +39,10 @@ class Refugio extends Model
             throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT * FROM refugio WHERE usuario_id = :id";
+        $sql = "SELECT r.*, u.ciudad, u.provincia 
+                FROM refugio r 
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
+                WHERE r.usuario_id = :id";
         
         $stmt = $this->queryBuilder->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);

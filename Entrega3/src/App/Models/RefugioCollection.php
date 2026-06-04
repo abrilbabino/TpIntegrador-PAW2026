@@ -16,7 +16,11 @@ class RefugioCollection extends Model
     }
 
     public function getAll() {
-        $rows = $this->queryBuilder->rawQuery("SELECT * FROM {$this->table} ORDER BY nombre_institucion ASC");
+        $sql = "SELECT r.*, u.ciudad, u.provincia 
+                FROM {$this->table} r 
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
+                ORDER BY r.nombre_institucion ASC";
+        $rows = $this->queryBuilder->rawQuery($sql);
         return $this->mapRefugios($rows);
     }
 

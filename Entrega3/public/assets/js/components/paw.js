@@ -27,6 +27,9 @@ class PAW {
             }
             
             document.head.appendChild(elemento);
+        } else if (fnCallback) {
+            // El script ya fue cargado, ejecutar el callback inmediatamente
+            fnCallback();
         }
         return elemento;
     }

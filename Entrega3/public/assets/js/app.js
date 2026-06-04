@@ -9,6 +9,7 @@ class AppPAW {
     this._initMenu();
     this._initCarousel();
     this._initVisualizacion();
+    this._initFiltros();
   }
 
   _initMenu() {
@@ -49,6 +50,9 @@ class AppPAW {
 
     if (!contenedorGrilla && !contenedorRefugios) return; 
 
+    // Si PAWFiltros va a gestionar mascotas, no crear un visualizador duplicado
+    const filtrosMascotas = document.querySelector('[data-paw-filtros="mascotas"]');
+
     PAW.cargarScript(
       "PAW-Paginacion-Script",
       "/assets/js/components/paw-paginacion.js",
@@ -57,7 +61,7 @@ class AppPAW {
           "PAW-Visualizacion-Script",
           "/assets/js/components/PAWVisualizacion.js",
           () => {
-            if (contenedorGrilla && contenedorPaginacion) {
+            if (contenedorGrilla && contenedorPaginacion && !filtrosMascotas) {
               const visualizador = new PAWVisualizacion(
                   contenedorGrilla, 
                   contenedorPaginacion, 
@@ -80,6 +84,47 @@ class AppPAW {
         );
       }
     );
+  }
+
+  _initFiltros() {
+    const contenedores = document.querySelectorAll("[data-paw-filtros]");
+    if (contenedores.length === 0) return;
+
+    PAW.cargarScript("PAW-Paginacion-Script", "/assets/js/components/paw-paginacion.js", () => {
+      PAW.cargarScript("PAW-Visualizacion-Script", "/assets/js/components/PAWVisualizacion.js", () => {
+        PAW.cargarScript("PAW-Filtros-Script", "/assets/js/components/PAWFiltros.js", () => {
+          
+          contenedores.forEach(container => {
+              const tipoVista = container.dataset.pawFiltros; 
+              
+              if (tipoVista === "mascotas") {
+                  new PAWFiltros(container, {
+                      urlAPI: "/api/mascotas",
+                      tipoVista: "mascotas",
+                      filtrosConfig: [
+                          { prop: "ciudad", label: "Ciudad", type: "select", sourceURL: "/api/refugios" },
+                          { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
+                          { prop: "edad", label: "Edad", type:"rango"},
+                          { prop: "tamano", label: "Tamaño", type: "select" },
+                          { prop: "especie", label: "Especie", type: "radio" },
+                          { prop: "temperamento", label: "Temperamento", type: "select" }
+                      ]
+                  });
+              } else if (tipoVista === "refugios") {
+                  new PAWFiltros(container, {
+                      urlAPI: "/api/refugios",
+                      tipoVista: "refugios",
+                      filtrosConfig: [
+                          { prop: "provincia", label: "Provincia", type: "select" },
+                          { prop: "ciudad", label: "Ciudad", type: "select" }
+                      ]
+                  });
+              }
+          });
+
+        });
+      });
+    });
   }
 }
 // Se instancia el objeto global para disparar el ciclo de vida de la aplicación

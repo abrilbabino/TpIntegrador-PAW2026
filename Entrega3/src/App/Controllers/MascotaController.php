@@ -19,31 +19,21 @@ class MascotaController extends Controller
         $menu    = $this->menu;
         $redes   = $this->redes;
 
-        $filtros = $this->getFiltros();
-        $page = (int) $request->get('pagina') ?: 1;
-        $perPage = 6;
-
-        $resultado = $this->model->getPaginated($filtros, $page, $perPage);
-        $mascotas = $resultado['items'];
-        $pagination = $resultado['pagination'];
-
-        $tamanos       = $this->model->getTamanos();
-        $especies      = $this->model->getEspecies();
-        $temperamentos = $this->model->getTemperamentos();
-        $provincias    = $this->model->getProvincias();
-        $ciudades      = $this->model->getCiudades();
-
         require $this->viewsDir . '/adoptar.view.php';
     }
 
     public function apiMascotas() {
         header('Content-Type: application/json');
         
-        $resultado = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']); 
+        $resultado = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
+        
+        $refugioCollection = $this->loadCollection(RefugioCollection::class);
         
         $mascotasData = [];
         foreach ($resultado as $mascota) {
             
+            $refugio = $refugioCollection->get($mascota->fields['refugio_id']);
+
             $mascotasData[] = [
                 'id'           => $mascota->fields['id'],
                 'nombre'       => $mascota->fields['nombre'],
@@ -51,7 +41,9 @@ class MascotaController extends Controller
                 'edad'         => $mascota->fields['edad'],
                 'tamano'       => $mascota->fields['tamano'],
                 'temperamento' => $mascota->fields['temperamento'],
-                'especie'      => $mascota->fields['especie']
+                'especie'      => $mascota->fields['especie'],
+                'provincia'    => $refugio->fields['provincia'] ?? null,
+                'ciudad'       => $refugio->fields['ciudad'] ?? null
             ];
         }
 
@@ -61,21 +53,13 @@ class MascotaController extends Controller
         ]);
         exit;
     }
-
-    private function getFiltros()
-    {
-        $request = $this->request;
-        return [
-            'especie'        => $request->get('especie'),
-            'tamano'         => $request->get('tamano'),
-            'temperamento'   => $request->get('temperamento'),
-            'edad_min'       => $request->get('edad_min'),
-            'edad_max'       => $request->get('edad_max'),
-            'provincia'      => $request->get('provincia'),
-            'ciudad'         => $request->get('ciudad'),
-            'estado_adopcion' => 'DISPONIBLE',
-        ];
+    
+    private function loadCollection($className){
+        $model = new $className;
+        $model->setQueryBuilder($this->model->getQueryBuilder());
+        return $model;
     }
+
 
     public function detalle()
     {

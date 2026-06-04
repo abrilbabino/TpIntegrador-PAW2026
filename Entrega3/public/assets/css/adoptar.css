@@ -306,19 +306,18 @@
 
 .adoptar-contenido {
   width: 100%;
-  min-height: 120vh;
+  min-height: 122vh;
   display: flex;
   flex-direction: column;
 }
 
 @media screen and (min-width: 994px) {
   .adoptar-main {
-    grid-template-areas:
-      "hero hero hero hero"
-      ". filtros contenido ."
-      ". . paginacion .";
     display: grid;
-    grid-template-columns: 1fr minmax(auto, 300px) minmax(auto, 1000px) 1fr;
+    grid-template-columns: 1fr minmax(auto, 1300px) 1fr;
+    grid-template-areas:
+      "hero hero hero"
+      ". contenido .";
     gap: 1.5rem;
   }
 
@@ -326,18 +325,26 @@
     grid-area: hero;
   }
 
-  .adoptar-wrapper {
+  /* El div[data-paw-filtros] es transparente al grid */
+  [data-paw-filtros] {
     grid-area: contenido;
     display: contents;
   }
 
   .seccion-filtros {
-    grid-area: filtros;
-    min-width: 340px;
+    grid-area: contenido;
+    display: grid;
+    grid-template-columns: minmax(auto, 300px) 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .seccion-filtros-aside {
+    min-width: 280px;
   }
 
   .adoptar-contenido {
-    grid-area: contenido;
+    width: 100%;
   }
 
   .filtros summary {
@@ -349,7 +356,6 @@
     border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     padding: 1.65rem;
-    margin-top: 0.5rem;
   }
 
   .grilla-mascotas {
@@ -359,9 +365,5 @@
 
   .tarjeta-imagen {
     height: 220px;
-  }
-
-  .paginacion {
-    grid-area: paginacion;
   }
 }

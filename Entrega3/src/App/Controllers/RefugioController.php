@@ -30,29 +30,29 @@ class RefugioController extends Controller
     }
 
     public function apiRefugios() {
-    header('Content-Type: application/json');
-    
-    $resultado = $this->model->getAll([]); 
-    
-    $refugiosData = [];
-    foreach ($resultado as $refugio) {
-        $refugiosData[] = [
-            'id'                     => $refugio->fields['usuario_id'] ?? $refugio->fields['id'],
-            'nombre_institucion'     => $refugio->fields['nombre_institucion'],
-            'imagen'                 => $refugio->fields['imagen'] ?? 'default-refugio.jpg',
-            'ciudad'                 => $refugio->fields['ciudad'],
-            'provincia'              => $refugio->fields['provincia'],
-            'telefono'               => $refugio->fields['telefono'],
-            'adoptables_disponibles' => $refugio->fields['adoptables_disponibles'] ?? 0
-        ];
-    }
+        header('Content-Type: application/json');
+        
+        $resultado = $this->model->getAll(); 
+        
+        $refugiosData = [];
+        foreach ($resultado as $refugio) {
+            $refugiosData[] = [
+                'id'                     => $refugio->fields['usuario_id'] ?? $refugio->fields['id'],
+                'nombre_institucion'     => $refugio->fields['nombre_institucion'],
+                'imagen'                 => $refugio->fields['imagen'] ?? 'default-refugio.jpg',
+                'ciudad'                 => $refugio->fields['ciudad'],
+                'provincia'              => $refugio->fields['provincia'],
+                'telefono'               => $refugio->fields['telefono'],
+                'adoptables_disponibles' => $refugio->fields['adoptables_disponibles'] ?? 0
+            ];
+        }
 
-    echo json_encode([
-        'success' => true,
-        'data' => $refugiosData
-    ]);
-    exit;
-}
+        echo json_encode([
+            'success' => true,
+            'data' => $refugiosData
+        ]);
+        exit;
+    }
 
     public function detalle()
     {

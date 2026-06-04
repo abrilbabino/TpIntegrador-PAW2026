@@ -247,13 +247,15 @@ main>header p {
     margin-right: 1rem;
   }
 
-  main>header {
+  main>header,
+  .hero {
     align-items: center;
     text-align: center;
     padding: 3rem 5rem;
   }
 
-  main>header h1 {
+  main>header h1,
+  .hero h1 {
     text-transform: uppercase;
     font-size: 3.5rem;
     line-height: 3.5rem;
