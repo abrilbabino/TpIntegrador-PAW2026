@@ -15,6 +15,19 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="/assets/js/components/paw.js"></script>
     <script src="/assets/js/app.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PawMap",
+      "url": "https://pawmap.com.ar/",
+      "logo": "https://pawmap.com.ar/assets/img/icon.png",
+      "description": "Plataforma para conectar refugios y personas que desean adoptar mascotas en Argentina.",
+      "sameAs": [
+        "https://www.instagram.com/pawmap"
+      ]
+    }
+    </script>
 </head>
   <body>
     <?php require __DIR__ . '/barra-navegacion.view.php' ?>

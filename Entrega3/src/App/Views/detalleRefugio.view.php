@@ -39,6 +39,23 @@
             $ubicacionText = trim(($ciudad ? $ciudad . ', ' : '') . $prov, ', ') ?: 'A confirmar';
         ?>
 
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AnimalShelter",
+            "name": <?= json_encode($refugio->getNombre()) ?>,
+            "image": <?= json_encode('https://pawmap.com.ar/assets/img/' . ($refugio->fields['imagen'] ?? 'default-refugio.jpg')) ?>,
+            "description": <?= json_encode($refugio->getDescripcion() ?: 'Sin descripción disponible.') ?>,
+            "telephone": <?= json_encode($refugio->fields['telefono'] ?? '') ?>,
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": <?= json_encode($ciudad ?: '') ?>,
+                "addressRegion": <?= json_encode($prov ?: '') ?>,
+                "addressCountry": "AR"
+            }
+        }
+        </script>
+
         <article class="perfil-layout">
 
             <aside class="perfil-sidebar">
