@@ -9,6 +9,7 @@ class AppPAW {
     this._initMenu();
     this._initCarousel();
     this._initPerfil();
+    this._initMapa();
   }
 
   _initMenu() {
@@ -50,6 +51,15 @@ class AppPAW {
         const perfil = new PAWPerfil(contenedor);
         perfil.render();
       },
+    );
+  }
+
+  _initMapa() {
+    const mapElement = document.getElementById("leaflet-map");
+    if (!mapElement) return;
+    PAW.cargarScript(
+      "PAW-Mapa-Script",
+      "/assets/js/mapa.js"
     );
   }
 

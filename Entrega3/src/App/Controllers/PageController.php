@@ -18,6 +18,10 @@ class PageController extends Controller
         
         $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
 
+        $refugioCollection = new \Paw\App\Models\RefugioCollection();
+        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugiosMapa = $refugioCollection->getRefugiosConUbicacion([]);
+
         require $this->viewsDir . '/index.view.php';
     }
 

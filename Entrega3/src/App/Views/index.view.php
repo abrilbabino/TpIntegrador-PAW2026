@@ -12,6 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
     <title>PawMap</title>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="/assets/js/components/paw.js"></script>
     <script src="/assets/js/app.js"></script>
 </head>
@@ -25,12 +26,7 @@
       </header>
 
       <section class="seccion-mapa">
-        <figure>
-          <iframe
-            src="https://www.google.com/maps/d/u/0/embed?mid=1LcmkNpBFk8CbMx8mdkOJnslsdjsJlGA&ehbc=2E312F&noprof=1">
-            title="Mapa de refugios y mascotas"
-          ></iframe>
-        </figure>
+        <figure id="leaflet-map" class="mapa-interactivo" data-refugios='<?= htmlspecialchars(json_encode($refugiosMapa ?? []), ENT_QUOTES, 'UTF-8') ?>'></figure>
         <a href="/mapa" class="boton-principal boton-ancho">Ver Mapa</a>
       </section>
 

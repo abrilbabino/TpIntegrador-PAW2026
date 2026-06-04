@@ -4,7 +4,7 @@
 }
 
 .seccion-mapa {
-  padding: 2.5rem 0rem;
+  padding: 2.5rem 0 1rem 0;
   margin: 0 2rem;
 }
 
@@ -13,13 +13,14 @@
   width: 100%;
 }
 
-.seccion-mapa iframe {
+.seccion-mapa #leaflet-map {
   width: 100%;
   height: 280px;
   border: none;
   border-radius: 16px;
   background-color: var(--color-gris-claro);
   box-shadow: 0 4px 10px var(--color-texto);
+  z-index: 1; /* Para que no se pise con otros z-index globales */
 }
 
 .boton-ancho {
@@ -238,14 +239,14 @@
   }
 
   .seccion-mapa {
-    padding: 2.5rem 1.5rem;
+    padding: 2.5rem 0 1rem 0;
   }
 
   .boton-ancho {
     display: none;
   }
 
-  .seccion-mapa iframe {
+  .seccion-mapa #leaflet-map {
     height: 450px;
     border-radius: 20px;
   }

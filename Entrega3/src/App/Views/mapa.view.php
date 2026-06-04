@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
-    <script src="/assets/js/mapa.js" defer></script>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 
     <title><?= $titulo ?? 'Mapa Interactivo - PawMap' ?></title>
 </head>

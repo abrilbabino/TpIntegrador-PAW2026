@@ -1,5 +1,4 @@
 (function() {
-    document.addEventListener('DOMContentLoaded', function() {
         // Inicializar el mapa
         var latCenter = -34.6037;
         var lngCenter = -58.3816;
@@ -114,5 +113,4 @@
                 }
             });
         }
-    });
 })();
