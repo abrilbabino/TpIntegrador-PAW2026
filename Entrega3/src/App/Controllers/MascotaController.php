@@ -18,6 +18,7 @@ class MascotaController extends Controller
         $request = $this->request;
         $menu    = $this->menu;
         $redes   = $this->redes;
+        $metaDescription = "Conocé a los perros y gatos que esperan por un hogar. Filtrá por especie, tamaño y ubicación para encontrar a tu mascota ideal en PawMap.";
 
         require $this->viewsDir . '/adoptar.view.php';
     }
@@ -70,6 +71,10 @@ class MascotaController extends Controller
         $id    = $request->get('id');
 
         $mascota = $this->model->get($id);
+        
+        $nombre = htmlspecialchars($mascota->fields['nombre'] ?? '');
+        $especie = htmlspecialchars(strtolower($mascota->fields['especie'] ?? 'mascota'));
+        $metaDescription = "Conocé a {$nombre}, un {$especie} en adopción. Descubrí su historia y si es tu compañero ideal en PawMap.";
 
         $refugios = new RefugioCollection();
         $refugios->setQueryBuilder($this->model->getQueryBuilder());

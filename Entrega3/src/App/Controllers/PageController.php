@@ -13,6 +13,7 @@ class PageController extends Controller
     public function index()
     {
         $titulo = htmlspecialchars($_GET["nombre"] ?? "Inicio-PawMap");
+        $metaDescription = "Descubrí en PawMap a tu compañero ideal. Buscá entre cientos de perros y gatos en adopción de los mejores refugios.";
         $menu = $this->menu;
         $redes = $this->redes;
         
@@ -28,6 +29,7 @@ class PageController extends Controller
     public function mapa()
     {
         $titulo = "Mapa Interactivo - PawMap";
+        $metaDescription = "Explorá nuestro mapa interactivo de PawMap y encontrá refugios y mascotas en adopción cerca de tu ubicación.";
         $menu = $this->menu;
         $redes = $this->redes;
         $request = $this->request;
@@ -56,6 +58,7 @@ class PageController extends Controller
     public function buscar()
     {
         $titulo = "Resultados de búsqueda - PawMap";
+        $metaDescription = "Buscá mascotas en adopción y refugios de animales en PawMap. Encontrá resultados adaptados a tus preferencias.";
         $menu = $this->menu;
         $redes = $this->redes;
         $request = $this->request;
@@ -96,6 +99,7 @@ class PageController extends Controller
     public function comoAdoptar()
     {
         $titulo = "Como Adoptar - PawMap";
+        $metaDescription = "Conocé el paso a paso de cómo adoptar una mascota en PawMap. Te guiamos en todo el proceso para encontrar a tu mejor amigo.";
         $menu = $this->menu;
         $redes = $this->redes;
         require $this->viewsDir . '/como-adoptar.view.php';
@@ -111,6 +115,7 @@ class PageController extends Controller
     public function contacto()
     {
         $titulo = "Contacto - PawMap";
+        $metaDescription = "Contactate con PawMap. Estamos para resolver tus dudas y ayudarte en el proceso de adopción de mascotas.";
         $menu = $this->menu;
         $redes = $this->redes;
         require $this->viewsDir . '/contacto.view.php';
@@ -144,6 +149,7 @@ class PageController extends Controller
     public function donacion()
     {
         $titulo = "Donaciones - PawMap";
+        $metaDescription = "Apoyá a los refugios de animales haciendo una donación a través de PawMap. Tu aporte ayuda a salvar vidas.";
         $menu = $this->menu;
         $redes = $this->redes;
         require $this->viewsDir . '/donacion.view.php';

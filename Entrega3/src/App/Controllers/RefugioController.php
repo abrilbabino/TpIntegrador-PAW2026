@@ -14,6 +14,7 @@ class RefugioController extends Controller
         $request = $this->request;
         $menu    = $this->menu;
         $redes   = $this->redes;
+        $metaDescription = "Conocé los refugios y protectoras de animales asociados a PawMap. Apoyá su labor y encontrá a tu nueva mascota en tu zona.";
 
 
 
@@ -54,9 +55,15 @@ class RefugioController extends Controller
 
         $refugio = null;
         $mascotas = [];
+        $metaDescription = "Conocé este refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
+        
         if ($this->model) {
             try {
                 $refugio = $this->model->get($id);
+                if ($refugio) {
+                    $nombreRefugio = htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Refugio');
+                    $metaDescription = "Conocé a {$nombreRefugio}, un refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
+                }
                 
                 $mascotaCollection = new \Paw\App\Models\MascotaCollection();
                 $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
