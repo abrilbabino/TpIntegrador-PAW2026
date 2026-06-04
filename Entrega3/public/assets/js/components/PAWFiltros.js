@@ -4,8 +4,8 @@ class PAWFiltros {
         this.urlAPI = configFiltros.urlAPI;
         this.tipoVista = configFiltros.tipoVista;
         this.filtrosConfig = configFiltros.filtrosConfig;
-        this.mascotas = [];
-        this.mascotasFiltradas = [];
+        this.items = [];
+        this.itemsFiltrados = [];
         this.estadoFiltros = {}; 
         this.inputsUI = {}; 
 
@@ -26,7 +26,7 @@ class PAWFiltros {
             const resultado = await response.json();
             if (!resultado.success) throw new Error("Error en API");
             
-            this.mascotas = resultado.data;
+            this.items = resultado.data;
 
             this.datosAuxiliares = {};
             const sourcesCache = {};
@@ -78,9 +78,9 @@ class PAWFiltros {
 
             const valoresUnicos = new Set();
             // Si el filtro tiene datos auxiliares (sourceURL), usarlos para poblar las opciones
-            const fuenteDatos = this.datosAuxiliares[filtro.prop] || this.mascotas;
-            fuenteDatos.forEach(m => {
-                if (m[filtro.prop] != null && m[filtro.prop] !== "") valoresUnicos.add(m[filtro.prop]);
+            const fuenteDatos = this.datosAuxiliares[filtro.prop] || this.items;
+            fuenteDatos.forEach(item => {
+                if (item[filtro.prop] != null && item[filtro.prop] !== "") valoresUnicos.add(item[filtro.prop]);
             });
             const opcionesOrdenadas = Array.from(valoresUnicos).sort();
 
@@ -157,12 +157,28 @@ class PAWFiltros {
         details.appendChild(form);
         aside.appendChild(details);
 
-        const sectionContenido = PAW.nuevoElemento("section", "", { class: "adoptar-contenido" });
-        this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: "grilla-mascotas" });
+        const sectionContenido = PAW.nuevoElemento("section", "", { class: this.tipoVista === "mascotas" ? "adoptar-contenido" : "refugios-contenido" });
+        this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
         this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion" });
         
         sectionContenido.appendChild(this.contenedorGrilla);
         sectionContenido.appendChild(this.contenedorPaginacion);
+
+        if (this.tipoVista === "refugios") {
+            const createCTA = (isMobile) => {
+                const cta = PAW.nuevoElemento("article", "", { class: `cta-refugio ${isMobile ? 'mobile' : 'desktop'}` });
+                cta.innerHTML = `
+                    <h3><span class="material-symbols-outlined">pets</span> ¿Representás a un Refugio?</h3>
+                    <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
+                    <a href="/registro-refugio" class="btn-registro-refugio">
+                        <span class="material-symbols-outlined">add_circle</span> Registrate
+                    </a>
+                `;
+                return cta;
+            };
+            aside.appendChild(createCTA(false)); // Desktop CTA en aside
+            sectionContenido.appendChild(createCTA(true)); // Mobile CTA en contenido
+        }
 
         sectionPrincipal.appendChild(aside);
         sectionPrincipal.appendChild(sectionContenido);
@@ -211,14 +227,14 @@ class PAWFiltros {
     }
 
     aplicarFiltros() {
-        this.mascotasFiltradas = this.mascotas.filter(mascota => {
+        this.itemsFiltrados = this.items.filter(item => {
             let cumple = true;
             for (const prop in this.estadoFiltros) {
                 const valorBuscado = this.estadoFiltros[prop];
                 
                 // 1. Evaluación matemática para RANGOS (ej: edad)
                 if (typeof valorBuscado === "object") {
-                    const valorItem = parseFloat(mascota[prop]);
+                    const valorItem = parseFloat(item[prop]);
                     const min = parseFloat(valorBuscado.min);
                     const max = parseFloat(valorBuscado.max);
                     
@@ -227,7 +243,7 @@ class PAWFiltros {
                 } 
                 // 2. Evaluación estricta para el resto (Selects, Radios)
                 else {
-                    if (valorBuscado !== "" && String(mascota[prop]) !== String(valorBuscado)) {
+                    if (valorBuscado !== "" && String(item[prop]) !== String(valorBuscado)) {
                         cumple = false;
                         break; 
                     }
@@ -236,6 +252,6 @@ class PAWFiltros {
             return cumple;
         });
 
-        this.visualizacion.actualizarDatos(this.mascotasFiltradas);
+        this.visualizacion.actualizarDatos(this.itemsFiltrados);
     }
 }

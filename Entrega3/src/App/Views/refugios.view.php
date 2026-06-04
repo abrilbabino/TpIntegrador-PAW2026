@@ -23,77 +23,7 @@
         </header>
 
         <section class="seccion-refugio">
-            <aside class="seccion-filtros-refugios">
-                <details class="filtros" open>
-                    <summary>
-                        <span class="material-symbols-outlined">filter_list</span>
-                        <span>Filtros</span>
-                        <span class="material-symbols-outlined filtros-simbolo">expand_more</span>
-                    </summary>
-
-                    <form id="form-filtros-refugios" method="GET" action="/refugios">
-                        <fieldset>
-                            <legend>Provincia</legend>
-                            <select name="provincia">
-                                <option value="">Todas</option>
-                                <?php foreach ($provincias as $prov): ?>
-                                    <option value="<?= htmlspecialchars($prov->fields['provincia'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                        <?= ($request->get('provincia') == ($prov->fields['provincia'] ?? '')) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars(ucfirst($prov->fields['provincia'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>Ciudad</legend>
-                            <select name="ciudad">
-                                <option value="">Todas</option>
-                                <?php foreach ($ciudades as $ciudad): ?>
-                                    <option value="<?= htmlspecialchars($ciudad->fields['ciudad'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                        <?= ($request->get('ciudad') == ($ciudad->fields['ciudad'] ?? '')) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars(ucfirst($ciudad->fields['ciudad'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </fieldset>
-
-                        <button type="submit">Aplicar Filtros</button>
-                    </form>
-                </details>
-
-                <article class="cta-refugio desktop">
-                    <h3>
-                        <span class="material-symbols-outlined">pets</span>
-                        ¿Representás a un Refugio?
-                    </h3>
-                    <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
-                    <a href="/registro-refugio" class="btn-registro-refugio">
-                        <span class="material-symbols-outlined">add_circle</span>
-                        Registrate
-                    </a>
-                </article>
-            </aside>
-
-            <section class="refugios-contenido">
-                <div id="contenedor-grilla-refugios" class="grilla-refugios">
-                </div>
-                
-                <div id="contenedor-paginacion-refugios" class="paginacion">
-                </div>
-
-                <article class="cta-refugio mobile">
-                    <h3>
-                        <span class="material-symbols-outlined">pets</span>
-                        ¿Representás a un Refugio?
-                    </h3>
-                    <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
-                    <a href="/registro-refugio" class="btn-registro-refugio">
-                        <span class="material-symbols-outlined">add_circle</span>
-                        Registrate
-                    </a>
-                </article>
-            </section>
+            <div data-paw-filtros="refugios" style="display: contents;"></div>
         </section>
     </main>
 

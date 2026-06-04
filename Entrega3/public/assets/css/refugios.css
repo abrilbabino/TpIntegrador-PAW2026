@@ -113,7 +113,7 @@
   text-align: center;
   border: 2px solid var(--color-naranja);
   box-shadow: 0 4px 12px var(--color-texto);
-  margin-top: 3.5rem;
+  margin-top: 1.5rem;
   min-height: 320px;
   align-content: center;
 }
@@ -141,7 +141,6 @@
 }
 
 .cta-refugio span {
-  margin-top: 0.5rem;
   align-self: flex-start;
 }
 
@@ -153,26 +152,26 @@
 
 .btn-registro-refugio {
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(115deg, var(--color-naranja), var(--color-amarillo));
+  background: var(--color-azul);
   color: var(--color-fondo);
-  font-weight: 800;
+  font-weight: bold;
   font-size: 1rem;
   padding: 0.9rem 2.2rem;
   border-radius: 30px;
   text-decoration: none;
   border: none;
   transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 15px var(--color-naranja);
   text-shadow: none;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .btn-registro-refugio:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px var(--color-naranja);
+  transform: scale(0.98);
+  background-color: var(--color-naranja);
+  color: var(--color-fondo);
 }
 
 .refugios-contenido {
@@ -340,11 +339,11 @@
 
 @media screen and (min-width: 994px) {
   .refugios-main {
-    grid-template-areas:
-      "hero hero hero hero"
-      ". filtros contenido .";
     display: grid;
-    grid-template-columns: 1fr minmax(auto, 320px) minmax(auto, 1000px) 1fr;
+    grid-template-columns: 1fr minmax(auto, 1300px) 1fr;
+    grid-template-areas:
+      "hero hero hero"
+      ". contenido .";
     gap: 1.5rem;
   }
 
@@ -352,25 +351,32 @@
     grid-area: hero;
   }
 
-  .seccion-refugio {
+  .seccion-refugio, [data-paw-filtros] {
     grid-area: contenido;
     display: contents;
   }
 
-  .seccion-filtros-refugios {
-    grid-area: filtros;
-    min-width: 320px;
+  .seccion-filtros {
+    grid-area: contenido;
+    display: grid;
+    grid-template-columns: minmax(auto, 300px) 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .seccion-filtros-aside {
+    min-width: 280px;
   }
 
   .refugios-contenido {
-    grid-area: contenido;
+    width: 100%;
   }
 
-  .seccion-filtros-refugios .filtros summary {
+  .filtros summary {
     display: none;
   }
 
-  .seccion-filtros-refugios .filtros form {
+  .filtros form {
     display: flex;
     border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
@@ -386,6 +392,13 @@
 
   .tarjeta-refugio-imagen {
     height: 200px;
+  }
+
+  .tarjeta-refugio,
+  .filtros form,
+  .cta-refugio {
+    height: 380px;
+    box-sizing: border-box;
   }
 }
 
