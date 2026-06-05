@@ -132,13 +132,18 @@
             <?php else: ?>
                 <ul class="perfil-refugio-lista-adopcion">
                     <?php foreach ($solicitudes as $sol): ?>
-                        <li class="perfil-lista-item-adopcion">
+                        <?php 
+                        $estadoSol = strtoupper($sol['estado'] ?? 'PENDIENTE'); 
+                        $disabled = ($estadoSol !== 'PENDIENTE') ? 'disabled' : '';
+                        $estadoClass = 'estado-' . strtolower($estadoSol);
+                        ?>
+                        <li class="perfil-lista-item-adopcion" data-id="<?= htmlspecialchars($sol['id']) ?>">
                             <h4>
                                 <?= htmlspecialchars($sol['mascota_nombre'] ?? 'Mascota') ?>
                                 por <?= htmlspecialchars($sol['adoptante_nombre'] ?? '—') ?>
                                 <?= htmlspecialchars($sol['adoptante_apellido'] ?? '—') ?>
                             </h4>
-                            <span class="estado-solicitud estado-pendiente">
+                            <span class="estado-solicitud <?= $estadoClass ?>">
                                 Estado: <?= htmlspecialchars($sol['estado'] ?? '—') ?>  <br>
                                 Fecha: <?= htmlspecialchars($sol['fecha'] ?? '—') ?>
                             </span>
@@ -148,8 +153,10 @@
                                 · <?= htmlspecialchars($sol['tamano'] ?? '—') ?>
                                 · <?= htmlspecialchars($sol['temperamento'] ?? '—') ?>
                             </p>
-                            <button class="btn-rechazar">RECHAZAR</button>
-                            <button class="btn-aceptar">ACEPTAR</button>
+                            <?php if ($estadoSol === 'PENDIENTE'): ?>
+                                <button class="btn-rechazar" data-id="<?= htmlspecialchars($sol['id']) ?>">RECHAZAR</button>
+                                <button class="btn-aceptar" data-id="<?= htmlspecialchars($sol['id']) ?>">ACEPTAR</button>
+                            <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -182,49 +189,70 @@
             <summary> <h3>Publicar Mascota</h3> </summary>
             <p>Agrega los datos de la nueva mascota:</p>
         
-            <form>
+            <form id="form-publicar-mascota" method="POST" action="/perfil/mascota/publicar" enctype="multipart/form-data">
                 <label for="nombre">Nombre
-                <input type="text" id="nombre" name="nombre" placeholder="Ingresá el nombre de la mascota">
+                <input type="text" id="nombre" name="nombre" placeholder="Ingresá el nombre de la mascota"
+                    value="<?= htmlspecialchars($oldMascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                    minlength="2"
+                    maxlength="60"
+                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s'-]+$"
+                    required
+                    data-trim-required="true"
+                    title="Solo se permiten letras, espacios, apóstrofes y guiones."
+                    <?= !empty($erroresMascota['nombre']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['nombre'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </label>
                 
-                <label for="especie">Especie
+                <fieldset class="publicar-mascota-grupo">
+                    <legend>Especie</legend>
+                    <?php $errorEspecie = $erroresMascota['especie'] ?? ''; ?>
                     <?php foreach ($especies as $e): ?>
-                            <label class="especie-refugio-radio">
-                                <input type="radio" name="especie" value="<?= htmlspecialchars($e->fields['especie'], ENT_QUOTES, 'UTF-8') ?>"
-                                       <?= ($request->get('especie') == $e->fields['especie']) ? 'checked' : '' ?>>
-                                <span><?= htmlspecialchars(ucfirst($e->fields['especie']), ENT_QUOTES, 'UTF-8') ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                </label>
+                        <label class="especie-refugio-radio">
+                            <input type="radio" name="especie" value="<?= htmlspecialchars($e->fields['especie'], ENT_QUOTES, 'UTF-8') ?>"
+                                   required
+                                   <?= (($oldMascota['especie'] ?? '') == $e->fields['especie']) ? 'checked' : '' ?>
+                                   <?= !empty($errorEspecie) ? 'data-server-error="' . htmlspecialchars($errorEspecie, ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                            <span><?= htmlspecialchars(ucfirst($e->fields['especie']), ENT_QUOTES, 'UTF-8') ?></span>
+                        </label>
+                        <?php $errorEspecie = ''; ?>
+                    <?php endforeach; ?>
+                </fieldset>
                 
                 <label for="fecha_nacimiento">Fecha de nacimiento
-                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                    value="<?= htmlspecialchars($oldMascota['fecha_nacimiento'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                    max="<?= date('Y-m-d') ?>"
+                    data-no-future="true"
+                    data-future-message="La fecha de nacimiento no puede ser futura."
+                    <?= !empty($erroresMascota['fecha_nacimiento']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['fecha_nacimiento'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </label>
 
-                <label for="descripcion">Descripción
-                <textarea id="descripcion" name="descripcion" placeholder="Ingresá una descripción de la mascota"></textarea>
+                <label for="descripcion_mascota">Descripción
+                <textarea id="descripcion_mascota" name="descripcion_mascota" placeholder="Ingresá una descripción de la mascota" maxlength="500" <?= !empty($erroresMascota['descripcion_mascota']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['descripcion_mascota'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>><?= htmlspecialchars($oldMascota['descripcion_mascota'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                 </label>
 
                 <label for="tamanio">Tamaño
-                <select id="tamanio" name="tamanio">
+                <select id="tamanio" name="tamanio" required <?= !empty($erroresMascota['tamanio']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['tamanio'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                    <option value="">Seleccioná un tamaño</option>
                     <?php foreach ($tamanos as $t): ?>
-                            <option value="<?= htmlspecialchars($t->fields['tamano'], ENT_QUOTES, 'UTF-8') ?>" <?= ($request->get('tamano') == $t->fields['tamano']) ? 'selected' : '' ?>>
+                            <option value="<?= htmlspecialchars($t->fields['tamano'], ENT_QUOTES, 'UTF-8') ?>" <?= (($oldMascota['tamanio'] ?? '') == $t->fields['tamano']) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars(ucfirst($t->fields['tamano']), ENT_QUOTES, 'UTF-8') ?>
                             </option>
                         <?php endforeach; ?>
                 </select>
                 </label>
+
                 <label for="sexo">Sexo
-                <select id="sexo" name="sexo">
-                    <option value="macho">Macho</option>
-                    <option value="hembra">Hembra</option>
+                <select id="sexo" name="sexo" required <?= !empty($erroresMascota['sexo']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['sexo'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                    <option value="macho" <?= (($oldMascota['sexo'] ?? '') === 'macho') ? 'selected' : '' ?>>Macho</option>
+                    <option value="hembra" <?= (($oldMascota['sexo'] ?? '') === 'hembra') ? 'selected' : '' ?>>Hembra</option>
                 </select>
                 </label>
 
-                <label for="temperamento">temperamento
-                <select id="temperamento" name="temperamento">
+                <label for="temperamento">Temperamento
+                <select id="temperamento" name="temperamento" required <?= !empty($erroresMascota['temperamento']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['temperamento'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                    <option value="">Seleccioná un temperamento</option>
                     <?php foreach ($temperamentos as $t): ?>
-                            <option value="<?= htmlspecialchars($t->fields['temperamento'], ENT_QUOTES, 'UTF-8') ?>" <?= ($request->get('temperamento') == $t->fields['temperamento']) ? 'selected' : '' ?>>
+                            <option value="<?= htmlspecialchars($t->fields['temperamento'], ENT_QUOTES, 'UTF-8') ?>" <?= (($oldMascota['temperamento'] ?? '') == $t->fields['temperamento']) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars(ucfirst($t->fields['temperamento']), ENT_QUOTES, 'UTF-8') ?>
                             </option>
                         <?php endforeach; ?>
@@ -232,15 +260,21 @@
                 </label>
 
                 <label for="esterilizado">¿Está esterilizado?
-                <select id="esterilizado" name="esterilizado">
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
+                <select id="esterilizado" name="esterilizado" required <?= !empty($erroresMascota['esterilizado']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['esterilizado'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                    <option value="si" <?= (($oldMascota['esterilizado'] ?? '') === 'si') ? 'selected' : '' ?>>Sí</option>
+                    <option value="no" <?= (($oldMascota['esterilizado'] ?? 'no') !== 'si') ? 'selected' : '' ?>>No</option>
                 </select>
                 </label>
-                <label for="foto">Foto
-                <input type="file" id="foto" name="foto" accept="image/*">
+
+                <label for="foto">Foto <small>(opcional, máx. 2 MB — JPG, PNG, WEBP)</small>
+                <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp"
+                    data-max-file-size="2097152"
+                    data-max-file-message="La imagen no puede superar 2 MB."
+                    data-file-types-message="Archivo no válido. Solo JPG, PNG o WEBP."
+                    <?= !empty($erroresMascota['foto']) ? 'data-server-error="' . htmlspecialchars($erroresMascota['foto'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </label>
-                <button type="submit">Publicar</button>
+
+                <button type="submit" id="btn-publicar-mascota">Publicar</button>
             </form>
             </details>
         </section>

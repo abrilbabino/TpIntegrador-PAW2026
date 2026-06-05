@@ -297,10 +297,12 @@
 }
 
 /* Cada label+input como bloque con fondo gris */
-.perfil-refugio-publicar label {
+.perfil-refugio-publicar label,
+.perfil-refugio-publicar fieldset {
     display: block;
     background-color: var(--color-azul-oscuro);
     border-radius: 12px;
+    border: 0;
     padding: 1rem 1.2rem 0.8rem 1.2rem;
     font-size: 1.2rem;
     font-weight: bold;
@@ -309,10 +311,62 @@
     width: 100%;
 }
 
+/*revisar*/
+.perfil-refugio-publicar .especie-refugio-radio input {
+    margin: 0;
+}
+
+.perfil-refugio-publicar fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1.2rem;
+}
+
+.perfil-refugio-publicar legend {
+    float: left;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-fondo);
+    padding: 0 0 0.4rem 0;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    font-size: 1rem;
+    font-weight: normal;
+    border-radius: 0;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio span {
+    color: var(--color-fondo);
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio input[type="radio"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+
 /* Inputs, selects y textarea dentro del label */
 .perfil-refugio-publicar input[type="text"],
 .perfil-refugio-publicar input[type="date"],
 .perfil-refugio-publicar input[type="number"],
+.perfil-refugio-publicar input[type="file"],
 .perfil-refugio-publicar select,
 .perfil-refugio-publicar textarea {
     display: block;

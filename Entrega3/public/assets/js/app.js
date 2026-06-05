@@ -295,7 +295,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form");
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota");
     if (forms.length === 0) {
       return;
     }
@@ -320,6 +320,71 @@ class AppPAW {
         perfilRefugio.render();
       },
     );
+    this._initSolicitudesRefugio();
+  }
+
+  _initSolicitudesRefugio() {
+    const lista = document.querySelector('.perfil-refugio-lista-adopcion');
+    if (!lista) return;
+
+    lista.addEventListener('click', (e) => {
+      const target = e.target;
+      const isAceptar = target.classList.contains('btn-aceptar');
+      const isRechazar = target.classList.contains('btn-rechazar');
+
+      if (!isAceptar && !isRechazar) return;
+
+      e.preventDefault();
+      const id = target.getAttribute('data-id');
+      const accion = isAceptar ? 'aceptar' : 'rechazar';
+
+      if (!id) return;
+
+      const confirmMessage = `¿Estás seguro de que querés ${isAceptar ? 'ACEPTAR' : 'RECHAZAR'} esta solicitud de adopción?`;
+      if (!confirm(confirmMessage)) return;
+
+      const li = target.closest('.perfil-lista-item-adopcion');
+      const btnAceptar = li.querySelector('.btn-aceptar');
+      const btnRechazar = li.querySelector('.btn-rechazar');
+      
+      if (btnAceptar) btnAceptar.disabled = true;
+      if (btnRechazar) btnRechazar.disabled = true;
+
+      fetch('/api/solicitud/actualizar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: parseInt(id), accion: accion })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const spanEstado = li.querySelector('.estado-solicitud');
+          if (spanEstado) {
+            spanEstado.className = 'estado-solicitud';
+            const nuevoEstadoClass = 'estado-' + data.estado.toLowerCase();
+            spanEstado.classList.add(nuevoEstadoClass);
+            
+            const match = spanEstado.innerHTML.match(/Fecha:\s*(.*)/i);
+            const fechaStr = match ? match[1] : '';
+            spanEstado.innerHTML = `Estado: ${data.estado} <br> Fecha: ${fechaStr}`;
+          }
+          if (btnAceptar) btnAceptar.remove();
+          if (btnRechazar) btnRechazar.remove();
+        } else {
+          alert(data.mensaje || 'Error al procesar la solicitud.');
+          if (btnAceptar) btnAceptar.disabled = false;
+          if (btnRechazar) btnRechazar.disabled = false;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Ocurrió un error en la conexión con el servidor.');
+        if (btnAceptar) btnAceptar.disabled = false;
+        if (btnRechazar) btnRechazar.disabled = false;
+      });
+    });
   }
 
 }
