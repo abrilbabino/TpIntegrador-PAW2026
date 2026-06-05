@@ -12,6 +12,42 @@ class PAWRefugioPerfil {
         this.initScrollSpy();
         this.initEdicionInteractiva();
         this.initSolicitudesRefugio();
+        this.initVerMasDescripcion();
+    }
+
+    initVerMasDescripcion() {
+        const texto = document.querySelector('.descripcion-texto');
+        const btnVerMas = document.querySelector('.btn-ver-mas-desc');
+
+        if (!texto || !btnVerMas) return;
+
+        const checkClamp = () => {
+            texto.classList.remove('expanded');
+            btnVerMas.textContent = 'Ver más';
+            
+            // Wait for render layout calculations
+            setTimeout(() => {
+                if (texto.scrollHeight > texto.clientHeight) {
+                    btnVerMas.style.display = 'inline-block';
+                } else {
+                    btnVerMas.style.display = 'none';
+                }
+            }, 50);
+        };
+
+        checkClamp();
+
+        btnVerMas.addEventListener('click', () => {
+            if (texto.classList.contains('expanded')) {
+                texto.classList.remove('expanded');
+                btnVerMas.textContent = 'Ver más';
+            } else {
+                texto.classList.add('expanded');
+                btnVerMas.textContent = 'Ver menos';
+            }
+        });
+        
+        window.addEventListener('resize', checkClamp);
     }
 
     initSolicitudesRefugio() {

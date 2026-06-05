@@ -114,7 +114,7 @@ class SolicitudAdopcion extends Model
             throw new \Exception('La solicitud ya ha sido procesada previamente.', 400);
         }
 
-        $nuevoEstado = ($accion === 'aceptar') ? 'ACEPTADA' : 'RECHAZADA';
+        $nuevoEstado = ($accion === 'aceptar') ? 'APROBADA' : 'RECHAZADA';
 
         $this->queryBuilder->getConnection()->beginTransaction();
         try {

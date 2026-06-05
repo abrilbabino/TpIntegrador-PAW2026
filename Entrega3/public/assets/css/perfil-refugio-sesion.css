@@ -67,7 +67,8 @@
 .perfil-refugio-datos {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgb(0, 0, 0, 0.8);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
 }
 
@@ -101,7 +102,7 @@
 .dato-refugio-label {
     font-size: 0.75rem;
     font-style: italic;
-    color: var(--color-gris-claro);
+    color: var(--color-naranja);
 }
 
 .dato-refugio-valor {
@@ -111,6 +112,44 @@
     overflow-wrap: break-word;
     word-break: break-all;
     min-width: 0;
+}
+
+/* ===== DESCRIPCIÓN COLLAPSIBLE ===== */
+.dato-refugio-descripcion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dato-refugio-descripcion-container .descripcion-texto {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    line-height: 1.4;
+    word-break: normal;
+}
+
+.dato-refugio-descripcion-container .descripcion-texto.expanded {
+    -webkit-line-clamp: unset;
+    display: block;
+}
+
+.btn-ver-mas-desc {
+    background: none;
+    border: none;
+    color: var(--color-naranja);
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.4rem;
+    text-decoration: underline;
+}
+
+.btn-ver-mas-desc:hover {
+    color: var(--color-azul-oscuro);
 }
 
 /* ===== NAV ANCLA ===== */
@@ -157,7 +196,8 @@
 .perfil-refugio-seccion {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
 }
 
@@ -165,6 +205,14 @@
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0;
+}
+
+.perfil-refugio-seccion summary{
+    cursor: pointer;
+}
+
+.perfil-refugio-seccion h3{
+    cursor:default;
 }
 
 /*vacio*/
@@ -259,7 +307,8 @@
 .perfil-refugio-ubicacion {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
 }
 
@@ -269,9 +318,9 @@
 .perfil-refugio-publicar {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
-
     overflow: hidden;
 }
 
@@ -299,14 +348,13 @@
 /* Cada label+input como bloque con fondo gris */
 .perfil-refugio-publicar label,
 .perfil-refugio-publicar fieldset {
-    display: block;
-    background-color: var(--color-azul-oscuro);
+    display: block; 
     border-radius: 12px;
-    border: 0;
+    border: 1px solid var(--color-azul);
     padding: 1rem 1.2rem 0.8rem 1.2rem;
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--color-fondo);
+    color: var(--color-azul-oscuro);
     box-sizing: border-box;
     width: 100%;
 }
@@ -321,6 +369,7 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 1rem 1.2rem;
+    margin:0;
 }
 
 .perfil-refugio-publicar legend {
@@ -328,7 +377,7 @@
     width: 100%;
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--color-fondo);
+    color: var(--color-azul-oscuro);
     padding: 0 0 0.4rem 0;
 }
 
@@ -336,6 +385,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    border: none;
     background-color: transparent;
     padding: 0;
     margin: 0;
@@ -346,7 +396,7 @@
 }
 
 .perfil-refugio-publicar .especie-refugio-radio span {
-    color: var(--color-fondo);
+    color: var(--color-texto);
     font-weight: normal;
     font-size: 1rem;
 }
@@ -362,18 +412,18 @@
 }
 
 
-/* Inputs, selects y textarea dentro del label */
+/* Inputs y textarea dentro del label */
 .perfil-refugio-publicar input[type="text"],
 .perfil-refugio-publicar input[type="date"],
 .perfil-refugio-publicar input[type="number"],
 .perfil-refugio-publicar input[type="file"],
-.perfil-refugio-publicar select,
 .perfil-refugio-publicar textarea {
     display: block;
     width: 100%;
+    font-family: var(--fuente-titulos);
     margin-top: 0.6rem;
     padding: 0.8rem 1rem;
-    border: 1px solid var(--color-naranja);
+    border: 1px solid var(--color-gris-claro);
     border-radius: 10px;
     font-size: 1rem;
     color: var(--color-texto);
@@ -383,6 +433,23 @@
     -webkit-appearance: none;
 }
 
+/* Selects dentro del label (con flecha) */
+.perfil-refugio-publicar select {
+    display: block;
+    width: 100%;
+    font-family: var(--fuente-titulos);
+    margin-top: 0.6rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    box-sizing: border-box;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
 /* Placeholder gris */
 .perfil-refugio-publicar input::placeholder,
 .perfil-refugio-publicar textarea::placeholder {
@@ -390,25 +457,38 @@
 }
 
 /* Botón publicar */
-.perfil-refugio-publicar button[type="submit"] {
+.perfil-refugio-publicar button {
     background-color: var(--color-naranja);
     color: var(--color-fondo);
     border: none;
     border-radius: 10px;
     padding: 0.8rem 2rem;
+    min-width: 50%;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    align-self: flex-end;
+    align-self: center;
     transition: background 0.2s;
 }
 
+.perfil-refugio-publicar button:hover{
+    transform: scale(0.98);
+}
+
+.perfil-refugio-publicar summary{
+    cursor: pointer;
+}
+
+.perfil-refugio-publicar h3{
+    cursor: default;
+}
 /* ===== SECCION: Actualizar/eliminar ===== */
 
 .perfil-editar-mascota {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
 }
 
@@ -416,6 +496,14 @@
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0;
+}
+
+.perfil-editar-mascota summary{
+    cursor: pointer;
+}
+
+.perfil-editar-mascota h3{
+    cursor: default;
 }
 
 .perfil-refugio-grid {
@@ -451,10 +539,27 @@
     margin: 0 0 0.2rem 0;
 }
 
+.tarjeta-refugio-mascota-link h4:hover{
+    color: var(--color-naranja);
+}
+
 .tarjeta-refugio-mascota-link p {
     font-size: 0.95rem;
     margin: 0;
     color: var(--color-texto);
+    cursor: default;
+}
+
+.tarjeta-refugio-mascota p:hover{
+    color: var(--color-texto);
+}
+
+.tarjeta-refugio-mascota .btn-editar .material-symbols-outlined {
+    color: var(--color-gris);
+}
+
+.tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined{
+    color: var(--color-azul-oscuro)
 }
 
 .btn-eliminar-mascota .material-symbols-outlined {
@@ -465,7 +570,7 @@
     color: var(--color-rojo);
 }
 
-.btn-editar-mascota,
+.tarjeta-refugio-mascota .btn-editar,
 .btn-eliminar-mascota {
     display: flex;
     align-items: center;
@@ -509,10 +614,6 @@
         display: flex;
         gap: 1rem;
         grid-column: 2;
-    }
-
-    .perfil-refugio-datos {
-        box-shadow: 0 1px 6px rgb(244, 107, 39);
     }
 
     /* La grilla de datos ocupa 2/3 */

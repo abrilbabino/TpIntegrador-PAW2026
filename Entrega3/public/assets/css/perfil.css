@@ -731,15 +731,12 @@
 }
 
 .modal-option-btn.bold-btn {
-  background-color: var(--color-azul);
+  background-color: var(--color-verde);
   color: var(--color-fondo);
-  box-shadow: 0 4px 10px rgba(40, 53, 131, 0.3);
 }
 
 .modal-option-btn.bold-btn:hover {
-  background-color: var(--color-azul-oscuro);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(40, 53, 131, 0.4);
+  transform: scale(0.98);
 }
 
 .modal-option-btn.red-btn {

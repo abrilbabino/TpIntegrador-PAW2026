@@ -50,7 +50,10 @@
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Descripción:</span>
-                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['descripcion'] ?? '-') ?></span>
+                            <div class="static-value dato-refugio-descripcion-container">
+                                <p class="dato-refugio-valor descripcion-texto"><?= nl2br(htmlspecialchars($refugio['descripcion'] ?? '-')) ?></p>
+                                <button type="button" class="btn-ver-mas-desc" style="display: none;">Ver más</button>
+                            </div>
                             <input type="text" name="descripcion" value="<?= htmlspecialchars($oldData['descripcion'] ?? $refugio['descripcion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['descripcion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['descripcion']) ? 'input-invalido' : '' ?>" maxlength="500">
                             <?php if (isset($errores['descripcion'])): ?>
                                 <span class="msg-error input-value"><?= htmlspecialchars($errores['descripcion'], ENT_QUOTES, 'UTF-8') ?></span>
