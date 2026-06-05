@@ -1,0 +1,301 @@
+.paw-chat-widget {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -2px 10px var(--color-gris);
+    z-index: 9999;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: height 0.3s ease, transform 0.3s ease;
+    height: 400px; 
+}
+
+.paw-chat-widget.collapsed {
+    height: 48px;
+    cursor: pointer;
+}
+
+.chat-widget-header {
+    height: 48px;
+    min-height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    background-color: var(--color-fondo);
+    border-bottom: 1px solid var(--color-gris-claro);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+}
+
+.paw-chat-widget.collapsed .chat-widget-header {
+    border-bottom: none;
+}
+
+.chat-widget-header:hover {
+    background-color: var(--color-gris-claro);
+}
+
+.chat-widget-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-texto);
+}
+
+.chat-widget-avatar, .chat-widget-avatar-placeholder {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-widget-avatar-placeholder {
+    font-size: 28px;
+    color: var(--color-violeta);
+}
+
+.chat-widget-badge {
+    background-color: var(--color-rojo);
+    color: var(--color-fondo);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.chat-widget-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chat-widget-controls .icon-btn {
+    font-size: 20px;
+    color: var(--color-gris);
+    padding: 4px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.chat-widget-controls .icon-btn:hover {
+    background-color: var(--color-gris-claro);
+}
+
+/* Cuerpo del Widget */
+.chat-widget-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--color-fondo);
+}
+
+.paw-chat-widget.collapsed .chat-widget-body {
+    display: none;
+}
+
+/* Vistas Internas */
+.chat-widget-view {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-widget-view.active {
+    display: flex;
+}
+
+.chat-widget-search {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-gris-claro);
+    gap: 8px;
+}
+
+.chat-widget-search input {
+    flex: 1;
+    border: none;
+    background-color: var(--color-gris-claro);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+}
+
+.chat-widget-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid var(--color-gris-claro);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-list-item:hover {
+    background-color: var(--color-gris-claro);
+}
+
+.chat-list-item-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-gris);
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-fondo);
+}
+
+.chat-list-item-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.chat-list-item-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 2px 0;
+    color: var(--color-texto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-list-item-mascota {
+    font-size: 12px;
+    color: var(--color-gris);
+    margin: 0;
+}
+
+.chat-list-item-unread {
+    background-color: var(--color-verde);
+    color: var(--color-fondo);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.chat-conversation-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-gris-claro);
+    gap: 12px;
+    background-color: var(--color-fondo);
+}
+
+.chat-conversation-header .icon-btn {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.chat-conversation-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-conv-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.chat-conv-mascota {
+    font-size: 12px;
+    color: var(--color-gris);
+}
+
+.chat-widget-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: var(--color-gris-claro);
+}
+
+.chat-msg {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.chat-msg.mine {
+    background-color: var(--color-verde);
+    color: var(--color-fondo);
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.chat-msg.theirs {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    border: 1px solid var(--color-gris-claro);
+}
+
+.chat-widget-input-area {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid var(--color-gris-claro);
+    background-color: var(--color-fondo);
+}
+
+.chat-widget-input-area textarea {
+    flex: 1;
+    border: none;
+    background-color: var(--color-gris-claro);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    max-height: 80px;
+}
+
+.btn-send-widget {
+    background: none;
+    border: none;
+    color: var(--color-verde);
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.btn-send-widget:hover {
+    transform: scale(1.1);
+}
+
+.chat-widget-loading {
+    padding: 20px;
+    text-align: center;
+    color: var(--color-gris);
+    font-size: 13px;
+}

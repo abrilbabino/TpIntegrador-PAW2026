@@ -369,10 +369,11 @@ class QueryBuilder
 
     public function obtenerSolicitudesPorAdoptante(string $tabla, int $adoptanteId): array
     {
-        $sql = "SELECT s.id, s.estado, m.nombre, m.nombre as mascota_nombre, m.edad, m.tamano, m.temperamento, r.nombre_institucion as refugio_nombre
+        $sql = "SELECT s.id, s.estado, m.nombre, m.nombre as mascota_nombre, m.edad, m.tamano, m.temperamento, r.nombre_institucion as refugio_nombre, u.foto_perfil as refugio_foto
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
                 LEFT JOIN refugio r ON m.refugio_id = r.usuario_id
+                LEFT JOIN usuario u ON r.usuario_id = u.id
                 WHERE s.adoptante_id = :adoptante_id";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
@@ -637,10 +638,12 @@ class QueryBuilder
         m.nombre as mascota_nombre,
         m.edad, m.tamano, m.temperamento,
         a.nombre as adoptante_nombre,
-        a.apellido as adoptante_apellido
+        a.apellido as adoptante_apellido,
+        u.foto_perfil as adoptante_foto
         FROM solicitud_de_adopcion s
         JOIN mascota m ON s.mascota_id = m.id
         JOIN adoptante a ON s.adoptante_id = a.usuario_id
+        JOIN usuario u ON a.usuario_id = u.id
         WHERE m.refugio_id = :refugio_id 
         ORDER BY s.fecha DESC";
         

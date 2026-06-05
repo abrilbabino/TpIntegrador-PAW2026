@@ -17,6 +17,28 @@ class AppPAW {
     this._initPerfilRefugio();
     this._initFavoritos();
     this._initModalExito();
+    this._initChatWidget();
+    this._initChatPage();
+  }
+
+  _initChatWidget() {
+    PAW.cargarScript(
+      "script-paw-chat-widget",
+      "/assets/js/components/paw-chat-widget.js",
+      () => {
+        window.chatWidget = new PAWChatWidget();
+      }
+    );
+  }
+
+  _initChatPage() {
+    PAW.cargarScript(
+      "script-paw-chat-page",
+      "/assets/js/components/paw-chat-page.js",
+      () => {
+        new PAWChatPage();
+      }
+    );
   }
 
   _initModalExito() {
