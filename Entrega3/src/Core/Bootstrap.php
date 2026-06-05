@@ -103,6 +103,11 @@ $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 // Solicitudes API
 $router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
 
+// Chat
+$router->get('/chat', 'ChatController@verChat');
+$router->post('/chat/enviar', 'ChatController@enviarMensaje');
+$router->get('/api/chat/mensajes', 'ChatController@apiMensajes');
+$router->get('/api/chat/list', 'ChatController@apiListarChatsActivos');
 // Errores
 $router->get('not_found', 'ErrorController@notFound');
 $router->get('internal_error', 'ErrorController@internalError');

@@ -17,3 +17,5 @@
     </address>
     <p class="footer-copyright"><small>&copy; <?= date('Y') ?> PawMap</small></p>
 </footer>
+
+<?php require __DIR__ . '/chat-widget.view.php'; ?>

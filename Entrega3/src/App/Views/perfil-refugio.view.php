@@ -317,6 +317,37 @@
             <?php endif; ?>
             </details>
         </section>
+
+        <!-- Sección: Solicitudes para este refugio -->
+        <section class="perfil-seccion" id="sec-solicitudes">
+            <h3>
+                <span class="material-symbols-outlined">mail</span>
+                Solicitudes Recibidas
+            </h3>
+            <?php if (empty($solicitudes)): ?>
+                <article class="perfil-vacio">
+                    <span class="material-symbols-outlined">mail</span>
+                    <p>Todavía no recibiste solicitudes de adopción.</p>
+                </article>
+            <?php else: ?>
+                <ul class="perfil-lista">
+                    <?php foreach ($solicitudes as $sol): ?>
+                        <li class="perfil-lista-item">
+                            <h4>Mascota: <?= htmlspecialchars($sol['mascota_nombre'] ?? 'Mascota') ?></h4>
+                            <p>
+                                Adoptante: <?= htmlspecialchars($sol['adoptante_nombre'] . ' ' . $sol['adoptante_apellido']) ?>
+                            </p>
+                            <span class="perfil-estado estado-<?= strtolower($sol['estado'] ?? 'pendiente') ?>">
+                                <?= htmlspecialchars($sol['estado'] ?? 'PENDIENTE') ?>
+                            </span>
+                            <?php if (($sol['estado'] ?? '') === 'APROBADA'): ?>
+
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </section>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>

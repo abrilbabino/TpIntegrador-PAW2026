@@ -18,6 +18,11 @@ class SolicitudAdopcionCollection extends Model
         return $this->queryBuilder->obtenerAdopcionesPorAdoptante($this->table, $adoptanteId);
     }
 
+    public function getById(int $id)
+    {
+        return $this->queryBuilder->selectOne($this->table, ['id' => $id]);
+    }
+
     public function getSolicitudesRefugio(int $refugioId): array
     {
         return $this->queryBuilder->obtenerSolicitudesPorRefugio($this->table, $refugioId);

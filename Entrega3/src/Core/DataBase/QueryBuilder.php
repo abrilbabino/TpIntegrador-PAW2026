@@ -369,9 +369,10 @@ class QueryBuilder
 
     public function obtenerSolicitudesPorAdoptante(string $tabla, int $adoptanteId): array
     {
-        $sql = "SELECT s.estado, m.nombre, m.edad, m.tamano, m.temperamento
+        $sql = "SELECT s.id, s.estado, m.nombre, m.nombre as mascota_nombre, m.edad, m.tamano, m.temperamento, r.nombre_institucion as refugio_nombre
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
+                LEFT JOIN refugio r ON m.refugio_id = r.usuario_id
                 WHERE s.adoptante_id = :adoptante_id";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);

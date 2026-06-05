@@ -68,6 +68,45 @@
   transform: scale(1.12);
 }
 
+.nav-acciones-usuario {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.icono-notificacion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-texto);
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icono-notificacion:hover {
+  transform: scale(1.1);
+  color: var(--color-naranja);
+}
+
+.icono-notificacion .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.badge-notificacion {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: #E63946;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50px;
+  border: 2px solid var(--color-fondo);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .nav-foto-perfil {
   grid-area: "icon";
   grid-row: 1;
