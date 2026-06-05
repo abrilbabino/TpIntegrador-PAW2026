@@ -58,6 +58,7 @@ $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/api/mascotas', 'MascotaController@apiMascotas');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
+$router->get('/api/mascota/libreta', 'MascotaController@apiLibreta');
 $router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
 $router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
 $router->get('/buscar', 'PageController@buscar');

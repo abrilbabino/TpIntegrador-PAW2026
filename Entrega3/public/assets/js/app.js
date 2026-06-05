@@ -184,6 +184,58 @@ class AppPAW {
                   }
                 }
               };
+            } else if (tipoVista === "libreta") {
+              const mascotaId = container.dataset.mascotaId;
+              const filtroLibreta = new PAWFiltros(container, {
+                urlAPI: `/api/mascota/libreta?mascota_id=${mascotaId}`,
+                tipoVista: "libreta",
+                filtrosConfig: [
+                  { prop: "anio", label: "Año", type: "select" },
+                  { prop: "mes", label: "Mes", type: "select" },
+                  { prop: "categoria", label: "Categoría", type: "select" }
+                ]
+              });
+
+              filtroLibreta.visualizacion = {
+                actualizarDatos: (itemsFiltrados) => {
+                  const pendientesCont = document.getElementById("pendientes-container");
+                  const historialCont = document.getElementById("historial-container");
+
+                  if (pendientesCont) pendientesCont.innerHTML = "";
+                  if (historialCont) historialCont.innerHTML = "";
+
+                  const tituloPendientes = PAW.nuevoElemento("header", "", { class: "titulo" });
+                  tituloPendientes.appendChild(PAW.nuevoElemento("span", "event_upcoming", { class: "material-symbols-outlined" }));
+                  tituloPendientes.appendChild(document.createTextNode(" Próximos turnos"));
+                  if (pendientesCont) pendientesCont.appendChild(tituloPendientes);
+
+                  const tituloHistorial = PAW.nuevoElemento("header", "", { class: "titulo" });
+                  tituloHistorial.appendChild(PAW.nuevoElemento("span", "history", { class: "material-symbols-outlined" }));
+                  tituloHistorial.appendChild(document.createTextNode(" Historial"));
+                  if (historialCont) historialCont.appendChild(tituloHistorial);
+
+                  let pendientesCount = 0;
+                  let historialCount = 0;
+
+                  itemsFiltrados.forEach(registro => {
+                    const tarjeta = PAWVisualizacion.crearTarjetaLibreta(registro);
+                    if (registro.estado === 'PENDIENTE') {
+                      if (pendientesCont) pendientesCont.appendChild(tarjeta);
+                      pendientesCount++;
+                    } else {
+                      if (historialCont) historialCont.appendChild(tarjeta);
+                      historialCount++;
+                    }
+                  });
+
+                  if (pendientesCount === 0 && pendientesCont) {
+                    pendientesCont.appendChild(PAW.nuevoElemento("p", "No hay eventos próximos.", { class: "no-registros" }));
+                  }
+                  if (historialCount === 0 && historialCont) {
+                    historialCont.appendChild(PAW.nuevoElemento("p", "No hay registros en el historial.", { class: "no-registros" }));
+                  }
+                }
+              };
             }
           });
 

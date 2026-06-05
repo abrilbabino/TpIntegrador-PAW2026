@@ -45,7 +45,7 @@ class PAWFiltros {
 
             this.construirHTML();
 
-            if (this.tipoVista !== "mapa") {
+            if (this.tipoVista !== "mapa" && this.tipoVista !== "libreta") {
                 this.visualizacion = new PAWVisualizacion(
                     this.contenedorGrilla,
                     this.contenedorPaginacion,
@@ -81,8 +81,13 @@ class PAWFiltros {
         const form = PAW.nuevoElemento("form", "", { onsubmit: "return false;" });
 
         this.filtrosConfig.forEach(filtro => {
-            const fieldset = PAW.nuevoElemento("fieldset", "");
-            fieldset.appendChild(PAW.nuevoElemento("legend", filtro.label));
+            const fieldsetOptions = this.tipoVista === "libreta" ? { class: "filtro-grupo" } : {};
+            const fieldset = PAW.nuevoElemento("fieldset", "", fieldsetOptions);
+            
+            const labelTag = this.tipoVista === "libreta" ? "label" : "legend";
+            const labelEl = PAW.nuevoElemento(labelTag, filtro.label);
+            if (this.tipoVista === "libreta") labelEl.setAttribute("for", filtro.prop);
+            fieldset.appendChild(labelEl);
 
             const valoresUnicos = new Set();
             // Si el filtro tiene datos auxiliares (sourceURL), usarlos para poblar las opciones
@@ -95,11 +100,16 @@ class PAWFiltros {
             this.inputsUI[filtro.prop] = []; 
 
             if (filtro.type === "select") {
-                const select = PAW.nuevoElemento("select", "", { name: filtro.prop });
+                const select = PAW.nuevoElemento("select", "", { name: filtro.prop, id: filtro.prop });
                 select.appendChild(PAW.nuevoElemento("option", "Todos", { value: "" }));
                 
+                const mesesMap = { 1:'Enero', 2:'Febrero', 3:'Marzo', 4:'Abril', 5:'Mayo', 6:'Junio', 7:'Julio', 8:'Agosto', 9:'Septiembre', 10:'Octubre', 11:'Noviembre', 12:'Diciembre' };
+
                 opcionesOrdenadas.forEach(valor => {
-                    const texto = valor.charAt(0).toUpperCase() + valor.slice(1).toLowerCase();
+                    let texto = valor.toString().charAt(0).toUpperCase() + valor.toString().slice(1).toLowerCase();
+                    if (filtro.prop === "mes" && mesesMap[valor]) {
+                        texto = mesesMap[valor];
+                    }
                     select.appendChild(PAW.nuevoElemento("option", texto, { value: valor }));
                 });
                 
@@ -247,18 +257,43 @@ class PAWFiltros {
             form.appendChild(fieldset);
         });
 
+        const divBotones = PAW.nuevoElemento("div", "", { class: "filtros-botones" });
+        
         this.btnLimpiar = PAW.nuevoElemento("button", "Limpiar Filtros", { type: "button", class: "btn-limpiar" });
-        form.appendChild(this.btnLimpiar);
-        details.appendChild(form);
-        aside.appendChild(details);
+        divBotones.appendChild(this.btnLimpiar);
+        
+        form.appendChild(divBotones);
+
+        if (this.tipoVista === "libreta") {
+            form.classList.add("filtros-seccion");
+            // Sobrescribimos el grid de seccion-filtros para que se apilen verticalmente
+            sectionPrincipal.style.display = "block";
+            sectionPrincipal.appendChild(form);
+        } else {
+            details.appendChild(form);
+            aside.appendChild(details);
+            sectionPrincipal.appendChild(aside);
+        }
 
         if (this.tipoVista !== "mapa") {
-            const sectionContenido = PAW.nuevoElemento("section", "", { class: this.tipoVista === "mascotas" ? "adoptar-contenido" : "refugios-contenido" });
-            this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
-            this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion-wrapper" });
+            let claseContenido = "seccion-filtros-contenido";
+            if (this.tipoVista === "mascotas") claseContenido = "adoptar-contenido";
+            else if (this.tipoVista === "refugios") claseContenido = "refugios-contenido";
+            else if (this.tipoVista === "libreta") claseContenido = "libreta-contenido";
+
+            const sectionContenido = PAW.nuevoElemento("section", "", { class: claseContenido });
             
-            sectionContenido.appendChild(this.contenedorGrilla);
-            sectionContenido.appendChild(this.contenedorPaginacion);
+            if (this.tipoVista !== "mapa" && this.tipoVista !== "libreta") {
+                this.contenedorGrilla = PAW.nuevoElemento("div", "", { class: this.tipoVista === "mascotas" ? "grilla-mascotas" : "grilla-refugios" });
+                this.contenedorPaginacion = PAW.nuevoElemento("div", "", { class: "paginacion-wrapper" });
+                sectionContenido.appendChild(this.contenedorGrilla);
+                sectionContenido.appendChild(this.contenedorPaginacion);
+            } else if (this.tipoVista === "libreta") {
+                const containerPendientes = PAW.nuevoElemento("section", "", { class: "pendientes", id: "pendientes-container" });
+                const containerHistorial = PAW.nuevoElemento("section", "", { class: "historial", id: "historial-container" });
+                sectionContenido.appendChild(containerPendientes);
+                sectionContenido.appendChild(containerHistorial);
+            }
 
             if (this.tipoVista === "refugios") {
                 const createCTA = (isMobile) => {

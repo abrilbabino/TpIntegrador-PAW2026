@@ -8,6 +8,7 @@
   gap: 1rem;
   padding: 1.8rem 1rem;
   justify-content: center;
+  align-items: end;
   border-radius: 12px;
 }
 
@@ -47,7 +48,7 @@ fieldset {
   border: 1px solid var(--color-naranja);
 }
 
-.btn-filtrar {
+.libreta-main .btn-limpiar {
   background-color: var(--color-naranja);
   color: var(--color-fondo);
   border: none;
@@ -62,7 +63,8 @@ fieldset {
   width: 100%;
 }
 
-.btn-filtrar:hover {
+.btn-limpiar:hover {
+  background-color: var(--color-azul);
   transform: scale(0.98);
 }
 
@@ -409,12 +411,11 @@ fieldset {
   .filtros-seccion {
     display: grid;
     grid-template-columns: 1fr 1fr auto auto;
-    align-items: end;
     padding: 3rem;
     gap: 1.5rem;
   }
 
-  .btn-filtrar {
+  .btn-limpiar {
     width: auto;
     padding: 0.75rem 2rem;
   }

@@ -182,6 +182,70 @@ class PAWVisualizacion {
         return articulo;
     }
 
+    static crearTarjetaLibreta(registro) {
+        const esPendiente = registro.estado === 'PENDIENTE';
+        const cardClass = esPendiente ? "card-pendiente" : "card-completado";
+        const iconClass = esPendiente ? "icon-pendiente" : "icon-completado";
+
+        const articulo = PAW.nuevoElemento("article", "", { class: `card-registro ${cardClass}` });
+
+        const figure = PAW.nuevoElemento("figure", "", { class: `card-icon-container ${iconClass}` });
+        
+        let iconName = registro.icono || "medical_services";
+        iconName = iconName.replace(/<[^>]*>/g, '').trim();
+        if (!iconName) iconName = "medical_services";
+
+        const icon = PAW.nuevoElemento("span", iconName, { class: "material-symbols-outlined" });
+        figure.appendChild(icon);
+
+        const section = PAW.nuevoElemento("section", "", { class: "card-content" });
+        const header = PAW.nuevoElemento("header", "", {});
+        
+        const h3 = PAW.nuevoElemento("h3", registro.titulo || "Registro", {});
+        const pDate = PAW.nuevoElemento("p", "", { class: "card-date" });
+        pDate.appendChild(PAW.nuevoElemento("span", "calendar_today", { class: "material-symbols-outlined" }));
+        
+        const fechaAUsar = registro.fecha_realizada || registro.fecha_programada || "";
+        pDate.appendChild(document.createTextNode(` ${fechaAUsar}`));
+        
+        header.appendChild(h3);
+        header.appendChild(pDate);
+        section.appendChild(header);
+
+        if (registro.observaciones && registro.observaciones.trim() !== '') {
+            const artObs = PAW.nuevoElemento("article", "", { class: "card-obs" });
+            artObs.appendChild(PAW.nuevoElemento("strong", "Observaciones:", {}));
+            artObs.appendChild(PAW.nuevoElemento("p", registro.observaciones, {}));
+            section.appendChild(artObs);
+        }
+
+        articulo.appendChild(figure);
+        articulo.appendChild(section);
+
+        if (esPendiente) {
+            const form = PAW.nuevoElemento("form", "", { method: "POST", action: "/mascota/registro/completar", class: "form-completar" });
+            form.appendChild(PAW.nuevoElemento("input", "", { type: "hidden", name: "registro_id", value: registro.id }));
+            form.appendChild(PAW.nuevoElemento("input", "", { type: "hidden", name: "mascota_id", value: registro.mascota_id }));
+            
+            const btn = PAW.nuevoElemento("button", "", { type: "submit", class: "btn-completar", title: "Marcar como completado" });
+            btn.appendChild(PAW.nuevoElemento("span", "check_circle", { class: "material-symbols-outlined" }));
+            form.appendChild(btn);
+            
+            articulo.appendChild(form);
+            
+            const footer = PAW.nuevoElemento("footer", "Pendiente", { class: "badge badge-pendiente" });
+            articulo.appendChild(footer);
+        } else {
+            const iconCheck = PAW.nuevoElemento("span", "check_circle", { class: "icono-completado material-symbols-outlined", "aria-label": "Completado" });
+            articulo.appendChild(iconCheck);
+            
+            const footer = PAW.nuevoElemento("footer", "Completado", { class: "badge badge-completado" });
+            articulo.appendChild(footer);
+        }
+
+        return articulo;
+    }
+
     // Ejecuta la validación de límites matemáticos antes de mutar el estado.
     irAPagina(pagina) {
     const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);

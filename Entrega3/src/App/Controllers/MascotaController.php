@@ -138,6 +138,57 @@ class MascotaController extends Controller
         require $this->viewsDir . '/libreta.view.php';
     }
 
+    public function apiLibreta()
+    {
+        header('Content-Type: application/json');
+
+        $mascota_id = $this->request->get('mascota_id');
+        if (!$mascota_id) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Falta mascota_id']);
+            exit;
+        }
+
+        $coleccion = new RegistroSanitarioCollection();
+        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        
+        // Obtener todos los registros sin filtro
+        $registros = $coleccion->getByMascota((int)$mascota_id, []);
+
+        $datos = [];
+        foreach ($registros as $registro) {
+            $fechaAUsar = $registro->fields['fecha_realizada'] ?? $registro->fields['fecha_programada'] ?? '';
+            $anio = '';
+            $mes = '';
+            if ($fechaAUsar) {
+                $time = strtotime($fechaAUsar);
+                $anio = date('Y', $time);
+                $mes = date('n', $time);
+            }
+            $datos[] = [
+                'id'               => $registro->fields['id'],
+                'mascota_id'       => $registro->fields['mascota_id'],
+                'tipo'             => $registro->fields['tipo'],
+                'categoria'        => $registro->fields['tipo'], // alias for frontend
+                'titulo'           => $registro->fields['titulo'],
+                'fecha_programada' => $registro->fields['fecha_programada'],
+                'fecha_realizada'  => $registro->fields['fecha_realizada'],
+                'estado'           => $registro->fields['estado'],
+                'observaciones'    => $registro->fields['observaciones'],
+                'anio'             => $anio,
+                'mes'              => $mes,
+                'icono'            => $registro->getIconoHtml()
+            ];
+        }
+
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'data'    => $datos
+        ]);
+        exit;
+    }
+
     public function guardarRegistro()
     {
         $datos = $this->request->post();

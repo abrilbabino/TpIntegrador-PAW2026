@@ -88,6 +88,11 @@
   box-sizing: border-box;
 }
 
+.filtros form .btn-limpiar {
+  display: flex;
+    justify-self: center;
+  }
+
 .edad-rango {
   display: flex;
   align-items: center;
