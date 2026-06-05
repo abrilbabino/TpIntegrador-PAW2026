@@ -70,7 +70,7 @@ class UserController extends Controller
         require $this->viewsDir . '/perfil.view.php';
     }
  
-   private function cargarPerfilRefugio(array $user): void
+   private function cargarPerfilRefugio(array $user, array $errores = [], array $oldData = []): void
    {
        $menu  = $this->menu;
        $redes = $this->redes;
@@ -105,6 +105,42 @@ class UserController extends Controller
        }
        $titulo = "Mi Refugio - PawMap";
        require $this->viewsDir . '/perfil-refugio.view.php';
+    }
+
+    public function guardarRefugio()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession) || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $user   = $userSession;
+        $userId = (int) $user['id'];
+        $errores = $this->model->actualizarPerfilRefugio(
+            $userId, 
+            $this->request->post(), 
+            $user
+        );
+
+        if (!empty($errores)) {
+            $this->cargarPerfilRefugio($user, $errores, $this->request->post());
+            return;
+        }
+
+        $updatedUser = $this->model->findById($userId);
+        if ($updatedUser) {
+            $userSession = array_merge($userSession, $updatedUser);
+            $this->request->setSession('user', $userSession);
+        }
+
+        header("Location: /perfil?update=success");
+        exit;
     }
 
 

@@ -295,7 +295,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form");
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form");
     if (forms.length === 0) {
       return;
     }

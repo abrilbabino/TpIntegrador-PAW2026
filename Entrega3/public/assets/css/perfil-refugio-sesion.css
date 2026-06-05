@@ -511,3 +511,36 @@
         background: var(--color-naranja);
     }
 }
+
+/* ===== INLINE EDITING TOGGLES FOR SHELTER PERFILE ===== */
+.perfil-refugio-container:not(.is-editing) .input-value,
+.perfil-refugio-container:not(.is-editing) .perfil-datos-acciones {
+    display: none;
+}
+
+.perfil-refugio-container.is-editing .static-value,
+.perfil-refugio-container.is-editing .btn-editar {
+    display: none;
+}
+
+.perfil-refugio-container.is-editing .input-value {
+    display: block;
+}
+
+.perfil-refugio-container.is-editing li.dato-refugio-item.input-value {
+    display: flex;
+}
+
+.perfil-refugio-container.is-editing .perfil-datos-acciones {
+    display: flex;
+}
+
+#perfil-refugio-form {
+    flex: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+#perfil-refugio-form .perfil-refugio-datos-grid {
+    flex: 1;
+}

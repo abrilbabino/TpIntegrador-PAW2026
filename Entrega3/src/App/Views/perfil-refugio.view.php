@@ -12,7 +12,7 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <main class="perfil-refugio-container">
+    <main class="perfil-refugio-container <?= !empty($errores) ? 'is-editing' : '' ?>">
         <section class="perfil-refugio-header">
             <figure class="perfil-refugio-avatar">
                 <?php if (!empty($user['foto'])): ?>
@@ -33,41 +33,71 @@
         <section class="perfil-refugio-datos">
             <header class="perfil-refugio-datos-header">
                 <h2>Datos del Refugio</h2>
-                <a href="/perfil/editar" class="btn-editar" title="Editar datos">
+                <button type="button" id="btn-edit-refugio" class="btn-editar" title="Editar datos">
                     <span class="material-symbols-outlined">edit_square</span>
-                </a>
+                </button>
             </header>
             <article class="perfil-refugio-datos-body">
-            <ul class="perfil-refugio-datos-grid">
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">Nombre de la institución:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['nombre_institucion'] ?? '—') ?></span>
-                </li>
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">Descripción:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['descripcion'] ?? '-') ?></span>
-                </li>
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">Teléfono:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['telefono'] ?? '—') ?></span>
-                </li>
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">Mail:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
-                </li>
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">Alias:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['alias'] ?? '—') ?></span>
-                </li>
-                <li class="dato-refugio-item">
-                    <span class="dato-refugio-label">CVU:</span>
-                    <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['cvu'] ?? '—') ?></span>
-                </li>
-            </ul>
-            <figure class="perfil-refugio-mapa">
-                Mapa - no se como ponerlo todavia :/
-            </figure>
-            </article>  
+                <form id="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+                    <ul class="perfil-refugio-datos-grid">
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">Nombre de la institución:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['nombre_institucion'] ?? '—') ?></span>
+                            <input type="text" name="nombre_institucion" value="<?= htmlspecialchars($oldData['nombre_institucion'] ?? $refugio['nombre_institucion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['nombre_institucion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_institucion']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="100" required>
+                            <?php if (isset($errores['nombre_institucion'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre_institucion'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">Descripción:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['descripcion'] ?? '-') ?></span>
+                            <input type="text" name="descripcion" value="<?= htmlspecialchars($oldData['descripcion'] ?? $refugio['descripcion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['descripcion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['descripcion']) ? 'input-invalido' : '' ?>" maxlength="500">
+                            <?php if (isset($errores['descripcion'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['descripcion'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">Teléfono:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['telefono'] ?? '—') ?></span>
+                            <input type="tel" name="telefono" value="<?= htmlspecialchars($oldData['telefono'] ?? $refugio['telefono'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['telefono'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['telefono']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
+                            <?php if (isset($errores['telefono'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['telefono'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">Mail:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
+                            <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required>
+                            <?php if (isset($errores['email'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">Alias:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['alias'] ?? '—') ?></span>
+                            <input type="text" name="alias" value="<?= htmlspecialchars($oldData['alias'] ?? $refugio['alias'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['alias'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['alias']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="40">
+                            <?php if (isset($errores['alias'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['alias'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                        <li class="dato-refugio-item">
+                            <span class="dato-refugio-label">CVU:</span>
+                            <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['cvu'] ?? '—') ?></span>
+                            <input type="text" name="cvu" value="<?= htmlspecialchars($oldData['cvu'] ?? $refugio['cvu'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['cvu'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['cvu']) ? 'input-invalido' : '' ?>" minlength="22" maxlength="22" pattern="^[0-9]{22}$">
+                            <?php if (isset($errores['cvu'])): ?>
+                                <span class="msg-error input-value"><?= htmlspecialchars($errores['cvu'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php endif; ?>
+                        </li>
+                    </ul>
+                    <footer class="perfil-datos-acciones input-value">
+                        <button type="submit" class="btn-guardar-perfil">Guardar</button>
+                        <button type="button" id="btn-cancel-refugio" class="btn-cancelar-perfil">Cancelar</button>
+                    </footer>
+                </form>
+                <figure class="perfil-refugio-mapa">
+                    Mapa - no se como ponerlo todavia :/
+                </figure>
+            </article>
         </section>
 
         <!-- Navegación ancla (sticky) -->
