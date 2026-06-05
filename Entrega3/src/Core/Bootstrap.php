@@ -86,12 +86,17 @@ $router->post('/register', 'AuthController@register');
 // Perfil de usuario
 $router->get('/perfil', 'UserController@perfil');
 $router->post('/perfil/guardar', 'UserController@guardar');
+$router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
+$router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
 
 // Favoritos
 $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
+
+// Solicitudes API
+$router->post('/api/solicitud/actualizar', 'SolicitudController@actualizar');
 
 // Errores
 $router->get('not_found', 'ErrorController@notFound');

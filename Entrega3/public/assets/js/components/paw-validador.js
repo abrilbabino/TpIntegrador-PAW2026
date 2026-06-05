@@ -34,6 +34,11 @@ class PAWValidador {
           this.validarCampo(input);
         }
       });
+      input.addEventListener("change", () => {
+        if (input.type === "radio" || input.type === "file" || input.classList.contains("input-invalido")) {
+          this.validarCampo(input);
+        }
+      });
     });
 
     this.formulario.addEventListener("submit", (event) =>
@@ -48,7 +53,7 @@ class PAWValidador {
     let formularioValido = true;
     let primerInvalido = null;
 
-    this.inputs.forEach((input) => {
+    this.obtenerCamposAValidar().forEach((input) => {
       const campoValido = this.validarCampo(input);
       if (!campoValido) {
         formularioValido = false;
@@ -68,6 +73,8 @@ class PAWValidador {
 
   // validarCampo: Evalúa el estado mediante input.checkValidity() de la API de validación.
   validarCampo(input) {
+    input.setCustomValidity(this.obtenerErrorPersonalizado(input));
+
     if (input.checkValidity()) {
       this.limpiarError(input);
       return true;
@@ -87,8 +94,9 @@ class PAWValidador {
       class: "msg-error",
     });
 
-    if (input.parentElement && input.parentElement.classList.contains("campo-contraseña")) {
-      input.parentElement.insertAdjacentElement("afterend", mensajeElemento);
+    const contenedorMensaje = this.obtenerContenedorMensaje(input);
+    if (contenedorMensaje) {
+      contenedorMensaje.insertAdjacentElement("afterend", mensajeElemento);
     } else {
       input.insertAdjacentElement("afterend", mensajeElemento);
     }
@@ -98,10 +106,7 @@ class PAWValidador {
   limpiarError(input) {
     input.classList.remove("input-invalido");
 
-    let contenedorCentral = input;
-    if (input.parentElement && input.parentElement.classList.contains("campo-contraseña")) {
-      contenedorCentral = input.parentElement;
-    }
+    const contenedorCentral = this.obtenerContenedorMensaje(input) || input;
 
     const siguiente = contenedorCentral.nextElementSibling;
     if (siguiente && siguiente.classList.contains("msg-error")) {
@@ -109,12 +114,97 @@ class PAWValidador {
     }
   }
 
+  obtenerCamposAValidar() {
+    const gruposRadio = new Set();
+
+    return this.inputs.filter((input) => {
+      if (input.type !== "radio") {
+        return true;
+      }
+
+      if (gruposRadio.has(input.name)) {
+        return false;
+      }
+
+      gruposRadio.add(input.name);
+      return true;
+    });
+  }
+
+  obtenerContenedorMensaje(input) {
+    if (input.type === "radio") {
+      return input.closest("fieldset") || input;
+    }
+
+    if (input.parentElement && input.parentElement.classList.contains("campo-contraseña")) {
+      return input.parentElement;
+    }
+
+    return input;
+  }
+
+  obtenerErrorPersonalizado(input) {
+    if (input.dataset.trimRequired === "true" && input.value.trim() === "") {
+      return input.dataset.requiredMessage || "Este campo es obligatorio.";
+    }
+
+    if (input.type === "date" && input.dataset.noFuture === "true" && input.value) {
+      const fechaIngresada = new Date(`${input.value}T00:00:00`);
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      if (fechaIngresada > hoy) {
+        return input.dataset.futureMessage || "La fecha no puede ser futura.";
+      }
+    }
+
+    if (input.type === "file" && input.files && input.files.length > 0) {
+      const archivo = input.files[0];
+      const maximoBytes = Number(input.dataset.maxFileSize || 0);
+
+      if (maximoBytes > 0 && archivo.size > maximoBytes) {
+        return input.dataset.maxFileMessage || "El archivo supera el tamaño máximo permitido.";
+      }
+
+      if (input.accept && !this.archivoCumpleAccept(archivo, input.accept)) {
+        return input.dataset.fileTypesMessage || "El tipo de archivo no es válido.";
+      }
+    }
+
+    return "";
+  }
+
+  archivoCumpleAccept(archivo, accept) {
+    const reglas = accept.split(",").map((regla) => regla.trim().toLowerCase()).filter(Boolean);
+    const nombre = archivo.name.toLowerCase();
+    const tipo = archivo.type.toLowerCase();
+
+    return reglas.some((regla) => {
+      if (regla.startsWith(".")) {
+        return nombre.endsWith(regla);
+      }
+
+      if (regla.endsWith("/*")) {
+        return tipo.startsWith(regla.slice(0, -1));
+      }
+
+      return tipo === regla;
+    });
+  }
+
   // Accede al objeto ValidityState (input.validity).
   // Mapea las flags booleanas nativas (valueMissing, typeMismatch, tooShort) generadas automáticamente por los atributos hacia mensajes legibles en español.
   obtenerMensajeError(input) {
     const validity = input.validity;
 
+    if (validity.customError) {
+      return input.validationMessage;
+    }
+
     if (validity.valueMissing) {
+      if (input.type === "radio") {
+        return "Debe seleccionar una opción.";
+      }
       return "Este campo es obligatorio.";
     }
 

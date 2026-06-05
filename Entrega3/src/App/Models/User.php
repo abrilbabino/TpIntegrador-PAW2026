@@ -309,4 +309,82 @@ class User extends Model
 
         return $errores;
     }
+
+    public function actualizarPerfilRefugio(int $userId, array $postData, array $sessionUser): array
+    {
+        $errores = [];
+
+        // Validar nombre_institucion
+        if (empty($postData['nombre_institucion'])) {
+            $errores['nombre_institucion'] = "El nombre de la institución es obligatorio.";
+        } elseif (strlen($postData['nombre_institucion']) < 2 || strlen($postData['nombre_institucion']) > 100) {
+            $errores['nombre_institucion'] = "El nombre de la institución debe tener entre 2 y 100 caracteres.";
+        }
+
+        // Validar email
+        $email = trim($postData['email'] ?? '');
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errores['email'] = "Debe ingresar un email válido.";
+        } elseif ($email !== $sessionUser['email']) {
+            $existenteEmail = $this->findByEmail($email);
+            if ($existenteEmail && (int)$existenteEmail['id'] !== $userId) {
+                $errores['email'] = "El email ingresado ya se encuentra registrado.";
+            }
+        }
+
+        // Validar telefono
+        if (!empty($postData['telefono'])) {
+            $telefonoLimpio = preg_replace('/[^0-9]/', '', $postData['telefono']);
+            if (strlen($telefonoLimpio) < 8 || strlen($telefonoLimpio) > 15) {
+                $errores['telefono'] = "El teléfono debe tener entre 8 y 15 números.";
+            } elseif (!preg_match('/^\+?[0-9\s\-]{6,20}$/', $postData['telefono'])) {
+                $errores['telefono'] = "El teléfono contiene caracteres no válidos.";
+            }
+        }
+
+        // Validar cvu (exactamente 22 números si se ingresa)
+        if (!empty($postData['cvu'])) {
+            $cvuLimpio = preg_replace('/[^0-9]/', '', $postData['cvu']);
+            if (strlen($cvuLimpio) !== 22) {
+                $errores['cvu'] = "El CVU debe tener exactamente 22 dígitos numéricos.";
+            }
+        }
+
+        // Validar alias (opcional, de 4 a 40 caracteres)
+        if (!empty($postData['alias'])) {
+            if (strlen($postData['alias']) < 4 || strlen($postData['alias']) > 40) {
+                $errores['alias'] = "El alias debe tener entre 4 y 40 caracteres.";
+            }
+        }
+
+        if (count($errores) > 0) {
+            return $errores;
+        }
+
+        // Actualizar usuario (email)
+        $fieldsUsuario = [
+            'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
+        ];
+        $this->updateUsuario($userId, $fieldsUsuario);
+
+        // Actualizar refugio
+        $fieldsRefugio = [
+            'nombre_institucion' => htmlspecialchars(trim($postData['nombre_institucion'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'descripcion' => htmlspecialchars(trim($postData['descripcion'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'telefono' => htmlspecialchars(trim($postData['telefono'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'alias' => htmlspecialchars(trim($postData['alias'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'cvu' => htmlspecialchars(trim($postData['cvu'] ?? ''), ENT_QUOTES, 'UTF-8'),
+        ];
+
+        // Verificar si existe el refugio en la DB
+        $refugioExistente = $this->getRefugio($userId);
+        if ($refugioExistente) {
+            $this->queryBuilder->update('refugio', $fieldsRefugio, ['usuario_id' => $userId]);
+        } else {
+            $fieldsRefugio['usuario_id'] = $userId;
+            $this->crearRefugio($fieldsRefugio);
+        }
+
+        return $errores;
+    }
 }
