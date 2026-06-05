@@ -37,6 +37,7 @@
                     <span class="material-symbols-outlined">edit_square</span>
                 </a>
             </header>
+            <article class="perfil-refugio-datos-body">
             <ul class="perfil-refugio-datos-grid">
                 <li class="dato-refugio-item">
                     <span class="dato-refugio-label">Nombre de la institución:</span>
@@ -63,6 +64,10 @@
                     <span class="dato-refugio-valor"><?= htmlspecialchars($refugio['cvu'] ?? '—') ?></span>
                 </li>
             </ul>
+            <figure class="perfil-refugio-mapa">
+                Mapa - no se como ponerlo todavia :/
+            </figure>
+            </article>  
         </section>
 
         <!-- Navegación ancla (sticky) -->
@@ -143,6 +148,7 @@
         </section>
 
         <section class="perfil-refugio-publicar" id="sec-publicar">
+            <details class="perfil-dropdown" open>
             <summary> <h3>Publicar Mascota</h3> </summary>
             <p>Agrega los datos de la nueva mascota:</p>
         
@@ -206,13 +212,15 @@
                 </label>
                 <button type="submit">Publicar</button>
             </form>
+            </details>
         </section>
 
         <section class="perfil-editar-mascota" id="sec-editar-mascota">
-            <h2>
+            <details class="perfil-dropdown" open>
+            <summary><h2>
                 <span class="material-symbols-outlined">pets</span>
                 Actualizar/Eliminar Mascota
-            </h2>
+            </h2></summary>
             <?php if (empty($mascotas)): ?>
                 <article class="perfil-vacio">
                     <span class="material-symbols-outlined">pets</span>
@@ -240,6 +248,7 @@
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
+            </details>
         </section>
     </main>
 
