@@ -621,10 +621,10 @@ class QueryBuilder
 
         return $refugios;
     }
-
+        /*solo mascotas disponibles*/
     public function selectByRefugioId(string $table, int $refugioId): array
     {
-        $sql = "SELECT * FROM {$table} WHERE refugio_id = :refugio_id";
+        $sql = "SELECT * FROM {$table} WHERE refugio_id = :refugio_id AND estado_adopcion = 'DISPONIBLE'" ;
         $sentencia = $this->pdo->prepare($sql);
         $sentencia->bindValue(':refugio_id', $refugioId, PDO::PARAM_INT);
         $sentencia->execute();
@@ -640,7 +640,7 @@ class QueryBuilder
         FROM solicitud_de_adopcion s
         JOIN mascota m ON s.mascota_id = m.id
         JOIN adoptante a ON s.adoptante_id = a.usuario_id
-        WHERE m.refugio_id = :refugio_id
+        WHERE m.refugio_id = :refugio_id 
         ORDER BY s.fecha DESC";
         
         $sentencia = $this->pdo->prepare($sql);
