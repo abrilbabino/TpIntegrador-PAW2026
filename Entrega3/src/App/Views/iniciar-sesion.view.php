@@ -27,34 +27,18 @@
 
             </header>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    Usuario o contraseña incorrectos.
-                </div>
-            <?php endif; ?>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'campos'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    Completá todos los campos.
-                </div>
-            <?php endif; ?>
-
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'usuario_existente'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    El nombre de usuario ya está en uso.
-                </div>
-            <?php endif; ?>
 
             <form class="login-form" method="POST" action="/login">
+                <?php $error = $_GET['error'] ?? ''; ?>
                 <label for="nombre_usuario">Usuario</label>
                 <input
                     type="text"
                     id="nombre_usuario"
                     name="nombre_usuario"
                     placeholder="Ingresá tu usuario"
+                    <?= $error === 'campos' ? 'data-server-error="Por favor completá todos los campos obligatorios."' : '' ?>
+                    <?= $error === '1' ? 'class="input-invalido"' : '' ?>
                     required
                 />
 
@@ -65,6 +49,7 @@
                         id="contrasena"
                         name="contrasena"
                         placeholder="Ingresá tu contraseña"
+                        <?= $error === '1' ? 'data-server-error="Usuario o contraseña incorrectos."' : '' ?>
                         required
                     />
                     <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
@@ -106,6 +91,7 @@
                 id="user-register"
                 name="username"
                 placeholder="Ingresá un usuario"
+                <?= $error === 'usuario_existente' ? 'data-server-error="El nombre de usuario ya está en uso."' : '' ?>
                 required
             />
 

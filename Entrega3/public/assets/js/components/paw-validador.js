@@ -14,6 +14,13 @@ class PAWValidador {
 
     this.formulario.setAttribute("novalidate", "true");
     this.registrarEventos();
+
+    // Procesar posibles errores del servidor definidos mediante data-server-error
+    this.inputs.forEach((input) => {
+      if (input.dataset.serverError) {
+        this.mostrarError(input, input.dataset.serverError);
+      }
+    });
   }
 
   // Asigna listeners.

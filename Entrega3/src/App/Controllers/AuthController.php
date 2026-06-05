@@ -38,10 +38,9 @@ class AuthController extends Controller
         $email    = filter_var($email, FILTER_SANITIZE_EMAIL);
         $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
 
-        // Verificar que el usuario no exista
         $existente = $this->model->findByUsername($username);
         if ($existente) {
-            header('Location: /iniciar-sesion?error=usuario_existente');
+            header('Location: /iniciar-sesion?error=usuario_existente&registro=true');
             exit;
         }
 
