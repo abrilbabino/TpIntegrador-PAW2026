@@ -124,6 +124,7 @@
 .dato-refugio-descripcion-container .descripcion-texto {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0;
@@ -133,6 +134,7 @@
 
 .dato-refugio-descripcion-container .descripcion-texto.expanded {
     -webkit-line-clamp: unset;
+    line-clamp: unset;
     display: block;
 }
 
@@ -281,7 +283,7 @@
     font-size: 0.9rem;
     background-color: var(--color-rojo);
     color: var(--color-fondo);
-    width: 70px;
+    width: fit-content;
     text-align: center;
     margin-top: 1rem;
 }
@@ -297,7 +299,7 @@
     font-size: 0.9rem;
     background-color: var(--color-azul-oscuro);
     color: var(--color-fondo);
-    width: 70px;
+    width: fit-content;
     text-align: center;
     margin-top: 1rem;
 }
@@ -554,11 +556,13 @@
     color: var(--color-texto);
 }
 
-.tarjeta-refugio-mascota .btn-editar .material-symbols-outlined {
+.tarjeta-refugio-mascota .btn-editar .material-symbols-outlined,
+.perfil-refugio-datos .btn-editar .material-symbols-outlined {
     color: var(--color-gris);
 }
 
-.tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined{
+.tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
+.perfil-refugio-datos .btn-editar:hover .material-symbols-outlined {
     color: var(--color-azul-oscuro)
 }
 
@@ -657,7 +661,7 @@
     /*boton de solicitud de adopcion*/
     .btn-rechazar:hover,
     .btn-aceptar:hover {
-        background-color: var(--color-naranja-claro);
+        transform: scale(0.98);
     }
 
 

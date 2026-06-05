@@ -36,7 +36,8 @@ class Favorito extends Model
         $sql = "SELECT f.id AS favorito_id, m.*
                 FROM {$this->table} f
                 INNER JOIN mascota m ON m.id = f.mascota_id
-                WHERE f.adoptante_id = :adoptante_id
+                WHERE f.adoptante_id = :adoptante_id 
+                  AND m.estado_adopcion = 'DISPONIBLE'
                 ORDER BY f.id DESC";
 
         $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
