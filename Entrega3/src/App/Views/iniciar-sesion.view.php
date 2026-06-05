@@ -49,7 +49,7 @@
             <?php endif; ?>
 
             <form class="login-form" method="POST" action="/login">
-                <label for="user-login">Usuario</label>
+                <label for="nombre_usuario">Usuario</label>
                 <input
                     type="text"
                     id="nombre_usuario"
@@ -58,7 +58,7 @@
                     required
                 />
 
-                <label for="pass-login">Contraseña</label>
+                <label for="contrasena">Contraseña</label>
                 <div class="campo-contraseña">
                     <input
                         type="password"
@@ -79,7 +79,7 @@
         </section>
     </main>
 
-    <input type="checkbox" id="mostrar-registro" class="registro-check" />
+    <input type="checkbox" id="mostrar-registro" class="registro-check" <?= isset($_GET['registro']) ? 'checked' : '' ?> />
     <label for="mostrar-registro" class="fondo-registro"></label>
     <aside class="registro-panel">
         <header class="registro-header">
@@ -123,8 +123,8 @@
 
             <label for="rol">Tipo de cuenta</label>
             <select id="rol" name="rol" required class="registro-input">
-                <option value="adoptante" selected>Quiero adoptar una mascota</option>
-                <option value="refugio">Soy un refugio / protectora</option>
+                <option value="adoptante" <?= (!isset($_GET['registro']) || $_GET['registro'] !== 'refugio') ? 'selected' : '' ?>>Quiero adoptar una mascota</option>
+                <option value="refugio" <?= (isset($_GET['registro']) && $_GET['registro'] === 'refugio') ? 'selected' : '' ?>>Soy un refugio / protectora</option>
             </select>
 
             <button type="submit">Registrarme</button>

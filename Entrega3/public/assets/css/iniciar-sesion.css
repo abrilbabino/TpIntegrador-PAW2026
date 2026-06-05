@@ -144,16 +144,15 @@
   margin: 1.5rem 0 0 0;
 }
 
-.registro-link,
-.login-link {
+.registro-link{
   color: var(--color-azul);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
+  cursor: pointer;
 }
 
-.registro-link:hover,
-.login-link:hover {
+.registro-link:hover {
   color: var(--color-azul-oscuro);
   text-decoration: underline;
 }
@@ -232,7 +231,12 @@
   font-size: 1.5rem;
   cursor: pointer;
   color: #7f8c8d;
-  padding: 0.5rem;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   transition:
     background-color 0.3s ease,
