@@ -65,6 +65,16 @@
                     <p class="form-subtitulo">Completá para adoptar</p>
                 </header>
 
+                <?php if (isset($errores['solicitud_duplicada'])): ?>
+                    <aside class="alerta-error" role="alert">
+                        <span class="material-symbols-outlined">error</span>
+                        <section>
+                            <strong>Solicitud duplicada</strong>
+                            <p><?= htmlspecialchars($errores['solicitud_duplicada']) ?></p>
+                        </section>
+                    </aside>
+                <?php endif; ?>
+
                 <form method="POST" action="/formulario-adopcion/enviar" class="form-adopcion">
                     <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
 
@@ -116,7 +126,7 @@
                         <?php endif; ?>
                     </fieldset>
 
-                    <button type="submit" class="btn-submit-adoptar">¡QUIERO ADOPTAR!</button>
+                    <button type="submit" class="btn-submit-adoptar" <?= isset($errores['solicitud_duplicada']) ? 'disabled' : '' ?>>¡QUIERO ADOPTAR!</button>
                 </form>
             </aside>
         </article>

@@ -38,6 +38,11 @@ class AdopcionController extends Controller
         $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
         $userData = $userModel->findById((int)$userSession['id']);
 
+        // Verificar proactivamente si ya existe una solicitud para esta mascota
+        if (!empty($id) && $this->model->existeSolicitud((int)$userSession['id'], (int)$id)) {
+            $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota. No es posible enviar más de una solicitud por mascota.';
+        }
+
         require $this->viewsDir . '/formulario-adopcion.view.php';
     }
 

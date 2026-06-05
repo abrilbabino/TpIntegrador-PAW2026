@@ -54,7 +54,25 @@ class SolicitudAdopcion extends Model
             $errores['acepta_contrato'] = 'Debe aceptar los términos del contrato de adopción y seguimiento sanitario.';
         }
 
+        // Verificar solicitud duplicada contra la base de datos
+        if (!empty($this->fields['adoptante_id']) && !empty($this->fields['mascota_id'])) {
+            if ($this->existeSolicitud((int)$this->fields['adoptante_id'], (int)$this->fields['mascota_id'])) {
+                $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota. No es posible enviar más de una solicitud por mascota.';
+            }
+        }
+
         return $errores;
+    }
+
+    /**
+     * Verifica si ya existe una solicitud de adopción del adoptante para la mascota indicada.
+     */
+    public function existeSolicitud(int $adoptanteId, int $mascotaId): bool
+    {
+        return $this->queryBuilder->exists($this->table, [
+            'adoptante_id' => $adoptanteId,
+            'mascota_id'   => $mascotaId,
+        ]);
     }
 
     public function guardar(int $refugio_id)
