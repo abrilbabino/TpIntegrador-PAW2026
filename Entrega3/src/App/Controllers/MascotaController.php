@@ -71,6 +71,12 @@ class MascotaController extends Controller
         return $model;
     }
 
+    private function loadFotosMascota(int $mascotaId, ?string $imagen): array
+    {
+        $mediaCol = new MediaMascotaCollection();
+        $mediaCol->setQueryBuilder($this->model->getQueryBuilder());
+        return $mediaCol->getMultimedia($mascotaId, $imagen);
+    }
 
     public function detalle()
     {
@@ -136,11 +142,22 @@ class MascotaController extends Controller
             exit;
         }
 
+        $mascotaFields = $mascota->fields;
+        $nombreActual  = $mascotaFields['nombre'] ?? '';
+        $especieActual = $mascotaFields['especie'] ?? '';
+        $tamanioActual = $mascotaFields['tamano'] ?? '';
+        $temperamentoActual = $mascotaFields['temperamento'] ?? '';
+        $sexoActual    = $mascotaFields['sexo'] ?? '';
+        $esterilizadoActual = ($mascotaFields['castrado'] == 1) ? 'si' : 'no';
+        $descripcionActual  = $mascotaFields['descripcion'] ?? '';
+        $fechaNacimientoActual = $mascotaFields['fecha_nacimiento'] ?? '';
         $mascotaCollection = new MascotaCollection();
         $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
         $tamanos       = $mascotaCollection->getTamanos();
         $especies      = $mascotaCollection->getEspecies();
         $temperamentos = $mascotaCollection->getTemperamentos();
+
+        $fotos = $this->loadFotosMascota((int)$mascotaFields['id'], $mascotaFields['imagen'] ?? null);
 
         $menu  = $this->menu;
         $redes = $this->redes;
@@ -291,6 +308,7 @@ class MascotaController extends Controller
             $menu  = $this->menu;
             $redes = $this->redes;
             $oldData = $post;
+            $fotos = $this->loadFotosMascota((int)$mascota->fields['id'], $mascota->fields['imagen'] ?? null);
             require $this->viewsDir . '/editar-mascota.view.php';
             return;
         }
@@ -311,6 +329,7 @@ class MascotaController extends Controller
                 $menu  = $this->menu;
                 $redes = $this->redes;
                 $oldData = $post;
+                $fotos = $this->loadFotosMascota((int)$mascota->fields['id'], $mascota->fields['imagen'] ?? null);
                 require $this->viewsDir . '/editar-mascota.view.php';
                 return;
             }
@@ -332,6 +351,119 @@ class MascotaController extends Controller
         header('Location: /mascota/editar?id=' . $id . '&update=success');
         exit;
     }
+
+    public function subirArchivoMascota() {
+        $userSession = $this->request->session('user');
+
+        // 1. Validar sesión y permisos
+        if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $mascotaId = filter_input(INPUT_POST, 'mascota_id', FILTER_VALIDATE_INT);
+        if ($mascotaId === false || $mascotaId === null) {
+            $postData = $this->request->post();
+            $mascotaId = (int) ($postData['mascota_id'] ?? 0);
+        }
+
+        if ($mascotaId <= 0) {
+            error_log("ERROR: Intento de subir foto con ID inválido. POST data: " . json_encode($_POST));
+            header('Location: /perfil?error=id_invalido');
+            exit;
+        }
+
+        $archivo = $this->request->file('archivo_multimedia');
+        if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
+            header('Location: /mascota/editar?id=' . $mascotaId . '&error=archivo_invalido');
+            exit;
+        }
+
+        // 2. Verificar propiedad de la mascota
+        try {
+            $mascota = $this->model->get($mascotaId);
+        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        if (!$mascota || (int)$mascota->fields['refugio_id'] !== (int)$userSession['id']) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        // 3. Procesar el archivo
+        $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
+        $nombreFinal = 'media_' . $mascotaId . '_' . uniqid() . '.' . $extension;
+        $directorio = __DIR__ . '/../../../public/assets/img/uploads/';
+
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0777, true);
+        }
+
+        if (move_uploaded_file($archivo['tmp_name'], $directorio . $nombreFinal)) {
+            $db = $this->model->getQueryBuilder();
+            $db->insert('media_mascota', [
+                'mascota_id' => $mascotaId,
+                'tipo'       => 'foto',
+                'url'        => 'assets/img/uploads/' . $nombreFinal
+            ]);
+            header('Location: /mascota/editar?id=' . $mascotaId . '&upload=success');
+        } else {
+            header('Location: /mascota/editar?id=' . $mascotaId . '&error=upload_failed');
+        }
+        exit;
+    }
+
+public function eliminarFoto() {
+    $userSession = $this->request->session('user');
+    if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
+        header('Location: /iniciar-sesion');
+        exit;
+    }
+
+    $postData = $this->request->post();
+    $mediaId = (int) ($postData['id'] ?? 0);
+    $mascotaId = (int) ($postData['mascota_id'] ?? 0);
+
+    if ($mediaId <= 0 || $mascotaId <= 0) {
+        header('Location: /perfil');
+        exit;
+    }
+
+    try {
+        $mascota = $this->model->get($mascotaId);
+    } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        header('Location: /perfil');
+        exit;
+    }
+
+    if (!$mascota || (int)$mascota->fields['refugio_id'] !== (int)$userSession['id']) {
+        header('Location: /perfil');
+        exit;
+    }
+
+    $db = $this->model->getQueryBuilder();
+    $rows = $db->select('media_mascota', ['id' => $mediaId, 'mascota_id' => $mascotaId]);
+    $foto = !empty($rows) ? current($rows) : null;
+
+    if (empty($foto)) {
+        header('Location: /mascota/editar?id=' . $mascotaId . '&error=foto_no_encontrada');
+        exit;
+    }
+
+    $url = trim((string) ($foto['url'] ?? ''));
+    if ($url !== '' && strpos($url, '..') === false) {
+        $path = __DIR__ . '/../../../public/' . ltrim($url, '/');
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+
+    $db->delete('media_mascota', ['id' => $mediaId]);
+    header('Location: /mascota/editar?id=' . $mascotaId . '&delete=success');
+    exit;
+}
 
     public function libreta()
     {

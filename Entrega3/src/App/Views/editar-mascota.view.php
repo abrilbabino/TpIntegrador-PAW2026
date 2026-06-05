@@ -8,6 +8,7 @@ $sexoActual = strtolower($oldData['sexo'] ?? $mascotaFields['sexo'] ?? '');
 $esterilizadoActual = $oldData['esterilizado'] ?? (((int)($mascotaFields['castrado'] ?? 0) === 1) ? 'si' : 'no');
 $descripcionActual = $oldData['descripcion_mascota'] ?? $oldData['descripcion'] ?? $mascotaFields['descripcion'] ?? '';
 $fechaNacimientoActual = $oldData['fecha_nacimiento'] ?? $mascotaFields['fecha_nacimiento'] ?? '';
+$fotos = $fotos ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -156,7 +157,7 @@ $fechaNacimientoActual = $oldData['fecha_nacimiento'] ?? $mascotaFields['fecha_n
                 </li>
 
                 <li class="dato-item">
-                    <span class="dato-label">Foto</span>
+                    <span class="dato-label">Foto Principal</span>
                     <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value <?= isset($errores['foto']) ? 'input-invalido' : '' ?>" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
                     <?php if (isset($errores['foto'])): ?>
                         <span class="msg-error"><?= htmlspecialchars($errores['foto'], ENT_QUOTES, 'UTF-8') ?></span>
@@ -169,8 +170,37 @@ $fechaNacimientoActual = $oldData['fecha_nacimiento'] ?? $mascotaFields['fecha_n
                 <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
             </footer>
         </form>
+        <section class="galeria-multimedia">
+            <form method="POST" action="/mascota/subir-archivo" enctype="multipart/form-data" class="perfil-datos">
+                <h3>Fotos Adicionales</h3>
+                <input id="mascota_id" type="hidden" name="mascota_id" value="<?= htmlspecialchars((int) ($mascotaFields['id'] ?? 0), ENT_QUOTES, 'UTF-8') ?>">
+                
+                <ul class="perfil-datos-grid">
+                    <li class="dato-item">
+                        <label for="archivo_multimedia" class="dato-label">Seleccionar nueva foto para el carrusel</label>
+                        <input type="file" name="archivo_multimedia" id="archivo_multimedia" accept="image/*" required>
+                        <button type="submit" class="btn-guardar-perfil">Subir foto</button>
+                    </li>
+                </ul>
+            </form> 
+            <ul class="galeria-grid">
+                <?php foreach ($fotos as $foto): ?>
+                    <li class="foto-item">
+                        <figure>
+                            <img src="/<?= htmlspecialchars($foto->url, ENT_QUOTES, 'UTF-8') ?>" alt="Foto extra de la mascota" style="max-width: 150px;">
+                            <figcaption>
+                                        <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
+                                    <input type="hidden" name="id" value="<?= htmlspecialchars($foto->id, ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="mascota_id" value="<?= htmlspecialchars($mascotaFields['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="btn-eliminar-foto">Eliminar</button>
+                                </form>
+                            </figcaption>
+                        </figure>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
     </main>
-
     <?php require __DIR__ . '/footer.view.php'; ?>
 </body>
 </html>

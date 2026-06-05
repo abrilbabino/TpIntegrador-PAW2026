@@ -650,4 +650,16 @@ class QueryBuilder
         return $sentencia->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function delete(string $table, array $conditions) {
+    $where = [];
+    $values = [];
+    foreach ($conditions as $column => $value) {
+        $where[] = "$column = ?";
+        $values[] = $value;
+    }
+    $sql = "DELETE FROM $table WHERE " . implode(' AND ', $where);
+    $statement = $this->pdo->prepare($sql);
+    return $statement->execute($values);
+}
+
 }
