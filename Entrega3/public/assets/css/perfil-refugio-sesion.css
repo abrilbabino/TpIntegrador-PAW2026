@@ -67,7 +67,7 @@
 .perfil-refugio-datos {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 6px rgb(0, 0, 0, 0.8);
     padding: 1.2rem 1.5rem;
 }
 
@@ -157,14 +157,14 @@
 .perfil-refugio-seccion {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 6px rgb(244, 107, 39);
     padding: 1.2rem 1.5rem;
 }
 
 .perfil-refugio-seccion h3 {
     font-size: 1.3rem;
     font-weight: 700;
-    margin: 0 0 1rem;
+    margin: 0;
 }
 
 /*vacio*/
@@ -256,16 +256,22 @@
 
 /* ===== SECCION: Ubicacion ===== */
 
+.perfil-refugio-ubicacion {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    padding: 1.2rem 1.5rem;
+}
 
 
 /* ===== SECCION: Publicar ===== */
 
 .perfil-refugio-publicar {
-    background-color: var(--color-fondo);
-    border: 1px solid var(--color-gris-claro);
+    background: var(--color-fondo);
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
+    box-shadow: 0 1px 6px rgb(244, 107, 39);
+    padding: 1.2rem 1.5rem;
+
     overflow: hidden;
 }
 
@@ -348,7 +354,7 @@
 .perfil-editar-mascota {
     background: var(--color-fondo);
     border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 6px rgb(244, 107, 39);
     padding: 1.2rem 1.5rem;
 }
 
@@ -412,7 +418,86 @@
     justify-content: center;
 }
 
+.perfil-refugio-mapa {
+    display: none;
+}
+
+/*MEDIA PARA DESKTOP*/
 @media (min-width: 994px) {
+
+    .perfil-refugio-container {
+        max-width: 1300px;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: auto auto 1fr;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Header ocupa la 1 columna */
+    .perfil-refugio-header {
+        grid-column: 1;
+        margin-top: 3rem;
+    }
+
+    /* Nav ocupa columna izquierda, fila 2 en adelante */
+    .perfil-refugio-nav {
+        max-width: 1100px;
+        grid-template-columns: 200px 1fr;
+        grid-column: 1;
+        grid-row: 2 / -1;
+        position: sticky;
+        top: 1rem;
+    }
+
+    /* Contenedor interno con datos + mapa lado a lado */
+    .perfil-refugio-datos-body {
+        display: flex;
+        gap: 1rem;
+        grid-column: 2;
+    }
+
+    .perfil-refugio-datos {
+        box-shadow: 0 1px 6px rgb(244, 107, 39);
+    }
+
+    /* La grilla de datos ocupa 2/3 */
+    .perfil-refugio-datos-grid {
+        flex: 1.6;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem 2rem;
+        align-content: start;
+    }
+
+    /* El mapa ocupa 1/3 */
+    .perfil-refugio-mapa {
+        flex: 1.4;
+        background-color: var(--color-gris-claro);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        color: #888;
+        font-size: 1rem;
+    }
+
+    .perfil-refugio-seccion {
+        grid-column: 2;
+    }
+
+    .perfil-refugio-ubicacion {
+        grid-column: 2;
+    }
+
+    .perfil-refugio-publicar {
+        grid-column: 2;
+    }
+
+    .perfil-editar-mascota {
+        grid-column: 2;
+    }
 
     /*boton de solicitud de adopcion*/
     .btn-rechazar:hover,
@@ -425,5 +510,4 @@
     .perfil-refugio-nav a.active {
         background: var(--color-naranja);
     }
-
 }
