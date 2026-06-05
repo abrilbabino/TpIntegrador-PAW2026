@@ -38,10 +38,9 @@ class AuthController extends Controller
         $email    = filter_var($email, FILTER_SANITIZE_EMAIL);
         $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
 
-        // Verificar que el usuario no exista
         $existente = $this->model->findByUsername($username);
         if ($existente) {
-            header('Location: /iniciar-sesion?error=usuario_existente');
+            header('Location: /iniciar-sesion?error=usuario_existente&registro=true');
             exit;
         }
 
@@ -56,50 +55,54 @@ class AuthController extends Controller
             'contrasena'     => $passwordHash,
             'contacto'       => null,
         ]);
+        $this->log->info("Usuario creado", ['userId' => $userId]); /// temporal
 
         // Crear refugio o adoptante según el rol
-        /* Comentado temporalmente: aún no se permite el registro de refugios
         if ($rol === 'refugio') {
             $this->model->crearRefugio([
                 'usuario_id'         => $userId,
                 'nombre_institucion' => $name,
-                'cuit'               => '',
+                'cuit'               => null,
             ]);
+            $this->log->info("Refugio creado", ['refugio_id' => $userId]); /// temporal
 
             $refugio = $this->model->getRefugio((int) $userId);
 
-            $_SESSION['user'] = [
+            $sessionUserRefugio = [
                 'id'             => $userId,
                 'nombre_usuario' => $username,
                 'email'          => $email,
                 'rol'            => 'refugio',
                 'refugio_id'     => $refugio ? $refugio['usuario_id'] : null,
             ];
+            
+            $this->request->setSession('user', $sessionUserRefugio);
 
         } else {
-        */
             $this->model->crearAdoptante([
                 'usuario_id' => $userId,
                 'nombre'     => $name,
                 'apellido'   => '',
             ]);
+            $this->log->info("Adoptante creado", ['adoptante_id' => $userId]); /// temporal
 
             $adoptante = $this->model->getAdoptante((int) $userId);
 
-            $_SESSION['user'] = [
+            $sessionUser = [
                 'id'             => $userId,
                 'nombre_usuario' => $username,
                 'email'          => $email,
                 'rol'            => 'adoptante',
                 'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
+                'foto_perfil'    => null,
+                'contacto'       => null,
             ];
-        /*
+            
+            $this->request->setSession('user', $sessionUser);
         }
-        */
-
         $this->log->info("Registro exitoso", ['username' => $username]);
 
-        header('Location: /perfil');
+        header('Location: /perfil?registro_exitoso=1');
         exit;
     }
 
@@ -142,10 +145,12 @@ class AuthController extends Controller
         }
 
         // Login exitoso: guardar datos en sesión
-        $_SESSION['user'] = [
+        $sessionUser = [
             'id'             => $usuario['id'],
             'nombre_usuario' => $usuario['nombre_usuario'],
             'email'          => $usuario['email'],
+            'foto_perfil'    => $usuario['foto_perfil'],
+            'contacto'       => $usuario['contacto'] ?? null,
         ];
 
         // Detectar rol según qué tabla tiene registro vinculado
@@ -153,16 +158,18 @@ class AuthController extends Controller
         $refugio   = $this->model->getRefugio((int) $usuario['id']);
 
         if ($refugio) {
-            $_SESSION['user']['rol']        = 'refugio';
-            $_SESSION['user']['refugio_id'] = $refugio['usuario_id'];
+            $sessionUser['rol']        = 'refugio';
+            $sessionUser['refugio_id'] = $refugio['usuario_id'];
         } elseif ($adoptante) {
-            $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = $adoptante['usuario_id'];
+            $sessionUser['rol']          = 'adoptante';
+            $sessionUser['adoptante_id'] = $adoptante['usuario_id'];
         } else {
             // Por defecto adoptante si no hay datos vinculados (p.ej. admin o incompleto)
-            $_SESSION['user']['rol']          = 'adoptante';
-            $_SESSION['user']['adoptante_id'] = null;
+            $sessionUser['rol']          = 'adoptante';
+            $sessionUser['adoptante_id'] = null;
         }
+
+        $this->request->setSession('user', $sessionUser);
 
         $this->log->info("Login exitoso", ['username' => $username, 'user_id' => $usuario['id']]);
 
@@ -179,8 +186,7 @@ class AuthController extends Controller
             session_start();
         }
 
-        $_SESSION = [];
-        session_destroy();
+        $this->request->destroySession();
 
         header('Location: /iniciar-sesion');
         exit;

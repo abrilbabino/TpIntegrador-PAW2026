@@ -16,8 +16,10 @@ class Refugio extends Model
         'alias' => null,
         'imagen' => 'default-refugio.jpg',
         'telefono' => '',
+        'email' => null,
         'ciudad' => null,
         'provincia' => null,
+        'descripcion' => null,
         'adoptables_disponibles' => 0,
     ];
 
@@ -37,7 +39,10 @@ class Refugio extends Model
             throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT * FROM refugio WHERE usuario_id = :id";
+        $sql = "SELECT r.*, u.ciudad, u.provincia 
+                FROM refugio r 
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
+                WHERE r.usuario_id = :id";
         
         $stmt = $this->queryBuilder->getConnection()->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
@@ -49,5 +54,35 @@ class Refugio extends Model
         } else {
             throw new \Exception("No se encontró un refugio con el ID proporcionado");
         }
+    }
+
+    public function getId(): int
+    {
+        return (int) $this->fields['usuario_id'];
+    }
+
+    public function getNombre(): string
+    {
+        return $this->fields['nombre_institucion'];
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->fields['alias'];
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->fields['descripcion'] ?? 'Este refugio aún no tiene una descripción detallada, pero trabaja arduamente día a día para rescatar y cuidar a los animales que más lo necesitan.';
+    }
+
+    public function getCvu(): ?string
+    {
+        return $this->fields['cvu'];
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->fields['email'];
     }
 }

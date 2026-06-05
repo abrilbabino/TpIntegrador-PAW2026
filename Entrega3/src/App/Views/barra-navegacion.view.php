@@ -1,21 +1,19 @@
 <header class="Barra-navegacion">
-    <input type="checkbox" id="menu-hamburguesa" class="menu-hamburguesa-check" />
-
-    <label for="menu-hamburguesa" class="label-hamburguesa">
-        <span class="material-symbols-outlined">menu</span>
-    </label>
-
     <figure class="header-logo">
         <img src="/assets/img/logo.png" alt="" />
     </figure>
 
-    <form action="/buscar" method="GET" class="header-busqueda">
-        <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" />
+    <form action="/buscar" method="GET" class="header-busqueda" data-paw-busquedas>
+        <input type="search" id="busqueda" name="busqueda" placeholder="Buscar..." class="busqueda-input" value="<?= htmlspecialchars($_GET['busqueda'] ?? '') ?>" autocomplete="off" />
     </form>
     
     <?php if (isset($_SESSION['user'])): ?>
         <a href="/perfil" class="icono-usuario">
-            <span class="material-symbols-outlined">person</span>
+            <?php if (!empty($_SESSION['user']['foto_perfil'])): ?>
+                <img src="/assets/img/<?= htmlspecialchars($_SESSION['user']['foto_perfil']) ?>" alt="Perfil" class="nav-foto-perfil">
+            <?php else: ?>
+                <span class="material-symbols-outlined">person</span>
+            <?php endif; ?>
             <p>Perfil</p>
         </a>
     <?php else: ?>

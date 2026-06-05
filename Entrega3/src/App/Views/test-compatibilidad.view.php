@@ -2,15 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'PawMap: Encuentra a tu compañero ideal. Adopta perros y gatos en adopción de los mejores refugios.') ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png">
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/test-compatibilidad.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
     <title>Test de Compatibilidad - PawMap</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
@@ -39,10 +41,13 @@
                             <label class="tarjeta-opcion">
                                 <input type="radio" name="<?= htmlspecialchars($pregunta['name']) ?>" value="<?= htmlspecialchars($opcion['valor']) ?>">
                                 <span class="contenido-opcion">
-                                    <strong class="opcion-titulo"><?= htmlspecialchars($opcion['etiqueta']) ?></strong>
-                                    <?php if (!empty($opcion['subtitulo'])): ?>
-                                    <small class="opcion-subtitulo"><?= htmlspecialchars($opcion['subtitulo']) ?></small>
-                                    <?php endif; ?>
+                                    <span class="emoji-opcion"><?= htmlspecialchars($opcion['emoji'] ?? '👉') ?></span>
+                                    <span class="textos-opcion">
+                                        <strong class="opcion-titulo"><?= htmlspecialchars($opcion['etiqueta']) ?></strong>
+                                        <?php if (!empty($opcion['subtitulo'])): ?>
+                                        <small class="opcion-subtitulo"><?= htmlspecialchars($opcion['subtitulo']) ?></small>
+                                        <?php endif; ?>
+                                    </span>
                                 </span>
                             </label>
                         </li>

@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/iniciar-sesion.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <title>Iniciar Sesión</title>
+    <title>Iniciar Sesión - PawMap</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
@@ -26,44 +27,29 @@
 
             </header>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    Usuario o contraseña incorrectos.
-                </div>
-            <?php endif; ?>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'campos'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    Completá todos los campos.
-                </div>
-            <?php endif; ?>
-
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'usuario_existente'): ?>
-                <div class="login-error">
-                    <span class="material-symbols-outlined">error</span>
-                    El nombre de usuario ya está en uso.
-                </div>
-            <?php endif; ?>
 
             <form class="login-form" method="POST" action="/login">
-                <label for="user-login">Usuario</label>
+                <?php $error = $_GET['error'] ?? ''; ?>
+                <label for="nombre_usuario">Usuario</label>
                 <input
                     type="text"
                     id="nombre_usuario"
                     name="nombre_usuario"
                     placeholder="Ingresá tu usuario"
+                    <?= $error === 'campos' ? 'data-server-error="Por favor completá todos los campos obligatorios."' : '' ?>
+                    <?= $error === '1' ? 'class="input-invalido"' : '' ?>
                     required
                 />
 
-                <label for="pass-login">Contraseña</label>
+                <label for="contrasena">Contraseña</label>
                 <div class="campo-contraseña">
                     <input
                         type="password"
                         id="contrasena"
                         name="contrasena"
                         placeholder="Ingresá tu contraseña"
+                        <?= $error === '1' ? 'data-server-error="Usuario o contraseña incorrectos."' : '' ?>
                         required
                     />
                     <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
@@ -78,7 +64,7 @@
         </section>
     </main>
 
-    <input type="checkbox" id="mostrar-registro" class="registro-check" />
+    <input type="checkbox" id="mostrar-registro" class="registro-check" <?= isset($_GET['registro']) ? 'checked' : '' ?> />
     <label for="mostrar-registro" class="fondo-registro"></label>
     <aside class="registro-panel">
         <header class="registro-header">
@@ -105,6 +91,7 @@
                 id="user-register"
                 name="username"
                 placeholder="Ingresá un usuario"
+                <?= $error === 'usuario_existente' ? 'data-server-error="El nombre de usuario ya está en uso."' : '' ?>
                 required
             />
 
@@ -122,8 +109,8 @@
 
             <label for="rol">Tipo de cuenta</label>
             <select id="rol" name="rol" required class="registro-input">
-                <option value="adoptante" selected>Quiero adoptar una mascota</option>
-                <!-- <option value="refugio">Soy un refugio / protectora</option> -->
+                <option value="adoptante" <?= (!isset($_GET['registro']) || $_GET['registro'] !== 'refugio') ? 'selected' : '' ?>>Quiero adoptar una mascota</option>
+                <option value="refugio" <?= (isset($_GET['registro']) && $_GET['registro'] === 'refugio') ? 'selected' : '' ?>>Soy un refugio / protectora</option>
             </select>
 
             <button type="submit">Registrarme</button>

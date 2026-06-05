@@ -9,8 +9,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <link rel="stylesheet" href="/assets/css/adopcion-exitosa.css" />
-    <title>PawMap - Reserva Exitosa</title>
+    <title>Adopción Exitosa - PawMap</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
@@ -18,7 +19,7 @@
     <main>
         <section class="mensaje-exito">
             <span class="material-symbols-outlined icono-exito">check_circle</span>
-            <h1>¡Reserva confirmada!</h1>
+            <h1>¡Solicitud confirmada!</h1>
             <p>Hemos procesado tu solicitud correctamente.<br> El personal ha sido notificado por correo electrónico y se pondrá en contacto con usted a la brevedad.</p>
             
             <a href="/adoptar" class="btn-volver">VOLVER A ADOPTAR</a>

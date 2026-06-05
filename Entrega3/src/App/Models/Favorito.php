@@ -36,7 +36,8 @@ class Favorito extends Model
         $sql = "SELECT f.id AS favorito_id, m.*
                 FROM {$this->table} f
                 INNER JOIN mascota m ON m.id = f.mascota_id
-                WHERE f.adoptante_id = :adoptante_id
+                WHERE f.adoptante_id = :adoptante_id 
+                  AND m.estado_adopcion = 'DISPONIBLE'
                 ORDER BY f.id DESC";
 
         $sentencia = $this->queryBuilder->getConnection()->prepare($sql);
@@ -58,5 +59,14 @@ class Favorito extends Model
         $sentencia->execute();
 
         return $sentencia->rowCount() > 0;
+    }
+    public function getFavoritosIds(?array $sessionUser): array
+    {
+        if (empty($sessionUser) || !isset($sessionUser['rol']) || $sessionUser['rol'] !== 'adoptante' || empty($sessionUser['id'])) {
+            return [];
+        }
+
+        $favoritos = $this->getByAdoptanteId((int)$sessionUser['id']);
+        return array_column($favoritos, 'id');
     }
 }

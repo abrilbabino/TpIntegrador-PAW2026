@@ -2,7 +2,7 @@
 
 namespace Paw\App\Models;
 
-use Paw\Core\Pagination;
+
 use Paw\App\Models\Refugio;
 use Paw\Core\Model;
 
@@ -13,6 +13,15 @@ class RefugioCollection extends Model
     public function count(array $filtros = []): int
     {
         return $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, true);
+    }
+
+    public function getAll() {
+        $sql = "SELECT r.*, u.ciudad, u.provincia 
+                FROM {$this->table} r 
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
+                ORDER BY r.nombre_institucion ASC";
+        $rows = $this->queryBuilder->rawQuery($sql);
+        return $this->mapRefugios($rows);
     }
 
     public function getProvincias(): array { return $this->obtenerUbicacionUnica('provincia'); }
@@ -30,18 +39,7 @@ class RefugioCollection extends Model
         return $this->mapearCampoRefugio($resultados, $campo);
     }
 
-    public function getPaginated(array $filtros, int $pagina, int $porPagina = 6): array
-    {
-        $total = $this->count($filtros);
-        $paginacion = new Pagination($pagina, $porPagina, $total);
 
-        $resultados = $this->queryBuilder->obtenerRefugiosFiltrados($this->table, $filtros, false, $paginacion->perPage, $paginacion->offset);
-
-        return [
-            'items' => $this->mapRefugios($resultados),
-            'pagination' => $paginacion,
-        ];
-    }
 
     private function mapRefugios(array $rows): array
     {
@@ -52,6 +50,12 @@ class RefugioCollection extends Model
             $coleccion[] = $refugio;
         }
         return $coleccion;
+    }
+
+    public function buscar(string $termino): array
+    {
+        $resultados = $this->queryBuilder->buscarRefugiosPorTermino($this->table, $termino);
+        return $this->mapRefugios($resultados);
     }
 
     private function mapearCampoRefugio(array $rows, string $field): array
@@ -70,5 +74,10 @@ class RefugioCollection extends Model
         $refugio->setQueryBuilder($this->queryBuilder);
         $refugio->load($id);
         return $refugio;
+    }
+
+    public function getRefugiosConUbicacion(array $filtros = []): array
+    {
+        return $this->queryBuilder->obtenerRefugiosConUbicacion($this->table, $filtros);
     }
 }

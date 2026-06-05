@@ -1,0 +1,705 @@
+/* ===== PERFIL CONTAINER ===== */
+.perfil-refugio-container {
+    max-width: 700px;
+    margin: 5rem auto 2rem;
+    padding: 0 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ===== HEADER ===== */
+.perfil-refugio-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1.5rem 1rem 1rem;
+}
+
+.perfil-refugio-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--color-gris-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.perfil-refugio-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.perfil-refugio-avatar .material-symbols-outlined {
+    font-size: 2.5rem;
+    color: #888;
+}
+
+.perfil-refugio-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.perfil-refugio-email {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+.perfil-refugio-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--color-rojo);
+    text-decoration: none;
+    margin-top: 0.5rem;
+}
+
+/* ===== DATOS PERSONALES ===== */
+.perfil-refugio-datos {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    padding: 1.2rem 1.5rem;
+}
+
+.perfil-refugio-datos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.perfil-refugio-datos-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.perfil-refugio-datos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dato-refugio-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.dato-refugio-label {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--color-naranja);
+}
+
+.dato-refugio-valor {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-texto);
+    overflow-wrap: break-word;
+    word-break: break-all;
+    min-width: 0;
+}
+
+/* ===== DESCRIPCIÓN COLLAPSIBLE ===== */
+.dato-refugio-descripcion-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dato-refugio-descripcion-container .descripcion-texto {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+    line-height: 1.4;
+    word-break: normal;
+}
+
+.dato-refugio-descripcion-container .descripcion-texto.expanded {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    display: block;
+}
+
+.btn-ver-mas-desc {
+    background: none;
+    border: none;
+    color: var(--color-naranja);
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.4rem;
+    text-decoration: underline;
+}
+
+.btn-ver-mas-desc:hover {
+    color: var(--color-azul-oscuro);
+}
+
+/* ===== NAV ANCLA ===== */
+.perfil-refugio-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+}
+
+.perfil-refugio-nav a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-fondo);
+    text-decoration: none;
+    border-radius: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s, color 0.2s;
+    background: var(--color-azul-oscuro);
+}
+
+.perfil-refugio-nav a .material-symbols-outlined {
+    font-size: 1.3rem;
+}
+
+/* ===== SECCIONES ===== */
+
+#sec-solicitudes-adopcion,
+#sec-ubicacion,
+#sec-publicar,
+#sec-editar-mascota {
+    scroll-margin-top: 180px;
+}
+
+.perfil-refugio-seccion {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    padding: 1.2rem 1.5rem;
+}
+
+.perfil-refugio-seccion h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.perfil-refugio-seccion summary{
+    cursor: pointer;
+}
+
+.perfil-refugio-seccion h3{
+    cursor:default;
+}
+
+/*vacio*/
+.perfil-refugio-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    color: #aaa;
+    text-align: center;
+}
+
+.perfil-refugio-vacio .material-symbols-outlined {
+    font-size: 2.5rem;
+}
+
+.perfil-refugio-vacio p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ===== SECCION: Solicitudes de adopcion ===== */
+.perfil-lista-item-adopcion {
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+/* h4 y p ocupan columna izquierda */
+.perfil-lista-item-adopcion h4 {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.perfil-lista-item-adopcion .estado-solicitud {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.perfil-lista-item-adopcion p {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Botones en columna derecha */
+.btn-rechazar {
+    float: right;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: var(--color-rojo);
+    color: var(--color-fondo);
+    width: fit-content;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn-aceptar {
+    float: right;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: var(--color-azul-oscuro);
+    color: var(--color-fondo);
+    width: fit-content;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* ===== SECCION: Ubicacion ===== */
+
+.perfil-refugio-ubicacion {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    padding: 1.2rem 1.5rem;
+}
+
+
+/* ===== SECCION: Publicar ===== */
+
+.perfil-refugio-publicar {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    padding: 1.2rem 1.5rem;
+    overflow: hidden;
+}
+
+.perfil-refugio-publicar h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0 0 0.3rem 0;
+}
+
+.perfil-refugio-publicar p {
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    color: var(--color-texto);
+}
+
+/* Cada campo del formulario */
+.perfil-refugio-publicar form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Cada label+input como bloque con fondo gris */
+.perfil-refugio-publicar label,
+.perfil-refugio-publicar fieldset {
+    display: block; 
+    border-radius: 12px;
+    border: 1px solid var(--color-azul);
+    padding: 1rem 1.2rem 0.8rem 1.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/*revisar*/
+.perfil-refugio-publicar .especie-refugio-radio input {
+    margin: 0;
+}
+
+.perfil-refugio-publicar fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1.2rem;
+    margin:0;
+}
+
+.perfil-refugio-publicar legend {
+    float: left;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+    padding: 0 0 0.4rem 0;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    font-size: 1rem;
+    font-weight: normal;
+    border-radius: 0;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio span {
+    color: var(--color-texto);
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.perfil-refugio-publicar .especie-refugio-radio input[type="radio"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+
+/* Inputs y textarea dentro del label */
+.perfil-refugio-publicar input[type="text"],
+.perfil-refugio-publicar input[type="date"],
+.perfil-refugio-publicar input[type="number"],
+.perfil-refugio-publicar input[type="file"],
+.perfil-refugio-publicar textarea {
+    display: block;
+    width: 100%;
+    font-family: var(--fuente-titulos);
+    margin-top: 0.6rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* Selects dentro del label (con flecha) */
+.perfil-refugio-publicar select {
+    display: block;
+    width: 100%;
+    font-family: var(--fuente-titulos);
+    margin-top: 0.6rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
+    box-sizing: border-box;
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+/* Placeholder gris */
+.perfil-refugio-publicar input::placeholder,
+.perfil-refugio-publicar textarea::placeholder {
+    color: var(--color-texto);
+}
+
+/* Botón publicar */
+.perfil-refugio-publicar button {
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 2rem;
+    min-width: 50%;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: center;
+    transition: background 0.2s;
+}
+
+.perfil-refugio-publicar button:hover{
+    transform: scale(0.98);
+}
+
+.perfil-refugio-publicar summary{
+    cursor: pointer;
+}
+
+.perfil-refugio-publicar h3{
+    cursor: default;
+}
+/* ===== SECCION: Actualizar/eliminar ===== */
+
+.perfil-editar-mascota {
+    background: var(--color-fondo);
+    border-radius: 12px;
+    border: 1px solid var(--color-gris-claro);
+    box-shadow: 0 2px 8px var(--color-gris-claro);
+    padding: 1.2rem 1.5rem;
+}
+
+.perfil-editar-mascota h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.perfil-editar-mascota summary{
+    cursor: pointer;
+}
+
+.perfil-editar-mascota h3{
+    cursor: default;
+}
+
+.perfil-refugio-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Cada tarjeta */
+.tarjeta-refugio-mascota {
+    background-color: var(--color-fondo);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+}
+
+/* Link con el texto ocupa todo el espacio */
+.tarjeta-refugio-mascota-link {
+    flex: 1;
+    text-decoration: none;
+    color: var(--color-texto);
+}
+
+.tarjeta-refugio-mascota-link h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 0.2rem 0;
+}
+
+.tarjeta-refugio-mascota-link h4:hover{
+    color: var(--color-naranja);
+}
+
+.tarjeta-refugio-mascota-link p {
+    font-size: 0.95rem;
+    margin: 0;
+    color: var(--color-texto);
+    cursor: default;
+}
+
+.tarjeta-refugio-mascota p:hover{
+    color: var(--color-texto);
+}
+
+.tarjeta-refugio-mascota .btn-editar .material-symbols-outlined,
+.perfil-refugio-datos .btn-editar .material-symbols-outlined {
+    color: var(--color-gris);
+}
+
+.tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
+.perfil-refugio-datos .btn-editar:hover .material-symbols-outlined {
+    color: var(--color-azul-oscuro)
+}
+
+.btn-eliminar-mascota .material-symbols-outlined {
+    font-size: 1.7rem;
+}
+
+.btn-eliminar-mascota:hover .material-symbols-outlined {
+    color: var(--color-rojo);
+}
+
+.tarjeta-refugio-mascota .btn-editar,
+.btn-eliminar-mascota {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil-refugio-mapa {
+    display: none;
+}
+
+/*MEDIA PARA DESKTOP*/
+@media (min-width: 994px) {
+
+    .perfil-refugio-container {
+        max-width: 1300px;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: auto auto 1fr;
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    /* Header ocupa la 1 columna */
+    .perfil-refugio-header {
+        grid-column: 1;
+        margin-top: 3rem;
+    }
+
+    /* Nav ocupa columna izquierda, fila 2 en adelante */
+    .perfil-refugio-nav {
+        max-width: 1100px;
+        grid-template-columns: 200px 1fr;
+        grid-column: 1;
+        grid-row: 2 / -1;
+        position: sticky;
+        top: 1rem;
+    }
+
+    /* Contenedor interno con datos + mapa lado a lado */
+    .perfil-refugio-datos-body {
+        display: flex;
+        gap: 1rem;
+        grid-column: 2;
+    }
+
+    /* La grilla de datos ocupa 2/3 */
+    .perfil-refugio-datos-grid {
+        flex: 1.6;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem 2rem;
+        align-content: start;
+    }
+
+    /* El mapa ocupa 1/3 */
+    .perfil-refugio-mapa {
+        flex: 1.4;
+        background-color: var(--color-gris-claro);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        color: #888;
+        font-size: 1rem;
+    }
+
+    .perfil-refugio-seccion {
+        grid-column: 2;
+    }
+
+    .perfil-refugio-ubicacion {
+        grid-column: 2;
+    }
+
+    .perfil-refugio-publicar {
+        grid-column: 2;
+    }
+
+    .perfil-editar-mascota {
+        grid-column: 2;
+    }
+
+    /*boton de solicitud de adopcion*/
+    .btn-rechazar:hover,
+    .btn-aceptar:hover {
+        transform: scale(0.98);
+    }
+
+
+    .perfil-refugio-nav a:hover,
+    .perfil-refugio-nav a.active {
+        background: var(--color-naranja);
+    }
+}
+
+/* ===== INLINE EDITING TOGGLES FOR SHELTER PERFILE ===== */
+.perfil-refugio-container:not(.is-editing) .input-value,
+.perfil-refugio-container:not(.is-editing) .perfil-datos-acciones {
+    display: none;
+}
+
+.perfil-refugio-container.is-editing .static-value,
+.perfil-refugio-container.is-editing .btn-editar {
+    display: none;
+}
+
+.perfil-refugio-container.is-editing .input-value {
+    display: block;
+}
+
+.perfil-refugio-container.is-editing li.dato-refugio-item.input-value {
+    display: flex;
+}
+
+.perfil-refugio-container.is-editing .perfil-datos-acciones {
+    display: flex;
+}
+
+#perfil-refugio-form {
+    flex: 1.6;
+    display: flex;
+    flex-direction: column;
+}
+
+#perfil-refugio-form .perfil-refugio-datos-grid {
+    flex: 1;
+}

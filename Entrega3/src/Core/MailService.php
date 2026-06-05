@@ -108,4 +108,49 @@ class MailService {
             return false;
         }
     }
+
+    public function enviarComprobanteDonacion($destinatario, $datosDonacion, $archivoTmpPath, $archivoNombre) {
+        global $config;
+        global $log;
+
+        $mail = new PHPMailer(true);
+        try {
+            $mail->CharSet = 'UTF-8';
+            $mail->isSMTP();
+            $mail->SMTPDebug = 0;
+            $mail->Host       = $config->get('MAIL_HOST');
+            $mail->SMTPAuth   =   true;
+            $mail->Username   = $config->get('MAIL_USER');
+            $mail->Password   = $config->get('MAIL_PASS');
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = $config->get('MAIL_PORT');
+
+            $mail->setFrom($config->get('MAIL_USER'), 'PawMap Donaciones');
+            $mail->addAddress($destinatario);
+
+            if ($archivoTmpPath && file_exists($archivoTmpPath)) {
+                $mail->addAttachment($archivoTmpPath, $archivoNombre);
+            }
+
+            $mail->isHTML(true);
+            $mail->Subject = "Nuevo Comprobante de Donación Recibido";
+            
+            $monto = htmlspecialchars($datosDonacion['monto'] ?? '0');
+            $refugioNombre = htmlspecialchars($datosDonacion['refugio'] ?? 'Refugio');
+            $mail->Body    = "<h2>¡Hola! Has recibido un nuevo comprobante de donación.</h2>" .
+                             "<p>Un usuario ha enviado un comprobante de transferencia para tu refugio: <strong>$refugioNombre</strong>.</p>" .
+                             "<p><strong>Monto registrado de la donación:</strong> $$monto</p>" .
+                             "<p>El archivo adjunto contiene el comprobante correspondiente.</p>" .
+                             "<br><hr><p>Este es un correo automático enviado por PawMap.</p>";
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            if (isset($log)) {
+                $log->error("Error SMTP al enviar comprobante de donación: {$mail->ErrorInfo}");
+            }
+            return false;
+        }
+    }
 }
+

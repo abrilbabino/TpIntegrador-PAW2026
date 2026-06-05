@@ -14,6 +14,7 @@ class TestController extends Controller
     {
         $menu = $this->menu;
         $redes = $this->redes;
+        $metaDescription = "Hacé el test de compatibilidad de PawMap para descubrir qué tipo de mascota (perro o gato) se adapta mejor a tu estilo de vida y hogar.";
 
         $qb = $this->model->getQueryBuilder();
         $preguntaCollection = new TestCompatibilidadPreguntaCollection();

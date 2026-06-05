@@ -3,7 +3,7 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
-use Paw\Core\Pagination;
+
 use Paw\App\Models\Mascota;
 
 class MascotaCollection extends Model
@@ -22,6 +22,12 @@ class MascotaCollection extends Model
     {
         $resultadosDB = $this->queryBuilder->selectCompatibles($this->table, $filtros);
         return $this->mapMascotas($resultadosDB);
+    }
+
+    public function getFiltered(array $filtros): array
+    {
+        $resultados = $this->queryBuilder->obtenerMascotasFiltradas($filtros);
+        return $this->mapMascotas($resultados);
     }
 
     public function get($id)
@@ -112,5 +118,11 @@ class MascotaCollection extends Model
             $coleccion[] = $mascota;
         }
         return $coleccion;
+    }
+    
+    public function getByRefugioId(int $refugioId): array
+    {
+        $mascotas = $this->queryBuilder->selectByRefugioId($this->table, $refugioId);
+        return $this->mapMascotas($mascotas);
     }
 }

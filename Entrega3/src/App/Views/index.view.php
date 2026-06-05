@@ -2,15 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'PawMap: Encuentra a tu compañero ideal. Adopta perros y gatos en adopción de los mejores refugios.') ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/print.css" media="print" />
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <title>PawMap</title>
+    <title>Inicio - PawMap</title>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
+    <script type="application/ld+json">
+    <?php $baseUrl = ($_SERVER['REQUEST_SCHEME'] ?? 'http') . '://' . $_SERVER['HTTP_HOST']; ?>
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PawMap",
+      "url": "<?= $baseUrl ?>/",
+      "logo": "<?= $baseUrl ?>/assets/img/icon.png",
+      "description": "Plataforma para conectar refugios y personas que desean adoptar mascotas en Argentina.",
+      "sameAs": [
+        "https://www.facebook.com/pawmap",
+        "https://www.instagram.com/pawmap"
+      ]
+    }
+    </script>
 </head>
   <body>
     <?php require __DIR__ . '/barra-navegacion.view.php' ?>
@@ -22,12 +41,7 @@
       </header>
 
       <section class="seccion-mapa">
-        <figure>
-          <iframe
-            src="https://www.google.com/maps/d/u/0/embed?mid=1LcmkNpBFk8CbMx8mdkOJnslsdjsJlGA&ehbc=2E312F&noprof=1">
-            title="Mapa de refugios y mascotas"
-          ></iframe>
-        </figure>
+        <figure id="leaflet-map" class="mapa-interactivo" data-refugios='<?= htmlspecialchars(json_encode($refugiosMapa ?? []), ENT_QUOTES, 'UTF-8') ?>'></figure>
         <a href="/mapa" class="boton-principal boton-ancho">Ver Mapa</a>
       </section>
 
@@ -54,13 +68,10 @@
         <section class="seccion-adopcion">
             <h2>Mascotas en Adopción</h2>
             
-            <section class="grilla-mascotas-inicio">
+            <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 <?php if (!empty($mascotas)): ?>
                     <?php 
-                    $contador = 0;
                     foreach ($mascotas as $mascota): 
-                        if ($contador >= 4) break;
-                        $contador++;
                         if (!is_object($mascota) || !isset($mascota->fields)) continue;
                     ?>
                         <article class="tarjeta-mascota">
@@ -70,7 +81,7 @@
                                 </a>
                                 <form method="POST" action="/favorito" class="form-favorito-tarjeta">
                                     <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                                    <button type="submit" class="btn-favorito" aria-label="Agregar a favoritos">
+                                    <button type="submit" class="btn-favorito <?= in_array($mascota->fields['id'], $favoritosIds ?? []) ? 'favorito-activo' : '' ?>" aria-label="Agregar a favoritos">
                                         <span class="material-symbols-outlined">favorite</span>
                                     </button>
                                 </form>

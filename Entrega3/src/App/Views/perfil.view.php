@@ -5,20 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css" />
-    <link rel="stylesheet" href="/assets/css/perfil.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <title><?= htmlspecialchars($titulo ?? 'Mi Perfil - PawMap') ?></title>
+    <title>Mi Perfil - PawMap</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <main class="perfil-container">
+    <main class="perfil-container <?= !empty($errores) ? 'is-editing' : '' ?>">
+
 
         <!-- Cabecera -->
         <section class="perfil-header">
-            <figure class="perfil-avatar">
-                <span class="material-symbols-outlined">person</span>
+            <figure class="perfil-avatar-wrapper">
+                <?php 
+                $fotoPerfil = $user['foto_perfil'] ?? '';
+                $avatarUrl = '';
+                if (!empty($fotoPerfil)) {
+                    $pathFisico = __DIR__ . '/../../../public/assets/img/' . $fotoPerfil;
+                    if (file_exists($pathFisico) && is_file($pathFisico)) {
+                        $avatarUrl = '/assets/img/' . htmlspecialchars($fotoPerfil);
+                    }
+                }
+                ?>
+                <span id="preview-placeholder" class="avatar-placeholder <?= !empty($avatarUrl) ? 'hidden' : '' ?>">
+                    <span class="material-symbols-outlined">person</span>
+                </span>
+                <?php if (!empty($avatarUrl)): ?>
+                    <img id="image-preview" src="<?= $avatarUrl ?>" data-original="<?= $avatarUrl ?>" alt="Foto de perfil">
+                <?php else: ?>
+                    <img id="image-preview" src="" data-original="" alt="Foto de perfil" class="hidden">
+                <?php endif; ?>
+                <figcaption class="avatar-hover-overlay">
+                    <span class="material-symbols-outlined">photo_camera</span>
+                </figcaption>
             </figure>
+
             <h1>Hola, <?= htmlspecialchars($user['nombre_usuario']) ?>!</h1>
             <p class="perfil-email"><?= htmlspecialchars($user['email'] ?? '') ?></p>
             <a href="/logout" class="perfil-logout">
@@ -27,41 +50,131 @@
             </a>
         </section>
 
-        <!-- Datos personales -->
-        <section class="perfil-datos">
+        <!-- Datos personales (formulario de edición) -->
+        <form id="perfil-form" method="POST" action="/perfil/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
             <header class="perfil-datos-header">
                 <h2>Datos Personales</h2>
-                <a href="/perfil/editar" class="btn-editar" title="Editar datos">
+                <button type="button" id="btn-edit-perfil" class="btn-editar" title="Editar datos">
                     <span class="material-symbols-outlined">edit_square</span>
-                </a>
+                </button>
             </header>
+
+            <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
+            <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
+            <?php if (isset($errores['foto_perfil_o_logo'])): ?>
+                <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+                    <span class="material-symbols-outlined">error</span>
+                    <section>
+                        <strong>Error con la foto de perfil:</strong>
+                        <p><?= htmlspecialchars($errores['foto_perfil_o_logo'], ENT_QUOTES, 'UTF-8') ?></p>
+                    </section>
+                </aside>
+            <?php endif; ?>
+
             <ul class="perfil-datos-grid">
                 <li class="dato-item">
-                    <span class="dato-label">Nombre:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($adoptante['nombre'] ?? '—') ?></span>
+                    <span class="dato-label">Nombre de Usuario *</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($user['nombre_usuario'] ?? '—') ?></span>
+                    <input type="text" name="nombre_usuario" value="<?= htmlspecialchars($oldData['nombre_usuario'] ?? $user['nombre_usuario'] ?? '') ?>" data-original="<?= htmlspecialchars($user['nombre_usuario'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_usuario']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required>
+                    <?php if (isset($errores['nombre_usuario'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre_usuario'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
                 <li class="dato-item">
-                    <span class="dato-label">Fecha de Nacimiento:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? 'dd / mm / aaaa') ?></span>
+                    <span class="dato-label">Nombre *</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['nombre'] ?? '—') ?></span>
+                    <input type="text" name="nombre" value="<?= htmlspecialchars($oldData['nombre'] ?? $adoptante['nombre'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['nombre'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
+                    <?php if (isset($errores['nombre'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
                 <li class="dato-item">
-                    <span class="dato-label">Apellido:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($adoptante['apellido'] ?? '—') ?></span>
+                    <span class="dato-label">Apellido *</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['apellido'] ?? '—') ?></span>
+                    <input type="text" name="apellido" value="<?= htmlspecialchars($oldData['apellido'] ?? $adoptante['apellido'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['apellido'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['apellido']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
+                    <?php if (isset($errores['apellido'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['apellido'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
                 <li class="dato-item">
-                    <span class="dato-label">Mail:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
+                    <span class="dato-label">Mail *</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
+                    <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required>
+                    <?php if (isset($errores['email'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
                 <li class="dato-item">
-                    <span class="dato-label">DNI:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($adoptante['dni'] ?? '—') ?></span>
+                    <span class="dato-label">DNI *</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['dni'] ?? '—') ?></span>
+                    <input type="text" name="dni" value="<?= htmlspecialchars($oldData['dni'] ?? $adoptante['dni'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['dni'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['dni']) ? 'input-invalido' : '' ?>" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required>
+                    <?php if (isset($errores['dni'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['dni'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
                 <li class="dato-item">
-                    <span class="dato-label">Teléfono:</span>
-                    <span class="dato-valor"><?= htmlspecialchars($user['contacto'] ?? '—') ?></span>
+                    <span class="dato-label">Fecha de Nacimiento</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? 'dd / mm / aaaa') ?></span>
+                    <input type="date" name="fecha_de_nacimiento" value="<?= htmlspecialchars($oldData['fecha_de_nacimiento'] ?? $adoptante['fecha_de_nacimiento'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['fecha_de_nacimiento']) ? 'input-invalido' : '' ?>">
+                    <?php if (isset($errores['fecha_de_nacimiento'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['fecha_de_nacimiento'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
+                </li>
+                <li class="dato-item">
+                    <span class="dato-label">Teléfono</span>
+                    <span class="dato-valor static-value"><?= htmlspecialchars($user['contacto'] ?? '—') ?></span>
+                    <input type="tel" name="contacto" value="<?= htmlspecialchars($oldData['contacto'] ?? $user['contacto'] ?? '') ?>" data-original="<?= htmlspecialchars($user['contacto'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['contacto']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
+                    <?php if (isset($errores['contacto'])): ?>
+                        <span class="msg-error input-value"><?= htmlspecialchars($errores['contacto'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
+                </li>
+                <li class="dato-item input-value">
+                    <span class="dato-label">Contraseña Actual</span>
+                    <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input <?= isset($errores['contrasena_actual']) ? 'input-invalido' : '' ?>" data-original="">
+                    <?php if (isset($errores['contrasena_actual'])): ?>
+                        <span class="msg-error"><?= htmlspecialchars($errores['contrasena_actual'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
+                </li>
+                <li class="dato-item input-value">
+                    <span class="dato-label">Nueva Contraseña</span>
+                    <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input <?= isset($errores['contrasena']) ? 'input-invalido' : '' ?>" minlength="6" data-original="">
+                    <?php if (isset($errores['contrasena'])): ?>
+                        <span class="msg-error"><?= htmlspecialchars($errores['contrasena'], ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php endif; ?>
                 </li>
             </ul>
-        </section>
+
+            <footer class="perfil-datos-acciones">
+                <button type="submit" class="btn-guardar-perfil">Guardar</button>
+                <button type="button" id="btn-cancel-perfil" class="btn-cancelar-perfil">Cancelar</button>
+            </footer>
+        </form>
+
+        <?php if (isset($_GET['update']) && $_GET['update'] === 'success'): ?>
+            <aside class="alerta-exito" role="status">
+                <span class="material-symbols-outlined">check_circle</span>
+                <section>
+                    <strong>¡Cambios guardados!</strong>
+                    <p>Tu perfil se ha actualizado correctamente.</p>
+                </section>
+            </aside>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['error'])): ?>
+            <aside class="alerta-error" role="alert">
+                <span class="material-symbols-outlined">error</span>
+                <section>
+                    <strong>Ocurrió un inconveniente</strong>
+                    <?php if ($_GET['error'] === 'campos_obligatorios'): ?>
+                        <p>Por favor, completá todos los campos obligatorios (*).</p>
+                    <?php elseif ($_GET['error'] === 'usuario_existente'): ?>
+                        <p>El nombre de usuario elegido ya se encuentra en uso por otra persona.</p>
+                    <?php else: ?>
+                        <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
+                    <?php endif; ?>
+                </section>
+            </aside>
+        <?php endif; ?>
 
         <!-- Navegación ancla (sticky) -->
         <nav class="perfil-nav">
@@ -106,8 +219,8 @@
                                     · <?= htmlspecialchars($fav['temperamento'] ?? '—') ?>
                                 </p>
                             </a>
-                            <form method="POST" action="/favorito/eliminar" class="form-quitar-fav">
-                                <input type="hidden" name="favorito_id" value="<?= $fav['favorito_id'] ?>" />
+                            <form method="POST" action="/api/favorito/toggle" class="form-quitar-fav">
+                                <input type="hidden" name="mascota_id" value="<?= htmlspecialchars($fav['id']) ?>" />
                                 <button type="submit" class="btn-corazon activo" title="Quitar favorito">
                                     <span class="material-symbols-outlined">favorite</span>
                                 </button>
@@ -174,32 +287,15 @@
 
     </main>
 
-    <script>
-        // Marcar el enlace activo según la sección visible
-        const secciones = document.querySelectorAll('.perfil-seccion');
-        const enlaces = document.querySelectorAll('.perfil-nav a');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    enlaces.forEach(a => a.classList.remove('active'));
-                    const link = document.querySelector(`.perfil-nav a[href="#${entry.target.id}"]`);
-                    if (link) link.classList.add('active');
-                }
-            });
-        }, { rootMargin: '-40% 0px -55% 0px' });
-
-        secciones.forEach(s => observer.observe(s));
-
-        // Scroll suave al hacer click
-        enlaces.forEach(a => {
-            a.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
+    <dialog id="avatar-modal" class="avatar-modal hidden">
+        <span id="avatar-modal-backdrop" class="avatar-modal-backdrop"></span>
+        <section class="avatar-modal-content">
+            <h3>Cambiar foto de perfil</h3>
+            <button type="button" id="modal-upload-btn" class="modal-option-btn bold-btn">Subir foto</button>
+            <button type="button" id="modal-delete-btn" class="modal-option-btn red-btn hidden">Eliminar foto actual</button>
+            <button type="button" id="modal-cancel-btn" class="modal-option-btn cancel-btn">Cancelar</button>
+        </section>
+    </dialog>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
 

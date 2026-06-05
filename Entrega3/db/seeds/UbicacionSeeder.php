@@ -13,94 +13,95 @@ class UbicacionSeeder extends AbstractSeed
 
     public function run(): void
     {
-        // Truncate table first to avoid duplicate key errors
-        $this->execute('TRUNCATE TABLE ubicacion RESTART IDENTITY CASCADE');
+        // Limpiar tabla de forma segura (DELETE respeta ON DELETE SET_NULL en adoptante)
+        $this->execute('DELETE FROM ubicacion');
+        $this->execute("SELECT setval('ubicacion_id_seq', 1, false)");
 
         $data = [
             [
                 'refugio_id' => null,
-                'latitud' => -34.5501,
-                'longitud' => -59.1132,
+                'latitud' => -34.6515,
+                'longitud' => -59.4307,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => null,
-                'latitud' => -34.5601,
-                'longitud' => -59.1232,
+                'latitud' => -34.5703,
+                'longitud' => -59.1050,
                 'ciudad' => 'Luján',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => null,
-                'latitud' => -34.6000,
-                'longitud' => -58.5000,
+                'latitud' => -34.5800,
+                'longitud' => -59.1100,
                 'ciudad' => 'Luján',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => null,
-                'latitud' => -34.5700,
-                'longitud' => -58.7000,
+                'latitud' => -34.6300, // Medium spread NE
+                'longitud' => -59.4100,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 4,
-                'latitud' => -34.5400,
-                'longitud' => -58.9000,
+                'latitud' => -34.5650,
+                'longitud' => -59.1150,
                 'ciudad' => 'Luján',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 5,
-                'latitud' => -34.5800,
-                'longitud' => -59.0000,
+                'latitud' => -34.6700, // Medium spread SW
+                'longitud' => -59.4500,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
-                'refugio_id' => 6,
-                'latitud' => -34.5900,
-                'longitud' => -58.8000,
+                'refugio_id' => 6, 
+                'latitud' => -34.5900, 
+                'longitud' => -58.8000, 
                 'ciudad' => 'Luján',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 7,
-                'latitud' => -34.5603,
-                'longitud' => -59.0501,
+                'latitud' => -34.6500, 
+                'longitud' => -59.4000,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 8,
-                'latitud' => -34.5630,
-                'longitud' => -59.0500,
+                'latitud' => -34.6550, 
+                'longitud' => -59.4600,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 9,
-                'latitud' => -34.5640,
-                'longitud' => -59.0500,
+                'latitud' => -34.6350, 
+                'longitud' => -59.4400,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'
             ],
             [
                 'refugio_id' => 10,
-                'latitud' => -34.5600,
-                'longitud' => -59.0506,
+                'latitud' => -34.6650, 
+                'longitud' => -59.4200,
                 'ciudad' => 'Mercedes',
                 'provincia' => 'Buenos Aires',
                 'pais' => 'Argentina'

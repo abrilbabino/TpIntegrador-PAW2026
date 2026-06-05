@@ -51,15 +51,22 @@ $router->get('/', 'PageController@index');
 $router->get('/iniciar-sesion', 'PageController@iniciarSesion');
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // $router->get('/donar', 'PageController@donar');
-// $router->get('/mapa', 'PageController@mapa');
+$router->get('/mapa', 'PageController@mapa');
 
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
+$router->get('/api/mascotas', 'MascotaController@apiMascotas');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
+$router->get('/api/mascota/libreta', 'MascotaController@apiLibreta');
 $router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
 $router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
-$router->get('/buscar', 'MascotaController@buscar');
+$router->get('/buscar', 'PageController@buscar');
+$router->get('/mascota/editar', 'MascotaController@editarForm');
+$router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
+
+$router->post('/mascota/subir-archivo', 'MascotaController@subirArchivoMascota');
+$router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');
@@ -72,7 +79,9 @@ $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');
+$router->get('/api/refugios', 'RefugioController@apiRefugios');
 $router->get('/refugio', 'RefugioController@detalle');
+$router->get('/refugio/perfil', 'RefugioController@detalle');
 
 // Autenticación
 $router->post('/login', 'AuthController@login');
@@ -81,13 +90,18 @@ $router->post('/register', 'AuthController@register');
 
 // Perfil de usuario
 $router->get('/perfil', 'UserController@perfil');
+$router->post('/perfil/guardar', 'UserController@guardar');
+$router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
+$router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
 
 // Favoritos
-$router->post('/favorito', 'FavoritoController@guardar');
-$router->post('/favorito/eliminar', 'FavoritoController@eliminar');
+$router->post('/api/favorito/toggle', 'FavoritoController@toggle');
+
+// Solicitudes API
+$router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
 
 // Errores
 $router->get('not_found', 'ErrorController@notFound');
@@ -98,3 +112,11 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 $router->get('/contacto', 'PageController@contacto');
 $router->post('/contacto/enviar', 'PageController@contactoEnviar');
 $router->get('/contacto-exitoso', 'PageController@contactoExitoso');
+
+// Donaciones
+$router->get('/donar', 'DonacionController@index');
+$router->post('/procesar-donacion', 'DonacionController@enviar');
+$router->post('/enviar-comprobante', 'DonacionController@enviarComprobante');
+
+// SEO
+$router->get('/sitemap.xml', 'PageController@sitemap');

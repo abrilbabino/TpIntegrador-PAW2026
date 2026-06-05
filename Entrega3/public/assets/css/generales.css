@@ -8,6 +8,7 @@
   --color-magenta: #e3004f;
   --color-texto: #333333;
   --color-fondo: #ffffff;
+  --color-gris: #a3a3a3;
   --color-gris-claro: #dcdbdb;
   --color-rojo: #df1f1f;
   --color-naranja-claro: #ffdd9e;
@@ -25,7 +26,6 @@ body {
   color: var(--color-texto);
   font-family: var(--fuente-cuerpo);
   font-size: 1rem;
-  padding-top: 8rem;
 }
 
 *,
@@ -50,11 +50,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-magenta);
+  color: var(--color-naranja);
 }
 
-@media screen and (min-width: 994px) {
-  body {
-    padding-top: 11rem;
-  }
-}
+

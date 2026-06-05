@@ -14,19 +14,36 @@ class RefugioController extends Controller
         $request = $this->request;
         $menu    = $this->menu;
         $redes   = $this->redes;
+        $metaDescription = "Conocé los refugios y protectoras de animales asociados a PawMap. Apoyá su labor y encontrá a tu nueva mascota en tu zona.";
 
-        $filtros = $this->getFiltros();
-        $page = (int) $request->get('pagina') ?: 1;
-        $perPage = 6;
 
-        $resultado = $this->model->getPaginated($filtros, $page, $perPage);
-        $refugios = $resultado['items'];
-        $pagination = $resultado['pagination'];
-
-        $provincias = $this->model->getProvincias();
-        $ciudades   = $this->model->getCiudades();
 
         require $this->viewsDir . '/refugios.view.php';
+    }
+
+    public function apiRefugios() {
+        header('Content-Type: application/json');
+        
+        $resultado = $this->model->getAll(); 
+        
+        $refugiosData = [];
+        foreach ($resultado as $refugio) {
+            $refugiosData[] = [
+                'id'                     => $refugio->fields['usuario_id'] ?? $refugio->fields['id'],
+                'nombre_institucion'     => $refugio->fields['nombre_institucion'],
+                'imagen'                 => $refugio->fields['imagen'] ?? 'default-refugio.jpg',
+                'ciudad'                 => $refugio->fields['ciudad'],
+                'provincia'              => $refugio->fields['provincia'],
+                'telefono'               => $refugio->fields['telefono'],
+                'adoptables_disponibles' => $refugio->fields['adoptables_disponibles'] ?? 0
+            ];
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $refugiosData
+        ]);
+        exit;
     }
 
     public function detalle()
@@ -37,15 +54,32 @@ class RefugioController extends Controller
         $id    = $request->get('id');
 
         $refugio = null;
+        $mascotas = [];
+        $metaDescription = "Conocé este refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
+        
         if ($this->model) {
             try {
                 $refugio = $this->model->get($id);
+                if ($refugio) {
+                    $nombreRefugio = htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Refugio');
+                    $metaDescription = "Conocé a {$nombreRefugio}, un refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
+                }
+                
+                $mascotaCollection = new \Paw\App\Models\MascotaCollection();
+                $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+                $mascotas = $mascotaCollection->getAll(['refugio_id' => $id, 'estado_adopcion' => 'DISPONIBLE']);
+                
+                $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
             } catch (\Exception $e) {
                 error_log("Error cargando detalle de refugio: " . $e->getMessage());
             }
         }
 
-        require $this->viewsDir . '/refugio.view.php';
+        $favoritoModel = new \Paw\App\Models\Favorito();
+        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
+
+        require $this->viewsDir . '/detalleRefugio.view.php';
     }
 
     private function getFiltros()

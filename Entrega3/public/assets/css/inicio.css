@@ -4,8 +4,8 @@
 }
 
 .seccion-mapa {
-  padding: 2.5rem 0rem;
-  margin: 0 2rem;
+  padding: 0;
+  margin: 1rem 2rem 0 2rem;
 }
 
 .seccion-mapa figure {
@@ -13,18 +13,19 @@
   width: 100%;
 }
 
-.seccion-mapa iframe {
+.seccion-mapa #leaflet-map {
   width: 100%;
   height: 280px;
   border: none;
   border-radius: 16px;
   background-color: var(--color-gris-claro);
   box-shadow: 0 4px 10px var(--color-texto);
+  z-index: 1; /* Para que no se pise con otros z-index globales */
 }
 
 .boton-ancho {
   width: 100%;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
 }
 
 .boton-secundario,
@@ -78,7 +79,6 @@
 }
 
 .seccion-incentivar-adopcion {
-  padding: 2rem 0rem;
   margin: 0 1.5rem;
 }
 
@@ -90,7 +90,7 @@
 
 .titulo-incentivar-adopcion {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   color: var(--color-azul);
   text-align: left;
 }
@@ -141,11 +141,9 @@
 
 .seccion-adopcion > h2 {
   font-size: 2.5rem;
-  margin-left: 1rem;
-  margin-bottom: 1.5rem;
   color: var(--color-azul);
   text-shadow: 1px 1px 1px var(--color-fondo);
-  text-align: left;
+  text-align: center;
 }
 
 .grilla-mascotas-inicio {
@@ -174,7 +172,6 @@
 }
 
 .tarjeta-mascota:hover {
-  box-shadow: 0 10px 30px var(--color-texto);
   transform: translateY(-4px);
 }
 
@@ -222,26 +219,31 @@
   color: #555;
 }
 
+.paw-carousel .paw-carousel-prev,
+.paw-carousel .paw-carousel-next {
+  display: none;
+}
+
 @media screen and (min-width: 994px) {
   .hero-inicio {
     text-align: left;
     align-items: flex-start;
   }
-  
+
   .hero-inicio h1,
   .hero-inicio p {
     margin-left: 4rem;
   }
 
   .seccion-mapa {
-    padding: 2.5rem 1.5rem;
+    padding: 1rem 0;
   }
 
   .boton-ancho {
     display: none;
   }
 
-  .seccion-mapa iframe {
+  .seccion-mapa #leaflet-map {
     height: 450px;
     border-radius: 20px;
   }
@@ -278,11 +280,13 @@
   }
 
   .seccion-adopcion {
-    margin: 1rem 3.5rem;
+    margin: 1rem 2rem;
   }
 
   .seccion-adopcion > h2 {
     font-size: 3rem;
+    margin-left: 4.5rem;
+    text-align: left;
   }
 
   .seccion-adopcion .grilla-mascotas-inicio {
@@ -293,5 +297,10 @@
 
   .tarjeta-imagen {
     height: 220px;
+  }
+
+  .paw-carousel .paw-carousel-prev,
+  .paw-carousel .paw-carousel-next {
+    display: flex;
   }
 }

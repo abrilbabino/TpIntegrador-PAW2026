@@ -10,87 +10,64 @@ class FavoritoController extends Controller
     public ?string $modelName = Favorito::class;
 
     /**
-     * Guarda una mascota como favorita.
-     * Requiere sesión activa y mascota_id por POST.
+     * Alterna (toggle) el estado de favorito de una mascota.
+     * Retorna JSON.
      */
-    public function guardar()
+    public function toggle()
     {
+        header('Content-Type: application/json');
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Verificar sesión
-        if (empty($_SESSION['user'])) {
-            header('Location: /iniciar-sesion');
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession)) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'No autorizado']);
             exit;
         }
 
-        $adoptanteId = $_SESSION['user']['id'] ?? null;
+        $adoptanteId = $userSession['id'] ?? null;
 
         if (!$adoptanteId) {
-            $this->log->warning("Intento de guardar favorito sin adoptante vinculado", [
-                'user_id' => $_SESSION['user']['id'],
-            ]);
-            header('Location: /perfil');
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Usuario inválido']);
             exit;
         }
 
         $mascotaId = $this->request->get('mascota_id');
 
-        // Validar mascota_id
         if (!$mascotaId || !is_numeric($mascotaId) || $mascotaId < 1) {
-            $this->log->warning("mascota_id inválido en favorito", ['mascota_id' => $mascotaId]);
-            header('Location: /perfil');
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'ID de mascota inválido']);
             exit;
         }
 
         $mascotaId = (int) $mascotaId;
 
-        // Guardar favorito (el modelo evita duplicados)
-        $resultado = $this->model->agregar($adoptanteId, $mascotaId);
-
-        if ($resultado) {
-            $this->log->info("Favorito guardado", [
-                'adoptante_id' => $adoptanteId,
-                'mascota_id'   => $mascotaId,
-            ]);
+        // Comprobar si ya es favorito
+        $favoritos = $this->model->getByAdoptanteId($adoptanteId);
+        $favoritoId = null;
+        foreach ($favoritos as $fav) {
+            if ($fav['id'] == $mascotaId) { // 'id' es mascota_id por el SELECT m.*
+                $favoritoId = $fav['favorito_id'];
+                break;
+            }
         }
 
-        header('Location: /perfil');
-        exit;
-    }
-
-    /**
-     * Elimina un favorito por ID.
-     * Requiere sesión activa y favorito_id por POST.
-     */
-    public function eliminar()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if ($favoritoId) {
+            // Eliminar
+            $this->model->eliminar((int)$favoritoId, $adoptanteId);
+            http_response_code(200);
+            echo json_encode(['success' => true, 'action' => 'removed']);
+        } else {
+            // Agregar
+            $this->model->agregar($adoptanteId, $mascotaId);
+            http_response_code(200);
+            echo json_encode(['success' => true, 'action' => 'added']);
         }
-
-        if (empty($_SESSION['user'])) {
-            header('Location: /iniciar-sesion');
-            exit;
-        }
-
-        $adoptanteId = $_SESSION['user']['id'] ?? null;
-        $favoritoId  = $this->request->get('favorito_id');
-
-        if (!$adoptanteId || !$favoritoId || !is_numeric($favoritoId)) {
-            header('Location: /perfil');
-            exit;
-        }
-
-        $this->model->eliminar((int) $favoritoId, (int) $adoptanteId);
-
-        $this->log->info("Favorito eliminado", [
-            'favorito_id'  => $favoritoId,
-            'adoptante_id' => $adoptanteId,
-        ]);
-
-        header('Location: /perfil');
         exit;
     }
 }

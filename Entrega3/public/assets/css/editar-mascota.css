@@ -1,0 +1,68 @@
+/*para cuando tenga lo de la foto*/
+#form-editar-mascota {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* --- Estilos para la Galería de Fotos Adicionales --- */
+
+.galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.5rem;
+    padding: 0;
+    margin-top: 1.5rem;
+    list-style: none;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.foto-item figure {
+    margin: 0;
+    background: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+    padding: 0.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.foto-item figure:hover {
+    transform: scale(1.03);
+}
+
+.foto-item img {
+    display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    /* Mantiene la proporción sin deformar */
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Botón Eliminar --- */
+
+.btn-eliminar-foto {
+    background-color: var(--color-rojo);
+    color: var(--color-fondo);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.btn-eliminar-foto:hover {
+    background-color: #d32f2f;
+}
+
+.eliminar-foto-form {
+    margin: 0;
+}

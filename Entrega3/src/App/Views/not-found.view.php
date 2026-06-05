@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta .charset="utf-8">
+    <meta charset="utf-8">
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link
       rel="stylesheet"
@@ -9,6 +9,8 @@
     />
     <link rel="stylesheet" href="/assets/css/style.css" />
     <title>Page Not Found</title>
+    <script src="/assets/js/components/paw.js"></script>
+    <script src="/assets/js/app.js"></script>
 </head>
 <body>  
     <?php require __DIR__ . '/barra-navegacion.view.php'?>
