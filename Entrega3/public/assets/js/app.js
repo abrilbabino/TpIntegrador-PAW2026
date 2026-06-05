@@ -16,6 +16,21 @@ class AppPAW {
     this.initValidador();
     this._initPerfilRefugio();
     this._initFavoritos();
+    this._initModalExito();
+  }
+
+  _initModalExito() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('registro_exitoso')) {
+      PAW.cargarScript("paw-modal-exito", "/assets/js/components/paw-modal-exito.js", () => {
+         const modal = new PAWModalExito('¡Registro exitoso!', 'Tu cuenta ha sido creada correctamente. ¡Bienvenido a PawMap!');
+         modal.mostrar();
+         
+         // Limpiar la URL para que no vuelva a aparecer al recargar
+         const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
+         window.history.replaceState({}, document.title, newUrl || window.location.pathname);
+      });
+    }
   }
 
   _initFavoritos() {

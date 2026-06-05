@@ -102,7 +102,7 @@ class AuthController extends Controller
         }
         $this->log->info("Registro exitoso", ['username' => $username]);
 
-        header('Location: /perfil');
+        header('Location: /perfil?registro_exitoso=1');
         exit;
     }
 
