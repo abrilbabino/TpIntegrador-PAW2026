@@ -117,4 +117,48 @@ class AdopcionController extends Controller
 
         return [$mascota, $mediaExtras];
     }
+
+    public function actualizar()
+    {
+        header('Content-Type: application/json');
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userSession = $this->request->session('user');
+
+        // Validar que el usuario esté logueado y sea refugio
+        if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'mensaje' => 'No autorizado. Debe iniciar sesión como refugio.']);
+            exit;
+        }
+
+        $userId = (int) $userSession['id'];
+
+        // Obtener el body JSON de la solicitud
+        $body = json_decode(file_get_contents('php://input'), true);
+        $solicitudId = $body['id'] ?? null;
+        $accion = $body['accion'] ?? null;
+
+        if (!$solicitudId || !is_numeric($solicitudId) || $solicitudId < 1) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'mensaje' => 'ID de solicitud inválido.']);
+            exit;
+        }
+
+        try {
+            $nuevoEstado = $this->model->procesarSolicitud((int)$solicitudId, $accion, $userId);
+            echo json_encode(['success' => true, 'estado' => $nuevoEstado]);
+        } catch (\Exception $e) {
+            $code = $e->getCode();
+            if ($code < 100 || $code > 599) {
+                $code = 500;
+            }
+            http_response_code($code);
+            echo json_encode(['success' => false, 'mensaje' => $e->getMessage()]);
+        }
+        exit;
+    }
 }

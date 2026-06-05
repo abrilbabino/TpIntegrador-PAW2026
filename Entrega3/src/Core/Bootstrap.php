@@ -96,7 +96,7 @@ $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
 $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 
 // Solicitudes API
-$router->post('/api/solicitud/actualizar', 'SolicitudController@actualizar');
+$router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
 
 // Errores
 $router->get('not_found', 'ErrorController@notFound');

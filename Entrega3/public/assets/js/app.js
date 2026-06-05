@@ -340,49 +340,61 @@ class AppPAW {
 
       if (!id) return;
 
-      const confirmMessage = `¿Estás seguro de que querés ${isAceptar ? 'ACEPTAR' : 'RECHAZAR'} esta solicitud de adopción?`;
-      if (!confirm(confirmMessage)) return;
-
-      const li = target.closest('.perfil-lista-item-adopcion');
-      const btnAceptar = li.querySelector('.btn-aceptar');
-      const btnRechazar = li.querySelector('.btn-rechazar');
+      const confirmMessage = `¿Estás seguro de que querés ${isAceptar ? 'aceptar' : 'rechazar'} esta solicitud de adopción?`;
       
-      if (btnAceptar) btnAceptar.disabled = true;
-      if (btnRechazar) btnRechazar.disabled = true;
+      PAW.cargarScript('paw-modal-confirm', '/assets/js/components/paw-modal-confirm.js', () => {
+        const modal = new PAWModalConfirm(
+          isAceptar ? 'Aceptar solicitud' : 'Rechazar solicitud',
+          confirmMessage,
+          isAceptar ? 'Aceptar' : 'Rechazar',
+          isAceptar ? 'bold-btn' : 'red-btn'
+        );
+        
+        modal.mostrar().then((confirmado) => {
+          if (!confirmado) return;
 
-      fetch('/api/solicitud/actualizar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: parseInt(id), accion: accion })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          const spanEstado = li.querySelector('.estado-solicitud');
-          if (spanEstado) {
-            spanEstado.className = 'estado-solicitud';
-            const nuevoEstadoClass = 'estado-' + data.estado.toLowerCase();
-            spanEstado.classList.add(nuevoEstadoClass);
-            
-            const match = spanEstado.innerHTML.match(/Fecha:\s*(.*)/i);
-            const fechaStr = match ? match[1] : '';
-            spanEstado.innerHTML = `Estado: ${data.estado} <br> Fecha: ${fechaStr}`;
-          }
-          if (btnAceptar) btnAceptar.remove();
-          if (btnRechazar) btnRechazar.remove();
-        } else {
-          alert(data.mensaje || 'Error al procesar la solicitud.');
-          if (btnAceptar) btnAceptar.disabled = false;
-          if (btnRechazar) btnRechazar.disabled = false;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert('Ocurrió un error en la conexión con el servidor.');
-        if (btnAceptar) btnAceptar.disabled = false;
-        if (btnRechazar) btnRechazar.disabled = false;
+          const li = target.closest('.perfil-lista-item-adopcion');
+          const btnAceptar = li.querySelector('.btn-aceptar');
+          const btnRechazar = li.querySelector('.btn-rechazar');
+          
+          if (btnAceptar) btnAceptar.disabled = true;
+          if (btnRechazar) btnRechazar.disabled = true;
+
+          fetch('/api/solicitud/actualizar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: parseInt(id), accion: accion })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const spanEstado = li.querySelector('.estado-solicitud');
+              if (spanEstado) {
+                spanEstado.className = 'estado-solicitud';
+                const nuevoEstadoClass = 'estado-' + data.estado.toLowerCase();
+                spanEstado.classList.add(nuevoEstadoClass);
+                
+                const match = spanEstado.innerHTML.match(/Fecha:\s*(.*)/i);
+                const fechaStr = match ? match[1] : '';
+                spanEstado.innerHTML = `Estado: ${data.estado} <br> Fecha: ${fechaStr}`;
+              }
+              if (btnAceptar) btnAceptar.remove();
+              if (btnRechazar) btnRechazar.remove();
+            } else {
+              alert(data.mensaje || 'Error al procesar la solicitud.');
+              if (btnAceptar) btnAceptar.disabled = false;
+              if (btnRechazar) btnRechazar.disabled = false;
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Ocurrió un error en la conexión con el servidor.');
+            if (btnAceptar) btnAceptar.disabled = false;
+            if (btnRechazar) btnRechazar.disabled = false;
+          });
+        });
       });
     });
   }
