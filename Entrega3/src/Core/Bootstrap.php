@@ -62,6 +62,8 @@ $router->get('/api/mascota/libreta', 'MascotaController@apiLibreta');
 $router->post('/mascota/registro/guardar', 'MascotaController@guardarRegistro');
 $router->post('/mascota/registro/completar', 'MascotaController@completarRegistro');
 $router->get('/buscar', 'PageController@buscar');
+$router->get('/mascota/editar', 'MascotaController@editarForm');
+$router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
 
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');

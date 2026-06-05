@@ -305,9 +305,9 @@
                                     · <?= htmlspecialchars($mascota->fields['temperamento'] ?? '—') ?>
                                 </p>
                             </a>
-                            <a href="/perfil/editar" class="btn-editar" title="Editar datos">
-                                <span class="material-symbols-outlined">edit_square</span>
-                            </a>
+                            <a href="/mascota/editar?id=<?= htmlspecialchars($mascota->fields['id']) ?>" class="btn-editar" title="Editar datos">
+                               <span class="material-symbols-outlined">edit_square</span>
+                           </a>
                             <a href="/perfil/eliminar" class="btn-eliminar-mascota" title="Eliminar mascota">
                                 <span class="material-symbols-outlined">delete</span>
                             </a>

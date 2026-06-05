@@ -23,12 +23,12 @@ class AppPAW {
     const params = new URLSearchParams(window.location.search);
     if (params.get('registro_exitoso')) {
       PAW.cargarScript("paw-modal-exito", "/assets/js/components/paw-modal-exito.js", () => {
-         const modal = new PAWModalExito('¡Registro exitoso!', 'Tu cuenta ha sido creada correctamente. ¡Bienvenido a PawMap!');
-         modal.mostrar();
-         
-         // Limpiar la URL para que no vuelva a aparecer al recargar
-         const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
-         window.history.replaceState({}, document.title, newUrl || window.location.pathname);
+        const modal = new PAWModalExito('¡Registro exitoso!', 'Tu cuenta ha sido creada correctamente. ¡Bienvenido a PawMap!');
+        modal.mostrar();
+
+        // Limpiar la URL para que no vuelva a aparecer al recargar
+        const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
+        window.history.replaceState({}, document.title, newUrl || window.location.pathname);
       });
     }
   }
@@ -163,35 +163,35 @@ class AppPAW {
                 ]
               });
 
-                  filtroMapa.visualizacion = {
-                      actualizarDatos: (itemsFiltrados) => {
-                          const carruselTrack = document.querySelector('.paw-carousel-track');
-                          if (carruselTrack) {
-                              while (carruselTrack.firstChild) {
-                                  carruselTrack.removeChild(carruselTrack.firstChild);
-                              }
-                              
-                              if (itemsFiltrados.length === 0) {
-                                  const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
-                                  const p = PAW.nuevoElemento('p', 'No se encontraron mascotas.', {});
-                                  li.appendChild(p);
-                                  carruselTrack.appendChild(li);
-                              } else {
-                                  itemsFiltrados.forEach(m => {
-                                      const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
-                                      const tarjeta = PAWVisualizacion.crearTarjetaMascota(m);
-                                      li.appendChild(tarjeta);
-                                      carruselTrack.appendChild(li);
-                                  });
-                              }
-                              
-                              const contenedorCarrusel = document.querySelector('[data-paw-carousel]');
-                              if (contenedorCarrusel && contenedorCarrusel.pawCarousel) {
-                                  contenedorCarrusel.pawCarousel.diapositivas = [...carruselTrack.children];
-                                  contenedorCarrusel.pawCarousel.irA(0, false);
-                                  contenedorCarrusel.pawCarousel.crearPuntos(); // recrear puntos si cambian
-                              }
-                          }
+              filtroMapa.visualizacion = {
+                actualizarDatos: (itemsFiltrados) => {
+                  const carruselTrack = document.querySelector('.paw-carousel-track');
+                  if (carruselTrack) {
+                    while (carruselTrack.firstChild) {
+                      carruselTrack.removeChild(carruselTrack.firstChild);
+                    }
+
+                    if (itemsFiltrados.length === 0) {
+                      const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
+                      const p = PAW.nuevoElemento('p', 'No se encontraron mascotas.', {});
+                      li.appendChild(p);
+                      carruselTrack.appendChild(li);
+                    } else {
+                      itemsFiltrados.forEach(m => {
+                        const li = PAW.nuevoElemento('li', '', { class: 'paw-carousel-slide' });
+                        const tarjeta = PAWVisualizacion.crearTarjetaMascota(m);
+                        li.appendChild(tarjeta);
+                        carruselTrack.appendChild(li);
+                      });
+                    }
+
+                    const contenedorCarrusel = document.querySelector('[data-paw-carousel]');
+                    if (contenedorCarrusel && contenedorCarrusel.pawCarousel) {
+                      contenedorCarrusel.pawCarousel.diapositivas = [...carruselTrack.children];
+                      contenedorCarrusel.pawCarousel.irA(0, false);
+                      contenedorCarrusel.pawCarousel.crearPuntos(); // recrear puntos si cambian
+                    }
+                  }
 
                   // Llamar al mapa para que filtre los pines
                   if (window.actualizarPinesMapa) {
@@ -295,8 +295,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota");
-    if (forms.length === 0) {
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-editar-mascota"); if (forms.length === 0) {
       return;
     }
 
