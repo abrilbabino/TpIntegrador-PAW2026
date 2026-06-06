@@ -64,7 +64,7 @@ $router->post('/mascota/registro/completar', 'MascotaController@completarRegistr
 $router->get('/buscar', 'PageController@buscar');
 $router->get('/mascota/editar', 'MascotaController@editarForm');
 $router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
-
+$router->get( '/perfil/eliminar', 'MascotaController@eliminar');
 $router->post('/mascota/subir-archivo', 'MascotaController@subirArchivoMascota');
 $router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 

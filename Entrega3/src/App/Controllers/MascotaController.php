@@ -602,4 +602,31 @@ public function eliminarFoto() {
 
         header('Location: /mascota/libreta?id=' . $mascota_id);
     }
+
+    public function eliminar()
+    {
+        $id = (int) ($this->request->get('id') ?? 0);
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $id <= 0) {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        try {
+            $mascota = $this->model->get($id);
+        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        if ($mascota && (int)$mascota->fields['refugio_id'] === (int) $userSession['id']) {
+            $db = $this->model->getQueryBuilder();
+            $db->delete('mascota', ['id' => $id]);
+        }
+
+        header('Location: /perfil?deleted=1#sec-editar-mascota');
+        exit;
+    }
 }
+
