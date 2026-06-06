@@ -70,42 +70,40 @@ class UserController extends Controller
         require $this->viewsDir . '/perfil.view.php';
     }
  
-   private function cargarPerfilRefugio(array $user, array $errores = [], array $oldData = [], array $erroresMascota = [], array $oldMascota = []): void
-   {
-       $menu  = $this->menu;
-       $redes = $this->redes;
-       // Cargar modelo Refugio
-       $refugioModel = new Refugio();
-       $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
-       $refugioModel->load((int) $user['id']);
-       $refugio = $refugioModel->fields;
-       $refugioId = $user['id'] ?? null;
-       $mascotas = [];
-       $solicitudes = [];
-       $tamanos=[];
-       $especies=[];
-       $temperamentos=[];
-       $mascotaPublicada = false;
+    private function cargarPerfilRefugio(array $user, array $errores = [], array $oldData = [], array $erroresMascota = [], array $oldMascota = []): void
+    {
+        $menu  = $this->menu;
+        $redes = $this->redes;
+        $request = $this->request;
+        // Cargar modelo Refugio
+        $refugioModel = new Refugio();
+        $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioModel->load((int) $user['id']);
+        $refugio = $refugioModel->fields;
+        $refugioId = $user['id'] ?? null;
+        $mascotas = [];
+        $solicitudes = [];
+        $tamanos=[];
+        $especies=[];
+        $temperamentos=[];
+        $mascotaPublicada = false;
        
-      
-       if ($refugioId) {
-           $mascotaCollection = new \Paw\App\Models\MascotaCollection();
-           $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
-           $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
+        if ($refugioId) {
+            $mascotaCollection = new \Paw\App\Models\MascotaCollection();
+            $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
 
+            $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
+            $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $solicitudes = $solicitudesCollection->getSolicitudesRefugio((int) $refugioId);
 
-           $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
-           $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
-           $solicitudes = $solicitudesCollection->getSolicitudesRefugio((int) $refugioId);
-
-
-           $tamanos       = $mascotaCollection->getTamanos();
-           $especies      = $mascotaCollection->getEspecies();
-           $temperamentos = $mascotaCollection->getTemperamentos();
-       }
-       $mascotaPublicada = ($this->request->get('publicado') === '1');
-       $titulo = "Mi Refugio - PawMap";
-       require $this->viewsDir . '/perfil-refugio.view.php';
+            $tamanos       = $mascotaCollection->getTamanos();
+            $especies      = $mascotaCollection->getEspecies();
+            $temperamentos = $mascotaCollection->getTemperamentos();
+        }
+        $mascotaPublicada = ($this->request->get('publicado') === '1');
+        $titulo = "Mi Refugio - PawMap";
+        require $this->viewsDir . '/perfil-refugio.view.php';
     }
 
 
@@ -142,6 +140,33 @@ class UserController extends Controller
         }
 
         header("Location: /perfil?update=success");
+        exit;
+    }
+
+    public function guardarUbicacion()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession) || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $userId = (int) $userSession['id'];
+        $postData = $this->request->post();
+
+        $errores = $this->model->actualizarUbicacionRefugio($userId, $postData);
+
+        if (!empty($errores)) {
+            $this->cargarPerfilRefugio($userSession, $errores, $postData);
+            return;
+        }
+
+        header("Location: /perfil?update=success#sec-ubicacion");
         exit;
     }
 

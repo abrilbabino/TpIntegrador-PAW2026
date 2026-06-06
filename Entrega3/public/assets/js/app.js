@@ -17,6 +17,28 @@ class AppPAW {
     this._initPerfilRefugio();
     this._initFavoritos();
     this._initModalExito();
+    this._initChatWidget();
+    this._initChatPage();
+  }
+
+  _initChatWidget() {
+    PAW.cargarScript(
+      "script-paw-chat-widget",
+      "/assets/js/components/paw-chat-widget.js",
+      () => {
+        window.chatWidget = new PAWChatWidget();
+      }
+    );
+  }
+
+  _initChatPage() {
+    PAW.cargarScript(
+      "script-paw-chat-page",
+      "/assets/js/components/paw-chat-page.js",
+      () => {
+        new PAWChatPage();
+      }
+    );
   }
 
   _initModalExito() {
@@ -193,9 +215,19 @@ class AppPAW {
                     }
                   }
 
+                  let hayFiltrosActivos = false;
+                  for (const prop in filtroMapa.estadoFiltros) {
+                    const val = filtroMapa.estadoFiltros[prop];
+                    if (typeof val === "object") {
+                      if (val.min !== "" || val.max !== "") hayFiltrosActivos = true;
+                    } else if (val !== "") {
+                      hayFiltrosActivos = true;
+                    }
+                  }
+
                   // Llamar al mapa para que filtre los pines
                   if (window.actualizarPinesMapa) {
-                    window.actualizarPinesMapa(itemsFiltrados);
+                    window.actualizarPinesMapa(itemsFiltrados, hayFiltrosActivos);
                   }
                 }
               };

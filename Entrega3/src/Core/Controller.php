@@ -10,6 +10,7 @@ class Controller
     public $viewsDir;
     protected $menu;
     protected $redes;
+    protected $notificaciones;
     protected $model;
     protected $request;
     protected $log;
@@ -27,6 +28,14 @@ class Controller
         // Iniciar sesión para verificar si hay usuario autenticado
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+
+        $this->notificaciones = 0;
+        if (isset($_SESSION['user']['id']) && class_exists('\Paw\App\Models\MensajeCollection')) {
+            $qbMensajes = new QueryBuilder($connection, $log);
+            $mensajesCol = new \Paw\App\Models\MensajeCollection();
+            $mensajesCol->setQueryBuilder($qbMensajes);
+            $this->notificaciones = $mensajesCol->getUnreadCount($_SESSION['user']['id']);
         }
 
         $this -> menu = [

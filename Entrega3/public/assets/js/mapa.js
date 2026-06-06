@@ -70,7 +70,7 @@
                                 <img src="${imgUrl}" class="popup-refugio-img" alt="Logo Refugio">
                                 <section class="popup-refugio-body">
                                     <h3>${r.nombre_institucion || 'Refugio'}</h3>
-                                    <p class="popup-refugio-loc"><span class="material-symbols-outlined">location_on</span> ${r.ciudad || ''}</p>
+                                    <p class="popup-refugio-loc"><span class="material-symbols-outlined">location_on</span> ${(r.ciudad && r.provincia) ? r.ciudad + ', ' + r.provincia : (r.ciudad || '')}</p>
                                     ${telHtml}
                                     <a href="/refugio/perfil?id=${r.id}" class="popup-refugio-btn">Ver Perfil</a>
                                 </section>
@@ -96,7 +96,12 @@
         dibujarPines(refugios);
 
         // Exponer función para que PAWFiltros la llame
-        window.actualizarPinesMapa = function(mascotasFiltradas) {
+        window.actualizarPinesMapa = function(mascotasFiltradas, hayFiltrosActivos) {
+            if (!hayFiltrosActivos) {
+                dibujarPines(refugios);
+                return;
+            }
+
             var refugiosValidos = new Set();
             mascotasFiltradas.forEach(function(m) {
                 if (m.refugio_id) refugiosValidos.add(m.refugio_id.toString());

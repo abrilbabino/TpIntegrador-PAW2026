@@ -97,9 +97,7 @@
                         <button type="button" id="btn-cancel-refugio" class="btn-cancelar-perfil">Cancelar</button>
                     </footer>
                 </form>
-                <figure class="perfil-refugio-mapa">
-                    Mapa - no se como ponerlo todavia :/
-                </figure>
+
             </article>
         </section>
 
@@ -168,23 +166,47 @@
         </section>
         
         <section class="perfil-refugio-ubicacion" id="sec-ubicacion">
-            <summary> <h3>Ubicación: Agregar/Modificar</h3> </summary>
-            <?php if (empty($ubicacion)): ?>
-                <article class="perfil-refugio-vacio">
-                    <span class="material-symbols-outlined">location_on</span>
-                    <p>Todavía no estableciste una ubicación.</p>
-                </article>
-            <?php else: ?>
-                <ul class="perfil-refugio-lista-ubicacion">
-                        <li class="perfil-item-ubicacion">
-                            <span class="material-symbols-outlined">location_on</span>
-                            <p>
-                                Provincia: <?= htmlspecialchars($sol['provincia'] ?? '?') ?>
-                                · Ciudad: <?= htmlspecialchars($sol['ciudad'] ?? '?') ?>
-                            </p>
-                        </li>
-                </ul>
-            <?php endif; ?>
+            <details class="perfil-dropdown" open>
+                <summary> <h3>Ubicación: Agregar/Modificar</h3> </summary>
+
+            <article class="perfil-refugio-ubicacion-content">
+                <?php if (!empty($refugio['ciudad']) && !empty($refugio['provincia'])): ?>
+                    <article class="ubicacion-actual-box">
+                        <span class="material-symbols-outlined icono-pin-actual">where_to_vote</span>
+                        <p class="ubicacion-actual-text" style="margin: 0;">
+                            <span class="label-ubicacion">Ubicación guardada:</span>
+                            <strong class="valor-ubicacion"><?= htmlspecialchars($refugio['direccion'] ?? ($refugio['ciudad'] . ', ' . $refugio['provincia'])) ?></strong>
+                        </p>
+                    </article>
+                <?php endif; ?>
+
+                <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium">
+                    <fieldset class="grupo-input-ubicacion" style="border: none; padding: 0; margin: 0;">
+                        <label for="ubicacion-autocomplete" class="label-buscar-ubicacion">¿Te mudaste? Buscá la nueva dirección:</label>
+                        <section class="input-wrapper-premium">
+                            <input type="text" id="ubicacion-autocomplete" class="input-ubicacion-premium" placeholder="Ej: Av. Rivadavia 1234, Buenos Aires..." autocomplete="off" required>
+                            <ul id="sugerencias-ubicacion" class="sugerencias-ubicacion-premium"></ul>
+                        </section>
+                    </fieldset>
+                    
+                    <input type="hidden" name="latitud" id="ubi_lat">
+                    <input type="hidden" name="longitud" id="ubi_lon">
+                    <input type="hidden" name="ciudad" id="ubi_ciudad">
+                    <input type="hidden" name="provincia" id="ubi_provincia">
+                    <input type="hidden" name="pais" id="ubi_pais">
+                    <input type="hidden" name="direccion" id="ubi_direccion">
+                    
+                    <footer class="acciones-ubicacion-premium">
+                        <button type="submit" class="btn-primario btn-guardar-premium" id="btn-guardar-ubicacion" disabled>
+                            Guardar Cambios
+                        </button>
+                    </footer>
+                </form>
+            </article>
+            </details>
+        </section>
+
+            </article>
         </section>
 
         <section class="perfil-refugio-publicar" id="sec-publicar">
@@ -308,7 +330,7 @@
                             <a href="/mascota/editar?id=<?= htmlspecialchars($mascota->fields['id']) ?>" class="btn-editar" title="Editar datos">
                                <span class="material-symbols-outlined">edit_square</span>
                            </a>
-                            <a href="/perfil/eliminar" class="btn-eliminar-mascota" title="Eliminar mascota">
+                            <a href="/perfil/eliminar?id=<?= htmlspecialchars($mascota->fields['id'], ENT_QUOTES, 'UTF-8') ?>" class="btn-eliminar-mascota" title="Eliminar mascota">
                                 <span class="material-symbols-outlined">delete</span>
                             </a>
                         </li>
@@ -317,6 +339,8 @@
             <?php endif; ?>
             </details>
         </section>
+
+
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>

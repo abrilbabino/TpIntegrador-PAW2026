@@ -64,7 +64,7 @@ $router->post('/mascota/registro/completar', 'MascotaController@completarRegistr
 $router->get('/buscar', 'PageController@buscar');
 $router->get('/mascota/editar', 'MascotaController@editarForm');
 $router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
-
+$router->get( '/perfil/eliminar', 'MascotaController@eliminar');
 $router->post('/mascota/subir-archivo', 'MascotaController@subirArchivoMascota');
 $router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 
@@ -92,6 +92,7 @@ $router->post('/register', 'AuthController@register');
 $router->get('/perfil', 'UserController@perfil');
 $router->post('/perfil/guardar', 'UserController@guardar');
 $router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
+$router->post('/perfil/refugio/ubicacion', 'UserController@guardarUbicacion');
 $router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
@@ -103,6 +104,11 @@ $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 // Solicitudes API
 $router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
 
+// Chat
+$router->get('/chat', 'ChatController@verChat');
+$router->post('/chat/enviar', 'ChatController@enviarMensaje');
+$router->get('/api/chat/mensajes', 'ChatController@apiMensajes');
+$router->get('/api/chat/list', 'ChatController@apiListarChatsActivos');
 // Errores
 $router->get('not_found', 'ErrorController@notFound');
 $router->get('internal_error', 'ErrorController@internalError');

@@ -19,6 +19,7 @@ class Refugio extends Model
         'email' => null,
         'ciudad' => null,
         'provincia' => null,
+        'direccion' => null,
         'descripcion' => null,
         'adoptables_disponibles' => 0,
     ];
@@ -39,7 +40,7 @@ class Refugio extends Model
             throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT r.*, u.ciudad, u.provincia 
+        $sql = "SELECT r.*, u.ciudad, u.provincia, u.direccion 
                 FROM refugio r 
                 LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
                 WHERE r.usuario_id = :id";

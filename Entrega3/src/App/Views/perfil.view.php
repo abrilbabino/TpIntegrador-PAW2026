@@ -252,6 +252,9 @@
                             <span class="perfil-estado estado-<?= strtolower($sol['estado'] ?? 'pendiente') ?>">
                                 <?= htmlspecialchars($sol['estado'] ?? 'PENDIENTE') ?>
                             </span>
+                            <?php if (($sol['estado'] ?? '') === 'APROBADA'): ?>
+
+                            <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>
