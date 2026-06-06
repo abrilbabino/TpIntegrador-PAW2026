@@ -582,7 +582,7 @@ class QueryBuilder
     public function obtenerRefugiosConUbicacion(string $tabla, array $filtros = []): array
     {
         $sql = "SELECT r.usuario_id as id, r.nombre_institucion, r.telefono, r.imagen, 
-                       u.latitud, u.longitud, u.ciudad, u.provincia
+                       u.latitud, u.longitud, u.ciudad, u.provincia, u.direccion
                 FROM {$tabla} r
                 INNER JOIN ubicacion u ON r.usuario_id = u.refugio_id
                 WHERE u.latitud IS NOT NULL AND u.longitud IS NOT NULL";

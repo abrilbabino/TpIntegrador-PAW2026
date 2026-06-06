@@ -143,6 +143,33 @@ class UserController extends Controller
         exit;
     }
 
+    public function guardarUbicacion()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userSession = $this->request->session('user');
+
+        if (empty($userSession) || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $userId = (int) $userSession['id'];
+        $postData = $this->request->post();
+
+        $errores = $this->model->actualizarUbicacionRefugio($userId, $postData);
+
+        if (!empty($errores)) {
+            $this->cargarPerfilRefugio($userSession, $errores, $postData);
+            return;
+        }
+
+        header("Location: /perfil?update=success#sec-ubicacion");
+        exit;
+    }
+
     public function guardarMascota()
     {
         if (session_status() === PHP_SESSION_NONE) {

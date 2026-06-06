@@ -13,6 +13,72 @@ class PAWRefugioPerfil {
         this.initEdicionInteractiva();
         this.initSolicitudesRefugio();
         this.initVerMasDescripcion();
+        this.initAutocompleteUbicacion();
+    }
+
+    initAutocompleteUbicacion() {
+        const inputUbi = document.getElementById("ubicacion-autocomplete");
+        const ulSugerencias = document.getElementById("sugerencias-ubicacion");
+        const inLat = document.getElementById("ubi_lat");
+        const inLon = document.getElementById("ubi_lon");
+        const inCiudad = document.getElementById("ubi_ciudad");
+        const inProv = document.getElementById("ubi_provincia");
+        const inPais = document.getElementById("ubi_pais");
+        const inDireccion = document.getElementById("ubi_direccion");
+        const btnGuardar = document.getElementById("btn-guardar-ubicacion");
+        
+        if (!inputUbi || !ulSugerencias) return;
+
+        let timeout = null;
+
+        inputUbi.addEventListener("input", () => {
+            clearTimeout(timeout);
+            const val = inputUbi.value.trim();
+            if (btnGuardar) btnGuardar.disabled = true; // reset
+            if (val.length < 3) {
+                ulSugerencias.style.display = "none";
+                return;
+            }
+            timeout = setTimeout(() => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&addressdetails=1`)
+                    .then(res => res.json())
+                    .then(data => {
+                        ulSugerencias.innerHTML = "";
+                        if (data.length === 0) {
+                            ulSugerencias.style.display = "none";
+                            return;
+                        }
+                        data.forEach(item => {
+                            const li = document.createElement("li");
+                            li.textContent = item.display_name;
+                            
+                            li.addEventListener("click", () => {
+                                inputUbi.value = item.display_name;
+                                ulSugerencias.style.display = "none";
+                                
+                                if (inLat) inLat.value = item.lat;
+                                if (inLon) inLon.value = item.lon;
+                                const addr = item.address || {};
+                                if (inCiudad) inCiudad.value = addr.city || addr.town || addr.village || addr.municipality || "";
+                                if (inProv) inProv.value = addr.state || addr.region || "";
+                                if (inPais) inPais.value = addr.country || "";
+                                if (inDireccion) inDireccion.value = item.display_name;
+                                if (btnGuardar) btnGuardar.disabled = false;
+                            });
+                            
+                            ulSugerencias.appendChild(li);
+                        });
+                        ulSugerencias.style.display = "block";
+                    })
+                    .catch(err => console.error(err));
+            }, 500);
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!inputUbi.contains(e.target) && !ulSugerencias.contains(e.target)) {
+                ulSugerencias.style.display = "none";
+            }
+        });
     }
 
     initVerMasDescripcion() {

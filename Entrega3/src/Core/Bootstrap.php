@@ -92,6 +92,7 @@ $router->post('/register', 'AuthController@register');
 $router->get('/perfil', 'UserController@perfil');
 $router->post('/perfil/guardar', 'UserController@guardar');
 $router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
+$router->post('/perfil/refugio/ubicacion', 'UserController@guardarUbicacion');
 $router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');

@@ -387,4 +387,34 @@ class User extends Model
 
         return $errores;
     }
+
+    public function actualizarUbicacionRefugio(int $userId, array $postData): array
+    {
+        $errores = [];
+
+        if (empty($postData['latitud']) || empty($postData['longitud'])) {
+            $errores['ubicacion'] = "Debe seleccionar una ubicación válida del buscador.";
+            return $errores;
+        }
+
+        $fields = [
+            'refugio_id' => $userId,
+            'latitud'    => (float) $postData['latitud'],
+            'longitud'   => (float) $postData['longitud'],
+            'ciudad'     => htmlspecialchars(trim($postData['ciudad'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'provincia'  => htmlspecialchars(trim($postData['provincia'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'pais'       => htmlspecialchars(trim($postData['pais'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'direccion'  => htmlspecialchars(trim($postData['direccion'] ?? ''), ENT_QUOTES, 'UTF-8'),
+        ];
+
+        $existing = $this->queryBuilder->select('ubicacion', ['refugio_id' => $userId]);
+
+        if (!empty($existing)) {
+            $this->queryBuilder->update('ubicacion', $fields, ['refugio_id' => $userId]);
+        } else {
+            $this->queryBuilder->insert('ubicacion', $fields);
+        }
+
+        return $errores;
+    }
 }
