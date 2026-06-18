@@ -1,0 +1,75 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Resultados del Test - PawMap{% endblock %}
+
+{% block main_attributes %}class="pagina-resultado"{% endblock %}
+
+{% block main %}
+    <section class="tarjeta-resultado">
+        <article class="resultado-veredicto">
+            <p class="resultado-match">¡Tenemos match!</p>
+
+            <span class="resultado-emoji">
+                {{ resultadoTest.tipo == 'perro' ? '🐶' : (resultadoTest.tipo == 'gato' ? '🐱' : '🐾') }}
+            </span>
+
+            <h2 class="resultado-titulo">
+                {% if resultadoTest.tipo == 'perro' %}
+                    Tu compañero ideal es un PERRO
+                {% elseif resultadoTest.tipo == 'gato' %}
+                    Tu compañero ideal es un GATO
+                {% else %}
+                    Podés adoptar perros o gatos
+                {% endif %}
+            </h2>
+
+            <p class="resultado-justificacion">
+                {{ resultadoTest.mensaje|default('') }}
+            </p>
+        </article>
+
+        <nav class="resultado-actions">
+            <a href="/adoptar" class="btn-primary">
+                <span class="material-symbols-outlined">search</span>
+                Ver todas las sugerencias
+            </a>
+        </nav>
+
+        {% if mascotas is not empty %}
+        <hr class="resultado-divider">
+
+        <section class="resultado-mascotas">
+            <h3 class="resultado-subtitulo">
+                <span class="material-symbols-outlined">pets</span>
+                Mascotas recomendadas para vos
+            </h3>
+
+            <section class="grilla-recomendadas">
+                {% for mascota in mascotas %}
+                <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="tarjeta-recomendada">
+                    <figure>
+                        <img src="/assets/img/{{ mascota.fields.imagen|default('default.jpg') }}"
+                             alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                    </figure>
+                    <article class="tarjeta-recomendada-body">
+                        <h4>{{ mascota.fields.nombre|default('Sin nombre') }}</h4>
+                        <p>
+                            {{ mascota.fields.edad|default('0') }} años
+                            &middot; {{ mascota.fields.tamano|default('')|capitalize }}
+                            &middot; {{ mascota.fields.temperamento|default('')|capitalize }}
+                        </p>
+                    </article>
+                </a>
+                {% endfor %}
+            </section>
+        </section>
+        {% endif %}
+
+        <footer class="resultado-volver">
+            <a href="/test-de-compatibilidad" class="btn-volver">
+                <span class="material-symbols-outlined">replay</span>
+                Volver a hacer el test
+            </a>
+        </footer>
+    </section>
+{% endblock %}

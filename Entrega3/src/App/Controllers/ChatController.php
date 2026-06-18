@@ -50,7 +50,7 @@ class ChatController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
 
-        require $this->viewsDir . '/chat.view.php';
+        echo $this->twig->render('chat.html.twig', get_defined_vars());
     }
 
     public function enviarMensaje()

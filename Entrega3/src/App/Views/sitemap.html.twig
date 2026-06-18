@@ -1,0 +1,57 @@
+{% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Páginas estáticas -->
+    <url>
+        <loc>{{ baseUrl }}/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>{{ baseUrl }}/adoptar</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>{{ baseUrl }}/como-adoptar</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>{{ baseUrl }}/contacto</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>{{ baseUrl }}/test-de-compatibilidad</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>{{ baseUrl }}/refugios</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Fichas de Mascotas -->
+    {% if mascotas is not empty %}
+        {% for mascota in mascotas %}
+        <url>
+            <loc>{{ baseUrl }}/mascota?id={{ mascota.fields.id|default('') }}</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.7</priority>
+        </url>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Perfiles de Refugios -->
+    {% if refugios is not empty %}
+        {% for refugio in refugios %}
+        <url>
+            <loc>{{ baseUrl }}/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id|default('')) }}</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.7</priority>
+        </url>
+        {% endfor %}
+    {% endif %}
+</urlset>

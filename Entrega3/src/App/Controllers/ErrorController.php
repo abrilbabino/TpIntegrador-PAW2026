@@ -13,7 +13,7 @@ class ErrorController extends Controller
         $titulo = 'Pagina no encontrada';
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this -> viewsDir . '/not-found.view.php';
+        echo $this->twig->render('not-found.html.twig', get_defined_vars());
     }
     public function internalError()
     {
@@ -21,13 +21,13 @@ class ErrorController extends Controller
         $titulo = "Error interno del servidor";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/internal_error.view.php';
+        echo $this->twig->render('internal_error.html.twig', get_defined_vars());
     }
     public function invalidFormat($e){
         http_response_code(400);
         $titulo = 'Invalid Format';
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/invalid_format.view.php';
+        echo $this->twig->render('invalid_format.html.twig', get_defined_vars());
     }
 }

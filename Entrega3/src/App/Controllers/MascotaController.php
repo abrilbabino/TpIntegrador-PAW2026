@@ -22,7 +22,7 @@ class MascotaController extends Controller
         $redes   = $this->redes;
         $metaDescription = "Conocé a los perros y gatos que esperan por un hogar. Filtrá por especie, tamaño y ubicación para encontrar a tu mascota ideal en PawMap.";
 
-        require $this->viewsDir . '/adoptar.view.php';
+        echo $this->twig->render('adoptar.html.twig', get_defined_vars());
     }
 
     public function apiMascotas() {
@@ -97,8 +97,23 @@ class MascotaController extends Controller
 
         
         $ubicaciones = [];
+        $ubicacionTexto = 'Ubicación a confirmar';
         if ($mascota && $mascota->fields['refugio_id']) {
             $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$mascota->fields['refugio_id']);
+            $ciudades = [];
+            $provincias = [];
+            foreach ($ubicaciones as $u) {
+                if (!empty($u['ciudad'])) $ciudades[] = $u['ciudad'];
+                if (!empty($u['provincia'])) $provincias[] = $u['provincia'];
+            }
+            $ciudades = array_unique($ciudades);
+            $provincias = array_unique($provincias);
+            $ciudadStr = implode(', ', $ciudades);
+            $provStr = implode(', ', $provincias);
+            $uTexto = trim(($ciudadStr ? $ciudadStr . ', ' : '') . $provStr, ', ');
+            if ($uTexto !== '') {
+                $ubicacionTexto = $uTexto;
+            }
         }
 
         $mediaCol = new MediaMascotaCollection();
@@ -113,7 +128,7 @@ class MascotaController extends Controller
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
         $esFavorito = in_array($id, $favoritosIds);
 
-        require $this->viewsDir . '/mascota.view.php';
+        echo $this->twig->render('mascota.html.twig', get_defined_vars());
     }
 
     public function editarForm()
@@ -163,7 +178,7 @@ class MascotaController extends Controller
         $redes = $this->redes;
         $errores  = [];
         $oldData  = [];
-        require $this->viewsDir . '/editar-mascota.view.php';
+        echo $this->twig->render('editar-mascota.html.twig', get_defined_vars());
     }
 
     public function editarGuardar()
@@ -309,7 +324,7 @@ class MascotaController extends Controller
             $redes = $this->redes;
             $oldData = $post;
             $fotos = $this->loadFotosMascota((int)$mascota->fields['id'], $mascota->fields['imagen'] ?? null);
-            require $this->viewsDir . '/editar-mascota.view.php';
+            echo $this->twig->render('editar-mascota.html.twig', get_defined_vars());
             return;
         }
 
@@ -330,7 +345,7 @@ class MascotaController extends Controller
                 $redes = $this->redes;
                 $oldData = $post;
                 $fotos = $this->loadFotosMascota((int)$mascota->fields['id'], $mascota->fields['imagen'] ?? null);
-                require $this->viewsDir . '/editar-mascota.view.php';
+                echo $this->twig->render('editar-mascota.html.twig', get_defined_vars());
                 return;
             }
         }
@@ -491,7 +506,7 @@ public function eliminarFoto() {
         $proximos = $coleccion->pendientes($registros,$hoy);
         $historial = $coleccion->completos($registros,$hoy);
 
-        require $this->viewsDir . '/libreta.view.php';
+        echo $this->twig->render('libreta.html.twig', get_defined_vars());
     }
 
     public function apiLibreta()

@@ -1,0 +1,279 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Mi Perfil - PawMap{% endblock %}
+
+{% block main_attributes %}class="perfil-container {{ errores is not empty ? 'is-editing' : '' }}"{% endblock %}
+
+{% block main %}
+    <section class="perfil-header">
+        <figure class="perfil-avatar-wrapper">
+            {% set fotoPerfil = user.foto_perfil|default('') %}
+            {% set avatarUrl = fotoPerfil is not empty ? '/assets/img/' ~ fotoPerfil : '' %}
+            
+            <span id="preview-placeholder" class="avatar-placeholder {{ avatarUrl is not empty ? 'hidden' : '' }}">
+                <span class="material-symbols-outlined">person</span>
+            </span>
+            
+            <img id="image-preview" src="{{ avatarUrl }}" data-original="{{ avatarUrl }}" alt="Foto de perfil" class="{{ avatarUrl is empty ? 'hidden' : '' }}">
+            
+            <figcaption class="avatar-hover-overlay">
+                <span class="material-symbols-outlined">photo_camera</span>
+            </figcaption>
+        </figure>
+
+        <h1>Hola, {{ user.nombre_usuario }}!</h1>
+        <p class="perfil-email">{{ user.email|default('') }}</p>
+        <a href="/logout" class="perfil-logout">
+            <span class="material-symbols-outlined">logout</span>
+            Cerrar sesión
+        </a>
+    </section>
+
+    <!-- Datos personales (formulario de edición) -->
+    <form id="perfil-form" method="POST" action="/perfil/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
+        <header class="perfil-datos-header">
+            <h2>Datos Personales</h2>
+            <button type="button" id="btn-edit-perfil" class="btn-editar" title="Editar datos">
+                <span class="material-symbols-outlined">edit_square</span>
+            </button>
+        </header>
+
+        <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
+        <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
+        
+        {% if errores.foto_perfil_o_logo is defined %}
+            <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+                <span class="material-symbols-outlined">error</span>
+                <section>
+                    <strong>Error con la foto de perfil:</strong>
+                    <p>{{ errores.foto_perfil_o_logo }}</p>
+                </section>
+            </aside>
+        {% endif %}
+
+        <ul class="perfil-datos-grid">
+            <li class="dato-item">
+                <span class="dato-label">Nombre de Usuario *</span>
+                <span class="dato-valor static-value">{{ user.nombre_usuario|default('—') }}</span>
+                <input type="text" name="nombre_usuario" value="{{ oldData.nombre_usuario|default(user.nombre_usuario|default('')) }}" data-original="{{ user.nombre_usuario|default('') }}" class="dato-valor-input input-value {{ errores.nombre_usuario is defined ? 'input-invalido' : '' }}" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required>
+                {% if errores.nombre_usuario is defined %}
+                    <span class="msg-error input-value">{{ errores.nombre_usuario }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">Nombre *</span>
+                <span class="dato-valor static-value">{{ adoptante.nombre|default('—') }}</span>
+                <input type="text" name="nombre" value="{{ oldData.nombre|default(adoptante.nombre|default('')) }}" data-original="{{ adoptante.nombre|default('') }}" class="dato-valor-input input-value {{ errores.nombre is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
+                {% if errores.nombre is defined %}
+                    <span class="msg-error input-value">{{ errores.nombre }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">Apellido *</span>
+                <span class="dato-valor static-value">{{ adoptante.apellido|default('—') }}</span>
+                <input type="text" name="apellido" value="{{ oldData.apellido|default(adoptante.apellido|default('')) }}" data-original="{{ adoptante.apellido|default('') }}" class="dato-valor-input input-value {{ errores.apellido is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
+                {% if errores.apellido is defined %}
+                    <span class="msg-error input-value">{{ errores.apellido }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">Mail *</span>
+                <span class="dato-valor static-value">{{ user.email|default('—') }}</span>
+                <input type="email" name="email" value="{{ oldData.email|default(user.email|default('')) }}" data-original="{{ user.email|default('') }}" class="dato-valor-input input-value {{ errores.email is defined ? 'input-invalido' : '' }}" required>
+                {% if errores.email is defined %}
+                    <span class="msg-error input-value">{{ errores.email }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">DNI *</span>
+                <span class="dato-valor static-value">{{ adoptante.dni|default('—') }}</span>
+                <input type="text" name="dni" value="{{ oldData.dni|default(adoptante.dni|default('')) }}" data-original="{{ adoptante.dni|default('') }}" class="dato-valor-input input-value {{ errores.dni is defined ? 'input-invalido' : '' }}" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required>
+                {% if errores.dni is defined %}
+                    <span class="msg-error input-value">{{ errores.dni }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">Fecha de Nacimiento</span>
+                <span class="dato-valor static-value">{{ adoptante.fecha_de_nacimiento|default('dd / mm / aaaa') }}</span>
+                <input type="date" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}">
+                {% if errores.fecha_de_nacimiento is defined %}
+                    <span class="msg-error input-value">{{ errores.fecha_de_nacimiento }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item">
+                <span class="dato-label">Teléfono</span>
+                <span class="dato-valor static-value">{{ user.contacto|default('—') }}</span>
+                <input type="tel" name="contacto" value="{{ oldData.contacto|default(user.contacto|default('')) }}" data-original="{{ user.contacto|default('') }}" class="dato-valor-input input-value {{ errores.contacto is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
+                {% if errores.contacto is defined %}
+                    <span class="msg-error input-value">{{ errores.contacto }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item input-value">
+                <span class="dato-label">Contraseña Actual</span>
+                <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input {{ errores.contrasena_actual is defined ? 'input-invalido' : '' }}" data-original="">
+                {% if errores.contrasena_actual is defined %}
+                    <span class="msg-error">{{ errores.contrasena_actual }}</span>
+                {% endif %}
+            </li>
+            <li class="dato-item input-value">
+                <span class="dato-label">Nueva Contraseña</span>
+                <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input {{ errores.contrasena is defined ? 'input-invalido' : '' }}" minlength="6" data-original="">
+                {% if errores.contrasena is defined %}
+                    <span class="msg-error">{{ errores.contrasena }}</span>
+                {% endif %}
+            </li>
+        </ul>
+
+        <footer class="perfil-datos-acciones">
+            <button type="submit" class="btn-guardar-perfil">Guardar</button>
+            <button type="button" id="btn-cancel-perfil" class="btn-cancelar-perfil">Cancelar</button>
+        </footer>
+    </form>
+
+    {% if app.request.query.get('update') == 'success' %}
+        <aside class="alerta-exito" role="status">
+            <span class="material-symbols-outlined">check_circle</span>
+            <section>
+                <strong>¡Cambios guardados!</strong>
+                <p>Tu perfil se ha actualizado correctamente.</p>
+            </section>
+        </aside>
+    {% endif %}
+
+    {% if app.request.query.get('error') is not null %}
+        <aside class="alerta-error" role="alert">
+            <span class="material-symbols-outlined">error</span>
+            <section>
+                <strong>Ocurrió un inconveniente</strong>
+                {% if app.request.query.get('error') == 'campos_obligatorios' %}
+                    <p>Por favor, completá todos los campos obligatorios (*).</p>
+                {% elseif app.request.query.get('error') == 'usuario_existente' %}
+                    <p>El nombre de usuario elegido ya se encuentra en uso por otra persona.</p>
+                {% else %}
+                    <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
+                {% endif %}
+            </section>
+        </aside>
+    {% endif %}
+
+    <!-- Navegación ancla (sticky) -->
+    <nav class="perfil-nav">
+        <a href="#sec-favoritos">
+            <span class="material-symbols-outlined">favorite</span>
+            Favoritos
+        </a>
+        <a href="#sec-solicitudes">
+            <span class="material-symbols-outlined">mail</span>
+            Solicitudes
+        </a>
+        <a href="#sec-adopciones">
+            <span class="material-symbols-outlined">pets</span>
+            Adopciones
+        </a>
+    </nav>
+
+    <!-- Sección: Favoritos -->
+    <section class="perfil-seccion" id="sec-favoritos">
+        <h3>Favoritos</h3>
+        {% if favoritos is empty %}
+            <article class="perfil-vacio">
+                <span class="material-symbols-outlined">pets</span>
+                <p>Todavía no tenés mascotas favoritas.</p>
+                <a href="/adoptar" class="btn-explorar">Explorar mascotas</a>
+            </article>
+        {% else %}
+            <ul class="perfil-cards-grid">
+                {% for fav in favoritos %}
+                    <li class="perfil-card">
+                        <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota') }}">
+                            <figure class="perfil-card-img">
+                                <img
+                                    src="/assets/img/{{ fav.imagen|default('default-pet.jpg') }}"
+                                    alt="{{ fav.nombre|default('Mascota') }}"
+                                />
+                            </figure>
+                            <h4>{{ fav.nombre|default('Sin nombre') }}</h4>
+                            <p>
+                                {{ fav.edad|default('?') }} año(s)
+                                · {{ fav.tamano|default('—') }}
+                                · {{ fav.temperamento|default('—') }}
+                            </p>
+                        </a>
+                        <form method="POST" action="/api/favorito/toggle" class="form-quitar-fav">
+                            <input type="hidden" name="mascota_id" value="{{ fav.id }}" />
+                            <button type="submit" class="btn-corazon activo" title="Quitar favorito">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
+    <!-- Sección: Solicitudes -->
+    <section class="perfil-seccion" id="sec-solicitudes">
+        <h3>Solicitudes de adopción</h3>
+        {% if solicitudes is empty %}
+            <article class="perfil-vacio">
+                <span class="material-symbols-outlined">mail</span>
+                <p>Todavía no hiciste solicitudes de adopción.</p>
+            </article>
+        {% else %}
+            <ul class="perfil-lista">
+                {% for sol in solicitudes %}
+                    <li class="perfil-lista-item">
+                        <h4>{{ sol.nombre|default('Mascota') }}</h4>
+                        <p>
+                            {{ sol.edad|default('?') }} año(s)
+                            · {{ sol.tamano|default('—') }}
+                            · {{ sol.temperamento|default('—') }}
+                        </p>
+                        <span class="perfil-estado estado-{{ sol.estado|default('pendiente')|lower }}">
+                            {{ sol.estado|default('PENDIENTE') }}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
+    <!-- Sección: Adopciones -->
+    <section class="perfil-seccion" id="sec-adopciones">
+        <h3>Adopciones</h3>
+        {% if adopciones is empty %}
+            <article class="perfil-vacio">
+                <span class="material-symbols-outlined">pets</span>
+                <p>Todavía no adoptaste ninguna mascota.</p>
+            </article>
+        {% else %}
+            <ul class="perfil-lista">
+                {% for ad in adopciones %}
+                    <li class="perfil-lista-item">
+                        <h4>{{ ad.nombre|default('Mascota') }}</h4>
+                        <p>
+                            {{ ad.edad|default('?') }} año(s)
+                            · {{ ad.tamano|default('—') }}
+                            · {{ ad.temperamento|default('—') }}
+                        </p>
+                        <a href="/seguimiento?id={{ ad.id }}" class="btn-ver-detalle" title="Ver detalle">
+                            <span class="material-symbols-outlined">directions_walk</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block content_after_main %}
+    <dialog id="avatar-modal" class="avatar-modal hidden">
+        <span id="avatar-modal-backdrop" class="avatar-modal-backdrop"></span>
+        <section class="avatar-modal-content">
+            <h3>Cambiar foto de perfil</h3>
+            <button type="button" id="modal-upload-btn" class="modal-option-btn bold-btn">Subir foto</button>
+            <button type="button" id="modal-delete-btn" class="modal-option-btn red-btn hidden">Eliminar foto actual</button>
+            <button type="button" id="modal-cancel-btn" class="modal-option-btn cancel-btn">Cancelar</button>
+        </section>
+    </dialog>
+{% endblock %}

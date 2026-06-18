@@ -14,3 +14,6 @@ Entrega3/logs/app.log
 # Ignorar imgenes subidas por usuarios
 Entrega3/public/assets/img/uploads/*
 !Entrega3/public/assets/img/uploads/.gitkeep
+
+# Caché de Twig
+Entrega3/src/App/Views/cache/

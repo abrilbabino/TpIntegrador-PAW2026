@@ -1,0 +1,123 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}{{ mascota.fields.nombre|default('Mascota') }} - PawMap{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
+{% endblock %}
+
+{% block main %}
+    <article class="seccion-detalle-mascota">
+        <section class="galeria-mascota">
+            <figure class="imagen-principal-desktop">
+                <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
+                     alt="{{ mascota.fields.nombre|default('Mascota') }}">
+            </figure>
+
+            {% if mediaExtras is not empty %}
+                <h4>GALERÍA</h4>
+            {% endif %}
+
+            <div class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+                
+                <figure class="carrusel-slide-item slide-principal-movil">
+                    <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
+                         alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                </figure>
+
+                {% if mediaExtras is not empty %}
+                    {% for media in mediaExtras %}
+                        {% if media.tipo == 'video' %}
+                            <figure class="carrusel-slide-item carrusel-slide--video">
+                                <video controls autoplay loop preload="metadata" playsinline muted poster="{{ media.poster|default('') }}">
+                                    <source src="/{{ media.url }}" type="video/mp4">
+                                </video>
+                            </figure>
+                        {% else %}
+                            <figure class="carrusel-slide-item">
+                                <img src="/{{ media.url }}" loading="lazy">
+                            </figure>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+        <aside class="info-mascota">
+            <div class="drag-handle"></div>
+            <header class="info-header">
+                <h2>{{ mascota.fields.nombre|default('Mascota') }}</h2>
+                {% set nombreSvg = mascota.fields.nombre|default('')|trim|lower %}
+                {% if nombreSvg is not empty %}
+                    <figure class="svg-mascota">
+                        <img src="/assets/svg/{{ nombreSvg }}.svg"
+                             alt="Animación de {{ mascota.fields.nombre|default('') }}"
+                             class="svg-mascota-img"
+                             onerror="this.parentElement.style.display='none'">
+                    </figure>
+                {% endif %}
+
+                <a href="mascota/libreta?id={{ mascota.fields.id|default('') }}" class="libreta">
+                    <span class="material-symbols-outlined">clinical_notes</span>
+                </a>
+                <form method="POST" action="/favorito" class="form-favorito">
+                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">    
+                    <button type="submit" class="boton-favorito {{ esFavorito is defined and esFavorito ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
+                        <span class="material-symbols-outlined">favorite</span>
+                    </button>
+                </form>
+            </header>
+
+            {% set esp = mascota.fields.especie|default('Desconocido')|capitalize %}
+
+            <p class="info-subtitulo">
+                {{ esp }} •
+                {{ ubicacionTexto|default('Ubicación a confirmar') }}
+            </p>
+
+            <section class="estadisticas-mascota">
+                <article class="estadistica-box">
+                    <span class="estadistica-label">Edad</span>
+                    <span class="estadistica-valor">{{ mascota.fields.edad|default('?') }} años</span>
+                </article>
+                <article class="estadistica-box">
+                    <span class="estadistica-label">Tamaño</span>
+                    <span class="estadistica-valor">{{ mascota.fields.tamano|default('?')|capitalize }}</span>
+                </article>
+                <article class="estadistica-box">
+                    <span class="estadistica-label">Sexo</span>
+                    <span class="estadistica-valor">{{ mascota.fields.sexo|default('?')|capitalize }}</span>
+                </article>
+            </section>
+
+            <section class="etiquetas-mascota">
+                <h4>Etiquetas</h4>
+                <ul class="etiquetas-container">
+                    <li class="etiqueta">{{ mascota.fields.temperamento|default('Juguetón')|capitalize }}</li>
+                    <li class="etiqueta">Ideal Depto</li>
+                    <li class="etiqueta">Convive con Gatos</li>
+                </ul>
+            </section>
+
+            <section class="sobre-mi">
+                <h4>SOBRE MÍ</h4>
+                <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
+            </section>
+
+            <section class="refugio-info">
+                <img src="/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}"
+                     alt="Logo refugio" class="img-refugio">
+                <figcaption class="refugio-texto">
+                    <span class="refugio-label">A cargo de:</span>
+                    <strong>{{ refugio.fields.nombre_institucion|default('Desconocido') }}</strong>
+                </figcaption>
+            </section>
+
+            <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+        </aside>
+    </article>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/mascota.js"></script>
+{% endblock %}

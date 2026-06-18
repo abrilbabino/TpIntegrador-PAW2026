@@ -1,0 +1,65 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Donaciones - PawMap{% endblock %}
+
+{% block main_attributes %}class="donar-main"{% endblock %}
+
+{% block main %}
+    <header class="hero-donaciones">
+        <h1>Donar a un refugio</h1>
+        <p>Tu ayuda transforma vidas peludas</p>
+    </header> 
+    <section class="formulario-donacion">
+        <figure class="imagen-refugio">
+            <img id="imagen-refugio" src="/assets/img/animalesTiernos.jpg" alt="Imagen de mascotas tiernas">
+            <figcaption id="descripcion-refugio">Tu donación nos ayuda a comprar alimento, pagar gastos veterinarios y seguir rescatando animalitos de la calle.</figcaption>
+            <figcaption id="gracias">¡Gracias por sumar tu granito de arena!</figcaption>
+        </figure>
+        <form class="formulario-donaciones" action="/procesar-donacion" method="POST">
+            <!-- Selector de Refugio -->
+            <label for="refugio_id">Seleccioná un refugio</label>
+            <select name="refugio_id" id="refugio_id" required>
+                {% if refugios is empty %}
+                    <option value="">No hay refugios disponibles</option>
+                {% endif %}
+                {% for refugio in refugios %}
+                    {% set seleccionado = (valores.refugio_id|default('') == refugio.getId()) %}
+                    <option value="{{ refugio.getId() }}"
+                            data-alias="{{ refugio.getAlias()|default('') }}"
+                            data-cvu="{{ refugio.getCvu()|default('') }}"
+                            {{ seleccionado ? 'selected' : '' }}>
+                        {{ refugio.getNombre() }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Datos Financieros (Autocompletados por JS al elegir refugio) -->
+            <label>ALIAS</label>
+            <input type="text" id="alias" readonly placeholder="Alias autocompletado">
+
+            <label>CVU</label>
+            <input type="text" id="cvu" readonly placeholder="CVU autocompletado">
+
+            <!-- Selección de Monto -->
+            <label>Elegir un monto</label>
+            <div class="opciones-monto">
+                <button type="button" onclick="setMonto(1000)">$1000</button>
+                <button type="button" onclick="setMonto(5000)">$5000</button>
+                <button type="button" onclick="setMonto(10000)">$10000</button>
+            </div>
+
+            <label for="monto_personalizado">Monto Personalizado</label>
+            <input type="number" name="monto" id="monto_personalizado" min="1" step="1" value="{{ valores.monto|default('') }}" placeholder="$6500" required>
+
+            <h3>Metodos de Pago:</h3>
+            <label><input type="radio" name="metodo_pago" value="mp" {{ valores.metodo_pago|default('') == 'mp' ? 'checked' : '' }} required> Mercado Pago</label>
+            <label><input type="radio" name="metodo_pago" value="transferencia" {{ valores.metodo_pago|default('') == 'transferencia' ? 'checked' : '' }}> Transferencia Bancaria</label>
+
+            <button type="submit" class="btn-confirmar" {{ refugios is empty ? 'disabled' : '' }}>¡CONFIRMAR Y PAGAR!</button>
+        </form>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/donar.js" defer></script>
+{% endblock %}

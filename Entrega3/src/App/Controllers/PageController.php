@@ -27,7 +27,7 @@ class PageController extends Controller
         $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
-        require $this->viewsDir . '/index.view.php';
+        echo $this->twig->render('index.html.twig', get_defined_vars());
     }
 
     public function mapa()
@@ -60,7 +60,7 @@ class PageController extends Controller
         $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
-        require $this->viewsDir . '/mapa.view.php';
+        echo $this->twig->render('mapa.html.twig', get_defined_vars());
     }
 
     public function buscar()
@@ -92,7 +92,7 @@ class PageController extends Controller
             $resultados_mixtos[] = $item;
         }
 
-        require $this->viewsDir . '/busqueda.view.php';
+        echo $this->twig->render('busqueda.html.twig', get_defined_vars());
     }
 
     public function iniciarSesion()
@@ -101,7 +101,7 @@ class PageController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
         $request = $this->request;
-        require $this->viewsDir . '/iniciar-sesion.view.php';
+        echo $this->twig->render('iniciar-sesion.html.twig', get_defined_vars());
     }
 
     public function comoAdoptar()
@@ -110,14 +110,14 @@ class PageController extends Controller
         $metaDescription = "Conocé el paso a paso de cómo adoptar una mascota en PawMap. Te guiamos en todo el proceso para encontrar a tu mejor amigo.";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/como-adoptar.view.php';
+        echo $this->twig->render('como-adoptar.html.twig', get_defined_vars());
     }
 
     public function adopcionExitosa()
     {
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/adopcion-exitosa.view.php';
+        echo $this->twig->render('adopcion-exitosa.html.twig', get_defined_vars());
     }
 
     public function contacto()
@@ -126,7 +126,7 @@ class PageController extends Controller
         $metaDescription = "Contactate con PawMap. Estamos para resolver tus dudas y ayudarte en el proceso de adopción de mascotas.";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/contacto.view.php';
+        echo $this->twig->render('contacto.html.twig', get_defined_vars());
     }
 
     public function contactoEnviar()
@@ -152,7 +152,7 @@ class PageController extends Controller
         $titulo = "Contacto Exitoso - PawMap";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/contacto-exitoso.view.php';
+        echo $this->twig->render('contacto-exitoso.html.twig', get_defined_vars());
     }
     public function donacion()
     {
@@ -160,7 +160,7 @@ class PageController extends Controller
         $metaDescription = "Apoyá a los refugios de animales haciendo una donación a través de PawMap. Tu aporte ayuda a salvar vidas.";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/donacion.view.php';
+        echo $this->twig->render('donacion.html.twig', get_defined_vars());
     }
 
     public function sitemap()
@@ -177,7 +177,7 @@ class PageController extends Controller
         header('Content-Type: application/xml; charset=utf-8');
 
         // El view se encargará de renderizar el XML puro
-        require $this->viewsDir . '/sitemap.view.php';
+        echo $this->twig->render('sitemap.html.twig', get_defined_vars());
         exit;
     }
 }

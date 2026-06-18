@@ -1,0 +1,16 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Refugios Aliados - PawMap{% endblock %}
+
+{% block main_attributes %}class="refugios-main"{% endblock %}
+
+{% block main %}
+    <header class="hero-refugios">
+        <h1>Nuestros Refugios Aliados</h1>
+        <p>Conocé a las organizaciones que cuidan y rescatan a tus futuras mascotas</p>
+    </header>
+
+    <section class="seccion-refugio">
+        <div data-paw-filtros="refugios" style="display: contents;"></div>
+    </section>
+{% endblock %}

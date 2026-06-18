@@ -18,7 +18,7 @@ class RefugioController extends Controller
 
 
 
-        require $this->viewsDir . '/refugios.view.php';
+        echo $this->twig->render('refugios.html.twig', get_defined_vars());
     }
 
     public function apiRefugios() {
@@ -55,6 +55,8 @@ class RefugioController extends Controller
 
         $refugio = null;
         $mascotas = [];
+        $ciudad = '';
+        $prov = '';
         $metaDescription = "Conocé este refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
         
         if ($this->model) {
@@ -70,6 +72,16 @@ class RefugioController extends Controller
                 $mascotas = $mascotaCollection->getAll(['refugio_id' => $id, 'estado_adopcion' => 'DISPONIBLE']);
                 
                 $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
+                $ciudades = [];
+                $provincias = [];
+                foreach ($ubicaciones as $u) {
+                    if (!empty($u['ciudad'])) $ciudades[] = $u['ciudad'];
+                    if (!empty($u['provincia'])) $provincias[] = $u['provincia'];
+                }
+                $ciudades = array_unique($ciudades);
+                $provincias = array_unique($provincias);
+                $ciudad = implode(', ', $ciudades);
+                $prov = implode(', ', $provincias);
             } catch (\Exception $e) {
                 error_log("Error cargando detalle de refugio: " . $e->getMessage());
             }
@@ -79,7 +91,7 @@ class RefugioController extends Controller
         $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
-        require $this->viewsDir . '/detalleRefugio.view.php';
+        echo $this->twig->render('detalleRefugio.html.twig', get_defined_vars());
     }
 
     private function getFiltros()
