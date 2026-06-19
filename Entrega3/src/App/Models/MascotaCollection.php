@@ -157,4 +157,34 @@ class MascotaCollection extends Model
             return (int)$mascota->fields['refugio_id'] === $usuarioId;
         }
     }
+
+    public function obtenerMascotasApiData(array $favoritosIds = []): array
+    {
+        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, m.tamano, m.temperamento, m.especie, m.refugio_id, 
+                       u.provincia, u.ciudad
+                FROM mascota m
+                LEFT JOIN ubicacion u ON m.refugio_id = u.refugio_id
+                WHERE m.estado_adopcion = 'DISPONIBLE'";
+
+        $rows = $this->queryBuilder->rawQuery($sql);
+
+        $mascotasData = [];
+        foreach ($rows as $row) {
+            $mascotasData[] = [
+                'id'           => $row['id'],
+                'nombre'       => $row['nombre'],
+                'imagen'       => $row['imagen'],
+                'edad'         => $row['edad'],
+                'tamano'       => $row['tamano'],
+                'temperamento' => $row['temperamento'],
+                'especie'      => $row['especie'],
+                'refugio_id'   => $row['refugio_id'],
+                'provincia'    => $row['provincia'],
+                'ciudad'       => $row['ciudad'],
+                'es_favorito'  => in_array($row['id'], $favoritosIds)
+            ];
+        }
+
+        return $mascotasData;
+    }
 }

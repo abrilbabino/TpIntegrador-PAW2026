@@ -28,33 +28,11 @@ class MascotaController extends Controller
     public function apiMascotas() {
         header('Content-Type: application/json');
         
-        $resultado = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
-        
-        $refugioCollection = $this->loadCollection(RefugioCollection::class);
-        
         $favoritoModel = new \Paw\App\Models\Favorito();
         $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
-        $mascotasData = [];
-        foreach ($resultado as $mascota) {
-            
-            $refugio = $refugioCollection->get($mascota->fields['refugio_id']);
-
-            $mascotasData[] = [
-                'id'           => $mascota->fields['id'],
-                'nombre'       => $mascota->fields['nombre'],
-                'imagen'       => $mascota->fields['imagen'],
-                'edad'         => $mascota->fields['edad'],
-                'tamano'       => $mascota->fields['tamano'],
-                'temperamento' => $mascota->fields['temperamento'],
-                'especie'      => $mascota->fields['especie'],
-                'refugio_id'   => $mascota->fields['refugio_id'],
-                'provincia'    => $refugio->fields['provincia'] ?? null,
-                'ciudad'       => $refugio->fields['ciudad'] ?? null,
-                'es_favorito'  => in_array($mascota->fields['id'], $favoritosIds)
-            ];
-        }
+        $mascotasData = $this->model->obtenerMascotasApiData($favoritosIds);
 
         $response = [
             'success' => true,

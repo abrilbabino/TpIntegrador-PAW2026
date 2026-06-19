@@ -44,13 +44,8 @@ class Controller
         // Configuración de Twig 
         $loader = new FilesystemLoader($this->viewsDir);
         
-        $cacheDir = $this->viewsDir . '/cache';
-        if (!is_dir($cacheDir)) {
-            mkdir($cacheDir, 0777, true);
-        }
-
         $this->twig = new Environment($loader, [
-            'cache' => $cacheDir,
+            'cache' => false,
             'auto_reload' => true,
         ]);
 
