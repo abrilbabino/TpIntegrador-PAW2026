@@ -50,7 +50,7 @@ class Controller
         }
 
         $this->twig = new Environment($loader, [
-            'cache' => false,
+            'cache' => $cacheDir,
             'auto_reload' => true,
         ]);
 
