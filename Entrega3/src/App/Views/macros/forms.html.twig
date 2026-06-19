@@ -1,0 +1,58 @@
+{% macro input(name, label, type = 'text', value = '', placeholder = '', required = false, attr = '', error = '') %}
+    <label for="{{ name }}">{{ label }}</label>
+    <input 
+        type="{{ type }}" 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        value="{{ value }}" 
+        placeholder="{{ placeholder }}" 
+        {{ required ? 'required' : '' }} 
+        {{ attr|raw }}
+        {{ error ? 'class="input-invalido" data-server-error="' ~ error|escape('html_attr') ~ '"' : '' }}
+    />
+{% endmacro %}
+
+{% macro password(name, label, placeholder = '', required = false, attr = '', error = '') %}
+    <label for="{{ name }}">{{ label }}</label>
+    <div class="campo-contraseña">
+        <input 
+            type="password" 
+            id="{{ name }}" 
+            name="{{ name }}" 
+            placeholder="{{ placeholder }}" 
+            {{ required ? 'required' : '' }} 
+            {{ attr|raw }}
+            {{ error ? 'class="input-invalido" data-server-error="' ~ error|escape('html_attr') ~ '"' : '' }}
+        />
+        <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
+    </div>
+{% endmacro %}
+
+{% macro select(name, label, options, selected = '', required = false, attr = '', error = '') %}
+    <label for="{{ name }}">{{ label }}</label>
+    <select 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        {{ required ? 'required' : '' }} 
+        class="{{ error ? 'input-invalido' : '' }}" 
+        {{ attr|raw }}
+        {{ error ? 'data-server-error="' ~ error|escape('html_attr') ~ '"' : '' }}
+    >
+        {% for value, text in options %}
+            <option value="{{ value }}" {{ value == selected ? 'selected' : '' }}>{{ text }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro textarea(name, label, value = '', placeholder = '', required = false, attr = '', error = '') %}
+    <label for="{{ name }}">{{ label }}</label>
+    <textarea 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        placeholder="{{ placeholder }}" 
+        {{ required ? 'required' : '' }} 
+        class="{{ error ? 'input-invalido' : '' }}" 
+        {{ attr|raw }}
+        {{ error ? 'data-server-error="' ~ error|escape('html_attr') ~ '"' : '' }}
+    >{{ value }}</textarea>
+{% endmacro %}

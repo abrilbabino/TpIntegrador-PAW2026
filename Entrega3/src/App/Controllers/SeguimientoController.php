@@ -122,7 +122,7 @@ class SeguimientoController extends Controller
             }
         }
 
-        require $this->viewsDir . '/seguimiento.view.php';
+        echo $this->twig->render('seguimiento.html.twig', get_defined_vars());
     }
 
     public function subirArchivo()

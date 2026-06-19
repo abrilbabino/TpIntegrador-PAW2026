@@ -1,0 +1,167 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}{{ refugio ? 'Perfil de ' ~ refugio.getNombre() : 'Refugio no encontrado' }} - PawMap{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/refugio-perfil.css" />
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
+    
+    {% if refugio %}
+        {% set cantidadMascotas = mascotas|length %}
+        
+        {% set ubicacionRaw = (ciudad ? ciudad ~ ', ' : '') ~ prov %}
+        {% set ubicacionText = ubicacionRaw|trim(', ') ?: 'A confirmar' %}
+
+        {% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AnimalShelter",
+            "name": "{{ refugio.getNombre() }}",
+            "image": "{{ baseUrl }}/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}",
+            "description": "{{ refugio.getDescripcion() ?: 'Sin descripción disponible.' }}",
+            "telephone": "{{ refugio.fields.telefono|default('') }}",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "{{ ciudad }}",
+                "addressRegion": "{{ prov }}",
+                "addressCountry": "AR"
+            }
+        }
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% if not refugio %}
+        <section class="perfil-not-found">
+            <span class="material-symbols-outlined perfil-not-found__icon">error</span>
+            <h2 class="perfil-not-found__title">Refugio no encontrado</h2>
+            <p>El refugio que estás buscando no existe o fue eliminado.</p>
+            <a href="/refugios" class="perfil-not-found__link">Volver a Refugios</a>
+        </section>
+    {% else %}
+
+    <article class="perfil-layout">
+        <aside class="perfil-sidebar">
+            <figure class="perfil-logo-wrapper">
+                <img src="/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}"
+                     alt="Logo de {{ refugio.getNombre() }}"
+                     class="perfil-logo">
+            </figure>
+
+            <header class="perfil-title-section perfil-title-mobile">
+                <h1>{{ refugio.getNombre() }}</h1>
+                <p class="perfil-badge-aliado">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Refugio Aliado PawMap en {{ ubicacionText }}</span>
+                </p>
+            </header>
+
+            <nav class="perfil-actions" aria-label="Acciones del refugio">
+                <a href="/contacto?refugio={{ refugio.getId() }}" class="perfil-btn-primary">
+                    <span class="material-symbols-outlined">mail</span> Contactar al Refugio
+                </a>
+                {% if refugio.fields.telefono is not empty %}
+                <a href="tel:{{ refugio.fields.telefono }}" class="perfil-btn-secondary llamar-mobile">
+                    <span class="material-symbols-outlined">call</span> Llamar
+                </a>
+                {% endif %}
+            </nav>
+
+            <ul class="perfil-stats">
+                <li class="stat-item">
+                    <span class="stat-icon"><span class="material-symbols-outlined">pets</span></span>
+                    <span class="stat-info">
+                        <strong class="stat-label">Adoptables</strong>
+                        <span class="stat-value">{{ cantidadMascotas }} mascotas</span>
+                    </span>
+                </li>
+                <li class="stat-item">
+                    <span class="stat-icon"><span class="material-symbols-outlined">location_on</span></span>
+                    <span class="stat-info">
+                        <strong class="stat-label">Ubicación</strong>
+                        <span class="stat-value">{{ ciudad ?: (prov ?: 'N/A') }}</span>
+                    </span>
+                </li>
+                <li class="stat-item">
+                    <span class="stat-icon"><span class="material-symbols-outlined">email</span></span>
+                    <span class="stat-info">
+                        <strong class="stat-label">Email</strong>
+                        <span class="stat-value stat-value--small" title="{{ refugio.fields.email|default('No disponible') }}">{{ refugio.fields.email|default('No disponible') }}</span>
+                    </span>
+                </li>
+            </ul>
+        </aside>
+
+        <section class="perfil-content">
+            <header class="perfil-title-section perfil-title-desktop">
+                <h1>{{ refugio.getNombre() }}</h1>
+                <p class="perfil-badge-aliado">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Refugio Aliado PawMap en {{ ubicacionText }}</span>
+                </p>
+            </header>
+
+            <section class="perfil-about-container">
+                <header class="perfil-about-header">
+                    <h2 class="perfil-section-title">
+                        <span class="material-symbols-outlined">info</span> Sobre Nosotros
+                    </h2>
+                    {% if refugio.fields.telefono is not empty %}
+                    <a href="tel:{{ refugio.fields.telefono }}" class="perfil-btn-secondary llamar-desktop">
+                        <span class="material-symbols-outlined">call</span> Llamar
+                    </a>
+                    {% endif %}
+                </header>
+                <section class="perfil-about">
+                    <p>{{ refugio.getDescripcion()|default('Sin descripción disponible.')|nl2br }}</p>
+                    <ul class="perfil-tags">
+                        <li class="perfil-tag"><span class="material-symbols-outlined">verified</span>Adopción Responsable</li>
+                        <li class="perfil-tag"><span class="material-symbols-outlined">verified</span>Cuidado Integral</li>
+                        <li class="perfil-tag"><span class="material-symbols-outlined">verified</span>Atención Veterinaria</li>
+                    </ul>
+                </section>
+            </section>
+        </section>
+
+        <section class="perfil-pets-section">
+            <h2 class="perfil-section-title">Mascotas en Adopción</h2>
+
+            {% if mascotas is empty %}
+                <p class="perfil-pets-empty">Este refugio no tiene mascotas publicadas actualmente.</p>
+            {% else %}
+                <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+                    {% for mascota in mascotas %}
+                        <article class="tarjeta-mascota">
+                            <figure class="tarjeta-imagen">
+                                <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="link-imagen">
+                                    <img src="/assets/img/{{ mascota.fields.imagen|default('default.jpg') }}"
+                                         alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                                </a>
+                                <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
+                                    <button type="submit" class="btn-favorito {{ mascota.fields.id in (favoritosIds|default([])) ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
+                                        <span class="material-symbols-outlined">favorite</span>
+                                    </button>
+                                </form>
+                            </figure>
+                            <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="verPerfil">
+                                <figcaption class="tarjeta-info">
+                                    <h3>{{ mascota.fields.nombre|default('Sin nombre') }}</h3>
+                                    <p>
+                                        {{ mascota.fields.edad|default('0') }} años -
+                                        {{ mascota.fields.tamano|default('Desconocido')|capitalize }} -
+                                        {{ mascota.fields.temperamento|default('Desconocido')|capitalize }}
+                                    </p>
+                                </figcaption>
+                            </a>
+                        </article>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        </section>
+
+    </article>
+    {% endif %}
+{% endblock %}

@@ -21,7 +21,7 @@ class DonacionController extends Controller
         $valores = [];
         $refugios = $this->model->getAll();
 
-        require $this->viewsDir . '/donacion.view.php';
+        echo $this->twig->render('donacion.html.twig', get_defined_vars());
     }
 
     public function enviar()
@@ -40,7 +40,7 @@ class DonacionController extends Controller
 
         if (!empty($errores)) {
             $refugios = $this->model->getAll();
-            require $this->viewsDir . '/donacion.view.php';
+            echo $this->twig->render('donacion.html.twig', get_defined_vars());
             return;
         }
 
@@ -49,7 +49,7 @@ class DonacionController extends Controller
         } catch (\Exception $e) {
             $errores[] = "No se encontro el refugio seleccionado.";
             $refugios = $this->model->getAll();
-            require $this->viewsDir . '/donacion.view.php';
+            echo $this->twig->render('donacion.html.twig', get_defined_vars());
             return;
         }
 
@@ -70,21 +70,21 @@ class DonacionController extends Controller
             }
 
             $refugios = $this->model->getAll();
-            require $this->viewsDir . '/donacion.view.php';
+            echo $this->twig->render('donacion.html.twig', get_defined_vars());
             return;
         }
         if ($valores['metodo_pago'] === 'transferencia') {
             $monto = number_format((float) $valores['monto'], 2, ',', '.');
             
             // Mandamos a la vista donde ve tu CBU/Alias
-            require $this->viewsDir . '/donacion-exitosa.view.php';
+            echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
             return;
         }
 
         $monto = number_format((float) $valores['monto'], 2, ',', '.');
         $metodoPago = $valores['metodo_pago'] === 'mp' ? 'Mercado Pago' : 'Transferencia bancaria';
 
-        require $this->viewsDir . '/donacion-exitosa.view.php';
+        echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
     }
 
     public function enviarComprobante()
@@ -141,7 +141,7 @@ class DonacionController extends Controller
             'error' => $errorEnvio
         ];
 
-        require $this->viewsDir . '/donacion-exitosa.view.php';
+        echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
     }
 
 

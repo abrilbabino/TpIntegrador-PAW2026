@@ -1,0 +1,94 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Inicio - PawMap{% endblock %}
+
+{% block head %}
+    <script type="application/ld+json">
+    {% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PawMap",
+      "url": "{{ baseUrl }}/",
+      "logo": "{{ baseUrl }}/assets/img/icon.png",
+      "description": "Plataforma para conectar refugios y personas que desean adoptar mascotas en Argentina.",
+      "sameAs": [
+        "https://www.facebook.com/pawmap",
+        "https://www.instagram.com/pawmap"
+      ]
+    }
+    </script>
+{% endblock %}
+
+{% block main %}
+    <header class="hero-inicio">
+        <h1>Encuentra a tu nuevo<br>mejor amigo</h1>
+        <p>Explora mascotas cerca de tu ubicación.</p>
+    </header>
+
+    <section class="seccion-mapa">
+        <figure id="leaflet-map" class="mapa-interactivo" data-refugios='{{ refugiosMapa|default([])|json_encode(constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}'></figure>
+        <a href="/mapa" class="boton-principal boton-ancho">Ver Mapa</a>
+    </section>
+
+    <section class="seccion-incentivar-adopcion">
+        
+        <article class="incentivar-adopcion-movil">
+            <h2 class="titulo-incentivar-adopcion">¡Encontrá tu match!</h2>
+            
+            <div class="tarjeta-incentivar-adopcion">
+                <p>¿Qué tipo de mascota buscás?</p>
+                <a href="/test-de-compatibilidad" class="boton-secundario">Realizar Test</a>
+            </div>
+        </article>
+
+        <article class="incentivar-adopcion-desktop">
+            <header class="cuerpo-incentivar-adopcion">
+                <h2>Animate a Adoptar</h2>
+            </header>
+            <a href="/como-adoptar" class="boton-secundario">Guía de Adopción</a>
+        </article>
+
+    </section>
+
+    <section class="seccion-adopcion">
+        <h2>Mascotas en Adopción</h2>
+        
+        <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+            {% if mascotas is not empty %}
+                {% for mascota in mascotas %}
+                    {% if mascota.fields is defined %}
+                        <article class="tarjeta-mascota">
+                            <figure class="tarjeta-imagen">
+                                <a href="/mascota?id={{ mascota.fields.id|default('')|escape('html_attr') }}" class="link-imagen">
+                                    <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}" alt="Foto de {{ mascota.fields.nombre|default('Mascota') }}">
+                                </a>
+                                <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('')|escape('html_attr') }}">
+                                    <button type="submit" class="btn-favorito {{ mascota.fields.id in (favoritosIds|default([])) ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
+                                        <span class="material-symbols-outlined">favorite</span>
+                                    </button>
+                                </form>
+                            </figure>
+
+                            <a href="/mascota?id={{ mascota.fields.id|default('')|escape('html_attr') }}" class="verPerfil"> 
+                                <section class="tarjeta-info">
+                                    <h3>{{ mascota.fields.nombre|default('') }}</h3>
+                                    <p>
+                                        {{ mascota.fields.edad|default('') }} años - 
+                                        {{ mascota.fields.tamano|default('')|capitalize }} - 
+                                        {{ mascota.fields.temperamento|default('')|capitalize }}
+                                    </p>
+                                </section>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No hay mascotas en adopción en este momento.</p>
+            {% endif %}
+        </section>
+
+        <a href="/adoptar" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
+    </section>
+{% endblock %}

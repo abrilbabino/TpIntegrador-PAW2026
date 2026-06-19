@@ -67,7 +67,7 @@ class UserController extends Controller
         }
  
         $titulo = "Mi Perfil - PawMap";
-        require $this->viewsDir . '/perfil.view.php';
+        echo $this->twig->render('perfil.html.twig', get_defined_vars());
     }
  
     private function cargarPerfilRefugio(array $user, array $errores = [], array $oldData = [], array $erroresMascota = [], array $oldMascota = []): void
@@ -111,7 +111,7 @@ class UserController extends Controller
         }
         $mascotaPublicada = ($this->request->get('publicado') === '1');
         $titulo = "Mi Refugio - PawMap";
-        require $this->viewsDir . '/perfil-refugio.view.php';
+        echo $this->twig->render('perfil-refugio.html.twig', get_defined_vars());
     }
 
 

@@ -21,7 +21,7 @@ class TestController extends Controller
         $preguntaCollection->setQueryBuilder($qb);
         $preguntas = $preguntaCollection->getAll();
 
-        require $this->viewsDir . '/test-compatibilidad.view.php';
+        echo $this->twig->render('test-compatibilidad.html.twig', get_defined_vars());
     }
 
     public function resultado()
@@ -54,6 +54,6 @@ class TestController extends Controller
         $titulo = "Resultados del Test - PawMap";
         $menu = $this->menu;
         $redes = $this->redes;
-        require $this->viewsDir . '/resultado-test.view.php';
+        echo $this->twig->render('resultado-test.html.twig', get_defined_vars());
     }
 }
