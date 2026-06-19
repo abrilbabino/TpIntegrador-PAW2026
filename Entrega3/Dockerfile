@@ -1,4 +1,4 @@
-FROM php:8.4-apache
+FROM php:8.5-apache
 
 # 1. Habilitar mod_rewrite para el ruteo MVC
 RUN a2enmod rewrite

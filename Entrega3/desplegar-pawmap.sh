@@ -39,7 +39,6 @@ done
 # --- Configuración ---
 GCP_PROJECT_ID="project-f3583ede-db03-4872-95c"
 REGION="us-central1"
-ZONE="us-central1-a"
 CLUSTER_NAME="pawmap-cluster"
 REGISTRY="${REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/pawmap-repo/pawmap-app"
 DOMAIN="pawmap.lat"
@@ -120,20 +119,51 @@ fi
 write_step "PASO 0/6" "Verificando prerrequisitos..."
 
 echo -e "${GRAY}  Verificando gcloud...${NC}"
-GCLOUD_VER=$(gcloud --version 2>&1 | head -n 1)
+if ! command -v gcloud &> /dev/null; then
+    echo -e "${RED}  [!] ERROR: gcloud no está instalado o no está en el PATH${NC}"
+    exit 1
+fi
+set +e +o pipefail
+GCLOUD_VER="$(gcloud --version 2>&1)"
+GCLOUD_VER="${GCLOUD_VER%%$'\n'*}"
+set -e -o pipefail
 echo -e "${DARKGRAY}    ${GCLOUD_VER}${NC}"
 
 echo -e "${GRAY}  Verificando kubectl...${NC}"
-KUBECTL_VER=$(kubectl version --client 2>&1 | head -n 1)
+if ! command -v kubectl &> /dev/null; then
+    echo -e "${RED}  [!] ERROR: kubectl no está instalado o no está en el PATH${NC}"
+    exit 1
+fi
+set +e +o pipefail
+KUBECTL_VER="$(kubectl version --client 2>&1)"
+KUBECTL_VER="${KUBECTL_VER%%$'\n'*}"
+set -e -o pipefail
 echo -e "${DARKGRAY}    ${KUBECTL_VER}${NC}"
 
 echo -e "${GRAY}  Verificando docker...${NC}"
-DOCKER_VER=$(docker version --format '{{.Client.Version}}' 2>&1)
+if ! command -v docker &> /dev/null; then
+    echo -e "${RED}  [!] ERROR: docker no está instalado o no está en el PATH${NC}"
+    exit 1
+fi
+set +e +o pipefail
+DOCKER_VER="$(docker version --format '{{.Client.Version}}' 2>&1)"
+set -e -o pipefail
 echo -e "${DARKGRAY}    Docker Client Version: ${DOCKER_VER}${NC}"
 
-echo -e "${GRAY}  Verificando terraform...${NC}"
-TF_VER=$(terraform version 2>&1 | head -n 1)
-echo -e "${DARKGRAY}    ${TF_VER}${NC}"
+echo -e "${GRAY}  Verificando terraform/tofu...${NC}"
+if command -v tofu &> /dev/null; then
+    TF_CMD="tofu"
+elif command -v terraform &> /dev/null; then
+    TF_CMD="terraform"
+else
+    echo -e "${RED}  [!] ERROR: no se encontró 'tofu' ni 'terraform' en el PATH${NC}"
+    exit 1
+fi
+set +e +o pipefail
+TF_VER="$("$TF_CMD" version 2>&1)"
+TF_VER="${TF_VER%%$'\n'*}"
+set -e -o pipefail
+echo -e "${DARKGRAY}    Usando: ${TF_CMD} -> ${TF_VER}${NC}"
 
 echo ""
 echo -e "${GREEN}  [OK] Todos los prerrequisitos verificados${NC}"
@@ -168,23 +198,22 @@ if [ "$DRY_RUN" = true ]; then
 else
     pushd "$TERRAFORM_DIR" > /dev/null
 
-    echo -e "${GRAY}  Ejecutando terraform init...${NC}"
-    terraform init -upgrade
+    echo -e "${GRAY}  Ejecutando ${TF_CMD} init...${NC}"
+    "$TF_CMD" init -upgrade
     check_command_success
 
     echo ""
-    echo -e "${GRAY}  Ejecutando terraform plan...${NC}"
-    terraform plan -out=tfplan \
+    echo -e "${GRAY}  Ejecutando ${TF_CMD} plan...${NC}"
+    "$TF_CMD" plan -out=tfplan \
         -var="project_id=${GCP_PROJECT_ID}" \
         -var="region=${REGION}" \
-        -var="zone=${ZONE}" \
         -var="cluster_name=${CLUSTER_NAME}"
     check_command_success
 
-    if confirm_step "¿Aplicar los cambios de Terraform para desplegar el clúster GKE?"; then
+    if confirm_step "¿Aplicar los cambios de Terraform/Tofu para desplegar el clúster GKE?"; then
         echo ""
-        echo -e "${GRAY}  Aplicando Terraform (esto puede tardar 8-15 minutos)...${NC}"
-        terraform apply tfplan
+        echo -e "${GRAY}  Aplicando ${TF_CMD} (esto puede tardar 8-15 minutos)...${NC}"
+        "$TF_CMD" apply tfplan
         check_command_success
         echo -e "${GREEN}  [OK] Infraestructura de GCP creada con éxito${NC}"
     fi
@@ -201,7 +230,7 @@ if [ "$DRY_RUN" = true ]; then
 else
     # 1. Configurar credenciales del clúster kubectl
     echo -e "${GRAY}  Configurando credenciales de kubectl para el clúster ${CLUSTER_NAME}...${NC}"
-    gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$ZONE" --project "$GCP_PROJECT_ID"
+    gcloud container clusters get-credentials "$CLUSTER_NAME" --region "$REGION" --project "$GCP_PROJECT_ID"
     check_command_success
 
     # 2. Autenticar Docker con Artifact Registry de GCP
@@ -254,6 +283,10 @@ else
 
         echo -e "${GRAY}  Aplicando Ingress...${NC}"
         kubectl apply -f "${K8S_DIR}/ingress.yaml"
+        check_command_success
+
+        echo -e "${GRAY}  Aplicando Cert-Manager ClusterIssuer...${NC}"
+        kubectl apply -f "${K8S_DIR}/cluster-issuer.yaml"
         check_command_success
 
         # Forzar reinicio de pods para garantizar que tomen la última versión subida

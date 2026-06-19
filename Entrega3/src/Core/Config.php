@@ -28,7 +28,6 @@ class Config
         $this->configs["MAIL_PORT"]     = getenv("MAIL_PORT")     ?? '587';
         $this->configs["MAIL_PASS"]     = getenv("MAIL_PASS")     ?? '';
 
-        $this->configs["GOOGLE_MAPS_KEY"] = getenv("GOOGLE_MAPS_KEY") ?? '';
     }
 
     public function joinPaths()

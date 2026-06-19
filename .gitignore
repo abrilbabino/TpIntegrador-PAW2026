@@ -17,3 +17,11 @@ Entrega3/public/assets/img/uploads/*
 
 # Caché de Twig
 Entrega3/src/App/Views/cache/
+
+# Ignorar config.json
+Entrega3/config.json
+# Ignorar Terraform
+Entrega3/terraform/.terraform/
+Entrega3/terraform/tfplan
+
+
