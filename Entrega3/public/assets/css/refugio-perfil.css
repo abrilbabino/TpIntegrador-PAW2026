@@ -141,7 +141,7 @@
 
 .stat-label {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--color-texto);
     text-transform: uppercase;
     font-weight: 800;
     letter-spacing: 0.05em;

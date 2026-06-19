@@ -97,7 +97,7 @@
   position: absolute;
   top: -5px;
   right: -8px;
-  background-color: #E63946;
+  background-color: var(--color-rojo);
   color: white;
   font-size: 0.7rem;
   font-weight: bold;
@@ -357,6 +357,7 @@ main>header p {
 
   main>header,
   .hero {
+    min-height: 350px;
     align-items: center;
     text-align: center;
     padding: 3rem 5rem;

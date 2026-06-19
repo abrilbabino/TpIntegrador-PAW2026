@@ -30,6 +30,11 @@ class SeguimientoController extends Controller
         $redes = $this->redes;
         $titulo = "Seguimiento Post-Adopción - PawMap";
 
+        $errorUpload = $this->request->session('error_upload');
+        if ($errorUpload) {
+            unset($_SESSION['error_upload']);
+        }
+
         $qb = $this->model->getQueryBuilder();
 
         // Usamos la colección de mascotas para obtener objetos completos
@@ -60,13 +65,12 @@ class SeguimientoController extends Controller
                 $registros = $registroCol->getByMascota($mascotaId);
                 
                 // LÓGICA DEL BANNER DINÁMICO
-                $estadoGlobal = 'dia'; // Asumimos 'Todo al día'
+                $estadoGlobal = 'dia';
                 $registrosPendientes = [];
 
                 foreach ($registros as $r) {
                     if (strtolower($r->fields['estado']) === 'pendiente') {
                         $registrosPendientes[] = $r;
-                        // Si está pendiente y la fecha ya pasó, alertamos
                         if (strtotime($r->fields['fecha_programada']) < time()) {
                             $estadoGlobal = 'alerta';
                         }
@@ -80,14 +84,10 @@ class SeguimientoController extends Controller
                     $proximoTurno = reset($registrosPendientes);
                 }
 
-                // LÓGICA DE ENCUESTAS ESCALONADAS (ROADMAP)
                 $fechaAdopcion = $mascotaSeleccionada->fields['fecha_adopcion'];
                 $diasDesdeAdopcion = $fechaAdopcion ? floor((time() - strtotime($fechaAdopcion)) / 86400) : 0;
                 
-                // Buscar qué encuestas ya completó
-                $sqlEncuestas = "SELECT etapa FROM encuesta_adopcion WHERE mascota_id = :mid AND adoptante_id = :aid";
-                $encuestasRealizadas = $qb->rawQuery($sqlEncuestas, [':mid' => $mascotaId, ':aid' => $adoptanteId]);
-                $etapasRealizadas = array_column($encuestasRealizadas, 'etapa');
+                $etapasRealizadas = $qb->obtenerEtapasEncuestasCompletadas($mascotaId, $adoptanteId);
 
                 $encuestasConfig = [
                     ['id' => '3_dias', 'titulo' => 'Alimentación y Sueño', 'dias' => 3],
@@ -135,8 +135,11 @@ class SeguimientoController extends Controller
 
         $registroId = $this->request->get('registro_id');
         $tipoArchivo = $this->request->get('tipo_archivo') ?? 'comprobante';
+        $mascotaId = $this->request->get('mascota_id');
+        $archivo = $this->request->file('archivo');
 
         if (!$mascotaId || !$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
+            $this->request->setSession('error_upload', 'El archivo es demasiado pesado (límite de 2MB) o hubo un error al subirlo.');
             header('Location: /seguimiento?id=' . $mascotaId);
             exit;
         }

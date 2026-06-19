@@ -30,7 +30,7 @@
 .avatar {
   width: 100px;
   height: 100px;
-  background-color: #ddd;
+  background-color: var(--color-gris-claro);
   border-radius: 50%;
   margin: 1.5rem auto;
 
@@ -41,7 +41,7 @@
 
 .avatar span {
   font-size: 50px;
-  color: #777;
+  color: var(--color-gris);
 }
 
 .login-form,
@@ -68,7 +68,7 @@
 .registro-form input,
 .registro-input {
   padding: 0.85rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-gris-claro);
   border-radius: 4px;
   font-size: 1rem;
   font-family: inherit;
@@ -100,7 +100,7 @@
   position: absolute;
   right: 0.75rem;
   cursor: pointer;
-  color: #7f8c8d;
+  color: var(--color-texto);
   font-size: 1.3rem;
   user-select: none;
   transition: color 0.3s ease;
@@ -139,7 +139,7 @@
 .login-section p,
 .registro-section p {
   text-align: center;
-  color: #555;
+  color: var(--color-texto);
   font-size: 0.95rem;
   margin: 1.5rem 0 0 0;
 }
@@ -216,7 +216,7 @@
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-gris-claro);
 }
 
 .registro-header h2 {
@@ -230,7 +230,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #7f8c8d;
+  color: var(--color-texto);
   padding: 0;
   width: 40px;
   height: 40px;
@@ -244,7 +244,7 @@
 }
 
 .registro-cerrar:hover {
-  background-color: #f1f1f1;
+  background-color: var(--color-gris-claro);
   color: var(--color-violeta);
 }
 
@@ -253,9 +253,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #fdecea;
-  color: #b71c1c;
-  border: 1px solid #f5c6cb;
+  background-color: var(--color-rojo-claro);
+  color: var(--color-rojo);
+  border: 1px solid var(--color-rojo);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
@@ -265,7 +265,7 @@
 
 .login-error span {
   font-size: 1.2rem;
-  color: #c62828;
+  color: var(--color-rojo);
 }
 
 /* Estilos para pantallas grandes */

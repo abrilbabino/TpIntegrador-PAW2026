@@ -41,7 +41,7 @@
 
 .perfil-avatar-wrapper .material-symbols-outlined {
   font-size: 2.5rem;
-  color: #888;
+  color: var(--color-gris);
 }
 
 .perfil-header h1 {
@@ -52,7 +52,7 @@
 
 .perfil-email {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-texto);
   margin: 0;
 }
 
@@ -119,7 +119,7 @@
 .dato-label {
   font-size: 0.75rem;
   font-style: italic;
-  color: #888;
+  color: var(--color-gris);
 }
 
 .dato-valor {
@@ -146,7 +146,7 @@
   padding: 0.8rem 0.5rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #888;
+  color: var(--color-gris);
   text-decoration: none;
   border-bottom: 3px solid transparent;
   transition:
@@ -189,7 +189,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 2rem 1rem;
-  color: #aaa;
+  color: var(--color-gris);
   text-align: center;
 }
 
@@ -237,8 +237,8 @@
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #eee;
-  background: #fafafa;
+  border: 1px solid var(--color-gris-claro);
+  background: var(--color-fondo);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -258,7 +258,7 @@
 .perfil-card-img {
   position: relative;
   aspect-ratio: 4/3;
-  background: #e0e0e0;
+  background: var(--color-gris-claro);
   margin: 0;
 }
 
@@ -307,7 +307,7 @@
   padding: 0 0.7rem 0.6rem;
   margin: 0;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-texto);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -330,7 +330,7 @@
     "info estado";
   grid-template-columns: 1fr auto;
   align-items: center;
-  background: #f5f5f5;
+  background: var(--color-gris-claro);
   border-radius: 8px;
   padding: 0.8rem 1rem;
   row-gap: 0.2rem;
@@ -347,7 +347,7 @@
   grid-area: info;
   margin: 0;
   font-size: 0.8rem;
-  color: #666;
+  color: var(--color-texto);
 }
 
 .perfil-estado {
@@ -356,30 +356,30 @@
   font-weight: 700;
   padding: 0.3rem 0.7rem;
   border-radius: 4px;
-  background: #e0e0e0;
+  background: var(--color-gris-claro);
   color: var(--color-fondo);
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .perfil-estado.estado-aprobada {
-  background: #c8e6c9;
-  color: #2e7d32;
+  background: var(--color-verde-claro);
+  color: var(--color-verde);
 }
 
 .perfil-estado.estado-pendiente {
-  background: #fff3e0;
-  color: #e65100;
+  background: var(--color-naranja-claro);
+  color: var(--color-naranja);
 }
 
 .perfil-estado.estado-rechazada {
-  background: #ffcdd2;
-  color: #b71c1c;
+  background: var(--color-rojo-claro);
+  color: var(--color-rojo);
 }
 
 .btn-ver-detalle {
   grid-area: estado;
-  color: #555;
+  color: var(--color-texto);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -428,7 +428,7 @@
     grid-area: nav;
   }
 
-  #sec-favoritos {
+  .sec-favoritos {
     grid-area: favoritos;
   }
 
@@ -436,11 +436,11 @@
     grid-template-columns: repeat(5, 1fr);
   }
 
-  #sec-solicitudes {
+  .sec-solicitudes {
     grid-area: solicitudes;
   }
 
-  #sec-adopciones {
+  .sec-adopciones {
     grid-area: adopciones;
   }
 

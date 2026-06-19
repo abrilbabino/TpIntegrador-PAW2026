@@ -57,9 +57,9 @@
             </ol>
 
             <footer class="chat-input-area">
-                <form id="chat-form" action="/chat/enviar" method="POST">
+                <form id="chat-form" class="chat-form" action="/chat/enviar" method="POST">
                     <input type="hidden" id="solicitud_id" name="solicitud_id" value="<?= htmlspecialchars($solicitudId) ?>">
-                    <textarea id="chat-input" name="contenido" placeholder="Escribe un mensaje..." required rows="1"></textarea>
+                    <textarea id="chat-input" class="chat-input" name="contenido" placeholder="Escribe un mensaje..." required rows="1"></textarea>
                     <button type="submit" class="btn-send-message" aria-label="Enviar mensaje">
                         <span class="material-symbols-outlined">send</span>
                     </button>

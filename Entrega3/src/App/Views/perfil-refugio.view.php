@@ -38,7 +38,7 @@
                 </button>
             </header>
             <article class="perfil-refugio-datos-body">
-                <form id="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+                <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
                     <ul class="perfil-refugio-datos-grid">
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Nombre de la institución:</span>
@@ -107,6 +107,10 @@
                 <span class="material-symbols-outlined">assignment</span>
                 Gestión de solicitudes
             </a>
+            <a href="#sec-monitoreo">
+                <span class="material-symbols-outlined">monitor_heart</span>
+                Monitoreo Post-Adopción
+            </a>
             <a href="#sec-ubicacion">
                 <span class="material-symbols-outlined">location_on</span>
                 Ubicación: Agregar/Modificar
@@ -123,7 +127,7 @@
         
         <!-- Sección: Solicitudes -->
          <section class="perfil-refugio-seccion" id="sec-solicitudes-adopcion">
-            <details class="perfil-dropdown" open>
+            <details class="perfil-dropdown">
             <summary> <h3>Solicitudes de adopción</h3> </summary>
             <?php if (empty($solicitudes)): ?>
                 <article class="perfil-refugio-vacio">
@@ -165,8 +169,97 @@
             </details>
         </section>
         
+        <!-- Sección: Monitoreo Post-Adopción -->
+        <section class="perfil-refugio-seccion" id="sec-monitoreo">
+            <details class="perfil-dropdown">
+            <summary> <h3>Monitoreo Post-Adopción</h3> </summary>
+            
+            <h4 class="monitoreo-subtitle">Encuestas Recientes</h4>
+            <?php if (empty($encuestas)): ?>
+                <article class="perfil-refugio-vacio">
+                    <span class="material-symbols-outlined">quiz</span>
+                    <p>Aún no hay encuestas respondidas por adoptantes.</p>
+                </article>
+            <?php else: ?>
+                <ul class="monitoreo-lista-encuestas">
+                    <?php foreach ($encuestas as $enc): ?>
+                        <?php 
+                        $alertaClass = $enc['alerta_generada'] ? 'encuesta-alerta' : 'encuesta-ok';
+                        ?>
+                        <li class="monitoreo-item-encuesta <?= $alertaClass ?>">
+                            <header class="encuesta-header">
+                                <h5>
+                                    <?= htmlspecialchars($enc['mascota_nombre']) ?> 
+                                    <small>(Adoptante: <?= htmlspecialchars($enc['adoptante_nombre']) ?>)</small>
+                                </h5>
+                                <span class="encuesta-etapa badge-<?= htmlspecialchars($enc['etapa']) ?>">Etapa: <?= htmlspecialchars(str_replace('_', ' ', $enc['etapa'])) ?></span>
+                                <span class="encuesta-fecha"><?= htmlspecialchars(date('d/m/Y', strtotime($enc['fecha_encuesta']))) ?></span>
+                            </header>
+                            <details class="encuesta-detalles">
+                                <summary>Ver respuestas completas</summary>
+                                <article class="encuesta-respuestas-grid">
+                                    <?php if (!empty($enc['conducta'])): ?>
+                                        <p><strong>Conducta:</strong> <?= htmlspecialchars($enc['conducta']) ?></p>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($enc['sueno'])): ?>
+                                        <p><strong>Sueño:</strong> <?= htmlspecialchars($enc['sueno']) ?></p>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($enc['alimentacion'])): ?>
+                                        <p><strong>Alimentación:</strong> <?= htmlspecialchars($enc['alimentacion']) ?></p>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($enc['progreso_general'])): ?>
+                                        <p><strong>Progreso general:</strong> <?= htmlspecialchars($enc['progreso_general']) ?></p>
+                                    <?php endif; ?>
+                                    <?php if (!empty($enc['comentarios'])): ?>
+                                        <p class="encuesta-comentarios"><strong>Comentarios:</strong> <br><?= nl2br(htmlspecialchars($enc['comentarios'])) ?></p>
+                                    <?php endif; ?>
+                                </article>
+                            </details>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+
+            <h4 class="monitoreo-subtitle mt-2">Fotos y Archivos de Seguimiento</h4>
+            <?php if (empty($fotosSeguimiento)): ?>
+                <article class="perfil-refugio-vacio">
+                    <span class="material-symbols-outlined">image</span>
+                    <p>No se han subido fotos ni certificados aún.</p>
+                </article>
+            <?php else: ?>
+                <ul class="monitoreo-galeria-fotos">
+                    <?php foreach ($fotosSeguimiento as $foto): ?>
+                        <li class="monitoreo-foto-item">
+                            <a href="<?= htmlspecialchars($foto['url']) ?>" target="_blank" class="foto-link">
+                                <figure style="margin: 0; display: flex; flex-direction: column; height: 100%;">
+                                    <?php if ($foto['tipo'] === 'certificado_med'): ?>
+                                        <span class="monitoreo-doc-placeholder">
+                                            <span class="material-symbols-outlined">description</span>
+                                        </span>
+                                    <?php else: ?>
+                                        <img src="<?= htmlspecialchars($foto['url']) ?>" alt="Seguimiento <?= htmlspecialchars($foto['mascota_nombre']) ?>" class="monitoreo-img">
+                                    <?php endif; ?>
+                                    <figcaption class="monitoreo-foto-info">
+                                        <strong><?= htmlspecialchars($foto['mascota_nombre']) ?></strong>
+                                        <?php if (!empty($foto['adoptante_nombre'])): ?>
+                                            <span>por <?= htmlspecialchars($foto['adoptante_nombre']) ?></span>
+                                        <?php endif; ?>
+                                        <span class="monitoreo-foto-tipo"><?= $foto['tipo'] === 'certificado_med' ? 'Certificado Médico' : 'Foto' ?></span>
+                                    </figcaption>
+                                </figure>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            </details>
+        </section>
+        
         <section class="perfil-refugio-ubicacion" id="sec-ubicacion">
-            <details class="perfil-dropdown" open>
+            <details class="perfil-dropdown">
                 <summary> <h3>Ubicación: Agregar/Modificar</h3> </summary>
 
             <article class="perfil-refugio-ubicacion-content">
@@ -180,7 +273,7 @@
                     </article>
                 <?php endif; ?>
 
-                <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium">
+                <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium form-ubicacion-refugio">
                     <fieldset class="grupo-input-ubicacion" style="border: none; padding: 0; margin: 0;">
                         <label for="ubicacion-autocomplete" class="label-buscar-ubicacion">¿Te mudaste? Buscá la nueva dirección:</label>
                         <section class="input-wrapper-premium">
@@ -206,11 +299,10 @@
             </details>
         </section>
 
-            </article>
-        </section>
+
 
         <section class="perfil-refugio-publicar" id="sec-publicar">
-            <details class="perfil-dropdown" open>
+            <details class="perfil-dropdown">
             <summary> <h3>Publicar Mascota</h3> </summary>
             <p>Agrega los datos de la nueva mascota:</p>
         
@@ -304,8 +396,8 @@
             </details>
         </section>
 
-        <section class="perfil-editar-mascota" id="sec-editar-mascota">
-            <details class="perfil-dropdown" open>
+        <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
+            <details class="perfil-dropdown">
             <summary><h2>
                 <span class="material-symbols-outlined">pets</span>
                 Actualizar/Eliminar Mascota

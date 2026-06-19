@@ -193,7 +193,7 @@
         </nav>
 
         <!-- Sección: Favoritos -->
-        <section class="perfil-seccion" id="sec-favoritos">
+        <section class="perfil-seccion sec-favoritos" id="sec-favoritos">
             <h3>Favoritos</h3>
             <?php if (empty($favoritos)): ?>
                 <article class="perfil-vacio">
@@ -232,7 +232,7 @@
         </section>
 
         <!-- Sección: Solicitudes -->
-        <section class="perfil-seccion" id="sec-solicitudes">
+        <section class="perfil-seccion sec-solicitudes" id="sec-solicitudes">
             <h3>Solicitudes de adopción</h3>
             <?php if (empty($solicitudes)): ?>
                 <article class="perfil-vacio">
@@ -262,7 +262,7 @@
         </section>
 
         <!-- Sección: Adopciones -->
-        <section class="perfil-seccion" id="sec-adopciones">
+        <section class="perfil-seccion sec-adopciones" id="sec-adopciones">
             <h3>Adopciones</h3>
             <?php if (empty($adopciones)): ?>
                 <article class="perfil-vacio">

@@ -46,7 +46,7 @@ $fotos = $fotos ?? [];
             </aside>
         <?php endif; ?>
 
-        <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
+        <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" class="perfil-datos form-editar-mascota" novalidate>
             <header class="perfil-datos-header">
                 <h2>Editar Mascota</h2>
             </header>

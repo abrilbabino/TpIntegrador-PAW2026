@@ -20,7 +20,7 @@
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
     <main class="contenedor-busqueda">
-        <h1 id="titulo-busqueda">Resultados para: "<?= htmlspecialchars($q ?? '') ?>"</h1>
+        <h1 id="titulo-busqueda" class="titulo-busqueda">Resultados para: "<?= htmlspecialchars($q ?? '') ?>"</h1>
         
         <section id="grilla-resultados" class="grilla-items"></section>
         

@@ -119,6 +119,12 @@
                     <header>
                         <h2>Comprobantes</h2>
                     </header>
+                    <?php if (!empty($errorUpload)): ?>
+                        <div class="mensaje-error" style="color: var(--color-rojo); font-weight: bold; margin-bottom: 1rem; text-align: center;">
+                            <span class="material-symbols-outlined" style="vertical-align: middle;">error</span>
+                            <?= htmlspecialchars($errorUpload) ?>
+                        </div>
+                    <?php endif; ?>
                     <button class="btn-comprobante" onclick="abrirModalSubida('foto')">
                         Fotos de <?= htmlspecialchars($mascotaSeleccionada->fields['nombre']) ?>
                         <span class="material-symbols-outlined icono-comprobante">attach_file</span>
@@ -263,13 +269,11 @@
             document.getElementById('modal-encuesta-titulo').innerText = 'Encuesta: ' + titulo;
             document.getElementById('input_etapa').value = etapa;
             
-            // Ocultar todos y deshabilitar require
             document.querySelectorAll('.encuesta-fields').forEach(f => {
                 f.style.display = 'none';
                 f.querySelectorAll('select, textarea').forEach(input => input.removeAttribute('required'));
             });
             
-            // Mostrar el activo y hacer require
             const activeFieldset = document.getElementById('fields_' + etapa);
             if (activeFieldset) {
                 activeFieldset.style.display = 'block';

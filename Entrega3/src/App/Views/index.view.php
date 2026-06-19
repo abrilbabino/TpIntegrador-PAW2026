@@ -41,7 +41,7 @@
       </header>
 
       <section class="seccion-mapa">
-        <figure id="leaflet-map" class="mapa-interactivo" data-refugios='<?= htmlspecialchars(json_encode($refugiosMapa ?? []), ENT_QUOTES, 'UTF-8') ?>'></figure>
+        <figure id="leaflet-map" class="mapa-interactivo leaflet-map" data-refugios='<?= htmlspecialchars(json_encode($refugiosMapa ?? []), ENT_QUOTES, 'UTF-8') ?>'></figure>
         <a href="/mapa" class="boton-principal boton-ancho">Ver Mapa</a>
       </section>
 

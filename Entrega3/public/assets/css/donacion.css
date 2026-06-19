@@ -48,7 +48,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #6b7280;
+    color: var(--color-texto);
     margin-top: 0.8rem;
     text-align: left;
     /* Todo a la izquierda */
@@ -63,7 +63,7 @@
     font-weight: normal;
     text-transform: none;
     letter-spacing: normal;
-    color: #374151;
+    color: var(--color-texto);
     font-size: 0.95rem;
     margin-top: 0.3rem;
     cursor: pointer;
@@ -75,7 +75,7 @@
 .formulario-donaciones input[type="number"] {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e5e7eb;
+    border: 1.5px solid var(--color-gris-claro);
     border-radius: 8px;
     font-size: 0.95rem;
     color: var(--color-texto);
@@ -95,7 +95,7 @@
 
 /* Campos readonly (alias y CVU) */
 .formulario-donaciones input[readonly] {
-    color: #374151;
+    color: var(--color-texto);
     cursor: default;
 }
 
