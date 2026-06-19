@@ -12,7 +12,7 @@
         {% set ubicacionRaw = (ciudad ? ciudad ~ ', ' : '') ~ prov %}
         {% set ubicacionText = ubicacionRaw|trim(', ') ?: 'A confirmar' %}
 
-        {% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+        {% set baseUrl = (request.server('REQUEST_SCHEME')|default('http')) ~ '://' ~ request.server('HTTP_HOST') %}
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",

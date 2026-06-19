@@ -2,8 +2,8 @@
 
 {% block title %}Iniciar Sesión - PawMap{% endblock %}
 
-{% set error = app.request.query.get('error') %}
-{% set registro = app.request.query.get('registro') %}
+{% set error = request.get('error') %}
+{% set registro = request.get('registro') %}
 
 {% block main_attributes %}class="sesion-container"{% endblock %}
 
@@ -29,7 +29,7 @@
             />
 
             <label for="contrasena">Contraseña</label>
-            <div class="campo-contraseña">
+            <fieldset class="campo-contraseña">
                 <input
                     type="password"
                     id="contrasena"
@@ -39,7 +39,7 @@
                     required
                 />
                 <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
-            </div>
+            </fieldset>
 
             <button type="submit">Iniciar Sesión</button>
         </form>
@@ -83,7 +83,7 @@
             />
 
             <label for="pass-register">Contraseña</label>
-            <div class="campo-contraseña">
+            <fieldset class="campo-contraseña">
                 <input
                     type="password"
                     id="pass-register"
@@ -92,7 +92,7 @@
                     required
                 />
                 <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
-            </div>
+            </fieldset>
 
             <label for="rol">Tipo de cuenta</label>
             <select id="rol" name="rol" required class="registro-input">
@@ -106,18 +106,4 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        document.querySelectorAll('.mostrar-contraseña').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const input = this.previousElementSibling;
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    this.textContent = 'visibility';
-                } else {
-                    input.type = 'password';
-                    this.textContent = 'visibility_off';
-                }
-            });
-        });
-    </script>
 {% endblock %}

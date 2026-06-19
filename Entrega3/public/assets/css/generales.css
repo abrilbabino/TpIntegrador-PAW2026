@@ -27,6 +27,16 @@
     display: contents;
 }
 
+
+.hidden-desc {
+    display: none !important;
+}
+
+.alerta-espaciada {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
 body {
   box-sizing: border-box;
   display: flex;

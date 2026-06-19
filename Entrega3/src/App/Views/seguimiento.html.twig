@@ -60,7 +60,7 @@
                 <ul class="timeline">
                     {% for registro in registrosPendientes %}
                         <li class="timeline-item">
-                            <div class="timeline-marker"></div>
+                            <span class="timeline-marker"></span>
                             <article class="timeline-content">
                                 {% set claseBadge = registro.fields.estado|lower == 'completado' ? 'badge-completado' : 'badge-pendiente' %}
                                 <header>
@@ -108,10 +108,10 @@
                 <h2>Comprobantes</h2>
             </header>
             {% if errorUpload is not empty %}
-                <div class="mensaje-error seguimiento-mensaje-error">
+                <aside class="mensaje-error seguimiento-mensaje-error">
                     <span class="material-symbols-outlined seguimiento-icono-error">error</span>
                     {{ errorUpload }}
-                </div>
+                </aside>
             {% endif %}
             <button class="btn-comprobante" onclick="abrirModalSubida('foto')">
                 Fotos de {{ mascotaSeleccionada.fields.nombre|default('') }}

@@ -23,7 +23,7 @@
                 <h4>GALERÍA</h4>
             {% endif %}
 
-            <div class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+            <section class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 
                 <figure class="carrusel-slide-item slide-principal-movil">
                     <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
@@ -46,12 +46,12 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-            </div>
+            </section>
 
         </section>
 
         <aside class="info-formulario">
-            <div class="drag-handle"></div>
+            <span class="drag-handle"></span>
             <header class="form-header">
                 <h2>Formulario de Adopción</h2>
                 <p class="form-subtitulo">Completá para adoptar</p>
@@ -75,21 +75,21 @@
 
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" required
-                           value="{{ app.request.request.get('nombre')|default(adoptanteData.nombre|default('')) }}">
+                           value="{{ request.get('nombre')|default(adoptanteData.nombre|default('')) }}">
                     {% if errores.nombre is defined %}
                         <span class="error-inline">{{ errores.nombre }}</span>
                     {% endif %}
 
                     <label for="apellido">Apellido</label>
                     <input type="text" id="apellido" name="apellido" required
-                           value="{{ app.request.request.get('apellido')|default(adoptanteData.apellido|default('')) }}">
+                           value="{{ request.get('apellido')|default(adoptanteData.apellido|default('')) }}">
                     {% if errores.apellido is defined %}
                         <span class="error-inline">{{ errores.apellido }}</span>
                     {% endif %}
 
                     <label for="email">Mail</label>
                     <input type="email" id="email" name="email" required
-                           value="{{ app.request.request.get('email')|default(userData.email|default('')) }}">
+                           value="{{ request.get('email')|default(userData.email|default('')) }}">
                     {% if errores.email is defined %}
                         <span class="error-inline">{{ errores.email }}</span>
                     {% endif %}
@@ -100,17 +100,17 @@
 
                     <label for="telefono">Teléfono celular</label>
                     <input type="tel" id="telefono" name="telefono" required
-                           value="{{ app.request.request.get('telefono')|default(userData.contacto|default('')) }}">
+                           value="{{ request.get('telefono')|default(userData.contacto|default('')) }}">
                     
                     <label for="fecha_nacimiento">Fecha de nacimiento</label>
                     <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required
-                           value="{{ app.request.request.get('fecha_nacimiento')|default(adoptanteData.fecha_de_nacimiento|default('')) }}">
+                           value="{{ request.get('fecha_nacimiento')|default(adoptanteData.fecha_de_nacimiento|default('')) }}">
                 </fieldset>
 
                 <fieldset class="fieldset-contrato">
                     <label for="acepta_contrato" class="checkbox-label">
                         <input type="checkbox" id="acepta_contrato" name="acepta_contrato" required
-                               {{ app.request.request.has('acepta_contrato') ? 'checked' : '' }}>
+                               {{ request.get('acepta_contrato') is not null ? 'checked' : '' }}>
                         Acepto el <button type="button" class="btn-link" onclick="event.preventDefault(); document.getElementById('modal-contrato').showModal();">contrato de adopción y seguimiento sanitario</button>
                     </label>
                     {% if errores.acepta_contrato is defined %}

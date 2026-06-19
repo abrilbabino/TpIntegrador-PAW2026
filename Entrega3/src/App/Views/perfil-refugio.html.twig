@@ -30,7 +30,7 @@
             </button>
         </header>
         <article class="perfil-refugio-datos-body">
-            <form id="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+            <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
                 <ul class="perfil-refugio-datos-grid">
                     <li class="dato-refugio-item">
                         <span class="dato-refugio-label">Nombre de la institución:</span>
@@ -42,10 +42,10 @@
                     </li>
                     <li class="dato-refugio-item">
                         <span class="dato-refugio-label">Descripción:</span>
-                        <div class="static-value dato-refugio-descripcion-container">
+                        <article class="static-value dato-refugio-descripcion-container">
                             <p class="dato-refugio-valor descripcion-texto">{{ refugio.descripcion|default('-')|nl2br }}</p>
-                            <button type="button" class="btn-ver-mas-desc" style="display: none;">Ver más</button>
-                        </div>
+                            <button type="button" class="btn-ver-mas-desc hidden-desc">Ver más</button>
+                        </article>
                         <input type="text" name="descripcion" value="{{ oldData.descripcion|default(refugio.descripcion|default('')) }}" data-original="{{ refugio.descripcion|default('') }}" class="dato-valor-input input-value {{ errores.descripcion is defined ? 'input-invalido' : '' }}" maxlength="500">
                         {% if errores.descripcion is defined %}
                             <span class="msg-error input-value">{{ errores.descripcion }}</span>
@@ -164,7 +164,7 @@
             {% if refugio.ciudad is not empty and refugio.provincia is not empty %}
                 <article class="ubicacion-actual-box">
                     <span class="material-symbols-outlined icono-pin-actual">where_to_vote</span>
-                    <p class="ubicacion-actual-text" style="margin: 0;">
+                    <p class="ubicacion-actual-text">
                         <span class="label-ubicacion">Ubicación guardada:</span>
                         <strong class="valor-ubicacion">{{ refugio.direccion|default(refugio.ciudad ~ ', ' ~ refugio.provincia) }}</strong>
                     </p>
@@ -172,7 +172,7 @@
             {% endif %}
 
             <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium">
-                <fieldset class="grupo-input-ubicacion" style="border: none; padding: 0; margin: 0;">
+                <fieldset class="grupo-input-ubicacion">
                     <label for="ubicacion-autocomplete" class="label-buscar-ubicacion">¿Te mudaste? Buscá la nueva dirección:</label>
                     <section class="input-wrapper-premium">
                         <input type="text" id="ubicacion-autocomplete" class="input-ubicacion-premium" placeholder="Ej: Av. Rivadavia 1234, Buenos Aires..." autocomplete="off" required>

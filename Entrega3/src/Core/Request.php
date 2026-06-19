@@ -25,6 +25,11 @@ class Request
         return [$this->uri(), $this->method()];
     }
 
+    public function server($key)
+    {
+        return $_SERVER[$key] ?? null;
+    }
+
     public function get($key)
     {
         $postData = $this->post();

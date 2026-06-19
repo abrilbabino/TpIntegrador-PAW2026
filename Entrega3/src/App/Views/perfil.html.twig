@@ -42,7 +42,7 @@
         <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
         
         {% if errores.foto_perfil_o_logo is defined %}
-            <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+            <aside class="alerta-error alerta-espaciada" role="alert">
                 <span class="material-symbols-outlined">error</span>
                 <section>
                     <strong>Error con la foto de perfil:</strong>
@@ -103,7 +103,7 @@
         </footer>
     </form>
 
-    {% if app.request.query.get('update') == 'success' %}
+    {% if request.get('update') == 'success' %}
         <aside class="alerta-exito" role="status">
             <span class="material-symbols-outlined">check_circle</span>
             <section>
@@ -113,14 +113,14 @@
         </aside>
     {% endif %}
 
-    {% if app.request.query.get('error') is not null %}
+    {% if request.get('error') is not null %}
         <aside class="alerta-error" role="alert">
             <span class="material-symbols-outlined">error</span>
             <section>
                 <strong>Ocurrió un inconveniente</strong>
-                {% if app.request.query.get('error') == 'campos_obligatorios' %}
+                {% if request.get('error') == 'campos_obligatorios' %}
                     <p>Por favor, completá todos los campos obligatorios (*).</p>
-                {% elseif app.request.query.get('error') == 'usuario_existente' %}
+                {% elseif request.get('error') == 'usuario_existente' %}
                     <p>El nombre de usuario elegido ya se encuentra en uso por otra persona.</p>
                 {% else %}
                     <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>

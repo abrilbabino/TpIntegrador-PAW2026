@@ -42,11 +42,11 @@
 
             <!-- Selección de Monto -->
             <label>Elegir un monto</label>
-            <div class="opciones-monto">
+            <fieldset class="opciones-monto">
                 <button type="button" onclick="setMonto(1000)">$1000</button>
                 <button type="button" onclick="setMonto(5000)">$5000</button>
                 <button type="button" onclick="setMonto(10000)">$10000</button>
-            </div>
+            </fieldset>
 
             <label for="monto_personalizado">Monto Personalizado</label>
             <input type="number" name="monto" id="monto_personalizado" min="1" step="1" value="{{ valores.monto|default('') }}" placeholder="$6500" required>

@@ -4,7 +4,7 @@
 
 {% block head %}
     <script type="application/ld+json">
-    {% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+    {% set baseUrl = (request.server('REQUEST_SCHEME')|default('http')) ~ '://' ~ request.server('HTTP_HOST') %}
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -36,10 +36,10 @@
         <article class="incentivar-adopcion-movil">
             <h2 class="titulo-incentivar-adopcion">¡Encontrá tu match!</h2>
             
-            <div class="tarjeta-incentivar-adopcion">
+            <article class="tarjeta-incentivar-adopcion">
                 <p>¿Qué tipo de mascota buscás?</p>
                 <a href="/test-de-compatibilidad" class="boton-secundario">Realizar Test</a>
-            </div>
+            </article>
         </article>
 
         <article class="incentivar-adopcion-desktop">

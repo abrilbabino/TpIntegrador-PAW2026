@@ -495,7 +495,7 @@
     -webkit-appearance: none;
 }
 
-#form-ubicacion-refugio input[type="text"] {
+.form-ubicacion-premium input[type="text"] {
     width: 100%;
     padding: 0.8rem 1rem;
     font-size: 1rem;
@@ -779,13 +779,13 @@
     display: flex;
 }
 
-#perfil-refugio-form {
+.perfil-refugio-form {
     flex: 1.6;
     display: flex;
     flex-direction: column;
 }
 
-#perfil-refugio-form .perfil-refugio-datos-grid {
+.perfil-refugio-form .perfil-refugio-datos-grid {
     flex: 1;
 }
 

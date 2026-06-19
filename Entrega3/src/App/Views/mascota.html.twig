@@ -18,7 +18,7 @@
                 <h4>GALERÍA</h4>
             {% endif %}
 
-            <div class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+            <section class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 
                 <figure class="carrusel-slide-item slide-principal-movil">
                     <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
@@ -40,11 +40,11 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-            </div>
+            </section>
         </section>
 
         <aside class="info-mascota">
-            <div class="drag-handle"></div>
+            <span class="drag-handle"></span>
             <header class="info-header">
                 <h2>{{ mascota.fields.nombre|default('Mascota') }}</h2>
                 {% set nombreSvg = mascota.fields.nombre|default('')|trim|lower %}
