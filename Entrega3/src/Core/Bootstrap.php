@@ -16,6 +16,8 @@ use Paw\Core\DataBase\ConnectionBuilder;
 
 use Paw\Core\ControllerFactory;
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
 $dotenv->safeLoad();
 $config = new Config;

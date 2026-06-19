@@ -6,7 +6,7 @@
     text-align: center;
     border: 1px solid var(--color-gris-claro);
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px var(--color-gris-claro);
     background-color: var(--color-fondo);
     /* fondo claro tipo banking */
 }
@@ -103,4 +103,33 @@ fieldset.comprobante-wrapper legend {
     color: var(--color-azul);
     margin: 0;
     font-weight: 500;
+}
+
+.icono-exito {
+    font-size: 4rem;
+}
+
+.status-comprobante {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.status-exito {
+    background-color: var(--color-verde-claro);
+    color: var(--color-verde);
+    border: 1px solid var(--color-verde);
+}
+
+.status-error {
+    background-color: #ffeaea;
+    color: var(--color-rojo);
+    border: 1px solid var(--color-rojo);
+}
+
+.form-comprobante {
+    margin: 0;
+    padding: 0;
 }

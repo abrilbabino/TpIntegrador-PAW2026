@@ -158,6 +158,16 @@ class PAWValidador {
       }
     }
 
+    if (input.type === "date" && input.dataset.noPast === "true" && input.value) {
+      const fechaIngresada = new Date(`${input.value}T00:00:00`);
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      if (fechaIngresada < hoy) {
+        return input.dataset.pastMessage || "La fecha no puede ser pasada.";
+      }
+    }
+
     if (input.type === "file" && input.files && input.files.length > 0) {
       const archivo = input.files[0];
       const maximoBytes = Number(input.dataset.maxFileSize || 0);

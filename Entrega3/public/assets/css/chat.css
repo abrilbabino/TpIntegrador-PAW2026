@@ -161,7 +161,7 @@
     border-top: 1px solid var(--color-gris-claro);
 }
 
-#chat-form {
+.chat-form {
     display: flex;
     align-items: flex-end;
     gap: 1rem;
@@ -170,7 +170,7 @@
     border-radius: 24px;
 }
 
-#chat-input {
+.chat-input {
     flex: 1;
     border: none;
     background: transparent;

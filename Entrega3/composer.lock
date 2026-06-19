@@ -549,26 +549,25 @@
         },
         {
             "name": "mercadopago/dx-php",
-            "version": "3.11.2",
+            "version": "3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mercadopago/sdk-php.git",
-                "reference": "4b8a1e28a376028fa98d40ab3f9e82e091b815c9"
+                "reference": "f398a619beccced1abe9d99586d64525f22313e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mercadopago/sdk-php/zipball/4b8a1e28a376028fa98d40ab3f9e82e091b815c9",
-                "reference": "4b8a1e28a376028fa98d40ab3f9e82e091b815c9",
+                "url": "https://api.github.com/repos/mercadopago/sdk-php/zipball/f398a619beccced1abe9d99586d64525f22313e3",
+                "reference": "f398a619beccced1abe9d99586d64525f22313e3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.5"
+                "php": ">=8.2"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.22",
-                "phpunit/phpunit": "^11.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "symfony/console": "^7.0"
+                "phpunit/phpunit": "^10.2",
+                "squizlabs/php_codesniffer": "3.*"
             },
             "type": "library",
             "autoload": {
@@ -584,9 +583,9 @@
             "homepage": "https://github.com/mercadopago/sdk-php",
             "support": {
                 "issues": "https://github.com/mercadopago/sdk-php/issues",
-                "source": "https://github.com/mercadopago/sdk-php/tree/3.11.2"
+                "source": "https://github.com/mercadopago/sdk-php/tree/3.10.0"
             },
-            "time": "2026-06-10T23:37:54+00:00"
+            "time": "2026-05-21T01:04:48+00:00"
         },
         {
             "name": "monolog/monolog",

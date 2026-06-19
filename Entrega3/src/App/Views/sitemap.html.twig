@@ -1,4 +1,4 @@
-{% set baseUrl = (app.request.server.get('REQUEST_SCHEME')|default('http')) ~ '://' ~ app.request.server.get('HTTP_HOST') %}
+{% set baseUrl = (request.server('REQUEST_SCHEME')|default('http')) ~ '://' ~ request.server('HTTP_HOST') %}
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Páginas estáticas -->

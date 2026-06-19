@@ -29,6 +29,25 @@ class EncuestaAdaptacion extends Model
             }
             $this->fields[$field] = $values[$field];
         }
+        $this->limpiarCamposPorEtapa();
+    }
+
+    private function limpiarCamposPorEtapa()
+    {
+        $etapa = $this->fields['etapa'];
+        
+        if ($etapa === '3_dias') {
+            $this->fields['conducta'] = null;
+            $this->fields['progreso_general'] = null;
+        } elseif ($etapa === '7_dias') {
+            $this->fields['sueno'] = null;
+            $this->fields['alimentacion'] = null;
+            $this->fields['progreso_general'] = null;
+        } elseif ($etapa === '14_dias') {
+            $this->fields['sueno'] = null;
+            $this->fields['alimentacion'] = null;
+            $this->fields['conducta'] = null;
+        }
     }
 
     public function evaluarAlerta(): bool

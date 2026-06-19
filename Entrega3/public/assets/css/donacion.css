@@ -20,7 +20,7 @@
     padding: 2rem 1.5rem;
     background: var(--color-blanco);
     border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px var(--color-gris-claro);
     box-sizing: border-box;
     align-self: center;
     justify-self: center;
@@ -48,7 +48,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #6b7280;
+    color: var(--color-texto);
     margin-top: 0.8rem;
     text-align: left;
     /* Todo a la izquierda */
@@ -63,7 +63,7 @@
     font-weight: normal;
     text-transform: none;
     letter-spacing: normal;
-    color: #374151;
+    color: var(--color-texto);
     font-size: 0.95rem;
     margin-top: 0.3rem;
     cursor: pointer;
@@ -75,7 +75,7 @@
 .formulario-donaciones input[type="number"] {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e5e7eb;
+    border: 1.5px solid var(--color-gris-claro);
     border-radius: 8px;
     font-size: 0.95rem;
     color: var(--color-texto);
@@ -95,7 +95,7 @@
 
 /* Campos readonly (alias y CVU) */
 .formulario-donaciones input[readonly] {
-    color: #374151;
+    color: var(--color-texto);
     cursor: default;
 }
 
@@ -140,7 +140,7 @@
 .opciones-monto button:hover,
 .btn-confirmar:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 16px var(--color-gris-claro);
 }
 
 .resumen-donacion {
@@ -148,7 +148,7 @@
     margin: 0 0 2rem;
     padding: 1.2rem 1.4rem;
     background: var(--color-fondo);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     text-align: left;
 }

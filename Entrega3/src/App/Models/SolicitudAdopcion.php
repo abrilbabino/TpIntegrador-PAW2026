@@ -54,6 +54,15 @@ class SolicitudAdopcion extends Model
             $errores['acepta_contrato'] = 'Debe aceptar los términos del contrato de adopción y seguimiento sanitario.';
         }
 
+        if (!empty($this->fields['fecha_nacimiento'])) {
+            $d = \DateTime::createFromFormat('Y-m-d', $this->fields['fecha_nacimiento']);
+            if (!$d || $d->format('Y-m-d') !== $this->fields['fecha_nacimiento']) {
+                $errores['fecha_nacimiento'] = 'Fecha de nacimiento inválida.';
+            } elseif ($d > new \DateTime()) {
+                $errores['fecha_nacimiento'] = 'La fecha de nacimiento no puede ser futura.';
+            }
+        }
+
         // Verificar solicitud duplicada contra la base de datos
         if (!empty($this->fields['adoptante_id']) && !empty($this->fields['mascota_id'])) {
             if ($this->existeSolicitud((int)$this->fields['adoptante_id'], (int)$this->fields['mascota_id'])) {

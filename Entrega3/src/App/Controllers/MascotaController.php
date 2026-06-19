@@ -495,8 +495,7 @@ public function eliminarFoto() {
             'categoria' => $request->get('categoria'),
         ];
 
-        $coleccion = new RegistroSanitarioCollection();
-        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        $coleccion = $this->loadCollection(RegistroSanitarioCollection::class);
         $registros = $coleccion->getByMascota((int)$id, $filtros);
 
         $proximos = [];
@@ -505,6 +504,17 @@ public function eliminarFoto() {
 
         $proximos = $coleccion->pendientes($registros,$hoy);
         $historial = $coleccion->completos($registros,$hoy);
+
+        $userSession = $this->request->session('user');
+        $puedeModificar = false;
+        $puedeAgregar = false;
+        if (!empty($userSession)) {
+            $mascotasCol = $this->loadCollection(MascotaCollection::class);
+            $puedeModificar = $mascotasCol->verificarPermisosLibreta((int)$id, $userSession['id'], $userSession['rol'] ?? '');
+            if ($puedeModificar && ($userSession['rol'] ?? '') === 'refugio') {
+                $puedeAgregar = true;
+            }
+        }
 
         echo $this->twig->render('libreta.html.twig', get_defined_vars());
     }
@@ -520,11 +530,21 @@ public function eliminarFoto() {
             exit;
         }
 
-        $coleccion = new RegistroSanitarioCollection();
-        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        $coleccion = $this->loadCollection(RegistroSanitarioCollection::class);
         
         // Obtener todos los registros sin filtro
         $registros = $coleccion->getByMascota((int)$mascota_id, []);
+
+        $userSession = $this->request->session('user');
+        $puedeModificar = false;
+        $puedeAgregar = false;
+        if (!empty($userSession)) {
+            $mascotasCol = $this->loadCollection(MascotaCollection::class);
+            $puedeModificar = $mascotasCol->verificarPermisosLibreta((int)$mascota_id, $userSession['id'], $userSession['rol'] ?? '');
+            if ($puedeModificar && ($userSession['rol'] ?? '') === 'refugio') {
+                $puedeAgregar = true;
+            }
+        }
 
         $datos = [];
         foreach ($registros as $registro) {
@@ -554,14 +574,22 @@ public function eliminarFoto() {
 
         http_response_code(200);
         echo json_encode([
-            'success' => true,
-            'data'    => $datos
+            'success'        => true,
+            'data'           => $datos,
+            'puedeModificar' => $puedeModificar,
+            'puedeAgregar'   => $puedeAgregar
         ]);
         exit;
     }
 
     public function guardarRegistro()
     {
+        $userSession = $this->request->session('user');
+        if (empty($userSession)) {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
         $datos = $this->request->post();
 
         $mascota_id = (int) ($datos['mascota_id'] ?? 0);
@@ -576,8 +604,19 @@ public function eliminarFoto() {
             return;
         }
 
-        $coleccion = new RegistroSanitarioCollection();
-        $coleccion->setQueryBuilder($this->model->getQueryBuilder());
+        if ($fecha_programada < date('Y-m-d')) {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=fecha_invalida');
+            return;
+        }
+
+        $coleccion = $this->loadCollection(MascotaCollection::class);
+        $rol = $userSession['rol'] ?? '';
+        if (!$coleccion->verificarPermisosLibreta($mascota_id, $userSession['id'], $rol) || $rol !== 'refugio') {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=permisos_denegados');
+            return;
+        }
+
+        $regSanitario = $this->loadCollection(RegistroSanitarioCollection::class);
 
         $data = [
             'mascota_id' => $mascota_id,
@@ -588,13 +627,19 @@ public function eliminarFoto() {
             'observaciones' => $observaciones !== '' ? $observaciones : null,
         ];
 
-        $coleccion->getQueryBuilder()->insert('registro_sanitario', $data);
+        $regSanitario->crearRegistroSanitario($data);
 
         header('Location: /mascota/libreta?id=' . $mascota_id);
     }
 
     public function completarRegistro()
     {
+        $userSession = $this->request->session('user');
+        if (empty($userSession)) {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
         $datos = $this->request->post();
 
         $registro_id = (int) ($datos['registro_id'] ?? 0);
@@ -606,14 +651,36 @@ public function eliminarFoto() {
             return;
         }
 
-        $this->model->getQueryBuilder()->update(
-            'registro_sanitario',
-            [
-                'estado'          => 'COMPLETADO',
-                'fecha_realizada' => date('Y-m-d'),
-            ],
-            ['id' => $registro_id]
-        );
+        $coleccion = $this->loadCollection(MascotaCollection::class);
+        if (!$coleccion->verificarPermisosLibreta($mascota_id, $userSession['id'], $userSession['rol'] ?? '')) {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=permisos_denegados');
+            return;
+        }
+
+        $archivo = $this->request->file('archivo');
+        if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id);
+            return;
+        }
+
+        $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
+        $nombreFinal = 'certificado_reg_' . $registro_id . '_' . time() . '.' . $extension;
+        
+        $directorioDestino = __DIR__ . '/../../../public/assets/img/uploads/';
+        if (!is_dir($directorioDestino)) {
+            mkdir($directorioDestino, 0777, true);
+        }
+
+        $rutaAbsoluta = $directorioDestino . $nombreFinal;
+        $rutaRelativa = '/assets/img/uploads/' . $nombreFinal;
+
+        if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
+            $regSanitario = $this->loadCollection(RegistroSanitarioCollection::class);
+            $regSanitario->completarRegistroSanitario($registro_id, $rutaRelativa, date('Y-m-d'));
+        } else {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id);
+            return;
+        }
 
         header('Location: /mascota/libreta?id=' . $mascota_id);
     }

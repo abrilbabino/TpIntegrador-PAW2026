@@ -6,6 +6,7 @@ class PAWVisualizacion {
         this.currentPage = 1;
         this.items = [];
         this.tipoVista = tipoVista;
+        this.puedeModificar = false;
 
         this.paginador = new PAWPaginacion(this.contenedorPaginacion, {
             itemsPorPagina: this.itemsPorPagina,
@@ -21,6 +22,7 @@ class PAWVisualizacion {
             .then(respuesta => {
                 if (respuesta.success) {
                     this.items = respuesta.data;
+                    this.puedeModificar = respuesta.puedeModificar || false;
                     this.render();
                 }
             })
@@ -57,6 +59,8 @@ class PAWVisualizacion {
         itemsAMostrar.forEach(m => {
             if (this.tipoVista === 'mascotas' || m.tipo_entidad === 'mascota') {
                 this.contenedorItems.appendChild(PAWVisualizacion.crearTarjetaMascota(m));
+            } else if (this.tipoVista === 'libreta') {
+                this.contenedorItems.appendChild(PAWVisualizacion.crearTarjetaLibreta(m, this.puedeModificar));
             } else {
                 this.contenedorItems.appendChild(PAWVisualizacion.crearTarjetaRefugio(m));
             }
@@ -182,7 +186,7 @@ class PAWVisualizacion {
         return articulo;
     }
 
-    static crearTarjetaLibreta(registro) {
+    static crearTarjetaLibreta(registro, puedeModificar = false) {
         const esPendiente = registro.estado === 'PENDIENTE';
         const cardClass = esPendiente ? "card-pendiente" : "card-completado";
         const iconClass = esPendiente ? "icon-pendiente" : "icon-completado";
@@ -212,26 +216,36 @@ class PAWVisualizacion {
         header.appendChild(pDate);
         section.appendChild(header);
 
+        const artObs = PAW.nuevoElemento("article", "", { class: "card-obs" });
+        artObs.appendChild(PAW.nuevoElemento("strong", "Observaciones:", {}));
+        const pObs = PAW.nuevoElemento("p", "", {});
         if (registro.observaciones && registro.observaciones.trim() !== '') {
-            const artObs = PAW.nuevoElemento("article", "", { class: "card-obs" });
-            artObs.appendChild(PAW.nuevoElemento("strong", "Observaciones:", {}));
-            artObs.appendChild(PAW.nuevoElemento("p", registro.observaciones, {}));
-            section.appendChild(artObs);
+            pObs.innerText = registro.observaciones;
+        } else {
+            pObs.innerText = "Sin observaciones adicionales.";
+            pObs.style.fontStyle = "italic";
+            pObs.style.opacity = "0.7";
         }
+        artObs.appendChild(pObs);
+        section.appendChild(artObs);
 
         articulo.appendChild(figure);
         articulo.appendChild(section);
 
         if (esPendiente) {
-            const form = PAW.nuevoElemento("form", "", { method: "POST", action: "/mascota/registro/completar", class: "form-completar" });
-            form.appendChild(PAW.nuevoElemento("input", "", { type: "hidden", name: "registro_id", value: registro.id }));
-            form.appendChild(PAW.nuevoElemento("input", "", { type: "hidden", name: "mascota_id", value: registro.mascota_id }));
-            
-            const btn = PAW.nuevoElemento("button", "", { type: "submit", class: "btn-completar", title: "Marcar como completado" });
-            btn.appendChild(PAW.nuevoElemento("span", "check_circle", { class: "material-symbols-outlined" }));
-            form.appendChild(btn);
-            
-            articulo.appendChild(form);
+            if (puedeModificar) {
+                const btn = PAW.nuevoElemento("button", "", { type: "button", class: "btn-completar", title: "Marcar como completado" });
+                btn.appendChild(PAW.nuevoElemento("span", "check_circle", { class: "material-symbols-outlined" }));
+                btn.addEventListener('click', () => {
+                    const idInput = document.getElementById('completar_registro_id');
+                    const modal = document.getElementById('modal-completar-registro');
+                    if(idInput && modal) {
+                        idInput.value = registro.id;
+                        modal.showModal();
+                    }
+                });
+                articulo.appendChild(btn);
+            }
             
             const footer = PAW.nuevoElemento("footer", "Pendiente", { class: "badge badge-pendiente" });
             articulo.appendChild(footer);

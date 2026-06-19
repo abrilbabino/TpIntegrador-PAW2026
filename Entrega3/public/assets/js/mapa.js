@@ -125,6 +125,21 @@
              .bindPopup("<strong>Tú estás aquí</strong>").openPopup();
         }
 
+        if (typeof ResizeObserver !== 'undefined') {
+            var resizeObserver = new ResizeObserver(function() {
+                if (window.map) {
+                    window.map.invalidateSize();
+                }
+            });
+            resizeObserver.observe(mapElement);
+        } else {
+            setTimeout(function() {
+                if (window.map) {
+                    window.map.invalidateSize();
+                }
+            }, 500);
+        }
+
         var btnGps = document.getElementById('btn-gps-flotante');
         if (btnGps) {
             btnGps.addEventListener('click', function() {

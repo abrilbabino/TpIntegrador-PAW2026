@@ -42,7 +42,7 @@
         <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
         
         {% if errores.foto_perfil_o_logo is defined %}
-            <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+            <aside class="alerta-error alerta-espaciada" role="alert">
                 <span class="material-symbols-outlined">error</span>
                 <section>
                     <strong>Error con la foto de perfil:</strong>
@@ -55,72 +55,45 @@
             <li class="dato-item">
                 <span class="dato-label">Nombre de Usuario *</span>
                 <span class="dato-valor static-value">{{ user.nombre_usuario|default('—') }}</span>
-                <input type="text" name="nombre_usuario" value="{{ oldData.nombre_usuario|default(user.nombre_usuario|default('')) }}" data-original="{{ user.nombre_usuario|default('') }}" class="dato-valor-input input-value {{ errores.nombre_usuario is defined ? 'input-invalido' : '' }}" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required>
-                {% if errores.nombre_usuario is defined %}
-                    <span class="msg-error input-value">{{ errores.nombre_usuario }}</span>
-                {% endif %}
+                <input type="text" name="nombre_usuario" value="{{ oldData.nombre_usuario|default(user.nombre_usuario|default('')) }}" data-original="{{ user.nombre_usuario|default('') }}" class="dato-valor-input input-value {{ errores.nombre_usuario is defined ? 'input-invalido' : '' }}" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required {% if errores.nombre_usuario is defined %}data-server-error="{{ errores.nombre_usuario }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">Nombre *</span>
                 <span class="dato-valor static-value">{{ adoptante.nombre|default('—') }}</span>
-                <input type="text" name="nombre" value="{{ oldData.nombre|default(adoptante.nombre|default('')) }}" data-original="{{ adoptante.nombre|default('') }}" class="dato-valor-input input-value {{ errores.nombre is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
-                {% if errores.nombre is defined %}
-                    <span class="msg-error input-value">{{ errores.nombre }}</span>
-                {% endif %}
+                <input type="text" name="nombre" value="{{ oldData.nombre|default(adoptante.nombre|default('')) }}" data-original="{{ adoptante.nombre|default('') }}" class="dato-valor-input input-value {{ errores.nombre is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required {% if errores.nombre is defined %}data-server-error="{{ errores.nombre }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">Apellido *</span>
                 <span class="dato-valor static-value">{{ adoptante.apellido|default('—') }}</span>
-                <input type="text" name="apellido" value="{{ oldData.apellido|default(adoptante.apellido|default('')) }}" data-original="{{ adoptante.apellido|default('') }}" class="dato-valor-input input-value {{ errores.apellido is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
-                {% if errores.apellido is defined %}
-                    <span class="msg-error input-value">{{ errores.apellido }}</span>
-                {% endif %}
+                <input type="text" name="apellido" value="{{ oldData.apellido|default(adoptante.apellido|default('')) }}" data-original="{{ adoptante.apellido|default('') }}" class="dato-valor-input input-value {{ errores.apellido is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required {% if errores.apellido is defined %}data-server-error="{{ errores.apellido }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">Mail *</span>
                 <span class="dato-valor static-value">{{ user.email|default('—') }}</span>
-                <input type="email" name="email" value="{{ oldData.email|default(user.email|default('')) }}" data-original="{{ user.email|default('') }}" class="dato-valor-input input-value {{ errores.email is defined ? 'input-invalido' : '' }}" required>
-                {% if errores.email is defined %}
-                    <span class="msg-error input-value">{{ errores.email }}</span>
-                {% endif %}
+                <input type="email" name="email" value="{{ oldData.email|default(user.email|default('')) }}" data-original="{{ user.email|default('') }}" class="dato-valor-input input-value {{ errores.email is defined ? 'input-invalido' : '' }}" required {% if errores.email is defined %}data-server-error="{{ errores.email }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">DNI *</span>
                 <span class="dato-valor static-value">{{ adoptante.dni|default('—') }}</span>
-                <input type="text" name="dni" value="{{ oldData.dni|default(adoptante.dni|default('')) }}" data-original="{{ adoptante.dni|default('') }}" class="dato-valor-input input-value {{ errores.dni is defined ? 'input-invalido' : '' }}" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required>
-                {% if errores.dni is defined %}
-                    <span class="msg-error input-value">{{ errores.dni }}</span>
-                {% endif %}
+                <input type="text" name="dni" value="{{ oldData.dni|default(adoptante.dni|default('')) }}" data-original="{{ adoptante.dni|default('') }}" class="dato-valor-input input-value {{ errores.dni is defined ? 'input-invalido' : '' }}" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required {% if errores.dni is defined %}data-server-error="{{ errores.dni }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">Fecha de Nacimiento</span>
                 <span class="dato-valor static-value">{{ adoptante.fecha_de_nacimiento|default('dd / mm / aaaa') }}</span>
-                <input type="date" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}">
-                {% if errores.fecha_de_nacimiento is defined %}
-                    <span class="msg-error input-value">{{ errores.fecha_de_nacimiento }}</span>
-                {% endif %}
+                <input type="date" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}" max="{{ 'now'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." {% if errores.fecha_de_nacimiento is defined %}data-server-error="{{ errores.fecha_de_nacimiento }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <span class="dato-label">Teléfono</span>
                 <span class="dato-valor static-value">{{ user.contacto|default('—') }}</span>
-                <input type="tel" name="contacto" value="{{ oldData.contacto|default(user.contacto|default('')) }}" data-original="{{ user.contacto|default('') }}" class="dato-valor-input input-value {{ errores.contacto is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
-                {% if errores.contacto is defined %}
-                    <span class="msg-error input-value">{{ errores.contacto }}</span>
-                {% endif %}
+                <input type="tel" name="contacto" value="{{ oldData.contacto|default(user.contacto|default('')) }}" data-original="{{ user.contacto|default('') }}" class="dato-valor-input input-value {{ errores.contacto is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$" {% if errores.contacto is defined %}data-server-error="{{ errores.contacto }}"{% endif %}>
             </li>
             <li class="dato-item input-value">
                 <span class="dato-label">Contraseña Actual</span>
-                <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input {{ errores.contrasena_actual is defined ? 'input-invalido' : '' }}" data-original="">
-                {% if errores.contrasena_actual is defined %}
-                    <span class="msg-error">{{ errores.contrasena_actual }}</span>
-                {% endif %}
+                <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input {{ errores.contrasena_actual is defined ? 'input-invalido' : '' }}" data-original="" {% if errores.contrasena_actual is defined %}data-server-error="{{ errores.contrasena_actual }}"{% endif %}>
             </li>
             <li class="dato-item input-value">
                 <span class="dato-label">Nueva Contraseña</span>
-                <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input {{ errores.contrasena is defined ? 'input-invalido' : '' }}" minlength="6" data-original="">
-                {% if errores.contrasena is defined %}
-                    <span class="msg-error">{{ errores.contrasena }}</span>
-                {% endif %}
+                <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input {{ errores.contrasena is defined ? 'input-invalido' : '' }}" minlength="6" data-original="" {% if errores.contrasena is defined %}data-server-error="{{ errores.contrasena }}"{% endif %}>
             </li>
         </ul>
 
@@ -130,7 +103,7 @@
         </footer>
     </form>
 
-    {% if app.request.query.get('update') == 'success' %}
+    {% if request.get('update') == 'success' %}
         <aside class="alerta-exito" role="status">
             <span class="material-symbols-outlined">check_circle</span>
             <section>
@@ -140,14 +113,14 @@
         </aside>
     {% endif %}
 
-    {% if app.request.query.get('error') is not null %}
+    {% if request.get('error') is not null %}
         <aside class="alerta-error" role="alert">
             <span class="material-symbols-outlined">error</span>
             <section>
                 <strong>Ocurrió un inconveniente</strong>
-                {% if app.request.query.get('error') == 'campos_obligatorios' %}
+                {% if request.get('error') == 'campos_obligatorios' %}
                     <p>Por favor, completá todos los campos obligatorios (*).</p>
-                {% elseif app.request.query.get('error') == 'usuario_existente' %}
+                {% elseif request.get('error') == 'usuario_existente' %}
                     <p>El nombre de usuario elegido ya se encuentra en uso por otra persona.</p>
                 {% else %}
                     <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
@@ -173,7 +146,7 @@
     </nav>
 
     <!-- Sección: Favoritos -->
-    <section class="perfil-seccion" id="sec-favoritos">
+    <section class="perfil-seccion sec-favoritos" id="sec-favoritos">
         <h3>Favoritos</h3>
         {% if favoritos is empty %}
             <article class="perfil-vacio">
@@ -212,7 +185,7 @@
     </section>
 
     <!-- Sección: Solicitudes -->
-    <section class="perfil-seccion" id="sec-solicitudes">
+    <section class="perfil-seccion sec-solicitudes" id="sec-solicitudes">
         <h3>Solicitudes de adopción</h3>
         {% if solicitudes is empty %}
             <article class="perfil-vacio">
@@ -239,7 +212,7 @@
     </section>
 
     <!-- Sección: Adopciones -->
-    <section class="perfil-seccion" id="sec-adopciones">
+    <section class="perfil-seccion sec-adopciones" id="sec-adopciones">
         <h3>Adopciones</h3>
         {% if adopciones is empty %}
             <article class="perfil-vacio">

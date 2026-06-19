@@ -13,9 +13,9 @@
         <h1>Libreta Sanitaria de {{ mascota.fields.nombre|default('Mascota') }}</h1>
     </header>
 
-    <div data-paw-filtros="libreta" data-mascota-id="{{ mascota.fields.id|default('') }}">
+    <section data-paw-filtros="libreta" data-mascota-id="{{ mascota.fields.id|default('') }}">
         <!-- PAWFiltros injected here -->
-    </div>
+    </section>
 
     <section class="pendientes" id="pendientes-container">
         <!-- PAWVisualizacion injected here -->

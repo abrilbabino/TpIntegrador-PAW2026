@@ -38,7 +38,7 @@
 
 .perfil-refugio-avatar .material-symbols-outlined {
     font-size: 2.5rem;
-    color: #888;
+    color: var(--color-gris);
 }
 
 .perfil-refugio-header h1 {
@@ -49,8 +49,24 @@
 
 .perfil-refugio-email {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-gris);
     margin: 0;
+}
+
+.perfil-dropdown summary h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    color: var(--color-azul-oscuro);
+    margin: 0;
+}
+
+.monitoreo-foto-figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .perfil-refugio-logout {
@@ -177,7 +193,7 @@
     color: var(--color-fondo);
     text-decoration: none;
     border-radius: 20px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px var(--color-gris-claro);
     transition: background 0.2s, color 0.2s;
     background: var(--color-azul-oscuro);
 }
@@ -191,7 +207,7 @@
 #sec-solicitudes-adopcion,
 #sec-ubicacion,
 #sec-publicar,
-#sec-editar-mascota {
+.sec-editar-mascota {
     scroll-margin-top: 180px;
 }
 
@@ -207,14 +223,46 @@
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0;
+    cursor: default;
 }
 
-.perfil-refugio-seccion summary{
+.perfil-refugio-seccion summary {
     cursor: pointer;
 }
 
-.perfil-refugio-seccion h3{
-    cursor:default;
+.perfil-dropdown summary h3,
+.perfil-dropdown summary h2 {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+}
+
+/* Custom summary for mascota seguimiento */
+.mascota-seguimiento-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+}
+
+.mascota-seguimiento-summary::-webkit-details-marker {
+    display: none;
+}
+
+.mascota-seguimiento-summary::after {
+    content: "►";
+    font-size: 0.8rem;
+    color: var(--color-texto);
+    transition: transform 0.2s ease-in-out;
+}
+
+.mascota-seguimiento-dropdown[open]>.mascota-seguimiento-summary::after {
+    transform: rotate(90deg);
+}
+
+.mascota-seguimiento-summary h4 {
+    margin: 0;
 }
 
 /*vacio*/
@@ -224,7 +272,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 2rem 1rem;
-    color: #aaa;
+    color: var(--color-gris-claro);
     text-align: center;
 }
 
@@ -241,6 +289,7 @@
 .perfil-lista-item-adopcion {
     background-color: var(--color-fondo);
     border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -314,6 +363,17 @@
     padding: 1.2rem 1.5rem;
 }
 
+.perfil-refugio-ubicacion h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    cursor: default;
+}
+
+.perfil-refugio-ubicacion summary {
+    cursor: pointer;
+}
+
 
 /* ===== SECCION: Publicar ===== */
 
@@ -350,7 +410,7 @@
 /* Cada label+input como bloque con fondo gris */
 .perfil-refugio-publicar label,
 .perfil-refugio-publicar fieldset {
-    display: block; 
+    display: block;
     border-radius: 12px;
     border: 1px solid var(--color-azul);
     padding: 1rem 1.2rem 0.8rem 1.2rem;
@@ -371,7 +431,7 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 1rem 1.2rem;
-    margin:0;
+    margin: 0;
 }
 
 .perfil-refugio-publicar legend {
@@ -435,7 +495,7 @@
     -webkit-appearance: none;
 }
 
-#form-ubicacion-refugio input[type="text"] {
+.form-ubicacion-premium input[type="text"] {
     width: 100%;
     padding: 0.8rem 1rem;
     font-size: 1rem;
@@ -487,17 +547,18 @@
     transition: background 0.2s;
 }
 
-.perfil-refugio-publicar button:hover{
+.perfil-refugio-publicar button:hover {
     transform: scale(0.98);
 }
 
-.perfil-refugio-publicar summary{
+.perfil-refugio-publicar summary {
     cursor: pointer;
 }
 
-.perfil-refugio-publicar h3{
+.perfil-refugio-publicar h3 {
     cursor: default;
 }
+
 /* ===== SECCION: Actualizar/eliminar ===== */
 
 .perfil-editar-mascota {
@@ -514,11 +575,12 @@
     margin: 0;
 }
 
-.perfil-editar-mascota summary{
+.perfil-editar-mascota summary {
     cursor: pointer;
 }
 
-.perfil-editar-mascota h3{
+.perfil-editar-mascota h3 {
+    font-size: 1.3rem;
     cursor: default;
 }
 
@@ -534,6 +596,8 @@
 /* Cada tarjeta */
 .tarjeta-refugio-mascota {
     background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     border-radius: 12px;
     padding: 1rem 1.2rem;
     display: flex;
@@ -555,7 +619,7 @@
     margin: 0 0 0.2rem 0;
 }
 
-.tarjeta-refugio-mascota-link h4:hover{
+.tarjeta-refugio-mascota-link h4:hover {
     color: var(--color-naranja);
 }
 
@@ -566,13 +630,13 @@
     cursor: default;
 }
 
-.tarjeta-refugio-mascota p:hover{
+.tarjeta-refugio-mascota p:hover {
     color: var(--color-texto);
 }
 
 .tarjeta-refugio-mascota .btn-editar .material-symbols-outlined,
 .perfil-refugio-datos .btn-editar .material-symbols-outlined {
-    color: var(--color-gris);
+    color: var(--color-naranja);
 }
 
 .tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
@@ -599,6 +663,14 @@
     display: none;
 }
 
+.monitoreo-item-mascota {
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
+    border-radius: 10px;
+}
+
 /*MEDIA PARA DESKTOP*/
 @media (min-width: 994px) {
 
@@ -606,7 +678,6 @@
         max-width: 1300px;
         display: grid;
         grid-template-columns: 280px 1fr;
-        grid-template-rows: auto auto 1fr;
         gap: 1.5rem;
         align-items: start;
     }
@@ -622,7 +693,7 @@
         max-width: 1100px;
         grid-template-columns: 200px 1fr;
         grid-column: 1;
-        grid-row: 2 / -1;
+        grid-row: 2 / span 5;
         position: sticky;
         top: 1rem;
     }
@@ -652,7 +723,7 @@
         align-items: center;
         justify-content: center;
         min-height: 180px;
-        color: #888;
+        color: var(--color-gris);
         font-size: 1rem;
     }
 
@@ -708,13 +779,13 @@
     display: flex;
 }
 
-#perfil-refugio-form {
+.perfil-refugio-form {
     flex: 1.6;
     display: flex;
     flex-direction: column;
 }
 
-#perfil-refugio-form .perfil-refugio-datos-grid {
+.perfil-refugio-form .perfil-refugio-datos-grid {
     flex: 1;
 }
 
@@ -741,9 +812,10 @@
     align-items: flex-start;
     gap: 1rem;
     background-color: var(--color-fondo);
-    border-left: 4px solid var(--color-naranja);
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     padding: 1.2rem;
-    border-radius: 0 8px 8px 0;
+    border-radius: 10px;
     margin-bottom: 2rem;
 }
 
@@ -758,6 +830,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    margin: 0;
 }
 
 .label-ubicacion {
@@ -784,6 +857,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .label-buscar-ubicacion {
@@ -862,7 +938,7 @@
     gap: 8px;
     padding: 0.8rem 1.8rem;
     font-size: 1.05rem;
-    border-radius: 20px; 
+    border-radius: 20px;
     background-color: var(--color-azul-oscuro);
     color: var(--color-fondo);
     border: none;
@@ -874,7 +950,7 @@
 .btn-guardar-premium:hover:not(:disabled) {
     background-color: var(--color-naranja);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(244, 162, 97, 0.3);
+    box-shadow: 0 6px 12px var(--color-naranja);
 }
 
 .btn-guardar-premium:disabled {
@@ -889,14 +965,186 @@
     .perfil-refugio-ubicacion-header {
         padding: 1.2rem;
     }
+
     .perfil-refugio-ubicacion-content {
         padding: 1.2rem;
     }
+
     .acciones-ubicacion-premium {
         justify-content: stretch;
     }
+
     .btn-guardar-premium {
         width: 100%;
         justify-content: center;
     }
+}
+
+/* ===== SECCION: Monitoreo Post-Adopción ===== */
+.monitoreo-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-azul-oscuro);
+    margin: 1.5rem 0 1rem 0;
+    border-bottom: 2px solid var(--color-naranja);
+    padding-bottom: 0.3rem;
+    display: inline-block;
+}
+
+.monitoreo-lista-encuestas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.monitoreo-item-encuesta {
+    background: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 10px;
+    padding: 1.2rem;
+    border-left: 5px solid var(--color-azul);
+}
+
+.monitoreo-item-encuesta.encuesta-alerta {
+    border-left-color: var(--color-rojo);
+    background: var(--color-fondo);
+}
+
+.encuesta-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.encuesta-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.encuesta-header h5 small {
+    color: var(--color-gris);
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.encuesta-etapa {
+    background: var(--color-azul-oscuro);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.encuesta-fecha {
+    font-size: 0.9rem;
+    color: var(--color-gris);
+    font-weight: 500;
+}
+
+.encuesta-detalles summary {
+    cursor: pointer;
+    color: var(--color-naranja);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.encuesta-respuestas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px dashed var(--color-gris-claro);
+}
+
+.encuesta-respuestas-grid p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.encuesta-comentarios {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+}
+
+.monitoreo-galeria-fotos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.monitoreo-foto-item {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--color-gris-claro);
+    transition: transform 0.2s;
+    background: var(--color-fondo);
+}
+
+.monitoreo-foto-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px var(--color-gris-claro);
+}
+
+.foto-link {
+    text-decoration: none;
+    color: var(--color-texto);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.monitoreo-img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background-color: var(--color-naranja-fondo);
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+.monitoreo-doc-placeholder {
+    width: 100%;
+    height: 180px;
+    background: var(--color-naranja-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+.monitoreo-doc-placeholder .material-symbols-outlined {
+    font-size: 3rem;
+    color: var(--color-naranja);
+}
+
+.monitoreo-foto-info {
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.monitoreo-foto-info strong {
+    color: var(--color-azul);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.monitoreo-foto-tipo {
+    font-size: 0.8rem;
+    color: var(--color-naranja);
+    font-weight: 600;
 }

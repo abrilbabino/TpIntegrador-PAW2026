@@ -16,7 +16,8 @@ class RefugioCollection extends Model
     }
 
     public function getAll() {
-        $sql = "SELECT r.*, u.ciudad, u.provincia 
+        $sql = "SELECT r.*, u.ciudad, u.provincia, 
+                       (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = r.usuario_id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles
                 FROM {$this->table} r 
                 LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
                 ORDER BY r.nombre_institucion ASC";

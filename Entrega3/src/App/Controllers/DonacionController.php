@@ -74,13 +74,6 @@ class DonacionController extends Controller
             return;
         }
         if ($valores['metodo_pago'] === 'transferencia') {
-            //$this->donacionModel->insertar([
-            //    'refugio_id' => $valores['refugio_id'],
-            //    'monto' => (float) $valores['monto'],
-            //    'metodo_pago' => 'transferencia',
-            //    'estado' => 'pendiente' // ← Nace pendiente hasta que el admin la apruebe
-            //]);
-
             $monto = number_format((float) $valores['monto'], 2, ',', '.');
             
             // Mandamos a la vista donde ve tu CBU/Alias

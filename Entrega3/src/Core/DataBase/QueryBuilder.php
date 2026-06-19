@@ -666,4 +666,10 @@ class QueryBuilder
     return $statement->execute($values);
 }
 
+    public function obtenerEtapasEncuestasCompletadas(int $mascotaId, int $adoptanteId): array
+    {
+        $sql = "SELECT etapa FROM encuesta_adopcion WHERE mascota_id = :mid AND adoptante_id = :aid";
+        $encuestasRealizadas = $this->rawQuery($sql, [':mid' => $mascotaId, ':aid' => $adoptanteId]);
+        return array_column($encuestasRealizadas, 'etapa');
+    }
 }

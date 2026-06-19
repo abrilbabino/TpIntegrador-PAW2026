@@ -86,7 +86,8 @@ fieldset {
   color: var(--color-azul);
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--color-gris-claro);
-  margin: 0 1rem; /* Margen adaptado a mobile */
+  margin: 0 1rem;
+  /* Margen adaptado a mobile */
 }
 
 .titulo .material-symbols-outlined {
@@ -100,7 +101,7 @@ fieldset {
   padding: 1.25rem;
   box-shadow: 0 1px 4px var(--color-texto);
   position: relative;
-  
+
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.25rem;
@@ -234,7 +235,7 @@ fieldset {
   font-weight: 600;
   cursor: pointer;
   width: fit-content;
-  margin: 1rem 1rem;
+  margin: 0 1rem 1rem;
 }
 
 .btn-agregar-registro:hover {
@@ -251,7 +252,7 @@ fieldset {
   padding: 0;
   border: none;
   border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 40px var(--color-gris);
   width: 92%;
   max-width: 520px;
   background-color: var(--color-fondo);
@@ -259,7 +260,8 @@ fieldset {
 }
 
 .modal-nativo::backdrop {
-  background-color: rgba(15, 23, 42, 0.55);
+  background-color: var(--color-azul-oscuro);
+  opacity: 0.55;
   backdrop-filter: blur(4px);
 }
 
@@ -282,6 +284,28 @@ fieldset {
   padding: 1.5rem 1.75rem;
 }
 
+.libreta-mensaje-error {
+  text-align: center;
+  color: var(--color-rojo);
+  background: var(--color-rojo-claro);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 3rem;
+}
+
+.modal-completar-desc {
+  padding: 0 1.75rem;
+  color: var(--color-texto);
+}
+
+.input-file-completar {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--color-gris-claro);
+  border-radius: 10px;
+  margin: 0 1.75rem;
+  width: calc(100% - 3.5rem);
+}
+
 .form-registro label {
   font-size: 0.85rem;
   font-weight: 600;
@@ -289,6 +313,7 @@ fieldset {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-top: 0.6rem;
+  padding: 0 1.75rem;
 }
 
 .form-registro select,
@@ -311,7 +336,6 @@ fieldset {
 .form-registro input:focus,
 .form-registro textarea:focus {
   outline: none;
-  border-color: var(--color-naranja);
 }
 
 .form-registro textarea {
@@ -329,20 +353,21 @@ fieldset {
 }
 
 .btn-cancelar {
-  background: none;
-  border: 1.5px solid var(--color-gris-claro);
+  background-color: var(--color-rojo);
+  border: none;
   border-radius: 10px;
   padding: 0.7rem 1.4rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-texto);
+  color: var(--color-fondo);
   cursor: pointer;
   transition: background-color 0.2s;
   font-family: var(--fuente-cuerpo);
 }
 
 .btn-cancelar:hover {
-  background-color: var(--color-gris-claro);
+  transform: scale(0.98);
+  background-color: var(--color-naranja);
 }
 
 .btn-guardar-registro {
@@ -359,7 +384,8 @@ fieldset {
 }
 
 .btn-guardar-registro:hover {
-  background-color: var(--color-azul-oscuro, #1a3a6e);
+  transform: scale(0.98);
+  background-color: var(--color-azul-oscuro);
 }
 
 .form-completar {
@@ -407,7 +433,7 @@ fieldset {
 }
 
 @media screen and (min-width: 994px) {
-  
+
   .filtros-seccion {
     display: grid;
     grid-template-columns: 1fr 1fr auto auto;
@@ -452,7 +478,7 @@ fieldset {
 
   .btn-agregar-registro {
     width: 50%;
-    margin: 2rem 3rem;
+    margin: 0 2rem 3rem;
     justify-self: center;
   }
 }

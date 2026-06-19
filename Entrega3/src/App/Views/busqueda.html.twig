@@ -10,7 +10,7 @@
     <script src="/assets/js/components/PAWVisualizacion.js"></script>
 {% endblock %}
 
-{% block main_attributes %}class="contenedor-busqueda"{% endblock %}
+{% block main_attributes %}id="busqueda-resultados" class="contenedor-busqueda" data-resultados="{{ resultados_mixtos|default([])|json_encode(constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|escape('html_attr') }}"{% endblock %}
 
 {% block main %}
     <h1 id="titulo-busqueda">Resultados para: "{{ q|default('') }}"</h1>
@@ -21,17 +21,4 @@
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        const datosBusqueda = {{ resultados_mixtos|default([])|json_encode(constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }};
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const grilla = document.getElementById('grilla-resultados');
-            const navPaginacion = document.getElementById('paginacion-js');
-
-            if(grilla && navPaginacion && typeof datosBusqueda !== 'undefined') {
-                const visualizacion = new PAWVisualizacion(grilla, navPaginacion, 6, 'mixto');
-                visualizacion.actualizarDatos(datosBusqueda);
-            }
-        });
-    </script>
 {% endblock %}

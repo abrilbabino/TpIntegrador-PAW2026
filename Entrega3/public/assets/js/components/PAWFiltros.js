@@ -27,6 +27,8 @@ class PAWFiltros {
             if (!resultado.success) throw new Error("Error en API");
             
             this.items = resultado.data;
+            this.puedeModificar = resultado.puedeModificar || false;
+            this.puedeAgregar = resultado.puedeAgregar || false;
 
             this.datosAuxiliares = {};
             const sourcesCache = {};

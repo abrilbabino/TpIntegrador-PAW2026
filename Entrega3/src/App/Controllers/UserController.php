@@ -82,16 +82,22 @@ class UserController extends Controller
         $refugio = $refugioModel->fields;
         $refugioId = $user['id'] ?? null;
         $mascotas = [];
+        $mascotasAdoptadas = [];
         $solicitudes = [];
         $tamanos=[];
         $especies=[];
         $temperamentos=[];
         $mascotaPublicada = false;
+        
+        $encuestas = [];
+        $fotosSeguimiento = [];
+        $seguimientoAgrupado = [];
        
         if ($refugioId) {
             $mascotaCollection = new \Paw\App\Models\MascotaCollection();
             $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
             $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
+            $mascotasAdoptadas = $mascotaCollection->getAll(['refugio_id' => $refugioId, 'estado_adopcion' => 'ADOPTADO']);
 
             $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
             $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
@@ -100,6 +106,8 @@ class UserController extends Controller
             $tamanos       = $mascotaCollection->getTamanos();
             $especies      = $mascotaCollection->getEspecies();
             $temperamentos = $mascotaCollection->getTemperamentos();
+            
+            $seguimientoAgrupado = $refugioModel->getSeguimientoAgrupado();
         }
         $mascotaPublicada = ($this->request->get('publicado') === '1');
         $titulo = "Mi Refugio - PawMap";

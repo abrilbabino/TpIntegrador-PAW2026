@@ -1,5 +1,5 @@
 /*para cuando tenga lo de la foto*/
-#form-editar-mascota {
+.form-editar-mascota {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
@@ -19,6 +19,14 @@
     list-style: none;
     max-height: 85vh;
     overflow-y: auto;
+}
+
+.foto-item figcaption {
+    margin-top: 10px;
+}
+
+.editar-mascota-foto {
+    max-width: 150px;
 }
 
 .foto-item figure {
@@ -60,7 +68,7 @@
 }
 
 .btn-eliminar-foto:hover {
-    background-color: #d32f2f;
+    background-color: var(--color-rojo);
 }
 
 .eliminar-foto-form {

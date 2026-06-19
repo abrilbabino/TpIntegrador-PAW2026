@@ -14,7 +14,7 @@
 
 {% macro password(name, label, placeholder = '', required = false, attr = '', error = '') %}
     <label for="{{ name }}">{{ label }}</label>
-    <div class="campo-contraseña">
+    <fieldset class="campo-contraseña">
         <input 
             type="password" 
             id="{{ name }}" 
@@ -25,7 +25,7 @@
             {{ error ? 'class="input-invalido" data-server-error="' ~ error|escape('html_attr') ~ '"' : '' }}
         />
         <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
-    </div>
+    </fieldset>
 {% endmacro %}
 
 {% macro select(name, label, options, selected = '', required = false, attr = '', error = '') %}

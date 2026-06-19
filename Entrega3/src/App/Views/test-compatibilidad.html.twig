@@ -9,9 +9,7 @@
     </header>
 
     <section class="seccion-test">
-        <header class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </header>
+        <progress id="progressFill" class="progress-bar" value="1" max="{{ preguntas|length }}"></progress>
 
         <p class="indicador-paso" id="indicador-paso">Pregunta 1 de {{ preguntas|length }}</p>
 

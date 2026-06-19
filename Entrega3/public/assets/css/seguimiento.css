@@ -360,9 +360,25 @@ dialog {
     margin: auto;
 }
 
-dialog::backdrop {
-    background-color: rgba(15, 23, 42, 0.6);
+.modal-seguimiento::backdrop {
+    background-color: var(--color-azul-oscuro);
+    opacity: 0.6;
     backdrop-filter: blur(4px);
+}
+
+.seguimiento-mensaje-error {
+    color: var(--color-rojo);
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.seguimiento-icono-error {
+    vertical-align: middle;
+}
+
+.seguimiento-oculto {
+    display: none;
 }
 
 dialog header h3 {

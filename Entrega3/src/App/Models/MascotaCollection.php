@@ -125,4 +125,36 @@ class MascotaCollection extends Model
         $mascotas = $this->queryBuilder->selectByRefugioId($this->table, $refugioId);
         return $this->mapMascotas($mascotas);
     }
+
+    public function verificarPermisosLibreta(int $mascotaId, int $usuarioId, string $rol): bool
+    {
+        $mascota = $this->get($mascotaId);
+        
+        if (!$mascota || empty($mascota->fields['id'])) {
+            return false;
+        }
+
+        $estadoAdopcion = $mascota->fields['estado_adopcion'] ?? 'DISPONIBLE';
+
+        if ($estadoAdopcion === 'ADOPTADO') {
+            if ($rol === 'refugio') {
+                return (int)$mascota->fields['refugio_id'] === $usuarioId;
+            }
+            if ($rol !== 'adoptante') {
+                return false;
+            }
+            
+            // Verificar si este usuario tiene la solicitud aprobada
+            return $this->queryBuilder->exists('solicitud_de_adopcion', [
+                'mascota_id' => $mascotaId,
+                'adoptante_id' => $usuarioId,
+                'estado' => 'APROBADA'
+            ]);
+        } else {
+            if ($rol !== 'refugio') {
+                return false;
+            }
+            return (int)$mascota->fields['refugio_id'] === $usuarioId;
+        }
+    }
 }

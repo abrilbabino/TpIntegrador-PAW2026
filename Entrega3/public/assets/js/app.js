@@ -19,6 +19,60 @@ class AppPAW {
     this._initModalExito();
     this._initChatWidget();
     this._initChatPage();
+    this._initLibreta();
+    this._initIniciarSesion();
+    this._initSeguimiento();
+    this._initBusquedaResultados();
+  }
+
+  _initSeguimiento() {
+    const contenedorSeguimiento = document.querySelector(".seguimiento-layout");
+    if (contenedorSeguimiento) {
+      PAW.cargarScript(
+        "PAW-Seguimiento-Script",
+        "/assets/js/components/paw-seguimiento.js",
+        () => {}
+      );
+    }
+  }
+
+  _initBusquedaResultados() {
+    const contenedor = document.getElementById("busqueda-resultados");
+    if (contenedor) {
+      PAW.cargarScript(
+        "PAW-Busqueda-Resultados-Script",
+        "/assets/js/components/paw-busqueda-resultados.js",
+        () => {
+          new PAWBusquedaResultados();
+        }
+      );
+    }
+  }
+
+  _initIniciarSesion() {
+    const contenedorSesion = document.querySelector(".mostrar-contraseña");
+    if (contenedorSesion) {
+      PAW.cargarScript(
+        "PAW-Iniciar-Sesion-Script",
+        "/assets/js/components/paw-iniciar-sesion.js",
+        () => {
+          new PAWIniciarSesion();
+        }
+      );
+    }
+  }
+
+  _initLibreta() {
+    const contenedorLibreta = document.querySelector(".libreta-main");
+    if (contenedorLibreta) {
+      PAW.cargarScript(
+        "PAW-Libreta-Script",
+        "/assets/js/components/paw-libreta.js",
+        () => {
+          new PAWLibreta();
+        }
+      );
+    }
   }
 
   _initChatWidget() {
@@ -265,7 +319,7 @@ class AppPAW {
                   let historialCount = 0;
 
                   itemsFiltrados.forEach(registro => {
-                    const tarjeta = PAWVisualizacion.crearTarjetaLibreta(registro);
+                    const tarjeta = PAWVisualizacion.crearTarjetaLibreta(registro, filtroLibreta.puedeModificar);
                     if (registro.estado === 'PENDIENTE') {
                       if (pendientesCont) pendientesCont.appendChild(tarjeta);
                       pendientesCount++;
