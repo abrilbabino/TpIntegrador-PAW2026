@@ -22,7 +22,7 @@ NC='\033[0m'
 
 PROJECT="project-f3583ede-db03-4872-95c"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/../config.json"
+CONFIG_FILE="${SCRIPT_DIR}/config.json"
 
 if ! command -v jq &> /dev/null; then
     echo -e "${RED}No se encontró 'jq'. Instalalo con: brew install jq${NC}"
@@ -38,7 +38,6 @@ SECRETS=(
     "DB_PASSWORD"
     "MAIL_PASS"
     "MERCADO_PAGO_ACCESS_TOKEN"
-    "GOOGLE_MAPS_KEY"
 )
 
 for SECRET_NAME in "${SECRETS[@]}"; do

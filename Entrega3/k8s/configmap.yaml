@@ -6,7 +6,7 @@ data:
   LOG_LEVEL: "INFO"
   LOG_PATH: "/logs/app.log"
   DB_ADAPTER: "pgsql"
-  DB_HOSTNAME: "laws-1-us-east-1.pooler.supabase.com" 
+  DB_HOSTNAME: "aws-1-us-east-1.pooler.supabase.com" 
   DB_DBNAME: "postgres"
   DB_USERNAME: "postgres.dnhymysbyzlpzpygdfpt"
   DB_PORT: "6543"
