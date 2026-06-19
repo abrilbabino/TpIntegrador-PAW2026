@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pawmap-app
+  labels:
+    app: pawmap
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pawmap
+  template:
+    metadata:
+      labels:
+        app: pawmap
+    spec:
+      containers:
+        - name: pawmap-app
+          image: us-central1-docker.pkg.dev/project-f3583ede-db03-4872-95c/pawmap-repo/pawmap-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 15
+          envFrom:
+            - configMapRef:
+                name: pawmap-config
+            - secretRef:
+                name: pawmap-secrets
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

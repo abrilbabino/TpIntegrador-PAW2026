@@ -1,0 +1,14 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Adoptar - PawMap{% endblock %}
+
+{% block main_attributes %}class="adoptar-main"{% endblock %}
+
+{% block main %}
+    <header class="hero-adoptar">
+        <h1>Adoptá una Mascota</h1>
+        <p>Filtrá por especie, tamaño, edad y más para encontrar tu compañero ideal.</p>
+    </header>
+
+    <div data-paw-filtros="mascotas"></div>
+{% endblock %}

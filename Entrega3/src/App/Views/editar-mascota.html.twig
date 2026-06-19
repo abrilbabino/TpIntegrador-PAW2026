@@ -1,0 +1,194 @@
+{% extends 'layout/base.html.twig' %}
+
+{% set mascotaFields = mascota.fields|default([]) %}
+{% set nombreActual = oldData.nombre|default(mascotaFields.nombre|default('')) %}
+{% set especieActual = oldData.especie|default(mascotaFields.especie|default('')) %}
+{% set tamanioActual = oldData.tamanio|default(oldData.tamano|default(mascotaFields.tamano|default(''))) %}
+{% set temperamentoActual = oldData.temperamento|default(mascotaFields.temperamento|default('')) %}
+{% set sexoActual = (oldData.sexo|default(mascotaFields.sexo|default('')))|lower %}
+{% set esterilizadoActual = oldData.esterilizado|default((mascotaFields.castrado|default(0) == 1) ? 'si' : 'no') %}
+{% set descripcionActual = oldData.descripcion_mascota|default(oldData.descripcion|default(mascotaFields.descripcion|default(''))) %}
+{% set fechaNacimientoActual = oldData.fecha_nacimiento|default(mascotaFields.fecha_nacimiento|default('')) %}
+{% set fotos = fotos|default([]) %}
+
+{% block title %}Editar Mascota - PawMap{% endblock %}
+
+{% block main_attributes %}class="perfil-container is-editing"{% endblock %}
+
+{% block main %}
+    {% if app.request.query.get('update') == 'success' %}
+        <aside class="alerta-exito" role="status">
+            <span class="material-symbols-outlined">check_circle</span>
+            <section>
+                <strong>¡Cambios guardados!</strong>
+                <p>La mascota se ha actualizado correctamente.</p>
+            </section>
+        </aside>
+    {% endif %}
+
+    {% if app.request.query.get('error') is not null %}
+        <aside class="alerta-error" role="alert">
+            <span class="material-symbols-outlined">error</span>
+            <section>
+                <strong>Ocurrió un inconveniente</strong>
+                <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
+            </section>
+        </aside>
+    {% endif %}
+
+    <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
+        <header class="perfil-datos-header">
+            <h2>Editar Mascota</h2>
+        </header>
+
+        <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
+
+        <ul class="perfil-datos-grid">
+            <li class="dato-item">
+                <span class="dato-label">Nombre *</span>
+                <input type="text" name="nombre" value="{{ nombreActual }}" class="dato-valor-input input-value {{ errores.nombre is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="60" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s'-]+$" required data-trim-required="true" title="Solo se permiten letras, espacios, apóstrofes y guiones.">
+                {% if errores.nombre is defined %}
+                    <span class="msg-error">{{ errores.nombre }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Especie *</span>
+                <select name="especie" class="dato-valor-input input-value {{ errores.especie is defined ? 'input-invalido' : '' }}" required>
+                    <option value="">Seleccioná una especie</option>
+                    {% for e in especies %}
+                        {% set especieValor = e.fields.especie|default('') %}
+                        <option value="{{ especieValor }}" {{ (especieActual == especieValor) ? 'selected' : '' }}>
+                            {{ especieValor|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if errores.especie is defined %}
+                    <span class="msg-error">{{ errores.especie }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Tamaño *</span>
+                <select name="tamanio" class="dato-valor-input input-value {{ errores.tamanio is defined ? 'input-invalido' : '' }}" required>
+                    <option value="">Seleccioná un tamaño</option>
+                    {% for t in tamanos %}
+                        {% set tamanoValor = t.fields.tamano|default('') %}
+                        <option value="{{ tamanoValor }}" {{ (tamanioActual == tamanoValor) ? 'selected' : '' }}>
+                            {{ tamanoValor|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if errores.tamanio is defined %}
+                    <span class="msg-error">{{ errores.tamanio }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Temperamento *</span>
+                <select name="temperamento" class="dato-valor-input input-value {{ errores.temperamento is defined ? 'input-invalido' : '' }}" required>
+                    <option value="">Seleccioná un temperamento</option>
+                    {% for t in temperamentos %}
+                        {% set temperamentoValor = t.fields.temperamento|default('') %}
+                        <option value="{{ temperamentoValor }}" {{ (temperamentoActual == temperamentoValor) ? 'selected' : '' }}>
+                            {{ temperamentoValor|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if errores.temperamento is defined %}
+                    <span class="msg-error">{{ errores.temperamento }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Sexo *</span>
+                <label>
+                    <input type="radio" name="sexo" value="macho" required {{ (sexoActual == 'macho') ? 'checked' : '' }}>
+                    Macho
+                </label>
+                <label>
+                    <input type="radio" name="sexo" value="hembra" required {{ (sexoActual == 'hembra') ? 'checked' : '' }}>
+                    Hembra
+                </label>
+                {% if errores.sexo is defined %}
+                    <span class="msg-error">{{ errores.sexo }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">¿Está esterilizado? *</span>
+                <label>
+                    <input type="radio" name="esterilizado" value="si" required {{ (esterilizadoActual == 'si') ? 'checked' : '' }}>
+                    Sí
+                </label>
+                <label>
+                    <input type="radio" name="esterilizado" value="no" required {{ (esterilizadoActual == 'no') ? 'checked' : '' }}>
+                    No
+                </label>
+                {% if errores.esterilizado is defined %}
+                    <span class="msg-error">{{ errores.esterilizado }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Descripción</span>
+                <textarea name="descripcion_mascota" class="dato-valor-input input-value {{ errores.descripcion_mascota is defined ? 'input-invalido' : '' }}" maxlength="500">{{ descripcionActual }}</textarea>
+                {% if errores.descripcion_mascota is defined %}
+                    <span class="msg-error">{{ errores.descripcion_mascota }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Fecha de nacimiento</span>
+                <input type="date" name="fecha_nacimiento" value="{{ fechaNacimientoActual }}" max="{{ 'now'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." class="dato-valor-input input-value {{ errores.fecha_nacimiento is defined ? 'input-invalido' : '' }}">
+                {% if errores.fecha_nacimiento is defined %}
+                    <span class="msg-error">{{ errores.fecha_nacimiento }}</span>
+                {% endif %}
+            </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Foto Principal</span>
+                <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
+                {% if errores.foto is defined %}
+                    <span class="msg-error">{{ errores.foto }}</span>
+                {% endif %}
+            </li>
+        </ul>
+
+        <footer class="perfil-datos-acciones">
+            <button type="submit" class="btn-guardar-perfil">Guardar</button>
+            <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
+        </footer>
+    </form>
+    
+    <section class="galeria-multimedia">
+        <form method="POST" action="/mascota/subir-archivo" enctype="multipart/form-data" class="perfil-datos">
+            <h3>Fotos Adicionales</h3>
+            <input id="mascota_id" type="hidden" name="mascota_id" value="{{ mascotaFields.id|default(0) }}">
+            
+            <ul class="perfil-datos-grid">
+                <li class="dato-item">
+                    <label for="archivo_multimedia" class="dato-label">Seleccionar nueva foto para el carrusel</label>
+                    <input type="file" name="archivo_multimedia" id="archivo_multimedia" accept="image/*" required>
+                    <button type="submit" class="btn-guardar-perfil">Subir foto</button>
+                </li>
+            </ul>
+        </form> 
+        <ul class="galeria-grid">
+            {% for foto in fotos %}
+                <li class="foto-item">
+                    <figure>
+                        <img src="/{{ foto.url }}" alt="Foto extra de la mascota" style="max-width: 150px;">
+                        <figcaption>
+                            <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
+                                <input type="hidden" name="id" value="{{ foto.id }}">
+                                <input type="hidden" name="mascota_id" value="{{ mascotaFields.id }}">
+                                <button type="submit" class="btn-eliminar-foto">Eliminar</button>
+                            </form>
+                        </figcaption>
+                    </figure>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

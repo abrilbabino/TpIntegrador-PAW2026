@@ -1,0 +1,56 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Test de Compatibilidad - PawMap{% endblock %}
+
+{% block main %}
+    <header class="hero-adoptar">
+        <h1>TEST DE COMPATIBILIDAD</h1>
+        <p>Respondé estas preguntas para encontrar a tu compañero ideal.</p>
+    </header>
+
+    <section class="seccion-test">
+        <header class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </header>
+
+        <p class="indicador-paso" id="indicador-paso">Pregunta 1 de {{ preguntas|length }}</p>
+
+        <form id="testForm" method="POST" action="/test-de-compatibilidad/resultado">
+
+            {% for pregunta in preguntas %}
+            <fieldset class="paso {{ loop.index0 == 0 ? 'active' : '' }}" data-paso="{{ loop.index }}">
+                <h2>{{ pregunta.titulo|default('') }}</h2>
+                <ul class="options-container">
+                    {% for opcion in pregunta.opciones %}
+                    <li>
+                        <label class="tarjeta-opcion">
+                            <input type="radio" name="{{ pregunta.name|default('') }}" value="{{ opcion.valor|default('') }}">
+                            <span class="contenido-opcion">
+                                <span class="emoji-opcion">{{ opcion.emoji|default('👉') }}</span>
+                                <span class="textos-opcion">
+                                    <strong class="opcion-titulo">{{ opcion.etiqueta|default('') }}</strong>
+                                    {% if opcion.subtitulo is not empty %}
+                                        <small class="opcion-subtitulo">{{ opcion.subtitulo }}</small>
+                                    {% endif %}
+                                </span>
+                            </span>
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </fieldset>
+            {% endfor %}
+
+            <menu class="boton-fila">
+                <button type="button" class="btn-anterior" id="btnAnterior">Anterior</button>
+                <button type="button" class="btn-siguiente" id="btnSiguiente">Siguiente</button>
+                <button type="submit" class="btn-resultados" id="btnResultados">Ver Resultados</button>
+            </menu>
+
+        </form>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/test-compatibilidad.js"></script>
+{% endblock %}

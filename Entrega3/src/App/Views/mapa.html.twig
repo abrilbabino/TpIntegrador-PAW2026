@@ -1,0 +1,157 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Mapa Interactivo - PawMap{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="/assets/js/mapa.js" defer></script>
+{% endblock %}
+
+{% block main_attributes %}class="contenedor-mapa-page"{% endblock %}
+
+{% block main %}
+    <aside class="sidebar-mapa seccion-filtros">
+        <div data-paw-filtros="mapa" style="display: contents;"></div>
+
+        <section class="refugios-cercanos sidebar-only-desktop">
+            <header class="titulo-refugios-cercanos">
+                <span class="material-symbols-outlined">home</span>
+                <h3>Refugios cerca de ti</h3>
+            </header>
+            
+            {% set hasLocation = filtros.lat_usuario is not empty or filtros.ubicacion is not empty %}
+            {% if not hasLocation %}
+                <section class="mensaje-gps-mapa">
+                    <span class="material-symbols-outlined icono-gps-mapa">location_off</span>
+                    Activá tu GPS en el mapa o ingresá tu ubicación arriba para descubrir los refugios de tu zona.
+                </section>
+            {% else %}
+                <ul class="lista-refugios-sidebar">
+                    {% set limitRefugios = 3 %}
+                    {% set count = 0 %}
+                    {% if refugiosMapa is not empty %}
+                        {% for rm in refugiosMapa %}
+                            {% if count < limitRefugios %}
+                                <li class="refugio-cercano-item">
+                                    <img src="/assets/img/{{ rm.imagen|default('default-refugio.jpg') }}" class="refugio-mini-img" alt="Refugio">
+                                    <section class="refugio-mini-info">
+                                        <h4>{{ rm.nombre_institucion|default('Refugio') }}</h4>
+                                        <p><span class="material-symbols-outlined icon-small">location_on</span> {{ rm.ciudad|default('Ubicación') ~ ', ' ~ rm.provincia|default('') }}</p>
+                                        {% if rm.distancia_km is defined %}
+                                            <span class="refugio-distancia">A {{ rm.distancia_km|number_format(1) }} km</span>
+                                        {% endif %}
+                                    </section>
+                                </li>
+                                {% set count = count + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li class="item-vacio-refugio">No hay refugios cercanos a esta ubicación.</li>
+                    {% endif %}
+                </ul>
+                <a href="/refugios" class="boton-secundario boton-ver-todos">Ver todos</a>
+            {% endif %}
+        </section>
+    </aside>
+
+    <section class="contenido-mapa">
+        <section class="mapa-wrapper">
+            <figure id="leaflet-map" class="mapa-interactivo" data-refugios='{{ refugiosMapa|default([])|json_encode(constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}'></figure>
+            <button type="button" id="btn-gps-flotante" class="btn-gps-flotante" title="Centrar en mi ubicación">
+                <span class="material-symbols-outlined">my_location</span>
+            </button>
+            <aside class="mapa-nota-gps">
+                <span class="material-symbols-outlined icon-small">info</span>
+                En PC, la ubicación puede ser inexacta por falta de GPS.
+            </aside>
+        </section>
+
+        <section class="mascotas-zona">
+            <span class="decorador-linea"></span>
+            <h2>Mascotas en la zona</h2>
+            
+            <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+                {% if mascotas is not empty %}
+                    {% for mascota in mascotas %}
+                        {% if mascota.fields is defined %}
+                            <article class="tarjeta-mascota">
+                                <figure class="tarjeta-imagen">
+                                    <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="link-imagen">
+                                        <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
+                                             alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                                    </a>
+                                    <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                        <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
+                                        <button type="submit" class="btn-favorito {{ mascota.fields.id in (favoritosIds|default([])) ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
+                                            <span class="material-symbols-outlined">favorite</span>
+                                        </button>
+                                    </form>
+                                </figure>
+
+                                <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="verPerfil">
+                                    <section class="tarjeta-info">
+                                        <header class="tarjeta-info-header">
+                                            <h3>{{ mascota.fields.nombre|default('Sin nombre') }}</h3>
+                                            <span class="btn-ver-perfil-mobile">Ver Perfil</span>
+                                        </header>
+                                        <p>
+                                            {{ mascota.fields.edad|default('0') }} años -
+                                            {{ mascota.fields.tamano|default('Desconocido')|capitalize }} -
+                                            {{ mascota.fields.temperamento|default('Desconocido')|capitalize }}
+                                        </p>
+                                    </section>
+                                </a>
+                            </article>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>No se encontraron mascotas que coincidan con los filtros.</p>
+                {% endif %}
+            </section>
+
+            <section class="refugios-cercanos mobile-only refugios-mobile-espaciado">
+                <header class="titulo-refugios-cercanos">
+                    <span class="material-symbols-outlined">home</span>
+                    <h3>Refugios cerca de ti</h3>
+                </header>
+                
+                {% if not hasLocation %}
+                    <section class="mensaje-gps-mapa">
+                        <span class="material-symbols-outlined icono-gps-mapa">location_off</span>
+                        Activá tu GPS en el mapa o ingresá tu ubicación arriba para descubrir los refugios de tu zona.
+                    </section>
+                {% else %}
+                    <ul class="lista-refugios-sidebar">
+                        {% set count2 = 0 %}
+                        {% if refugiosMapa is not empty %}
+                            {% for rm in refugiosMapa %}
+                                {% if count2 < limitRefugios %}
+                                    <li class="refugio-cercano-item">
+                                        <img src="/assets/img/{{ rm.imagen|default('default-refugio.jpg') }}" class="refugio-mini-img" alt="Refugio">
+                                        <section class="refugio-mini-info">
+                                            <h4>{{ rm.nombre_institucion|default('Refugio') }}</h4>
+                                            <p><span class="material-symbols-outlined icon-small">location_on</span> {{ rm.ciudad|default('Ubicación') ~ ', ' ~ rm.provincia|default('') }}</p>
+                                            {% if rm.distancia_km is defined %}
+                                                <span class="refugio-distancia">A {{ rm.distancia_km|number_format(1) }} km</span>
+                                            {% endif %}
+                                        </section>
+                                    </li>
+                                    {% set count2 = count2 + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <li class="item-vacio-refugio">No hay refugios cercanos a esta ubicación.</li>
+                        {% endif %}
+                    </ul>
+                    <a href="/refugios" class="boton-secundario boton-ver-todos">Ver todos</a>
+                {% endif %}
+            </section>
+        </section>
+{% endblock %}
+
+{% block content_before_main %}
+    <header class="hero">
+        <h1>Mapa Interactivo</h1>
+    </header>
+{% endblock %}

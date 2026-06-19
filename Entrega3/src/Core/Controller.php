@@ -4,6 +4,8 @@ namespace Paw\Core;
 
 use Paw\Core\Model;
 use Paw\Core\DataBase\QueryBuilder;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class Controller
 {
@@ -12,6 +14,7 @@ class Controller
     protected $redes;
     protected $notificaciones;
     protected $model;
+    protected Environment $twig;
     protected $request;
     protected $log;
     protected $connection;
@@ -37,6 +40,22 @@ class Controller
             $mensajesCol->setQueryBuilder($qbMensajes);
             $this->notificaciones = $mensajesCol->getUnreadCount($_SESSION['user']['id']);
         }
+
+        // Configuración de Twig 
+        $loader = new FilesystemLoader($this->viewsDir);
+        
+        $cacheDir = $this->viewsDir . '/cache';
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0777, true);
+        }
+
+        $this->twig = new Environment($loader, [
+            'cache' => $cacheDir,
+            'auto_reload' => true,
+        ]);
+
+        $this->twig->addGlobal('session', $_SESSION ?? []);
+
 
         $this -> menu = [
             [
@@ -108,6 +127,11 @@ class Controller
             $model->setQueryBuilder($qb);
             $this->setModel($model);
         }
+
+        // Exponer globales manuales en Twig 
+        $this->twig->addGlobal('menu', $this->menu);
+        $this->twig->addGlobal('redes', $this->redes);
+        $this->twig->addGlobal('notificaciones', $this->notificaciones);
     }
 
     public function setModel(Model $model)

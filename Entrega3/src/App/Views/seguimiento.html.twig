@@ -1,0 +1,275 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Seguimiento Post-Adopción - PawMap{% endblock %}
+
+{% block main_attributes %}class="seguimiento-layout"{% endblock %}
+
+{% block main %}
+    <section class="seguimiento-main">
+        <article class="pet-card">
+            <figure class="imagen-mascota">
+                <img src="/assets/img/{{ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') }}">
+            </figure>
+            <header class="pet-card-info">
+                <h1>{{ mascotaSeleccionada.fields.nombre|default('') }}</h1>
+                <p>{{ mascotaSeleccionada.fields.especie|default('') }} - {{ mascotaSeleccionada.fields.edad|default('') }} años</p>
+            </header>
+        </article>
+
+        <!-- ROADMAP DE ENCUESTAS -->
+        <section class="roadmap-encuestas">
+            <header>
+                <h2>Encuestas</h2>
+                <p>Completa las encuestas a medida que se habiliten según los días transcurridos desde la adopción.</p>
+            </header>
+            {% for enc in estadoEncuestas %}
+                <article class="encuesta-card estado-{{ enc.estado|default('')|lower }}">
+                    <header>
+                        <h4>Encuesta: {{ enc.titulo|default('') }}</h4>
+                        <span class="badge-dias">{{ enc.dias_requeridos|default('') }} Días</span>
+                    </header>
+                    
+                    {% if enc.estado == 'COMPLETADA' %}
+                        <p class="estado-texto exito">
+                            <span class="material-symbols-outlined">check_circle</span> Completada
+                        </p>
+                    {% elseif enc.estado == 'HABILITADA' %}
+                        <button class="btn-accion" onclick="abrirModalEncuesta('{{ enc.id|default('') }}', '{{ enc.titulo|default('')|escape('js') }}')">
+                            <span class="material-symbols-outlined">assignment</span> Completar
+                        </button>
+                    {% else %}
+                        <p class="estado-texto bloqueado">
+                            <span class="material-symbols-outlined">lock</span> 
+                            Faltan {{ enc.faltan|default('') }} días
+                        </p>
+                        <button class="btn-accion btn-encuesta" disabled>
+                            Bloqueada
+                        </button>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </section>
+
+        <section id="historial-sanitario" class="timeline-section">
+            <header>
+                <h2>Recordatorios</h2>
+            </header>
+            {% if registrosPendientes is empty %}
+                <p>No hay registros sanitarios pendientes para esta mascota.</p>
+            {% else %}
+                <ul class="timeline">
+                    {% for registro in registrosPendientes %}
+                        <li class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <article class="timeline-content">
+                                {% set claseBadge = registro.fields.estado|lower == 'completado' ? 'badge-completado' : 'badge-pendiente' %}
+                                <header>
+                                    <h4>{{ registro.fields.titulo|default('') }}</h4>
+                                    <span class="estado-badge {{ claseBadge }}">{{ registro.fields.estado|default('') }}</span>
+                                </header>
+                                {% set fechaProg = registro.fields.fecha_programada|date('U') %}
+                                {% set vencido = (registro.fields.estado|lower == 'pendiente' and fechaProg < 'now'|date('U')) %}
+                                {% set claseFecha = vencido ? 'fecha-vencida' : 'fecha-normal' %}
+                                <p class="{{ claseFecha }}"><strong>Programado:</strong> {{ registro.fields.fecha_programada|date('d/m/Y') }}</p>
+                                {% if registro.fields.fecha_realizada is not empty %}
+                                    <p><strong>Realizado:</strong> {{ registro.fields.fecha_realizada|date('d/m/Y') }}</p>
+                                {% endif %}
+                                {% if registro.fields.archivo_adjunto is not empty %}
+                                    <p><a href="{{ registro.fields.archivo_adjunto }}" target="_blank">Ver Comprobante</a></p>
+                                {% endif %}
+                            </article>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </section>
+        
+        <!-- BANNER DINAMICO DE ESTADO SANITARIO -->
+        <section class="banner-alerta status-{{ estadoGlobal|default('dia') }}">
+            <article class="banner-content">
+                <span class="material-symbols-outlined icon-status">
+                    {{ estadoGlobal|default('dia') == 'dia' ? 'check_circle' : 'warning' }}
+                </span>
+                <section>
+                    <h3>{{ estadoGlobal|default('dia') == 'dia' ? 'Todo al día' : 'Atención: Tenes registros vencidos' }}</h3>
+                    {% if estadoGlobal|default('dia') == 'dia' %}
+                        <p>Excelente trabajo manteniendo la libreta sanitaria al día.</p>
+                    {% else %}
+                        <p>Revisa los recordatorios para ver qué acción sanitaria está pendiente.</p>
+                    {% endif %}
+                </section>
+            </article>
+            <a href="mascota/libreta?id={{ mascotaSeleccionada.fields.id|default('') }}" class="btn-historial">
+                Ver Historial Sanitario
+            </a>
+        </section>
+        <section class="comprobantes-container">
+            <header>
+                <h2>Comprobantes</h2>
+            </header>
+            <button class="btn-comprobante" onclick="abrirModalSubida('foto')">
+                Fotos de {{ mascotaSeleccionada.fields.nombre|default('') }}
+                <span class="material-symbols-outlined icono-comprobante">attach_file</span>
+            </button>
+            <button class="btn-comprobante" onclick="abrirModalSubida('certificado')">
+                Certificado vacunación
+                <span class="material-symbols-outlined icono-comprobante">attach_file</span>
+            </button>
+            <button class="btn-comprobante" onclick="abrirModalSubida('comprobante')">
+                Comprobantes medicinales
+                <span class="material-symbols-outlined icono-comprobante">attach_file</span>
+            </button>
+        </section>
+    </section>
+{% endblock %}
+
+{% block content_after_main %}
+    <!-- Modal Cargar Archivo -->
+    {% if mascotaSeleccionada %}
+    <dialog id="modal-archivo">
+        <header>
+            <h3>Cargar Certificado o Comprobante</h3>
+        </header>
+        <form action="/seguimiento/subir-archivo" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
+            
+            <fieldset style="display: none;">
+                <label for="tipo_archivo">Tipo de archivo:</label>
+                <select name="tipo_archivo" id="tipo_archivo" required>
+                    <option value="foto">Foto de la mascota</option>
+                    <option value="certificado">Certificado Médico / General</option>
+                    <option value="comprobante">Comprobante vinculado a un Registro</option>
+                </select>
+            </fieldset>
+
+            <fieldset id="fieldset_registro_id" style="display: none;">
+                <label for="registro_id">Registro asociado (Pendiente):</label>
+                <select name="registro_id" id="registro_id">
+                    <option value="">Seleccione un registro...</option>
+                    {% for reg in registros %}
+                        {% if reg.fields.estado|lower == 'pendiente' %}
+                            <option value="{{ reg.fields.id }}">{{ reg.fields.titulo|default('') }} - {{ reg.fields.fecha_programada|date('d/m/Y') }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <label for="archivo">Archivo (PDF o Imagen):</label>
+                <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required>
+            </fieldset>
+            <footer class="form-actions">
+                <button type="submit" class="btn-accion">Subir Archivo</button>
+                <button type="button" class="btn-cerrar" onclick="document.getElementById('modal-archivo').close()">Cancelar</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <!-- Modal Encuesta Adaptación -->
+    <dialog id="modal-encuesta">
+        <header>
+            <h3 id="modal-encuesta-titulo">Encuesta de Seguimiento</h3>
+        </header>
+        <form action="/encuesta/guardar" method="POST">
+            <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
+            <input type="hidden" name="etapa" id="input_etapa" value="">
+            
+            <fieldset class="encuesta-fields" id="fields_3_dias" style="display:none;">
+                <label for="sueno">Hábitos de sueño:</label>
+                <select name="sueno" id="sueno">
+                    <option value="Normal">Normal (Duerme toda la noche)</option>
+                    <option value="Intermitente">Intermitente (Se despierta mucho)</option>
+                    <option value="Llora">Llora por las noches</option>
+                </select>
+                <label for="alimentacion">Alimentación:</label>
+                <select name="alimentacion" id="alimentacion">
+                    <option value="Come bien">Come bien su ración</option>
+                    <option value="Ansioso">Come demasiado rápido/ansioso</option>
+                    <option value="Falta de apetito">Falta de apetito</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="encuesta-fields" id="fields_7_dias" style="display:none;">
+                <label for="conducta">Conducta general:</label>
+                <select name="conducta" id="conducta">
+                    <option value="Excelente">Excelente (Juguetón, amigable)</option>
+                    <option value="Buena">Buena (Tranquilo)</option>
+                    <option value="Regular">Regular (Tímido, asustadizo)</option>
+                    <option value="Problemática">Problemática (Agresividad, rompe cosas)</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="encuesta-fields" id="fields_14_dias" style="display:none;">
+                <label for="progreso_general">Progreso General (Cómo se ha adaptado al hogar):</label>
+                <textarea name="progreso_general" id="progreso_general" rows="4" placeholder="Describe brevemente su evolución..."></textarea>
+            </fieldset>
+
+            <fieldset>
+                <label for="comentarios">Comentarios adicionales:</label>
+                <textarea name="comentarios" id="comentarios" rows="2"></textarea>
+            </fieldset>
+
+            <footer class="form-actions">
+                <button type="submit" class="btn-accion">Enviar Encuesta</button>
+                <button type="button" class="btn-cerrar" onclick="document.getElementById('modal-encuesta').close()">Cancelar</button>
+            </footer>
+        </form>
+    </dialog>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% if mascotaSeleccionada %}
+    <script>
+        function abrirModalSubida(tipo) {
+            const selectTipo = document.getElementById('tipo_archivo');
+            selectTipo.value = tipo;
+
+            const fieldsetRegistro = document.getElementById('fieldset_registro_id');
+            const selectRegistro = document.getElementById('registro_id');
+            const opciones = selectRegistro.querySelectorAll('option:not([value=""])');
+
+            if (tipo === 'foto') {
+                fieldsetRegistro.style.display = 'none';
+                selectRegistro.required = false;
+                selectRegistro.value = '';
+            } else {
+                fieldsetRegistro.style.display = 'block';
+                selectRegistro.required = true;
+                selectRegistro.value = '';
+
+                opciones.forEach(opt => {
+                    const texto = opt.innerText.toLowerCase();
+                    if (tipo === 'certificado') {
+                        opt.style.display = texto.includes('vacuna') ? 'block' : 'none';
+                    } else if (tipo === 'comprobante') {
+                        opt.style.display = !texto.includes('vacuna') ? 'block' : 'none';
+                    }
+                });
+            }
+
+            document.getElementById('modal-archivo').showModal();
+        }
+        
+        function abrirModalEncuesta(etapa, titulo) {
+            document.getElementById('modal-encuesta-titulo').innerText = 'Encuesta: ' + titulo;
+            document.getElementById('input_etapa').value = etapa;
+            
+            // Ocultar todos y deshabilitar require
+            document.querySelectorAll('.encuesta-fields').forEach(f => {
+                f.style.display = 'none';
+                f.querySelectorAll('select, textarea').forEach(input => input.removeAttribute('required'));
+            });
+            
+            // Mostrar el activo y hacer require
+            const activeFieldset = document.getElementById('fields_' + etapa);
+            if (activeFieldset) {
+                activeFieldset.style.display = 'block';
+                activeFieldset.querySelectorAll('select, textarea').forEach(input => input.setAttribute('required', 'required'));
+            }
+            
+            document.getElementById('modal-encuesta').showModal();
+        }
+    </script>
+    {% endif %}
+{% endblock %}

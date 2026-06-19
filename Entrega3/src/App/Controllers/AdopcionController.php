@@ -43,7 +43,7 @@ class AdopcionController extends Controller
             $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota. No es posible enviar más de una solicitud por mascota.';
         }
 
-        require $this->viewsDir . '/formulario-adopcion.view.php';
+        echo $this->twig->render('formulario-adopcion.html.twig', get_defined_vars());
     }
 
     public function enviar()
@@ -76,7 +76,7 @@ class AdopcionController extends Controller
 
         if (count($errores) > 0) {
             [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
-            require $this->viewsDir . '/formulario-adopcion.view.php';
+            echo $this->twig->render('formulario-adopcion.html.twig', get_defined_vars());
         } else {
             $mascota = $this->cargarMascota($mascota_id);
             $this->model->guardar($mascota->fields['refugio_id']);

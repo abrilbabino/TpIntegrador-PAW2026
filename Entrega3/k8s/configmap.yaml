@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pawmap-config
+data:
+  LOG_LEVEL: "INFO"
+  LOG_PATH: "/logs/app.log"
+  DB_ADAPTER: "pgsql"
+  DB_HOSTNAME: "laws-1-us-east-1.pooler.supabase.com" 
+  DB_DBNAME: "postgres"
+  DB_USERNAME: "postgres.dnhymysbyzlpzpygdfpt"
+  DB_PORT: "6543"
+  DB_CHARSET: "utf8"
+  MAIL_PERSONAL: "pawmap@gmail.com"
+  MAIL_HOST: "smtp.gmail.com"
+  MAIL_PORT: "587"

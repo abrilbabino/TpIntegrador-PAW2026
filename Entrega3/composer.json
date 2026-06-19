@@ -31,7 +31,8 @@
     "robmorgan/phinx": "^0.16.11",
     "phpmailer/phpmailer": "^7.0",
     "ext-pdo_pgsql": "*",
-    "mercadopago/dx-php": ">=3.10"
+    "mercadopago/dx-php": ">=3.10",
+    "twig/twig": "^3.27"
   },
   "autoload": {
     "psr-4": {

@@ -1,0 +1,62 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Coordinación de Adopción - PawMap{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/chat.css">
+{% endblock %}
+
+{% block main_attributes %}class="chat-main-container" data-user-id="{{ usuario.id }}"{% endblock %}
+
+{% block main %}
+    <section class="chat-box">
+        <header class="chat-header">
+            <figure class="chat-header-info">
+                <span class="material-symbols-outlined icon-header">account_circle</span>
+                <figcaption class="chat-header-text">
+                    <h2>Coordinación de Adopción</h2>
+                    <p>Solicitud #{{ solicitudId }} - {{ solicitud.estado }}</p>
+                </figcaption>
+            </figure>
+            <a href="/perfil" class="btn-volver-chat">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+        </header>
+
+        <ol class="chat-messages" id="chat-messages-container">
+            {% if mensajes is empty %}
+                <article class="chat-empty-state">
+                    <span class="material-symbols-outlined">forum</span>
+                    <p>¡El chat ya está habilitado!</p>
+                    <span>Escribe tu primer mensaje para coordinar la adopción.</span>
+                </article>
+            {% else %}
+                {% for msg in mensajes %}
+                    {% set isMine = (msg.fields.remitente_id == usuario.id) %}
+                    {% set bubbleClass = isMine ? 'message-mine' : 'message-other' %}
+                    {% set time = msg.fields.fecha_envio|date('H:i') %}
+                    
+                    <li class="chat-message-row {{ bubbleClass }}">
+                        <article class="chat-bubble">
+                            {% if not isMine %}
+                                <span class="message-sender-name">{{ msg.fields.remitente_nombre }}</span>
+                            {% endif %}
+                            <p class="message-content">{{ msg.fields.contenido|nl2br }}</p>
+                            <span class="message-time">{{ time }}</span>
+                        </article>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ol>
+
+        <footer class="chat-input-area">
+            <form id="chat-form" action="/chat/enviar" method="POST">
+                <input type="hidden" id="solicitud_id" name="solicitud_id" value="{{ solicitudId }}">
+                <textarea id="chat-input" name="contenido" placeholder="Escribe un mensaje..." required rows="1"></textarea>
+                <button type="submit" class="btn-send-message" aria-label="Enviar mensaje">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </form>
+        </footer>
+    </section>
+{% endblock %}
