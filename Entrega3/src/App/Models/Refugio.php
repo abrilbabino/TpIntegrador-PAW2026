@@ -107,7 +107,7 @@ class Refugio extends Model
         $sqlFotos = "
             SELECT 
                 md.id, md.tipo, md.url, 
-                m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
+                m.id as mascota_id, m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
             FROM media_mascota md 
             JOIN mascota m ON md.mascota_id = m.id 
             LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADO'
@@ -118,7 +118,7 @@ class Refugio extends Model
 
             SELECT 
                 rs.id, 'certificado_med' as tipo, rs.archivo_adjunto as url,
-                m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
+                m.id as mascota_id, m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
             FROM registro_sanitario rs
             JOIN mascota m ON rs.mascota_id = m.id 
             LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADO'
@@ -128,5 +128,40 @@ class Refugio extends Model
             ORDER BY id DESC
         ";
         return $this->queryBuilder->rawQuery($sqlFotos, [':rid' => $id]);
+    }
+
+    public function getSeguimientoAgrupado(): array
+    {
+        $encuestas = $this->getEncuestas();
+        $fotosSeguimiento = $this->getFotosSeguimiento();
+        
+        $seguimientoAgrupado = [];
+        foreach ($encuestas as $enc) {
+            $mId = $enc['mascota_id'];
+            if (!isset($seguimientoAgrupado[$mId])) {
+                $seguimientoAgrupado[$mId] = [
+                    'mascota_nombre' => $enc['mascota_nombre'],
+                    'adoptante_nombre' => $enc['adoptante_nombre'] ?? 'Desconocido',
+                    'encuestas' => [],
+                    'fotos' => []
+                ];
+            }
+            $seguimientoAgrupado[$mId]['encuestas'][] = $enc;
+        }
+        
+        foreach ($fotosSeguimiento as $foto) {
+            $mId = $foto['mascota_id'];
+            if (!isset($seguimientoAgrupado[$mId])) {
+                $seguimientoAgrupado[$mId] = [
+                    'mascota_nombre' => $foto['mascota_nombre'],
+                    'adoptante_nombre' => $foto['adoptante_nombre'] ?? 'Desconocido',
+                    'encuestas' => [],
+                    'fotos' => []
+                ];
+            }
+            $seguimientoAgrupado[$mId]['fotos'][] = $foto;
+        }
+        
+        return $seguimientoAgrupado;
     }
 }

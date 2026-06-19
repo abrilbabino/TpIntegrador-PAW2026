@@ -103,6 +103,7 @@
                         
                         <label for="fecha_nacimiento">Fecha de nacimiento</label>
                         <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required
+                               max="<?= date('Y-m-d') ?>" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura."
                                value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? $adoptanteData['fecha_de_nacimiento'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     </fieldset>
 

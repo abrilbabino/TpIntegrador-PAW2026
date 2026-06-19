@@ -160,83 +160,90 @@
             <details class="perfil-dropdown">
             <summary> <h3>Monitoreo Post-Adopción</h3> </summary>
             
-            <h4 class="monitoreo-subtitle">Encuestas Recientes</h4>
-            <?php if (empty($encuestas)): ?>
+            <?php if (empty($seguimientoAgrupado)): ?>
                 <article class="perfil-refugio-vacio">
-                    <span class="material-symbols-outlined">quiz</span>
-                    <p>Aún no hay encuestas respondidas por adoptantes.</p>
+                    <span class="material-symbols-outlined">pets</span>
+                    <p>Aún no hay seguimientos para mascotas adoptadas.</p>
                 </article>
             <?php else: ?>
-                <ul class="monitoreo-lista-encuestas">
-                    <?php foreach ($encuestas as $enc): ?>
-                        <?php 
-                        $alertaClass = $enc['alerta_generada'] ? 'encuesta-alerta' : 'encuesta-ok';
-                        ?>
-                        <li class="monitoreo-item-encuesta <?= $alertaClass ?>">
-                            <header class="encuesta-header">
-                                <h5>
-                                    <?= htmlspecialchars($enc['mascota_nombre']) ?> 
-                                    <small>(Adoptante: <?= htmlspecialchars($enc['adoptante_nombre']) ?>)</small>
-                                </h5>
-                                <span class="encuesta-etapa badge-<?= htmlspecialchars($enc['etapa']) ?>">Etapa: <?= htmlspecialchars(str_replace('_', ' ', $enc['etapa'])) ?></span>
-                                <span class="encuesta-fecha"><?= htmlspecialchars(date('d/m/Y', strtotime($enc['fecha_encuesta']))) ?></span>
-                            </header>
-                            <details class="encuesta-detalles">
-                                <summary>Ver respuestas completas</summary>
-                                <article class="encuesta-respuestas-grid">
-                                    <?php if (!empty($enc['conducta'])): ?>
-                                        <p><strong>Conducta:</strong> <?= htmlspecialchars($enc['conducta']) ?></p>
+                <ul class="monitoreo-lista-mascotas">
+                    <?php foreach ($seguimientoAgrupado as $mascotaId => $datos): ?>
+                        <li class="monitoreo-item-mascota">
+                            <details class="perfil-dropdown mascota-seguimiento-dropdown">
+                                <summary class="mascota-seguimiento-summary">
+                                    <h4>
+                                        <?= htmlspecialchars($datos['mascota_nombre']) ?> 
+                                        <small>(Adoptante: <?= htmlspecialchars($datos['adoptante_nombre']) ?>)</small>
+                                    </h4>
+                                </summary>
+                                
+                                <article class="mascota-seguimiento-contenido">
+                                    <h5 class="monitoreo-subtitle">Encuestas</h5>
+                                    <?php if (empty($datos['encuestas'])): ?>
+                                        <p class="text-muted" style="margin-top: 1rem; color: #666;">No hay encuestas respondidas aún.</p>
+                                    <?php else: ?>
+                                        <ul class="monitoreo-lista-encuestas">
+                                            <?php foreach ($datos['encuestas'] as $enc): ?>
+                                                <?php 
+                                                $alertaClass = $enc['alerta_generada'] ? 'encuesta-alerta' : 'encuesta-ok';
+                                                ?>
+                                                <li class="monitoreo-item-encuesta <?= $alertaClass ?>">
+                                                    <header class="encuesta-header">
+                                                        <span class="encuesta-etapa badge-<?= htmlspecialchars($enc['etapa']) ?>">Etapa: <?= htmlspecialchars(str_replace('_', ' ', $enc['etapa'])) ?></span>
+                                                        <span class="encuesta-fecha"><?= htmlspecialchars(date('d/m/Y', strtotime($enc['fecha_encuesta']))) ?></span>
+                                                    </header>
+                                                    <details class="encuesta-detalles">
+                                                        <summary>Ver respuestas completas</summary>
+                                                        <article class="encuesta-respuestas-grid">
+                                                            <?php if (!empty($enc['conducta'])): ?>
+                                                                <p><strong>Conducta:</strong> <?= htmlspecialchars($enc['conducta']) ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($enc['sueno'])): ?>
+                                                                <p><strong>Sueño:</strong> <?= htmlspecialchars($enc['sueno']) ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($enc['alimentacion'])): ?>
+                                                                <p><strong>Alimentación:</strong> <?= htmlspecialchars($enc['alimentacion']) ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($enc['progreso_general'])): ?>
+                                                                <p><strong>Progreso general:</strong> <?= htmlspecialchars($enc['progreso_general']) ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($enc['comentarios'])): ?>
+                                                                <p class="encuesta-comentarios"><strong>Comentarios:</strong> <br><?= nl2br(htmlspecialchars($enc['comentarios'])) ?></p>
+                                                            <?php endif; ?>
+                                                        </article>
+                                                    </details>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
                                     <?php endif; ?>
-                                    
-                                    <?php if (!empty($enc['sueno'])): ?>
-                                        <p><strong>Sueño:</strong> <?= htmlspecialchars($enc['sueno']) ?></p>
-                                    <?php endif; ?>
-                                    
-                                    <?php if (!empty($enc['alimentacion'])): ?>
-                                        <p><strong>Alimentación:</strong> <?= htmlspecialchars($enc['alimentacion']) ?></p>
-                                    <?php endif; ?>
-                                    
-                                    <?php if (!empty($enc['progreso_general'])): ?>
-                                        <p><strong>Progreso general:</strong> <?= htmlspecialchars($enc['progreso_general']) ?></p>
-                                    <?php endif; ?>
-                                    <?php if (!empty($enc['comentarios'])): ?>
-                                        <p class="encuesta-comentarios"><strong>Comentarios:</strong> <br><?= nl2br(htmlspecialchars($enc['comentarios'])) ?></p>
+
+                                    <h5 class="monitoreo-subtitle mt-2">Fotos y Archivos de Seguimiento</h5>
+                                    <?php if (empty($datos['fotos'])): ?>
+                                        <p class="text-muted" style="margin-top: 1rem; color: #666;">No se han subido fotos ni certificados aún.</p>
+                                    <?php else: ?>
+                                        <ul class="monitoreo-galeria-fotos">
+                                            <?php foreach ($datos['fotos'] as $foto): ?>
+                                                <li class="monitoreo-foto-item">
+                                                    <a href="/<?= htmlspecialchars(ltrim($foto['url'], '/')) ?>" target="_blank" class="foto-link">
+                                                        <figure class="monitoreo-foto-figure">
+                                                            <?php if ($foto['tipo'] === 'certificado_med'): ?>
+                                                                <span class="monitoreo-doc-placeholder">
+                                                                    <span class="material-symbols-outlined">description</span>
+                                                                </span>
+                                                            <?php else: ?>
+                                                                <img src="/<?= htmlspecialchars(ltrim($foto['url'], '/')) ?>" alt="Seguimiento <?= htmlspecialchars($foto['mascota_nombre']) ?>" class="monitoreo-img">
+                                                            <?php endif; ?>
+                                                            <figcaption class="monitoreo-foto-info">
+                                                                <span class="monitoreo-foto-tipo"><?= $foto['tipo'] === 'certificado_med' ? 'Certificado Médico' : 'Foto' ?></span>
+                                                            </figcaption>
+                                                        </figure>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
                                     <?php endif; ?>
                                 </article>
                             </details>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-
-            <h4 class="monitoreo-subtitle mt-2">Fotos y Archivos de Seguimiento</h4>
-            <?php if (empty($fotosSeguimiento)): ?>
-                <article class="perfil-refugio-vacio">
-                    <span class="material-symbols-outlined">image</span>
-                    <p>No se han subido fotos ni certificados aún.</p>
-                </article>
-            <?php else: ?>
-                <ul class="monitoreo-galeria-fotos">
-                    <?php foreach ($fotosSeguimiento as $foto): ?>
-                        <li class="monitoreo-foto-item">
-                            <a href="<?= htmlspecialchars($foto['url']) ?>" target="_blank" class="foto-link">
-                                <figure class="monitoreo-foto-figure">
-                                    <?php if ($foto['tipo'] === 'certificado_med'): ?>
-                                        <span class="monitoreo-doc-placeholder">
-                                            <span class="material-symbols-outlined">description</span>
-                                        </span>
-                                    <?php else: ?>
-                                        <img src="<?= htmlspecialchars($foto['url']) ?>" alt="Seguimiento <?= htmlspecialchars($foto['mascota_nombre']) ?>" class="monitoreo-img">
-                                    <?php endif; ?>
-                                    <figcaption class="monitoreo-foto-info">
-                                        <strong><?= htmlspecialchars($foto['mascota_nombre']) ?></strong>
-                                        <?php if (!empty($foto['adoptante_nombre'])): ?>
-                                            <span>por <?= htmlspecialchars($foto['adoptante_nombre']) ?></span>
-                                        <?php endif; ?>
-                                        <span class="monitoreo-foto-tipo"><?= $foto['tipo'] === 'certificado_med' ? 'Certificado Médico' : 'Foto' ?></span>
-                                    </figcaption>
-                                </figure>
-                            </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -384,10 +391,7 @@
 
         <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
             <details class="perfil-dropdown">
-            <summary><h2>
-                <span class="material-symbols-outlined">pets</span>
-                Actualizar/Eliminar Mascota
-            </h2></summary>
+            <summary> <h3>Actualizar/Eliminar Mascota</h3> </summary>
             <?php if (empty($mascotas)): ?>
                 <article class="perfil-vacio">
                     <span class="material-symbols-outlined">pets</span>
@@ -420,10 +424,7 @@
 
         <section class="perfil-editar-mascota sec-mascotas-adoptadas" id="sec-mascotas-adoptadas">
             <details class="perfil-dropdown">
-            <summary><h2>
-                <span class="material-symbols-outlined">volunteer_activism</span>
-                Mascotas Adoptadas
-            </h2></summary>
+            <summary> <h3>Mascotas Adoptadas</h3> </summary>
             <?php if (empty($mascotasAdoptadas)): ?>
                 <article class="perfil-vacio">
                     <span class="material-symbols-outlined">volunteer_activism</span>

@@ -216,12 +216,18 @@ class PAWVisualizacion {
         header.appendChild(pDate);
         section.appendChild(header);
 
+        const artObs = PAW.nuevoElemento("article", "", { class: "card-obs" });
+        artObs.appendChild(PAW.nuevoElemento("strong", "Observaciones:", {}));
+        const pObs = PAW.nuevoElemento("p", "", {});
         if (registro.observaciones && registro.observaciones.trim() !== '') {
-            const artObs = PAW.nuevoElemento("article", "", { class: "card-obs" });
-            artObs.appendChild(PAW.nuevoElemento("strong", "Observaciones:", {}));
-            artObs.appendChild(PAW.nuevoElemento("p", registro.observaciones, {}));
-            section.appendChild(artObs);
+            pObs.innerText = registro.observaciones;
+        } else {
+            pObs.innerText = "Sin observaciones adicionales.";
+            pObs.style.fontStyle = "italic";
+            pObs.style.opacity = "0.7";
         }
+        artObs.appendChild(pObs);
+        section.appendChild(artObs);
 
         articulo.appendChild(figure);
         articulo.appendChild(section);

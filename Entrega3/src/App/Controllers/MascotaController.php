@@ -589,6 +589,11 @@ public function eliminarFoto() {
             return;
         }
 
+        if ($fecha_programada < date('Y-m-d')) {
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=fecha_invalida');
+            return;
+        }
+
         $coleccion = $this->loadCollection(MascotaCollection::class);
         $rol = $userSession['rol'] ?? '';
         if (!$coleccion->verificarPermisosLibreta($mascota_id, $userSession['id'], $rol) || $rol !== 'refugio') {

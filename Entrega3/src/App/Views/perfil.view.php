@@ -100,7 +100,7 @@
                 <li class="dato-item">
                     <span class="dato-label">Fecha de Nacimiento</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? 'dd / mm / aaaa') ?></span>
-                    <input type="date" name="fecha_de_nacimiento" value="<?= htmlspecialchars($oldData['fecha_de_nacimiento'] ?? $adoptante['fecha_de_nacimiento'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['fecha_de_nacimiento']) ? 'input-invalido' : '' ?>" <?= isset($errores['fecha_de_nacimiento']) ? 'data-server-error="' . htmlspecialchars($errores['fecha_de_nacimiento'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+                    <input type="date" name="fecha_de_nacimiento" value="<?= htmlspecialchars($oldData['fecha_de_nacimiento'] ?? $adoptante['fecha_de_nacimiento'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['fecha_de_nacimiento']) ? 'input-invalido' : '' ?>" max="<?= date('Y-m-d') ?>" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." <?= isset($errores['fecha_de_nacimiento']) ? 'data-server-error="' . htmlspecialchars($errores['fecha_de_nacimiento'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Teléfono</span>

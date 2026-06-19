@@ -25,6 +25,10 @@
             <div class="mensaje-error libreta-mensaje-error">
                 No tenés permisos para modificar esta libreta.
             </div>
+        <?php elseif (isset($_GET['error']) && $_GET['error'] === 'fecha_invalida'): ?>
+            <div class="mensaje-error libreta-mensaje-error">
+                No se puede programar un registro para una fecha que ya pasó.
+            </div>
         <?php endif; ?>
 
         <div data-paw-filtros="libreta" data-mascota-id="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
@@ -69,7 +73,7 @@
             <input type="text" id="titulo" name="titulo" placeholder="Ej: Antirrábica" required>
 
             <label for="fecha_programada">Fecha programada</label>
-            <input type="date" id="fecha_programada" name="fecha_programada" required>
+            <input type="date" id="fecha_programada" name="fecha_programada" min="<?= date('Y-m-d') ?>" data-no-past="true" data-past-message="La fecha programada no puede ser en el pasado." required>
 
             <label for="observaciones">Observaciones (opcional)</label>
             <textarea id="observaciones" name="observaciones" rows="3" placeholder="Notas adicionales..."></textarea>

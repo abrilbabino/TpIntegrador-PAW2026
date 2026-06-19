@@ -105,7 +105,7 @@
                         <span class="stat-icon"><span class="material-symbols-outlined">email</span></span>
                         <span class="stat-info">
                             <strong class="stat-label">Email</strong>
-                            <span class="stat-value stat-value--small"><?= htmlspecialchars($refugio->fields['email'] ?? 'No disponible') ?></span>
+                            <span class="stat-value stat-value--small" title="<?= htmlspecialchars($refugio->fields['email'] ?? 'No disponible') ?>"><?= htmlspecialchars($refugio->fields['email'] ?? 'No disponible') ?></span>
                         </span>
                     </li>
                 </ul>

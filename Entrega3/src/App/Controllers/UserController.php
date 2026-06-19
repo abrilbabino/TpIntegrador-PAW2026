@@ -91,6 +91,7 @@ class UserController extends Controller
         
         $encuestas = [];
         $fotosSeguimiento = [];
+        $seguimientoAgrupado = [];
        
         if ($refugioId) {
             $mascotaCollection = new \Paw\App\Models\MascotaCollection();
@@ -106,8 +107,7 @@ class UserController extends Controller
             $especies      = $mascotaCollection->getEspecies();
             $temperamentos = $mascotaCollection->getTemperamentos();
             
-            $encuestas = $refugioModel->getEncuestas();
-            $fotosSeguimiento = $refugioModel->getFotosSeguimiento();
+            $seguimientoAgrupado = $refugioModel->getSeguimientoAgrupado();
         }
         $mascotaPublicada = ($this->request->get('publicado') === '1');
         $titulo = "Mi Refugio - PawMap";

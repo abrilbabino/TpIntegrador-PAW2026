@@ -50,7 +50,7 @@ class AppPAW {
   }
 
   _initIniciarSesion() {
-    const contenedorSesion = document.querySelector(".registro-container");
+    const contenedorSesion = document.querySelector(".mostrar-contraseña");
     if (contenedorSesion) {
       PAW.cargarScript(
         "PAW-Iniciar-Sesion-Script",
@@ -319,7 +319,7 @@ class AppPAW {
                   let historialCount = 0;
 
                   itemsFiltrados.forEach(registro => {
-                    const tarjeta = PAWVisualizacion.crearTarjetaLibreta(registro);
+                    const tarjeta = PAWVisualizacion.crearTarjetaLibreta(registro, filtroLibreta.puedeModificar);
                     if (registro.estado === 'PENDIENTE') {
                       if (pendientesCont) pendientesCont.appendChild(tarjeta);
                       pendientesCount++;

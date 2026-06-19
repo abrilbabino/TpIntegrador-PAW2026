@@ -69,11 +69,6 @@
     height: 100%;
 }
 
-.btn-libreta {
-    background-color: var(--color-verde);
-    color: white;
-}
-
 .perfil-refugio-logout {
     display: flex;
     align-items: center;
@@ -231,7 +226,7 @@
     cursor: default;
 }
 
-.perfil-refugio-seccion summary{
+.perfil-refugio-seccion summary {
     cursor: pointer;
 }
 
@@ -239,6 +234,34 @@
 .perfil-dropdown summary h2 {
     display: inline-block;
     vertical-align: middle;
+    margin: 0;
+}
+
+/* Custom summary for mascota seguimiento */
+.mascota-seguimiento-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    cursor: pointer;
+}
+
+.mascota-seguimiento-summary::-webkit-details-marker {
+    display: none;
+}
+
+.mascota-seguimiento-summary::after {
+    content: "►";
+    font-size: 0.8rem;
+    color: var(--color-texto);
+    transition: transform 0.2s ease-in-out;
+}
+
+.mascota-seguimiento-dropdown[open]>.mascota-seguimiento-summary::after {
+    transform: rotate(90deg);
+}
+
+.mascota-seguimiento-summary h4 {
     margin: 0;
 }
 
@@ -266,6 +289,7 @@
 .perfil-lista-item-adopcion {
     background-color: var(--color-fondo);
     border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -386,7 +410,7 @@
 /* Cada label+input como bloque con fondo gris */
 .perfil-refugio-publicar label,
 .perfil-refugio-publicar fieldset {
-    display: block; 
+    display: block;
     border-radius: 12px;
     border: 1px solid var(--color-azul);
     padding: 1rem 1.2rem 0.8rem 1.2rem;
@@ -407,7 +431,7 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 1rem 1.2rem;
-    margin:0;
+    margin: 0;
 }
 
 .perfil-refugio-publicar legend {
@@ -523,17 +547,18 @@
     transition: background 0.2s;
 }
 
-.perfil-refugio-publicar button:hover{
+.perfil-refugio-publicar button:hover {
     transform: scale(0.98);
 }
 
-.perfil-refugio-publicar summary{
+.perfil-refugio-publicar summary {
     cursor: pointer;
 }
 
-.perfil-refugio-publicar h3{
+.perfil-refugio-publicar h3 {
     cursor: default;
 }
+
 /* ===== SECCION: Actualizar/eliminar ===== */
 
 .perfil-editar-mascota {
@@ -550,11 +575,12 @@
     margin: 0;
 }
 
-.perfil-editar-mascota summary{
+.perfil-editar-mascota summary {
     cursor: pointer;
 }
 
-.perfil-editar-mascota h3{
+.perfil-editar-mascota h3 {
+    font-size: 1.3rem;
     cursor: default;
 }
 
@@ -570,6 +596,8 @@
 /* Cada tarjeta */
 .tarjeta-refugio-mascota {
     background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     border-radius: 12px;
     padding: 1rem 1.2rem;
     display: flex;
@@ -591,7 +619,7 @@
     margin: 0 0 0.2rem 0;
 }
 
-.tarjeta-refugio-mascota-link h4:hover{
+.tarjeta-refugio-mascota-link h4:hover {
     color: var(--color-naranja);
 }
 
@@ -602,13 +630,13 @@
     cursor: default;
 }
 
-.tarjeta-refugio-mascota p:hover{
+.tarjeta-refugio-mascota p:hover {
     color: var(--color-texto);
 }
 
 .tarjeta-refugio-mascota .btn-editar .material-symbols-outlined,
 .perfil-refugio-datos .btn-editar .material-symbols-outlined {
-    color: var(--color-gris);
+    color: var(--color-naranja);
 }
 
 .tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
@@ -633,6 +661,14 @@
 
 .perfil-refugio-mapa {
     display: none;
+}
+
+.monitoreo-item-mascota {
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
+    border-radius: 10px;
 }
 
 /*MEDIA PARA DESKTOP*/
@@ -776,9 +812,10 @@
     align-items: flex-start;
     gap: 1rem;
     background-color: var(--color-fondo);
-    border-left: 4px solid var(--color-naranja);
+    border: 1px solid var(--color-gris-claro);
+    border-left: 5px solid var(--color-naranja-claro);
     padding: 1.2rem;
-    border-radius: 0 8px 8px 0;
+    border-radius: 10px;
     margin-bottom: 2rem;
 }
 
@@ -901,7 +938,7 @@
     gap: 8px;
     padding: 0.8rem 1.8rem;
     font-size: 1.05rem;
-    border-radius: 20px; 
+    border-radius: 20px;
     background-color: var(--color-azul-oscuro);
     color: var(--color-fondo);
     border: none;
@@ -928,12 +965,15 @@
     .perfil-refugio-ubicacion-header {
         padding: 1.2rem;
     }
+
     .perfil-refugio-ubicacion-content {
         padding: 1.2rem;
     }
+
     .acciones-ubicacion-premium {
         justify-content: stretch;
     }
+
     .btn-guardar-premium {
         width: 100%;
         justify-content: center;
