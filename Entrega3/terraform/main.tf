@@ -17,7 +17,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "pawmap-tfstate-project-f3583ede"
+    bucket = "tp3-terraform-naj-2"
     prefix = "terraform/state"
   }
 }
@@ -213,6 +213,11 @@ resource "google_service_account_iam_binding" "workload_identity_binding" {
   members = [
     "serviceAccount:${var.project_id}.svc.id.goog[external-secrets/external-secrets]"
   ]
+
+  # El Identity Pool (*.svc.id.goog) lo crea GKE al crear el clúster.
+  # Sin este depends_on, Terraform intenta crear el binding en paralelo
+  # y falla porque el pool todavía no existe.
+  depends_on = [google_container_cluster.primary]
 }
 
 

@@ -9,48 +9,46 @@ El objetivo de PawMap es centralizar la información de animales en adopción y 
 ## Funcionalidades principales
 
 ### Modulo de Usuario y Acceso
-
 **Gestion de Sesiones:** Login y registro diferenciado para Adoptantes y Refugios.  
 **Perfil de Usuario:**
-
-- Adoptante: Edición de datos, "Favoritos" y estado de solicitudes.
-- Refugio: Datos institucionales, contacto y ubicación.
+- *Adoptante:* Edición de datos personales y carga de foto de perfil, "Favoritos", estado de solicitudes, historial de adopciones y seguimiento sanitario. 
+- *Refugio:* Datos institucionales, contacto y ubicación.
 
 ### Modulo de Navegacion e Información
+**Buscador General:** Barra de búsqueda global e integrada en la plataforma que permite realizar consultas en todo el sitio, buscando coincidencias de forma simultánea tanto en los perfiles de las mascotas como en los datos de los refugios (por nombres, palabras clave o características).
 
 **Página "¿Cómo Adoptar?":** con contenido informativo sobre los pasos y responsabilidades de la
 adopción.
 
-**Seccion de Donaciones:** Interfaz que lista los metodos de donacion de cada refugio (CBU, Alias
-o links externos de pago) recuperados de la base de datos.
+**Seccion de Donaciones:** Interfaz que lista los métodos de donación de cada refugio recuperados de la base de datos (ej. CBU, Alias bancario o links externos como Mercado Pago). 
 
 ### Modulo de Refugios
-
 **Listado dinámico de todos los refugios registrados.**
 
-**Filtros de Refugios:** Buscador por nombre o localidad ( Mercedes, Lujan, etc.) para que el
-usuario encuentre los mas cercanos.
+**Filtros de Refugios:** Buscador localidad ( Mercedes, Lujan, etc.) para que el usuario encuentre los mas cercanos.
+
+**Mapa Interactivo de Refugios:** Mapa dinámico integrado con la API de OpenStreetMap, consumiendo las coordenadas almacenadas en la base de datos para visualizar la ubicación geográfica.
+  - *Pines interactivos* en el frontend que despliegan tarjetas emergentes con datos de contacto rápido y enlace directo al perfil del refugio.
+  - *Sección de filtros y carrusel* de mascotas.
+  - *Sección de refugios más cercanos* activando geolocalización.
 
 ### Módulo de Mascotas
-
-**Mapa Interactivo:** Pines dinamicos usando Google Maps API basados en la tabla Ubicacion.
-
 **Listado de Mascotas:** Grilla con fotos, nombres y etiquetas.
 
 **Filtros:** Especie, Tamaño, Edad y Sexo.
 
-**Ficha de Detalle:** Galería de imágenes (MediaMascota) y descripción técnica.
+**Ficha de Detalle:** Galería de imágenes (MediaMascota), animación svg y descripción técnica.
 
 ### Módulo de Vinculación (Test y Solicitudes)
+**Test de Compatibilidad:** Formulario dinámico que procesa las respuestas del usuario y sugiere mascotas afines segun estilo de vida y entorno del adoptante.
 
-**Test de Compatibilidad:** Formulario dinámico que procesa las respuestas del usuario y sugiere
-mascotas afines segun estilo de vida y entorno del adoptante.
+**Solicitud de Adopcion:** Formulario dinámico que vincula al Adoptante logueado con la Mascota y envía la petición al Refugio, incluyendo la validación obligatoria y el registro de aceptación de un Contrato de Adopción (con fecha y hora) por parte del adoptante.
 
-**Solicitud de Adopcion:** Formulario dinamico que vincula al Adoptante logueado con la Mascota y
-envía la petición al Refugio.
+**Sistema de Mensajería Interna (Chat Refugio-Adoptante):** Canal de comunicación directo e integrado. Una vez que el refugio aprueba una solicitud, se habilita un chat privado para coordinar la entrega o despejar dudas.
 
-### NUEVO: Modulo de Seguimiento Post-Adopción
+**Formulario de Contacto:** Interfaz dedicada para que los usuarios visitantes puedan enviar consultas generales, reportes o propuestas de colaboración directamente a los administradores de la plataforma PawMap.
 
+### Modulo de Seguimiento Post-Adopción
 **Calendario Sanitario:** Cronograma de vacunas y desparasitaciones generado automáticamente.
 
 **Recordatorios:** Notificaciones (Email/SMS) sobre fechas sanitarias y castración.
@@ -65,17 +63,26 @@ certificados.
 vacunas.
 
 ### Panel de Gestión (Refugios)
-
 **CRUD de Mascotas:** Administración total de los animales (Alta/Baja/Modificación).
 
-**Gestion de Solicitudes:** Aprobar o rechazar adopciones.
+**Gestion de Solicitudes:** Bandeja de entrada para visualizar solicitudes de adopción.
+  - Acciones de "Aprobar" o "Rechazar" solicitudes con actualización de estado en tiempo real en la base de datos.
 
 **Dashboard de Monitoreo:** Vista para supervisar las encuestas y fotos enviadas por los
 adoptantes.
 
+### Módulo de Arquitectura SEO y Visibilidad (Técnico) 
+**Metaetiquetas:** Descripciones meta dinámicas en las páginas del sitio adaptadas al contenido específico de cada sección.
+
+**Datos Estructurados (Schema.org):** Implementación de bloques JSON-LD generados dinámicamente desde PHP para clasificar entidades como Refugio (Animal Shelter) y Organización (Organization).
+
+**Sitemap XML Dinámico:** Generado vía PHP para indexar páginas estáticas, fichas de mascotas y perfiles de refugios desde la base de datos.
+
+**Archivo Robots.txt:** Configurado para permitir la indexación de contenido público (mascotas, refugios) y bloquear el rastreo de secciones privadas (perfiles de usuario, paneles de gestión y formularios internos), indicando además la ruta del sitemap.
+
 ## Intrucciones de ejecución
 
-### composer
+### Composer
 
 ```bash
 composer install
