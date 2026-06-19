@@ -20,7 +20,7 @@
     padding: 2rem 1.5rem;
     background: var(--color-blanco);
     border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px var(--color-gris-claro);
     box-sizing: border-box;
     align-self: center;
     justify-self: center;
@@ -140,7 +140,7 @@
 .opciones-monto button:hover,
 .btn-confirmar:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 16px var(--color-gris-claro);
 }
 
 .resumen-donacion {
@@ -148,7 +148,7 @@
     margin: 0 0 2rem;
     padding: 1.2rem 1.4rem;
     background: var(--color-fondo);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     text-align: left;
 }

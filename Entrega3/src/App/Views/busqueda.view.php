@@ -19,7 +19,7 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <main class="contenedor-busqueda">
+    <main class="contenedor-busqueda" id="busqueda-resultados" data-resultados="<?= htmlspecialchars(json_encode($resultados_mixtos ?? []), ENT_QUOTES, 'UTF-8') ?>">
         <h1 id="titulo-busqueda" class="titulo-busqueda">Resultados para: "<?= htmlspecialchars($q ?? '') ?>"</h1>
         
         <section id="grilla-resultados" class="grilla-items"></section>
@@ -27,20 +27,7 @@
         <nav id="paginacion-js" class="paginacion"></nav>
     </main>
 
-    <script>
-        const datosBusqueda = <?= json_encode($resultados_mixtos ?? []); ?>;
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const grilla = document.getElementById('grilla-resultados');
-            const navPaginacion = document.getElementById('paginacion-js');
 
-            if(grilla && navPaginacion && typeof datosBusqueda !== 'undefined') {
-                // Instanciamos pasándole "mixto" (o cualquier cosa distinta a "mascotas")
-                const visualizacion = new PAWVisualizacion(grilla, navPaginacion, 6, 'mixto');
-                visualizacion.actualizarDatos(datosBusqueda);
-            }
-        });
-    </script>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
 </body>

@@ -125,7 +125,8 @@
 }
 
 .modal-nativo::backdrop {
-    background-color: rgba(15, 23, 42, 0.6);
+    background-color: var(--color-azul-oscuro);
+    opacity: 0.6;
     backdrop-filter: blur(4px);
 }
 

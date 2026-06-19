@@ -22,7 +22,7 @@
     </header>
     <main class="contenedor-mapa-page">
         <aside class="sidebar-mapa seccion-filtros">
-            <div data-paw-filtros="mapa" style="display: contents;"></div>
+            <div data-paw-filtros="mapa" class="display-contents"></div>
 
             <section class="refugios-cercanos sidebar-only-desktop">
                 <header class="titulo-refugios-cercanos">

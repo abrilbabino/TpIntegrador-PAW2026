@@ -10,7 +10,7 @@
                     <span class="material-symbols-outlined chat-widget-avatar-placeholder">account_circle</span>
                 <?php endif; ?>
                 <span>Mensajes</span>
-                <span id="chat-widget-badge" class="chat-widget-badge" style="display: none;">0</span>
+                <span id="chat-widget-badge" class="chat-widget-badge chat-oculto">0</span>
             </hgroup>
             <nav class="chat-widget-controls">
                 <span id="chat-widget-toggle-icon" class="material-symbols-outlined icon-btn">expand_less</span>

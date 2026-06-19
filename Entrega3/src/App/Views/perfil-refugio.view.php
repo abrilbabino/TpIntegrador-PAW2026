@@ -43,53 +43,35 @@
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Nombre de la institución:</span>
                             <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['nombre_institucion'] ?? '—') ?></span>
-                            <input type="text" name="nombre_institucion" value="<?= htmlspecialchars($oldData['nombre_institucion'] ?? $refugio['nombre_institucion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['nombre_institucion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_institucion']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="100" required>
-                            <?php if (isset($errores['nombre_institucion'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre_institucion'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="text" name="nombre_institucion" value="<?= htmlspecialchars($oldData['nombre_institucion'] ?? $refugio['nombre_institucion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['nombre_institucion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_institucion']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="100" required <?= isset($errores['nombre_institucion']) ? 'data-server-error="' . htmlspecialchars($errores['nombre_institucion'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Descripción:</span>
                             <div class="static-value dato-refugio-descripcion-container">
                                 <p class="dato-refugio-valor descripcion-texto"><?= nl2br(htmlspecialchars($refugio['descripcion'] ?? '-')) ?></p>
-                                <button type="button" class="btn-ver-mas-desc" style="display: none;">Ver más</button>
+                                <button type="button" class="btn-ver-mas-desc oculto">Ver más</button>
                             </div>
-                            <input type="text" name="descripcion" value="<?= htmlspecialchars($oldData['descripcion'] ?? $refugio['descripcion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['descripcion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['descripcion']) ? 'input-invalido' : '' ?>" maxlength="500">
-                            <?php if (isset($errores['descripcion'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['descripcion'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="text" name="descripcion" value="<?= htmlspecialchars($oldData['descripcion'] ?? $refugio['descripcion'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['descripcion'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['descripcion']) ? 'input-invalido' : '' ?>" maxlength="500" <?= isset($errores['descripcion']) ? 'data-server-error="' . htmlspecialchars($errores['descripcion'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Teléfono:</span>
                             <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['telefono'] ?? '—') ?></span>
-                            <input type="tel" name="telefono" value="<?= htmlspecialchars($oldData['telefono'] ?? $refugio['telefono'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['telefono'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['telefono']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
-                            <?php if (isset($errores['telefono'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['telefono'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="tel" name="telefono" value="<?= htmlspecialchars($oldData['telefono'] ?? $refugio['telefono'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['telefono'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['telefono']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$" <?= isset($errores['telefono']) ? 'data-server-error="' . htmlspecialchars($errores['telefono'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Mail:</span>
                             <span class="dato-refugio-valor static-value"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
-                            <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required>
-                            <?php if (isset($errores['email'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required <?= isset($errores['email']) ? 'data-server-error="' . htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">Alias:</span>
                             <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['alias'] ?? '—') ?></span>
-                            <input type="text" name="alias" value="<?= htmlspecialchars($oldData['alias'] ?? $refugio['alias'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['alias'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['alias']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="40">
-                            <?php if (isset($errores['alias'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['alias'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="text" name="alias" value="<?= htmlspecialchars($oldData['alias'] ?? $refugio['alias'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['alias'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['alias']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="40" <?= isset($errores['alias']) ? 'data-server-error="' . htmlspecialchars($errores['alias'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                         <li class="dato-refugio-item">
                             <span class="dato-refugio-label">CVU:</span>
                             <span class="dato-refugio-valor static-value"><?= htmlspecialchars($refugio['cvu'] ?? '—') ?></span>
-                            <input type="text" name="cvu" value="<?= htmlspecialchars($oldData['cvu'] ?? $refugio['cvu'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['cvu'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['cvu']) ? 'input-invalido' : '' ?>" minlength="22" maxlength="22" pattern="^[0-9]{22}$">
-                            <?php if (isset($errores['cvu'])): ?>
-                                <span class="msg-error input-value"><?= htmlspecialchars($errores['cvu'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <?php endif; ?>
+                            <input type="text" name="cvu" value="<?= htmlspecialchars($oldData['cvu'] ?? $refugio['cvu'] ?? '') ?>" data-original="<?= htmlspecialchars($refugio['cvu'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['cvu']) ? 'input-invalido' : '' ?>" minlength="22" maxlength="22" pattern="^[0-9]{22}$" <?= isset($errores['cvu']) ? 'data-server-error="' . htmlspecialchars($errores['cvu'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                         </li>
                     </ul>
                     <footer class="perfil-datos-acciones input-value">
@@ -122,6 +104,10 @@
             <a href="#sec-editar-mascota">
                 <span class="material-symbols-outlined">refresh</span>
                 Actualizar / Eliminar Mascota
+            </a>
+            <a href="#sec-mascotas-adoptadas">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+                Mascotas Adoptadas
             </a>
         </nav>
         
@@ -234,7 +220,7 @@
                     <?php foreach ($fotosSeguimiento as $foto): ?>
                         <li class="monitoreo-foto-item">
                             <a href="<?= htmlspecialchars($foto['url']) ?>" target="_blank" class="foto-link">
-                                <figure style="margin: 0; display: flex; flex-direction: column; height: 100%;">
+                                <figure class="monitoreo-foto-figure">
                                     <?php if ($foto['tipo'] === 'certificado_med'): ?>
                                         <span class="monitoreo-doc-placeholder">
                                             <span class="material-symbols-outlined">description</span>
@@ -266,7 +252,7 @@
                 <?php if (!empty($refugio['ciudad']) && !empty($refugio['provincia'])): ?>
                     <article class="ubicacion-actual-box">
                         <span class="material-symbols-outlined icono-pin-actual">where_to_vote</span>
-                        <p class="ubicacion-actual-text" style="margin: 0;">
+                        <p class="ubicacion-actual-text">
                             <span class="label-ubicacion">Ubicación guardada:</span>
                             <strong class="valor-ubicacion"><?= htmlspecialchars($refugio['direccion'] ?? ($refugio['ciudad'] . ', ' . $refugio['provincia'])) ?></strong>
                         </p>
@@ -274,7 +260,7 @@
                 <?php endif; ?>
 
                 <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium form-ubicacion-refugio">
-                    <fieldset class="grupo-input-ubicacion" style="border: none; padding: 0; margin: 0;">
+                    <fieldset class="grupo-input-ubicacion">
                         <label for="ubicacion-autocomplete" class="label-buscar-ubicacion">¿Te mudaste? Buscá la nueva dirección:</label>
                         <section class="input-wrapper-premium">
                             <input type="text" id="ubicacion-autocomplete" class="input-ubicacion-premium" placeholder="Ej: Av. Rivadavia 1234, Buenos Aires..." autocomplete="off" required>
@@ -425,6 +411,39 @@
                             <a href="/perfil/eliminar?id=<?= htmlspecialchars($mascota->fields['id'], ENT_QUOTES, 'UTF-8') ?>" class="btn-eliminar-mascota" title="Eliminar mascota">
                                 <span class="material-symbols-outlined">delete</span>
                             </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            </details>
+        </section>
+
+        <section class="perfil-editar-mascota sec-mascotas-adoptadas" id="sec-mascotas-adoptadas">
+            <details class="perfil-dropdown">
+            <summary><h2>
+                <span class="material-symbols-outlined">volunteer_activism</span>
+                Mascotas Adoptadas
+            </h2></summary>
+            <?php if (empty($mascotasAdoptadas)): ?>
+                <article class="perfil-vacio">
+                    <span class="material-symbols-outlined">volunteer_activism</span>
+                    <p>Todavía no tenés mascotas adoptadas.</p>
+                </article>
+            <?php else: ?>
+                <ul class="perfil-refugio-grid">
+                    <?php foreach ($mascotasAdoptadas as $mascota): ?>
+                        <li class="tarjeta-refugio-mascota">
+                            <a href="/mascota?id=<?= htmlspecialchars($mascota->fields['id']) ?>" class="tarjeta-refugio-mascota-link" title="Ver detalle de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota') ?>">
+                                <h4><?= htmlspecialchars($mascota->fields['nombre'] ?? 'Sin nombre') ?></h4>
+                                <p>
+                                    <?= htmlspecialchars($mascota->fields['edad'] ?? '?') ?> año(s)
+                                    · <?= htmlspecialchars($mascota->fields['tamano'] ?? '—') ?>
+                                    · <?= htmlspecialchars($mascota->fields['temperamento'] ?? '—') ?>
+                                </p>
+                            </a>
+                            <a href="/mascota/libreta?id=<?= htmlspecialchars($mascota->fields['id']) ?>" class="btn-editar btn-libreta" title="Ver Libreta Sanitaria">
+                               <span class="material-symbols-outlined">medical_information</span>
+                           </a>
                         </li>
                     <?php endforeach; ?>
                 </ul>

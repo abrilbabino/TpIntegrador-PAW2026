@@ -87,7 +87,11 @@
 }
 
 .chat-widget-controls .icon-btn:hover {
-    background-color: var(--color-gris-claro);
+    color: var(--color-texto);
+}
+
+.chat-oculto {
+    display: none;
 }
 
 /* Cuerpo del Widget */

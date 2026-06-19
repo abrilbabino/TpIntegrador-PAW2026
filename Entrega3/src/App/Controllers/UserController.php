@@ -82,6 +82,7 @@ class UserController extends Controller
         $refugio = $refugioModel->fields;
         $refugioId = $user['id'] ?? null;
         $mascotas = [];
+        $mascotasAdoptadas = [];
         $solicitudes = [];
         $tamanos=[];
         $especies=[];
@@ -95,6 +96,7 @@ class UserController extends Controller
             $mascotaCollection = new \Paw\App\Models\MascotaCollection();
             $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
             $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
+            $mascotasAdoptadas = $mascotaCollection->getAll(['refugio_id' => $refugioId, 'estado_adopcion' => 'ADOPTADO']);
 
             $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
             $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());

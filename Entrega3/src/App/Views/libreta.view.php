@@ -14,10 +14,18 @@
 <body>
     <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
 
-    <main class="libreta-main">
+    <main class="libreta-main"
+          data-error-carga="<?= (isset($_GET['error']) && $_GET['error'] === 'error_carga') ? 'true' : 'false' ?>"
+          data-error-registro-id="<?= htmlspecialchars($_GET['registro_id'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
         <header class="hero-libreta">
             <h1>Libreta Sanitaria de <?= htmlspecialchars($mascota->fields['nombre'] ?? 'Mascota', ENT_QUOTES, 'UTF-8') ?></h1>
         </header>
+
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'permisos_denegados'): ?>
+            <div class="mensaje-error libreta-mensaje-error">
+                No tenés permisos para modificar esta libreta.
+            </div>
+        <?php endif; ?>
 
         <div data-paw-filtros="libreta" data-mascota-id="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
             <!-- PAWFiltros injected here -->
@@ -31,9 +39,11 @@
             <!-- PAWVisualizacion injected here -->
         </section>
 
-        <button type="button" class="btn-agregar-registro" onclick="document.getElementById('modal-agregar-registro').showModal();">
-            <span class="material-symbols-outlined">add</span> Agregar Registro
-        </button>
+        <?php if ($puedeAgregar): ?>
+            <button type="button" class="btn-agregar-registro" id="btn-abrir-agregar-registro">
+                <span class="material-symbols-outlined">add</span> Agregar Registro
+            </button>
+        <?php endif; ?>
     </main>
 
     <?php require __DIR__ . '/footer.view.php'; ?>
@@ -65,8 +75,29 @@
             <textarea id="observaciones" name="observaciones" rows="3" placeholder="Notas adicionales..."></textarea>
 
             <footer class="acciones-modal">
-                <button type="button" class="btn-cancelar" onclick="document.getElementById('modal-agregar-registro').close();">Cancelar</button>
+                <button type="button" class="btn-cancelar js-cerrar-modal" data-modal="modal-agregar-registro">Cancelar</button>
                 <button type="submit" class="btn-guardar-registro">Guardar Registro</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <dialog id="modal-completar-registro" class="modal-nativo">
+        <header>
+            <h2>Completar Registro</h2>
+        </header>
+        <form method="POST" action="/mascota/registro/completar" class="form-registro" enctype="multipart/form-data">
+            <input type="hidden" name="mascota_id" value="<?= htmlspecialchars((string)($mascota->fields['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+            <input type="hidden" name="registro_id" id="completar_registro_id" value="">
+
+            <p class="modal-completar-desc">Para marcar este registro como completado, debés adjuntar el certificado correspondiente.</p>
+
+            <label for="archivo">Subir Certificado / Comprobante</label>
+            <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required 
+                class="input-file-completar <?php if (isset($_GET['error']) && $_GET['error'] === 'error_carga') echo 'input-invalido'; ?>">
+
+            <footer class="acciones-modal">
+                <button type="button" class="btn-cancelar js-cerrar-modal" data-modal="modal-completar-registro">Cancelar</button>
+                <button type="submit" class="btn-guardar-registro">Completar y Subir</button>
             </footer>
         </form>
     </dialog>

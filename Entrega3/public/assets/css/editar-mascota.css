@@ -21,6 +21,14 @@
     overflow-y: auto;
 }
 
+.foto-item figcaption {
+    margin-top: 10px;
+}
+
+.editar-mascota-foto {
+    max-width: 150px;
+}
+
 .foto-item figure {
     margin: 0;
     background: var(--color-fondo);

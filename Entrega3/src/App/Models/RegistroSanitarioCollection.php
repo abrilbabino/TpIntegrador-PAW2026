@@ -61,4 +61,14 @@ class RegistroSanitarioCollection extends Model
         }
         return $historial;
     }
+
+    public function crearRegistroSanitario(array $data)
+    {
+        $this->queryBuilder->insert('registro_sanitario', $data);
+    }
+
+    public function completarRegistroSanitario(int $registroId, string $rutaRelativa, string $fecha)
+    {
+        $this->queryBuilder->actualizarArchivoRegistroSanitario($registroId, $rutaRelativa, $fecha);
+    }
 }

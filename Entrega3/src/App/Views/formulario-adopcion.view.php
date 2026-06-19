@@ -83,24 +83,15 @@
 
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" required
-                               value="<?= htmlspecialchars($_POST['nombre'] ?? $adoptanteData['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        <?php if (isset($errores['nombre'])): ?>
-                            <span class="error-inline"><?= htmlspecialchars($errores['nombre']) ?></span>
-                        <?php endif; ?>
+                               value="<?= htmlspecialchars($_POST['nombre'] ?? $adoptanteData['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>" <?= isset($errores['nombre']) ? 'data-server-error="' . htmlspecialchars($errores['nombre'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
 
                         <label for="apellido">Apellido</label>
                         <input type="text" id="apellido" name="apellido" required
-                               value="<?= htmlspecialchars($_POST['apellido'] ?? $adoptanteData['apellido'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        <?php if (isset($errores['apellido'])): ?>
-                            <span class="error-inline"><?= htmlspecialchars($errores['apellido']) ?></span>
-                        <?php endif; ?>
+                               value="<?= htmlspecialchars($_POST['apellido'] ?? $adoptanteData['apellido'] ?? '', ENT_QUOTES, 'UTF-8') ?>" <?= isset($errores['apellido']) ? 'data-server-error="' . htmlspecialchars($errores['apellido'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
 
                         <label for="email">Mail</label>
                         <input type="email" id="email" name="email" required
-                               value="<?= htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                        <?php if (isset($errores['email'])): ?>
-                            <span class="error-inline"><?= htmlspecialchars($errores['email']) ?></span>
-                        <?php endif; ?>
+                               value="<?= htmlspecialchars($_POST['email'] ?? $userData['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>" <?= isset($errores['email']) ? 'data-server-error="' . htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                     </fieldset>
 
                     <fieldset>
@@ -118,12 +109,9 @@
                     <fieldset class="fieldset-contrato">
                         <label for="acepta_contrato" class="checkbox-label">
                             <input type="checkbox" id="acepta_contrato" name="acepta_contrato" required
-                                   <?= isset($_POST['acepta_contrato']) ? 'checked' : '' ?>>
+                                   <?= isset($_POST['acepta_contrato']) ? 'checked' : '' ?> <?= isset($errores['acepta_contrato']) ? 'data-server-error="' . htmlspecialchars($errores['acepta_contrato'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                             Acepto el <button type="button" class="btn-link" onclick="event.preventDefault(); document.getElementById('modal-contrato').showModal();">contrato de adopción y seguimiento sanitario</button>
                         </label>
-                        <?php if (isset($errores['acepta_contrato'])): ?>
-                            <span class="error-inline"><?= htmlspecialchars($errores['acepta_contrato']) ?></span>
-                        <?php endif; ?>
                     </fieldset>
 
                     <button type="submit" class="btn-submit-adoptar" <?= isset($errores['solicitud_duplicada']) ? 'disabled' : '' ?>>¡QUIERO ADOPTAR!</button>

@@ -120,8 +120,8 @@
                         <h2>Comprobantes</h2>
                     </header>
                     <?php if (!empty($errorUpload)): ?>
-                        <div class="mensaje-error" style="color: var(--color-rojo); font-weight: bold; margin-bottom: 1rem; text-align: center;">
-                            <span class="material-symbols-outlined" style="vertical-align: middle;">error</span>
+                        <div class="mensaje-error seguimiento-mensaje-error">
+                            <span class="material-symbols-outlined seguimiento-icono-error">error</span>
                             <?= htmlspecialchars($errorUpload) ?>
                         </div>
                     <?php endif; ?>
@@ -150,7 +150,7 @@
         <form action="/seguimiento/subir-archivo" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="mascota_id" value="<?= $mascotaSeleccionada->fields['id'] ?>">
             
-            <fieldset style="display: none;">
+            <fieldset class="seguimiento-oculto">
                 <label for="tipo_archivo">Tipo de archivo:</label>
                 <select name="tipo_archivo" id="tipo_archivo" required>
                     <option value="foto">Foto de la mascota</option>
@@ -159,7 +159,7 @@
                 </select>
             </fieldset>
 
-            <fieldset id="fieldset_registro_id" style="display: none;">
+            <fieldset id="fieldset_registro_id" class="seguimiento-oculto">
                 <label for="registro_id">Registro asociado (Pendiente):</label>
                 <select name="registro_id" id="registro_id">
                     <option value="">Seleccione un registro...</option>
@@ -191,7 +191,7 @@
             <input type="hidden" name="mascota_id" value="<?= $mascotaSeleccionada->fields['id'] ?>">
             <input type="hidden" name="etapa" id="input_etapa" value="">
             
-            <fieldset class="encuesta-fields" id="fields_3_dias" style="display:none;">
+            <fieldset class="encuesta-fields seguimiento-oculto" id="fields_3_dias">
                 <label for="sueno">Hábitos de sueño:</label>
                 <select name="sueno" id="sueno">
                     <option value="Normal">Normal (Duerme toda la noche)</option>
@@ -206,7 +206,7 @@
                 </select>
             </fieldset>
 
-            <fieldset class="encuesta-fields" id="fields_7_dias" style="display:none;">
+            <fieldset class="encuesta-fields seguimiento-oculto" id="fields_7_dias">
                 <label for="conducta">Conducta general:</label>
                 <select name="conducta" id="conducta">
                     <option value="Excelente">Excelente (Juguetón, amigable)</option>
@@ -216,7 +216,7 @@
                 </select>
             </fieldset>
 
-            <fieldset class="encuesta-fields" id="fields_14_dias" style="display:none;">
+            <fieldset class="encuesta-fields seguimiento-oculto" id="fields_14_dias">
                 <label for="progreso_general">Progreso General (Cómo se ha adaptado al hogar):</label>
                 <textarea name="progreso_general" id="progreso_general" rows="4" placeholder="Describe brevemente su evolución..."></textarea>
             </fieldset>
@@ -234,56 +234,7 @@
     </dialog>
     <?php endif; ?>
 
-    <script>
-        function abrirModalSubida(tipo) {
-            const selectTipo = document.getElementById('tipo_archivo');
-            selectTipo.value = tipo;
 
-            const fieldsetRegistro = document.getElementById('fieldset_registro_id');
-            const selectRegistro = document.getElementById('registro_id');
-            const opciones = selectRegistro.querySelectorAll('option:not([value=""])');
-
-            if (tipo === 'foto') {
-                fieldsetRegistro.style.display = 'none';
-                selectRegistro.required = false;
-                selectRegistro.value = '';
-            } else {
-                fieldsetRegistro.style.display = 'block';
-                selectRegistro.required = true;
-                selectRegistro.value = '';
-
-                opciones.forEach(opt => {
-                    const texto = opt.innerText.toLowerCase();
-                    if (tipo === 'certificado') {
-                        opt.style.display = texto.includes('vacuna') ? 'block' : 'none';
-                    } else if (tipo === 'comprobante') {
-                        opt.style.display = !texto.includes('vacuna') ? 'block' : 'none';
-                    }
-                });
-            }
-
-            document.getElementById('modal-archivo').showModal();
-        }
-        
-        function abrirModalEncuesta(etapa, titulo) {
-            document.getElementById('modal-encuesta-titulo').innerText = 'Encuesta: ' + titulo;
-            document.getElementById('input_etapa').value = etapa;
-            
-            document.querySelectorAll('.encuesta-fields').forEach(f => {
-                f.style.display = 'none';
-                f.querySelectorAll('select, textarea').forEach(input => input.removeAttribute('required'));
-            });
-            
-            const activeFieldset = document.getElementById('fields_' + etapa);
-            if (activeFieldset) {
-                activeFieldset.style.display = 'block';
-                activeFieldset.querySelectorAll('select, textarea').forEach(input => input.setAttribute('required', 'required'));
-            }
-            
-            document.getElementById('modal-encuesta').showModal();
-        }
-
-    </script>
     <?php require __DIR__ . '/footer.view.php'; ?>
 </body>
 </html>

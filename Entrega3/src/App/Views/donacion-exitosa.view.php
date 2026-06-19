@@ -15,7 +15,7 @@
 <?php require __DIR__ . '/barra-navegacion.view.php'; ?>
  
 <main class="contenedor-exito">
-    <span style="font-size: 4rem;">🎉</span>
+    <span class="icono-exito">🎉</span>
     <h2>¡Muchas gracias por tu compromiso!</h2>
     <p>Tu intención de donar <strong>$<?= $monto ?></strong> a <strong><?= htmlspecialchars($refugio->getNombre(), ENT_QUOTES, 'UTF-8') ?></strong> fue registrada.</p>
     <hr>
@@ -28,7 +28,7 @@
             <p><strong>ALIAS:</strong> <span class="codigo-inline"><?= htmlspecialchars((string)$refugio->getAlias(), ENT_QUOTES, 'UTF-8') ?></span></p>
             <p><strong>CVU:</strong> <span class="codigo-inline"><?= htmlspecialchars((string)$refugio->getCvu(), ENT_QUOTES, 'UTF-8') ?></span></p>
             <?php if (isset($comprobanteStatus)): ?>
-                <div class="status-comprobante <?= $comprobanteStatus['success'] ? 'status-exito' : 'status-error' ?>" style="margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600; <?= $comprobanteStatus['success'] ? 'background-color: var(--color-verde-claro); color: var(--color-verde); border: 1px solid var(--color-verde);' : 'background-color: #ffeaea; color: var(--color-rojo); border: 1px solid var(--color-rojo);' ?>">
+                <div class="status-comprobante <?= $comprobanteStatus['success'] ? 'status-exito' : 'status-error' ?>">
                     <?php if ($comprobanteStatus['success']): ?>
                         <span>¡Comprobante enviado al email del refugio (<?= htmlspecialchars($refugio->getEmail(), ENT_QUOTES, 'UTF-8') ?>) con éxito!</span>
                     <?php else: ?>
@@ -36,7 +36,7 @@
                     <?php endif; ?>
                 </div>
             <?php else: ?>
-                <form action="/enviar-comprobante" method="POST" enctype="multipart/form-data" style="margin: 0; padding: 0;">
+                <form action="/enviar-comprobante" method="POST" enctype="multipart/form-data" class="form-comprobante">
                     <input type="hidden" name="refugio_id" value="<?= $refugio->getId() ?>">
                     <input type="hidden" name="monto" value="<?= htmlspecialchars((string)($valores['monto'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     <fieldset class="comprobante-wrapper">

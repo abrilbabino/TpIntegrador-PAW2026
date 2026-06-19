@@ -62,7 +62,7 @@
             <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
             <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
             <?php if (isset($errores['foto_perfil_o_logo'])): ?>
-                <aside class="alerta-error" role="alert" style="margin-bottom: 1.5rem; border-radius: 8px;">
+                <aside class="alerta-error" role="alert">
                     <span class="material-symbols-outlined">error</span>
                     <section>
                         <strong>Error con la foto de perfil:</strong>
@@ -75,72 +75,45 @@
                 <li class="dato-item">
                     <span class="dato-label">Nombre de Usuario *</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($user['nombre_usuario'] ?? '—') ?></span>
-                    <input type="text" name="nombre_usuario" value="<?= htmlspecialchars($oldData['nombre_usuario'] ?? $user['nombre_usuario'] ?? '') ?>" data-original="<?= htmlspecialchars($user['nombre_usuario'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_usuario']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required>
-                    <?php if (isset($errores['nombre_usuario'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre_usuario'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="text" name="nombre_usuario" value="<?= htmlspecialchars($oldData['nombre_usuario'] ?? $user['nombre_usuario'] ?? '') ?>" data-original="<?= htmlspecialchars($user['nombre_usuario'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre_usuario']) ? 'input-invalido' : '' ?>" minlength="4" maxlength="20" pattern="[a-zA-Z0-9_.-]+" required <?= isset($errores['nombre_usuario']) ? 'data-server-error="' . htmlspecialchars($errores['nombre_usuario'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Nombre *</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['nombre'] ?? '—') ?></span>
-                    <input type="text" name="nombre" value="<?= htmlspecialchars($oldData['nombre'] ?? $adoptante['nombre'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['nombre'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
-                    <?php if (isset($errores['nombre'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['nombre'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="text" name="nombre" value="<?= htmlspecialchars($oldData['nombre'] ?? $adoptante['nombre'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['nombre'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['nombre']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required <?= isset($errores['nombre']) ? 'data-server-error="' . htmlspecialchars($errores['nombre'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Apellido *</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['apellido'] ?? '—') ?></span>
-                    <input type="text" name="apellido" value="<?= htmlspecialchars($oldData['apellido'] ?? $adoptante['apellido'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['apellido'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['apellido']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required>
-                    <?php if (isset($errores['apellido'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['apellido'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="text" name="apellido" value="<?= htmlspecialchars($oldData['apellido'] ?? $adoptante['apellido'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['apellido'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['apellido']) ? 'input-invalido' : '' ?>" minlength="2" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" required <?= isset($errores['apellido']) ? 'data-server-error="' . htmlspecialchars($errores['apellido'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Mail *</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($user['email'] ?? '—') ?></span>
-                    <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required>
-                    <?php if (isset($errores['email'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="email" name="email" value="<?= htmlspecialchars($oldData['email'] ?? $user['email'] ?? '') ?>" data-original="<?= htmlspecialchars($user['email'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['email']) ? 'input-invalido' : '' ?>" required <?= isset($errores['email']) ? 'data-server-error="' . htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">DNI *</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['dni'] ?? '—') ?></span>
-                    <input type="text" name="dni" value="<?= htmlspecialchars($oldData['dni'] ?? $adoptante['dni'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['dni'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['dni']) ? 'input-invalido' : '' ?>" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required>
-                    <?php if (isset($errores['dni'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['dni'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="text" name="dni" value="<?= htmlspecialchars($oldData['dni'] ?? $adoptante['dni'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['dni'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['dni']) ? 'input-invalido' : '' ?>" minlength="7" maxlength="10" pattern="^[0-9\.]{7,10}$" required <?= isset($errores['dni']) ? 'data-server-error="' . htmlspecialchars($errores['dni'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Fecha de Nacimiento</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? 'dd / mm / aaaa') ?></span>
-                    <input type="date" name="fecha_de_nacimiento" value="<?= htmlspecialchars($oldData['fecha_de_nacimiento'] ?? $adoptante['fecha_de_nacimiento'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['fecha_de_nacimiento']) ? 'input-invalido' : '' ?>">
-                    <?php if (isset($errores['fecha_de_nacimiento'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['fecha_de_nacimiento'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="date" name="fecha_de_nacimiento" value="<?= htmlspecialchars($oldData['fecha_de_nacimiento'] ?? $adoptante['fecha_de_nacimiento'] ?? '') ?>" data-original="<?= htmlspecialchars($adoptante['fecha_de_nacimiento'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['fecha_de_nacimiento']) ? 'input-invalido' : '' ?>" <?= isset($errores['fecha_de_nacimiento']) ? 'data-server-error="' . htmlspecialchars($errores['fecha_de_nacimiento'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item">
                     <span class="dato-label">Teléfono</span>
                     <span class="dato-valor static-value"><?= htmlspecialchars($user['contacto'] ?? '—') ?></span>
-                    <input type="tel" name="contacto" value="<?= htmlspecialchars($oldData['contacto'] ?? $user['contacto'] ?? '') ?>" data-original="<?= htmlspecialchars($user['contacto'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['contacto']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
-                    <?php if (isset($errores['contacto'])): ?>
-                        <span class="msg-error input-value"><?= htmlspecialchars($errores['contacto'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="tel" name="contacto" value="<?= htmlspecialchars($oldData['contacto'] ?? $user['contacto'] ?? '') ?>" data-original="<?= htmlspecialchars($user['contacto'] ?? '') ?>" class="dato-valor-input input-value <?= isset($errores['contacto']) ? 'input-invalido' : '' ?>" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$" <?= isset($errores['contacto']) ? 'data-server-error="' . htmlspecialchars($errores['contacto'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item input-value">
                     <span class="dato-label">Contraseña Actual</span>
-                    <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input <?= isset($errores['contrasena_actual']) ? 'input-invalido' : '' ?>" data-original="">
-                    <?php if (isset($errores['contrasena_actual'])): ?>
-                        <span class="msg-error"><?= htmlspecialchars($errores['contrasena_actual'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="password" name="contrasena_actual" placeholder="Requerida para cambiar contraseña" class="dato-valor-input <?= isset($errores['contrasena_actual']) ? 'input-invalido' : '' ?>" data-original="" <?= isset($errores['contrasena_actual']) ? 'data-server-error="' . htmlspecialchars($errores['contrasena_actual'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
                 <li class="dato-item input-value">
                     <span class="dato-label">Nueva Contraseña</span>
-                    <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input <?= isset($errores['contrasena']) ? 'input-invalido' : '' ?>" minlength="6" data-original="">
-                    <?php if (isset($errores['contrasena'])): ?>
-                        <span class="msg-error"><?= htmlspecialchars($errores['contrasena'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php endif; ?>
+                    <input type="password" name="contrasena" placeholder="Nueva contraseña (opcional)" class="dato-valor-input <?= isset($errores['contrasena']) ? 'input-invalido' : '' ?>" minlength="6" data-original="" <?= isset($errores['contrasena']) ? 'data-server-error="' . htmlspecialchars($errores['contrasena'], ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
                 </li>
             </ul>
 

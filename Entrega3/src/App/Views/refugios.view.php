@@ -24,7 +24,7 @@
         </header>
 
         <section class="seccion-refugio">
-            <div data-paw-filtros="refugios" style="display: contents;"></div>
+            <div data-paw-filtros="refugios" class="display-contents"></div>
         </section>
     </main>
 
