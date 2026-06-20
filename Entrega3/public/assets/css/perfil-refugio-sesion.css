@@ -101,10 +101,21 @@
     margin: 0;
 }
 
-.perfil-refugio-datos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem 1.5rem;
+fieldset.perfil-refugio-datos-columnas {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+}
+
+.perfil-refugio-datos-columnas .columna-datos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -116,9 +127,10 @@
 }
 
 .dato-refugio-label {
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-style: italic;
-    color: var(--color-naranja);
+    color: var(--color-gris);
+    font-weight: normal;
 }
 
 .dato-refugio-valor {
@@ -495,7 +507,7 @@
     -webkit-appearance: none;
 }
 
-.form-ubicacion-premium input[type="text"] {
+#form-ubicacion-refugio input[type="text"] {
     width: 100%;
     padding: 0.8rem 1rem;
     font-size: 1rem;
@@ -779,13 +791,13 @@
     display: flex;
 }
 
-.perfil-refugio-form {
+#perfil-refugio-form {
     flex: 1.6;
     display: flex;
     flex-direction: column;
 }
 
-.perfil-refugio-form .perfil-refugio-datos-grid {
+#perfil-refugio-form .perfil-refugio-datos-columnas {
     flex: 1;
 }
 
@@ -1034,7 +1046,7 @@
 
 .encuesta-etapa {
     background: var(--color-azul-oscuro);
-    color: white;
+    color: var(--color-fondo);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -1059,7 +1071,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
-    background: white;
+    background: var(--color-fondo);
     padding: 1rem;
     border-radius: 8px;
     border: 1px dashed var(--color-gris-claro);
@@ -1141,6 +1153,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.text-muted {
+    margin-top: 1rem;
+    color: var(--color-gris);
 }
 
 .monitoreo-foto-tipo {

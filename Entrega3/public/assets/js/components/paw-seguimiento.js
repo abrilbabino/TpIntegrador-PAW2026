@@ -48,3 +48,32 @@ function abrirModalEncuesta(etapa, titulo) {
 
 window.abrirModalSubida = abrirModalSubida;
 window.abrirModalEncuesta = abrirModalEncuesta;
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("dialog").forEach(modal => {
+        modal.addEventListener("close", () => {
+            const form = modal.querySelector("form");
+            if (form) {
+                form.reset();
+                form.querySelectorAll("input, select, textarea").forEach(input => {
+                    input.classList.remove("input-invalido");
+                    delete input.dataset.serverError;
+                    input.setCustomValidity("");
+
+                    const siguiente = input.nextElementSibling;
+                    if (siguiente && siguiente.classList.contains("msg-error")) {
+                        siguiente.remove();
+                    }
+                });
+            }
+        });
+    });
+
+    const mainContainer = document.querySelector(".seguimiento-main");
+    if (mainContainer && mainContainer.dataset.errorUpload === 'true') {
+        const modal = document.getElementById('modal-archivo');
+        if (modal) {
+            modal.showModal();
+        }
+    }
+});

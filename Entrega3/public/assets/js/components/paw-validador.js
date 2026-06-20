@@ -18,6 +18,7 @@ class PAWValidador {
     // Procesar posibles errores del servidor definidos mediante data-server-error
     this.inputs.forEach((input) => {
       if (input.dataset.serverError) {
+        input.setCustomValidity(input.dataset.serverError);
         this.mostrarError(input, input.dataset.serverError);
       }
     });
@@ -30,11 +31,15 @@ class PAWValidador {
     this.inputs.forEach((input) => {
       input.addEventListener("blur", () => this.validarCampo(input));
       input.addEventListener("input", () => {
-        if (input.classList.contains("input-invalido")) {
+        if (input.classList.contains("input-invalido") && !input.dataset.serverError) {
           this.validarCampo(input);
         }
       });
       input.addEventListener("change", () => {
+        if (input.dataset.serverError) {
+          input.setCustomValidity(""); // Clear custom validity so HTML5 can validate again
+          delete input.dataset.serverError;
+        }
         if (input.type === "radio" || input.type === "file" || input.classList.contains("input-invalido")) {
           this.validarCampo(input);
         }
@@ -73,6 +78,12 @@ class PAWValidador {
 
   // validarCampo: Evalúa el estado mediante input.checkValidity() de la API de validación.
   validarCampo(input) {
+    if (input.dataset.serverError) {
+      input.setCustomValidity(input.dataset.serverError);
+      this.mostrarError(input, input.dataset.serverError);
+      return false;
+    }
+
     input.setCustomValidity(this.obtenerErrorPersonalizado(input));
 
     if (input.checkValidity()) {

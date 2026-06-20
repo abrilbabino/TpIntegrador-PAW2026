@@ -14,6 +14,7 @@
   --color-rojo: #df1f1f;
   --color-naranja-claro: #ffdd9e;
   --color-verde-claro: #dcffc9;
+  --color-rojo-claro: #ffeaea;
 
   --fuente-titulos: "Montserrat", sans-serif;
   --fuente-cuerpo: "Open Sans", sans-serif;
@@ -25,16 +26,6 @@
 
 .display-contents {
     display: contents;
-}
-
-
-.hidden-desc {
-    display: none !important;
-}
-
-.alerta-espaciada {
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
 }
 
 body {

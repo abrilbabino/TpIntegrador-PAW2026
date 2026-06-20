@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         btnSiguiente.style.display = currentStep === totalSteps - 1 ? 'none' : 'inline-block';
         btnResultados.style.display = currentStep === totalSteps - 1 ? 'inline-block' : 'none';
 
-        progressFill.value = currentStep + 1;
+        const progress = ((currentStep + 1) / totalSteps) * 100;
+        progressFill.style.width = progress + '%';
         stepIndicator.textContent = 'Pregunta ' + (currentStep + 1) + ' de ' + totalSteps;
     }
 

@@ -4,11 +4,6 @@ class PAWLibreta {
     }
 
     init() {
-        const formularios = document.querySelectorAll(".form-registro");
-        if (typeof PAWValidador !== 'undefined') {
-            formularios.forEach(form => new PAWValidador(form));
-        }
-
         const btnAgregar = document.getElementById("btn-abrir-agregar-registro");
         if (btnAgregar) {
             btnAgregar.addEventListener("click", () => {
@@ -22,6 +17,28 @@ class PAWLibreta {
                 const modalId = this.getAttribute("data-modal");
                 const modal = document.getElementById(modalId);
                 if (modal) modal.close();
+            });
+        });
+
+        // Limpiar el formulario y los errores al cerrar cualquier modal
+        document.querySelectorAll("dialog").forEach(modal => {
+            modal.addEventListener("close", () => {
+                const form = modal.querySelector("form");
+                if (form) {
+                    form.reset(); // Restaura los valores originales
+
+                    // Limpiar clases, data-attributes y mensajes de error inyectados
+                    form.querySelectorAll("input, select, textarea").forEach(input => {
+                        input.classList.remove("input-invalido");
+                        delete input.dataset.serverError;
+                        input.setCustomValidity("");
+
+                        const siguiente = input.nextElementSibling;
+                        if (siguiente && siguiente.classList.contains("msg-error")) {
+                            siguiente.remove();
+                        }
+                    });
+                }
             });
         });
 

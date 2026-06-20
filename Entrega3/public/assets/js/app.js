@@ -381,7 +381,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-editar-mascota"); if (forms.length === 0) {
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-editar-mascota, .form-registro, #form-subir-archivo, #form-encuesta"); if (forms.length === 0) {
       return;
     }
 
