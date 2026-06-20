@@ -22,8 +22,16 @@ class PAWFiltros {
 
     async init() {
         try {
-            const response = await fetch(this.urlAPI);
-            const resultado = await response.json();
+            // Extraer URLs únicas de las fuentes
+            const uniqueSourceURLs = [...new Set(this.filtrosConfig.map(f => f.sourceURL).filter(Boolean))];
+            
+            // Hacer fetch a la API principal y a las fuentes en paralelo
+            const [mainResponse, ...sourceResponses] = await Promise.all([
+                fetch(this.urlAPI),
+                ...uniqueSourceURLs.map(url => fetch(url))
+            ]);
+
+            const resultado = await mainResponse.json();
             if (!resultado.success) throw new Error("Error en API");
             
             this.items = resultado.data;
@@ -33,16 +41,17 @@ class PAWFiltros {
             this.datosAuxiliares = {};
             const sourcesCache = {};
 
+            // Procesar las respuestas de las fuentes
+            for (let i = 0; i < uniqueSourceURLs.length; i++) {
+                const url = uniqueSourceURLs[i];
+                const json = await sourceResponses[i].json();
+                sourcesCache[url] = json.success ? json.data : [];
+            }
+
             for (const filtro of this.filtrosConfig) {
-                if (!filtro.sourceURL) continue;
-                
-                if (!sourcesCache[filtro.sourceURL]) {
-                    const res = await fetch(filtro.sourceURL);
-                    const json = await res.json();
-                    sourcesCache[filtro.sourceURL] = json.success ? json.data : [];
+                if (filtro.sourceURL) {
+                    this.datosAuxiliares[filtro.prop] = sourcesCache[filtro.sourceURL];
                 }
-                
-                this.datosAuxiliares[filtro.prop] = sourcesCache[filtro.sourceURL];
             }
 
             this.construirHTML();

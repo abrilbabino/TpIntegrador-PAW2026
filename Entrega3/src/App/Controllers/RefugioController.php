@@ -24,6 +24,11 @@ class RefugioController extends Controller
     public function apiRefugios() {
         header('Content-Type: application/json');
         
+        // Liberar el bloqueo de sesión para permitir requests concurrentes sin que php -S colapse
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
+        
         $resultado = $this->model->getAll(); 
         
         $refugiosData = [];

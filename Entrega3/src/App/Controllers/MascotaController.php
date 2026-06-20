@@ -29,6 +29,11 @@ class MascotaController extends Controller
     public function apiMascotas() {
         header('Content-Type: application/json');
         
+        // Liberar el bloqueo de sesión para permitir requests concurrentes sin que php -S colapse
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
+        
         $favoritoModel = new \Paw\App\Models\Favorito();
         $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
