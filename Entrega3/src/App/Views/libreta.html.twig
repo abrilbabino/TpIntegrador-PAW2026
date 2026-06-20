@@ -6,16 +6,26 @@
     <link rel="stylesheet" href="/assets/css/libreta.css" />
 {% endblock %}
 
-{% block main_attributes %}class="libreta-main"{% endblock %}
+{% block main_attributes %}class="libreta-main" data-error-carga="{{ request.get('error') == 'error_carga' ? 'true' : 'false' }}" data-error-registro-id="{{ request.get('registro_id')|default('') }}"{% endblock %}
 
 {% block main %}
     <header class="hero-libreta">
         <h1>Libreta Sanitaria de {{ mascota.fields.nombre|default('Mascota') }}</h1>
     </header>
 
-    <section data-paw-filtros="libreta" data-mascota-id="{{ mascota.fields.id|default('') }}">
+    {% if request.get('error') == 'permisos_denegados' %}
+        <div class="mensaje-error libreta-mensaje-error">
+            No tenés permisos para modificar esta libreta.
+        </div>
+    {% elseif request.get('error') == 'fecha_invalida' %}
+        <div class="mensaje-error libreta-mensaje-error">
+            No se puede programar un registro para una fecha que ya pasó.
+        </div>
+    {% endif %}
+
+    <div data-paw-filtros="libreta" data-mascota-id="{{ mascota.fields.id|default('') }}">
         <!-- PAWFiltros injected here -->
-    </section>
+    </div>
 
     <section class="pendientes" id="pendientes-container">
         <!-- PAWVisualizacion injected here -->
@@ -25,9 +35,11 @@
         <!-- PAWVisualizacion injected here -->
     </section>
 
-    <button type="button" class="btn-agregar-registro" onclick="document.getElementById('modal-agregar-registro').showModal();">
-        <span class="material-symbols-outlined">add</span> Agregar Registro
-    </button>
+    {% if puedeAgregar %}
+        <button type="button" class="btn-agregar-registro" id="btn-abrir-agregar-registro">
+            <span class="material-symbols-outlined">add</span> Agregar Registro
+        </button>
+    {% endif %}
 {% endblock %}
 
 {% block content_after_main %}
@@ -52,14 +64,39 @@
             <input type="text" id="titulo" name="titulo" placeholder="Ej: Antirrábica" required>
 
             <label for="fecha_programada">Fecha programada</label>
-            <input type="date" id="fecha_programada" name="fecha_programada" required>
+            <input type="date" id="fecha_programada" name="fecha_programada" min="{{ 'now'|date('Y-m-d') }}" data-no-past="true" data-past-message="La fecha programada no puede ser en el pasado." required>
 
             <label for="observaciones">Observaciones (opcional)</label>
             <textarea id="observaciones" name="observaciones" rows="3" placeholder="Notas adicionales..."></textarea>
 
             <footer class="acciones-modal">
-                <button type="button" class="btn-cancelar" onclick="document.getElementById('modal-agregar-registro').close();">Cancelar</button>
+                <button type="button" class="btn-cancelar js-cerrar-modal" data-modal="modal-agregar-registro">Cancelar</button>
                 <button type="submit" class="btn-guardar-registro">Guardar Registro</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <dialog id="modal-completar-registro" class="modal-nativo">
+        <header>
+            <h2>Completar Registro</h2>
+        </header>
+        <form method="POST" action="/mascota/registro/completar" class="form-registro" enctype="multipart/form-data">
+            <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
+            <input type="hidden" name="registro_id" id="completar_registro_id" value="">
+
+            <p class="modal-completar-desc">Para marcar este registro como completado, debés adjuntar el certificado correspondiente.</p>
+
+            <label for="archivo">Subir Certificado / Comprobante</label>
+            <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required 
+                class="input-file-completar {{ request.get('error') == 'error_carga' ? 'input-invalido' : '' }}"
+                {% if request.get('error') == 'error_carga' %}
+                data-server-error="{{ request.get('motivo') == '1' ? 'El archivo pesa más del límite permitido (2MB).' : 'Hubo un error al subir el archivo. Intentá de nuevo.' }}"
+                {% endif %}
+            >
+
+            <footer class="acciones-modal">
+                <button type="button" class="btn-cancelar js-cerrar-modal" data-modal="modal-completar-registro">Cancelar</button>
+                <button type="submit" class="btn-guardar-registro">Completar y Subir</button>
             </footer>
         </form>
     </dialog>

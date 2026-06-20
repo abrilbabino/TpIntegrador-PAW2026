@@ -98,7 +98,7 @@
   top: -5px;
   right: -8px;
   background-color: var(--color-rojo);
-  color: white;
+  color: var(--color-fondo);
   font-size: 0.7rem;
   font-weight: bold;
   padding: 2px 6px;
@@ -144,6 +144,7 @@
 }
 
 .nav-lista {
+  list-style: none;
   display: none;
   flex-direction: column;
   gap: 1rem;

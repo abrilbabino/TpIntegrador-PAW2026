@@ -92,7 +92,7 @@
 
 .perfil-btn-secondary:hover {
     background: var(--color-naranja);
-    color: white;
+    color: var(--color-fondo);
     transform: scale(0.98);
 }
 

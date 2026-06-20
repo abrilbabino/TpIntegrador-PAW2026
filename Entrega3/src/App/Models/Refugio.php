@@ -91,10 +91,11 @@ class Refugio extends Model
     {
         $id = $this->getId();
         $sqlEncuestas = "
-            SELECT e.*, m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre, u.contacto as adoptante_contacto 
+            SELECT e.*, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre, u.contacto as adoptante_contacto 
             FROM encuesta_adopcion e 
             JOIN mascota m ON e.mascota_id = m.id 
             JOIN usuario u ON e.adoptante_id = u.id 
+            LEFT JOIN adoptante a ON a.usuario_id = u.id
             WHERE m.refugio_id = :rid 
             ORDER BY e.fecha_encuesta DESC
         ";
@@ -107,22 +108,24 @@ class Refugio extends Model
         $sqlFotos = "
             SELECT 
                 md.id, md.tipo, md.url, 
-                m.id as mascota_id, m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
+                m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
             FROM media_mascota md 
             JOIN mascota m ON md.mascota_id = m.id 
-            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADO'
+            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
             LEFT JOIN usuario u ON s.adoptante_id = u.id
+            LEFT JOIN adoptante a ON a.usuario_id = u.id
             WHERE m.refugio_id = :rid AND md.tipo IN ('foto_seguimiento', 'certificado_med')
 
             UNION ALL
 
             SELECT 
                 rs.id, 'certificado_med' as tipo, rs.archivo_adjunto as url,
-                m.id as mascota_id, m.nombre as mascota_nombre, u.nombre_usuario as adoptante_nombre
+                m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
             FROM registro_sanitario rs
             JOIN mascota m ON rs.mascota_id = m.id 
-            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADO'
+            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
             LEFT JOIN usuario u ON s.adoptante_id = u.id
+            LEFT JOIN adoptante a ON a.usuario_id = u.id
             WHERE m.refugio_id = :rid AND rs.archivo_adjunto IS NOT NULL
 
             ORDER BY id DESC

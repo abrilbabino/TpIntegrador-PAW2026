@@ -5,7 +5,7 @@
 {% block main_attributes %}class="seguimiento-layout"{% endblock %}
 
 {% block main %}
-    <section class="seguimiento-main">
+    <section class="seguimiento-main" {% if errorUpload is not empty %}data-error-upload="true"{% endif %}>
         <article class="pet-card">
             <figure class="imagen-mascota">
                 <img src="/assets/img/{{ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') }}">
@@ -26,7 +26,7 @@
                 <article class="encuesta-card estado-{{ enc.estado|default('')|lower }}">
                     <header>
                         <h4>Encuesta: {{ enc.titulo|default('') }}</h4>
-                        <span class="badge-dias">{{ enc.dias_requeridos|default('') }} Días</span>
+                        <mark class="badge-dias">{{ enc.dias_requeridos|default('') }} Días</mark>
                     </header>
                     
                     {% if enc.estado == 'COMPLETADA' %}
@@ -65,7 +65,7 @@
                                 {% set claseBadge = registro.fields.estado|lower == 'completado' ? 'badge-completado' : 'badge-pendiente' %}
                                 <header>
                                     <h4>{{ registro.fields.titulo|default('') }}</h4>
-                                    <span class="estado-badge {{ claseBadge }}">{{ registro.fields.estado|default('') }}</span>
+                                    <mark class="estado-badge {{ claseBadge }}">{{ registro.fields.estado|default('') }}</mark>
                                 </header>
                                 {% set fechaProg = registro.fields.fecha_programada|date('U') %}
                                 {% set vencido = (registro.fields.estado|lower == 'pendiente' and fechaProg < 'now'|date('U')) %}
@@ -107,12 +107,7 @@
             <header>
                 <h2>Comprobantes</h2>
             </header>
-            {% if errorUpload is not empty %}
-                <aside class="mensaje-error seguimiento-mensaje-error">
-                    <span class="material-symbols-outlined seguimiento-icono-error">error</span>
-                    {{ errorUpload }}
-                </aside>
-            {% endif %}
+
             <button class="btn-comprobante" onclick="abrirModalSubida('foto')">
                 Fotos de {{ mascotaSeleccionada.fields.nombre|default('') }}
                 <span class="material-symbols-outlined icono-comprobante">attach_file</span>
@@ -136,7 +131,7 @@
         <header>
             <h3>Cargar Certificado o Comprobante</h3>
         </header>
-        <form action="/seguimiento/subir-archivo" method="POST" enctype="multipart/form-data">
+        <form id="form-subir-archivo" action="/seguimiento/subir-archivo" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
             
             <fieldset class="seguimiento-oculto">
@@ -162,7 +157,12 @@
 
             <fieldset>
                 <label for="archivo">Archivo (PDF o Imagen):</label>
-                <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required>
+                <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required
+                    class="input-file-completar {{ errorUpload is not empty ? 'input-invalido' : '' }}"
+                    {% if errorUpload is not empty %}
+                    data-server-error="{{ errorUpload }}"
+                    {% endif %}
+                >
             </fieldset>
             <footer class="form-actions">
                 <button type="submit" class="btn-accion">Subir Archivo</button>
@@ -176,7 +176,7 @@
         <header>
             <h3 id="modal-encuesta-titulo">Encuesta de Seguimiento</h3>
         </header>
-        <form action="/encuesta/guardar" method="POST">
+        <form id="form-encuesta" action="/encuesta/guardar" method="POST">
             <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
             <input type="hidden" name="etapa" id="input_etapa" value="">
             
@@ -225,4 +225,5 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/assets/js/components/paw-seguimiento.js"></script>
 {% endblock %}

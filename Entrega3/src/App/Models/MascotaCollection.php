@@ -144,8 +144,12 @@ class MascotaCollection extends Model
                 return false;
             }
             
-            // Verificar si este usuario tiene la solicitud aprobada
+            // Verificar si este usuario tiene la solicitud aprobada (APROBADO o APROBADA)
             return $this->queryBuilder->exists('solicitud_de_adopcion', [
+                'mascota_id' => $mascotaId,
+                'adoptante_id' => $usuarioId,
+                'estado' => 'APROBADO'
+            ]) || $this->queryBuilder->exists('solicitud_de_adopcion', [
                 'mascota_id' => $mascotaId,
                 'adoptante_id' => $usuarioId,
                 'estado' => 'APROBADA'
@@ -156,6 +160,38 @@ class MascotaCollection extends Model
             }
             return (int)$mascota->fields['refugio_id'] === $usuarioId;
         }
+    }
+
+    public function obtenerPermisosLibreta(int $mascotaId, int $usuarioId, string $rol): array
+    {
+        $permisos = [
+            'puedeModificar' => false,
+            'puedeAgregar'   => false
+        ];
+
+        if (!$this->verificarPermisosLibreta($mascotaId, $usuarioId, $rol)) {
+            return $permisos;
+        }
+
+        $mascota = $this->get($mascotaId);
+        $estadoAdopcion = $mascota->fields['estado_adopcion'] ?? 'DISPONIBLE';
+
+        if ($estadoAdopcion === 'ADOPTADO') {
+            if ($rol === 'adoptante') {
+                $permisos['puedeModificar'] = true;
+                $permisos['puedeAgregar'] = false;
+            } elseif ($rol === 'refugio') {
+                $permisos['puedeModificar'] = false;
+                $permisos['puedeAgregar'] = true;
+            }
+        } else {
+            if ($rol === 'refugio') {
+                $permisos['puedeModificar'] = true;
+                $permisos['puedeAgregar'] = true;
+            }
+        }
+
+        return $permisos;
     }
 
     public function obtenerMascotasApiData(array $favoritosIds = []): array

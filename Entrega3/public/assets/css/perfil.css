@@ -117,9 +117,10 @@
 }
 
 .dato-label {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-style: italic;
   color: var(--color-gris);
+  font-weight: normal;
 }
 
 .dato-valor {

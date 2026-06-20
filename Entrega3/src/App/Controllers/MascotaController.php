@@ -488,10 +488,10 @@ public function eliminarFoto() {
         $puedeAgregar = false;
         if (!empty($userSession)) {
             $mascotasCol = $this->loadCollection(MascotaCollection::class);
-            $puedeModificar = $mascotasCol->verificarPermisosLibreta((int)$id, $userSession['id'], $userSession['rol'] ?? '');
-            if ($puedeModificar && ($userSession['rol'] ?? '') === 'refugio') {
-                $puedeAgregar = true;
-            }
+            $permisos = $mascotasCol->obtenerPermisosLibreta((int)$id, $userSession['id'], $userSession['rol'] ?? '');
+            
+            $puedeModificar = $permisos['puedeModificar'];
+            $puedeAgregar = $permisos['puedeAgregar'];
         }
 
         echo $this->twig->render('libreta.html.twig', get_defined_vars());
@@ -518,10 +518,10 @@ public function eliminarFoto() {
         $puedeAgregar = false;
         if (!empty($userSession)) {
             $mascotasCol = $this->loadCollection(MascotaCollection::class);
-            $puedeModificar = $mascotasCol->verificarPermisosLibreta((int)$mascota_id, $userSession['id'], $userSession['rol'] ?? '');
-            if ($puedeModificar && ($userSession['rol'] ?? '') === 'refugio') {
-                $puedeAgregar = true;
-            }
+            $permisos = $mascotasCol->obtenerPermisosLibreta((int)$mascota_id, $userSession['id'], $userSession['rol'] ?? '');
+            
+            $puedeModificar = $permisos['puedeModificar'];
+            $puedeAgregar = $permisos['puedeAgregar'];
         }
 
         $datos = [];
@@ -589,7 +589,8 @@ public function eliminarFoto() {
 
         $coleccion = $this->loadCollection(MascotaCollection::class);
         $rol = $userSession['rol'] ?? '';
-        if (!$coleccion->verificarPermisosLibreta($mascota_id, $userSession['id'], $rol) || $rol !== 'refugio') {
+        $permisos = $coleccion->obtenerPermisosLibreta($mascota_id, $userSession['id'], $rol);
+        if (!$permisos['puedeAgregar']) {
             header('Location: /mascota/libreta?id=' . $mascota_id . '&error=permisos_denegados');
             return;
         }
@@ -630,14 +631,17 @@ public function eliminarFoto() {
         }
 
         $coleccion = $this->loadCollection(MascotaCollection::class);
-        if (!$coleccion->verificarPermisosLibreta($mascota_id, $userSession['id'], $userSession['rol'] ?? '')) {
+        $permisos = $coleccion->obtenerPermisosLibreta($mascota_id, $userSession['id'], $userSession['rol'] ?? '');
+        if (!$permisos['puedeModificar']) {
             header('Location: /mascota/libreta?id=' . $mascota_id . '&error=permisos_denegados');
             return;
         }
 
         $archivo = $this->request->file('archivo');
+        file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] FILES: " . print_r($_FILES, true) . " POST: " . print_r($_POST, true) . " \n", FILE_APPEND);
         if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
-            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id);
+            $errCode = $archivo ? $archivo['error'] : 'no_file';
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id . '&motivo=' . $errCode);
             return;
         }
 
@@ -656,7 +660,9 @@ public function eliminarFoto() {
             $regSanitario = $this->loadCollection(RegistroSanitarioCollection::class);
             $regSanitario->completarRegistroSanitario($registro_id, $rutaRelativa, date('Y-m-d'));
         } else {
-            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id);
+            $motivo = 'move_fail_' . (is_writable($directorioDestino) ? 'writable' : 'not_writable');
+            file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] move_uploaded_file failed. tmp: " . $archivo['tmp_name'] . " dest: " . $rutaAbsoluta . " is_writable: " . (is_writable($directorioDestino) ? 'yes' : 'no') . "\n", FILE_APPEND);
+            header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id . '&motivo=' . $motivo);
             return;
         }
 

@@ -31,59 +31,63 @@
         </header>
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
-                <ul class="perfil-refugio-datos-grid">
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">Nombre de la institución:</span>
-                        <span class="dato-refugio-valor static-value">{{ refugio.nombre_institucion|default('—') }}</span>
-                        <input type="text" name="nombre_institucion" value="{{ oldData.nombre_institucion|default(refugio.nombre_institucion|default('')) }}" data-original="{{ refugio.nombre_institucion|default('') }}" class="dato-valor-input input-value {{ errores.nombre_institucion is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="100" required>
-                        {% if errores.nombre_institucion is defined %}
-                            <span class="msg-error input-value">{{ errores.nombre_institucion }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">Descripción:</span>
-                        <article class="static-value dato-refugio-descripcion-container">
-                            <p class="dato-refugio-valor descripcion-texto">{{ refugio.descripcion|default('-')|nl2br }}</p>
-                            <button type="button" class="btn-ver-mas-desc hidden-desc">Ver más</button>
-                        </article>
-                        <input type="text" name="descripcion" value="{{ oldData.descripcion|default(refugio.descripcion|default('')) }}" data-original="{{ refugio.descripcion|default('') }}" class="dato-valor-input input-value {{ errores.descripcion is defined ? 'input-invalido' : '' }}" maxlength="500">
-                        {% if errores.descripcion is defined %}
-                            <span class="msg-error input-value">{{ errores.descripcion }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">Teléfono:</span>
-                        <span class="dato-refugio-valor static-value">{{ refugio.telefono|default('—') }}</span>
-                        <input type="tel" name="telefono" value="{{ oldData.telefono|default(refugio.telefono|default('')) }}" data-original="{{ refugio.telefono|default('') }}" class="dato-valor-input input-value {{ errores.telefono is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
-                        {% if errores.telefono is defined %}
-                            <span class="msg-error input-value">{{ errores.telefono }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">Mail:</span>
-                        <span class="dato-refugio-valor static-value">{{ user.email|default('—') }}</span>
-                        <input type="email" name="email" value="{{ oldData.email|default(user.email|default('')) }}" data-original="{{ user.email|default('') }}" class="dato-valor-input input-value {{ errores.email is defined ? 'input-invalido' : '' }}" required>
-                        {% if errores.email is defined %}
-                            <span class="msg-error input-value">{{ errores.email }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">Alias:</span>
-                        <span class="dato-refugio-valor static-value">{{ refugio.alias|default('—') }}</span>
-                        <input type="text" name="alias" value="{{ oldData.alias|default(refugio.alias|default('')) }}" data-original="{{ refugio.alias|default('') }}" class="dato-valor-input input-value {{ errores.alias is defined ? 'input-invalido' : '' }}" minlength="4" maxlength="40">
-                        {% if errores.alias is defined %}
-                            <span class="msg-error input-value">{{ errores.alias }}</span>
-                        {% endif %}
-                    </li>
-                    <li class="dato-refugio-item">
-                        <span class="dato-refugio-label">CVU:</span>
-                        <span class="dato-refugio-valor static-value">{{ refugio.cvu|default('—') }}</span>
-                        <input type="text" name="cvu" value="{{ oldData.cvu|default(refugio.cvu|default('')) }}" data-original="{{ refugio.cvu|default('') }}" class="dato-valor-input input-value {{ errores.cvu is defined ? 'input-invalido' : '' }}" minlength="22" maxlength="22" pattern="^[0-9]{22}$">
-                        {% if errores.cvu is defined %}
-                            <span class="msg-error input-value">{{ errores.cvu }}</span>
-                        {% endif %}
-                    </li>
-                </ul>
+                <fieldset class="perfil-refugio-datos-columnas">
+                    <ul class="columna-datos">
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="nombre_institucion">Nombre de la institución:</label>
+                            <p class="dato-refugio-valor static-value">{{ refugio.nombre_institucion|default('—') }}</p>
+                            <input type="text" id="nombre_institucion" name="nombre_institucion" value="{{ oldData.nombre_institucion|default(refugio.nombre_institucion|default('')) }}" data-original="{{ refugio.nombre_institucion|default('') }}" class="dato-valor-input input-value {{ errores.nombre_institucion is defined ? 'input-invalido' : '' }}" minlength="2" maxlength="100" required>
+                            {% if errores.nombre_institucion is defined %}
+                                <span class="msg-error input-value">{{ errores.nombre_institucion }}</span>
+                            {% endif %}
+                        </li>
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="telefono">Teléfono:</label>
+                            <p class="dato-refugio-valor static-value">{{ refugio.telefono|default('—') }}</p>
+                            <input type="tel" id="telefono" name="telefono" value="{{ oldData.telefono|default(refugio.telefono|default('')) }}" data-original="{{ refugio.telefono|default('') }}" class="dato-valor-input input-value {{ errores.telefono is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
+                            {% if errores.telefono is defined %}
+                                <span class="msg-error input-value">{{ errores.telefono }}</span>
+                            {% endif %}
+                        </li>
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="alias">Alias:</label>
+                            <p class="dato-refugio-valor static-value">{{ refugio.alias|default('—') }}</p>
+                            <input type="text" id="alias" name="alias" value="{{ oldData.alias|default(refugio.alias|default('')) }}" data-original="{{ refugio.alias|default('') }}" class="dato-valor-input input-value {{ errores.alias is defined ? 'input-invalido' : '' }}" minlength="4" maxlength="40">
+                            {% if errores.alias is defined %}
+                                <span class="msg-error input-value">{{ errores.alias }}</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <ul class="columna-datos">
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="descripcion">Descripción:</label>
+                            <article class="static-value dato-refugio-descripcion-container">
+                                <p class="dato-refugio-valor descripcion-texto">{{ refugio.descripcion|default('-')|nl2br }}</p>
+                                <button type="button" class="btn-ver-mas-desc hidden-desc">Ver más</button>
+                            </article>
+                            <input type="text" id="descripcion" name="descripcion" value="{{ oldData.descripcion|default(refugio.descripcion|default('')) }}" data-original="{{ refugio.descripcion|default('') }}" class="dato-valor-input input-value {{ errores.descripcion is defined ? 'input-invalido' : '' }}" maxlength="500">
+                            {% if errores.descripcion is defined %}
+                                <span class="msg-error input-value">{{ errores.descripcion }}</span>
+                            {% endif %}
+                        </li>
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="email">Mail:</label>
+                            <p class="dato-refugio-valor static-value">{{ user.email|default('—') }}</p>
+                            <input type="email" id="email" name="email" value="{{ oldData.email|default(user.email|default('')) }}" data-original="{{ user.email|default('') }}" class="dato-valor-input input-value {{ errores.email is defined ? 'input-invalido' : '' }}" required>
+                            {% if errores.email is defined %}
+                                <span class="msg-error input-value">{{ errores.email }}</span>
+                            {% endif %}
+                        </li>
+                        <li class="dato-refugio-item">
+                            <label class="dato-refugio-label" for="cvu">CVU:</label>
+                            <p class="dato-refugio-valor static-value">{{ refugio.cvu|default('—') }}</p>
+                            <input type="text" id="cvu" name="cvu" value="{{ oldData.cvu|default(refugio.cvu|default('')) }}" data-original="{{ refugio.cvu|default('') }}" class="dato-valor-input input-value {{ errores.cvu is defined ? 'input-invalido' : '' }}" minlength="22" maxlength="22" pattern="^[0-9]{22}$">
+                            {% if errores.cvu is defined %}
+                                <span class="msg-error input-value">{{ errores.cvu }}</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </fieldset>
                 <footer class="perfil-datos-acciones input-value">
                     <button type="submit" class="btn-guardar-perfil">Guardar</button>
                     <button type="button" id="btn-cancel-refugio" class="btn-cancelar-perfil">Cancelar</button>
@@ -99,6 +103,10 @@
             <span class="material-symbols-outlined">assignment</span>
             Gestión de solicitudes
         </a>
+        <a href="#sec-monitoreo">
+            <span class="material-symbols-outlined">monitor_heart</span>
+            Monitoreo Post-Adopción
+        </a>
         <a href="#sec-ubicacion">
             <span class="material-symbols-outlined">location_on</span>
             Ubicación: Agregar/Modificar
@@ -111,11 +119,15 @@
             <span class="material-symbols-outlined">refresh</span>
             Actualizar / Eliminar Mascota
         </a>
+        <a href="#sec-mascotas-adoptadas">
+            <span class="material-symbols-outlined">volunteer_activism</span>
+            Mascotas Adoptadas
+        </a>
     </nav>
     
     <!-- Sección: Solicitudes -->
      <section class="perfil-refugio-seccion" id="sec-solicitudes-adopcion">
-        <details class="perfil-dropdown" open>
+        <details class="perfil-dropdown">
         <summary> <h3>Solicitudes de adopción</h3> </summary>
         {% if solicitudes is empty %}
             <article class="perfil-refugio-vacio">
@@ -135,10 +147,10 @@
                             por {{ sol.adoptante_nombre|default('—') }}
                             {{ sol.adoptante_apellido|default('—') }}
                         </h4>
-                        <span class="estado-solicitud {{ estadoClass }}">
+                        <mark class="estado-solicitud {{ estadoClass }}">
                             Estado: {{ sol.estado|default('—') }}  <br>
                             Fecha: {{ sol.fecha|default('—') }}
-                        </span>
+                        </mark>
                         <p>
                             Detalle de la mascota: <br>
                             {{ sol.edad|default('?') }} año(s)
@@ -155,9 +167,102 @@
         {% endif %}
         </details>
     </section>
+
+    <section class="perfil-refugio-seccion" id="sec-monitoreo">
+        <details class="perfil-dropdown">
+        <summary> <h3>Monitoreo Post-Adopción</h3> </summary>
+        
+        {% if seguimientoAgrupado is empty %}
+            <article class="perfil-refugio-vacio">
+                <span class="material-symbols-outlined">pets</span>
+                <p>Aún no hay seguimientos para mascotas adoptadas.</p>
+            </article>
+        {% else %}
+            <ul class="monitoreo-lista-mascotas">
+                {% for mascotaId, datos in seguimientoAgrupado %}
+                    <li class="monitoreo-item-mascota">
+                        <details class="perfil-dropdown mascota-seguimiento-dropdown">
+                            <summary class="mascota-seguimiento-summary">
+                                <h4>
+                                    {{ datos.mascota_nombre }} 
+                                    <small>(Adoptante: {{ datos.adoptante_nombre }})</small>
+                                </h4>
+                            </summary>
+                            
+                            <article class="mascota-seguimiento-contenido">
+                                <h5 class="monitoreo-subtitle">Encuestas</h5>
+                                {% if datos.encuestas is empty %}
+                                    <p class="text-muted">No hay encuestas respondidas aún.</p>
+                                {% else %}
+                                    <ul class="monitoreo-lista-encuestas">
+                                        {% for enc in datos.encuestas %}
+                                            {% set alertaClass = enc.alerta_generada ? 'encuesta-alerta' : 'encuesta-ok' %}
+                                            <li class="monitoreo-item-encuesta {{ alertaClass }}">
+                                                <header class="encuesta-header">
+                                                    <mark class="encuesta-etapa badge-{{ enc.etapa }}">Etapa: {{ enc.etapa|replace({'_': ' '}) }}</mark>
+                                                    <span class="encuesta-fecha">{{ enc.fecha_encuesta|date('d/m/Y') }}</span>
+                                                </header>
+                                                <details class="encuesta-detalles">
+                                                    <summary>Ver respuestas completas</summary>
+                                                    <article class="encuesta-respuestas-grid">
+                                                        {% if enc.conducta is not empty %}
+                                                            <p><strong>Conducta:</strong> {{ enc.conducta }}</p>
+                                                        {% endif %}
+                                                        {% if enc.sueno is not empty %}
+                                                            <p><strong>Sueño:</strong> {{ enc.sueno }}</p>
+                                                        {% endif %}
+                                                        {% if enc.alimentacion is not empty %}
+                                                            <p><strong>Alimentación:</strong> {{ enc.alimentacion }}</p>
+                                                        {% endif %}
+                                                        {% if enc.progreso_general is not empty %}
+                                                            <p><strong>Progreso general:</strong> {{ enc.progreso_general }}</p>
+                                                        {% endif %}
+                                                        {% if enc.comentarios is not empty %}
+                                                            <p class="encuesta-comentarios"><strong>Comentarios:</strong> <br>{{ enc.comentarios|nl2br }}</p>
+                                                        {% endif %}
+                                                    </article>
+                                                </details>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+
+                                <h5 class="monitoreo-subtitle mt-2">Fotos y Archivos de Seguimiento</h5>
+                                {% if datos.fotos is empty %}
+                                    <p class="text-muted">No se han subido fotos ni certificados aún.</p>
+                                {% else %}
+                                    <ul class="monitoreo-galeria-fotos">
+                                        {% for foto in datos.fotos %}
+                                            <li class="monitoreo-foto-item">
+                                                <a href="/{{ foto.url|trim('/') }}" target="_blank" class="foto-link">
+                                                    <figure class="monitoreo-foto-figure">
+                                                        {% if foto.tipo == 'certificado_med' %}
+                                                            <span class="monitoreo-doc-placeholder">
+                                                                <span class="material-symbols-outlined">description</span>
+                                                            </span>
+                                                        {% else %}
+                                                            <img src="/{{ foto.url|trim('/') }}" alt="Seguimiento {{ foto.mascota_nombre }}" class="monitoreo-img">
+                                                        {% endif %}
+                                                        <figcaption class="monitoreo-foto-info">
+                                                            <span class="monitoreo-foto-tipo">{{ foto.tipo == 'certificado_med' ? 'Certificado Médico' : 'Foto' }}</span>
+                                                        </figcaption>
+                                                    </figure>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </article>
+                        </details>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </details>
+    </section>
     
     <section class="perfil-refugio-ubicacion" id="sec-ubicacion">
-        <details class="perfil-dropdown" open>
+        <details class="perfil-dropdown">
             <summary> <h3>Ubicación: Agregar/Modificar</h3> </summary>
 
         <article class="perfil-refugio-ubicacion-content">
@@ -198,7 +303,7 @@
     </section>
 
     <section class="perfil-refugio-publicar" id="sec-publicar">
-        <details class="perfil-dropdown" open>
+        <details class="perfil-dropdown">
         <summary> <h3>Publicar Mascota</h3> </summary>
         <p>Agrega los datos de la nueva mascota:</p>
     
@@ -290,14 +395,9 @@
             <button type="submit" id="btn-publicar-mascota">Publicar</button>
         </form>
         </details>
-    </section>
-
-    <section class="perfil-editar-mascota" id="sec-editar-mascota">
-        <details class="perfil-dropdown" open>
-        <summary><h2>
-            <span class="material-symbols-outlined">pets</span>
-            Actualizar/Eliminar Mascota
-        </h2></summary>
+    </section>    <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
+        <details class="perfil-dropdown">
+        <summary> <h3>Actualizar/Eliminar Mascota</h3> </summary>
         {% if mascotas is empty %}
             <article class="perfil-vacio">
                 <span class="material-symbols-outlined">pets</span>
@@ -327,4 +427,35 @@
         {% endif %}
         </details>
     </section>
+
+    <section class="perfil-editar-mascota sec-mascotas-adoptadas" id="sec-mascotas-adoptadas">
+        <details class="perfil-dropdown">
+        <summary> <h3>Mascotas Adoptadas</h3> </summary>
+        {% if mascotasAdoptadas is empty %}
+            <article class="perfil-vacio">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+                <p>Todavía no tenés mascotas adoptadas.</p>
+            </article>
+        {% else %}
+            <ul class="perfil-refugio-grid">
+                {% for mascota in mascotasAdoptadas %}
+                    <li class="tarjeta-refugio-mascota">
+                        <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota') }}">
+                            <h4>{{ mascota.fields.nombre|default('Sin nombre') }}</h4>
+                            <p>
+                                {{ mascota.fields.edad|default('?') }} año(s)
+                                · {{ mascota.fields.tamano|default('—') }}
+                                · {{ mascota.fields.temperamento|default('—') }}
+                            </p>
+                        </a>
+                        <a href="/mascota/libreta?id={{ mascota.fields.id }}" class="btn-editar btn-libreta" title="Ver Libreta Sanitaria">
+                           <span class="material-symbols-outlined">medical_information</span>
+                       </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </details>
+    </section>
+
 {% endblock %}
