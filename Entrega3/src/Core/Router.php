@@ -72,7 +72,9 @@ class Router
     {
         try {
             [$path, $http_method] = $request->route();
-            [$controller, $method] = $this->getController($path, $http_method);
+            // HEAD debe resolverse como GET (HTTP spec: misma respuesta sin body)
+            $lookup_method = $http_method === 'HEAD' ? 'GET' : $http_method;
+            [$controller, $method] = $this->getController($path, $lookup_method);
             $this->logger->info("Status Code: 200", ["path" => $path, "method" => $http_method]);
             $this->call($controller, $method);
         } catch (RouteNotFoundException $e) {
