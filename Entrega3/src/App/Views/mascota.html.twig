@@ -47,10 +47,14 @@
             <span class="drag-handle"></span>
             <header class="info-header">
                 <h2>{{ mascota.fields.nombre|default('Mascota') }}</h2>
-                {% set nombreSvg = mascota.fields.nombre|default('')|trim|lower %}
-                {% if nombreSvg is not empty %}
+                {% set svgArchivo = mascota.fields.svg|default('')|trim %}
+                {% if svgArchivo is empty %}
+                    {# Retrocompatibilidad: mascotas antiguas sin campo svg usan el nombre #}
+                    {% set svgArchivo = mascota.fields.nombre|default('')|trim|lower ~ '.svg' %}
+                {% endif %}
+                {% if svgArchivo is not empty %}
                     <figure class="svg-mascota">
-                        <img src="/assets/svg/{{ nombreSvg }}.svg"
+                        <img src="/assets/svg/{{ svgArchivo }}"
                              alt="Animación de {{ mascota.fields.nombre|default('') }}"
                              class="svg-mascota-img"
                              onerror="this.parentElement.style.display='none'">

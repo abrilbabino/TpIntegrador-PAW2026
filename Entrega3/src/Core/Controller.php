@@ -44,8 +44,13 @@ class Controller
         // Configuración de Twig 
         $loader = new FilesystemLoader($this->viewsDir);
         
+        $cacheDir = sys_get_temp_dir() . '/paw_twig_cache';
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0777, true);
+        }
+
         $this->twig = new Environment($loader, [
-            'cache' => false,
+            'cache' => $cacheDir,
             'auto_reload' => true,
         ]);
 
@@ -132,5 +137,19 @@ class Controller
     public function setModel(Model $model)
     {
         $this->model = $model;
+    }
+
+    /**
+     * Retorna la lista de archivos .svg disponibles en /public/assets/svg/.
+     * Incluye los de la subcarpeta uploads/.
+     */
+    protected function obtenerSvgsDisponibles(): array
+    {
+        $dirSvg = __DIR__ . '/../../../public/assets/svg/';
+        if (!is_dir($dirSvg)) {
+            return [];
+        }
+        $archivos = scandir($dirSvg);
+        return array_values(array_filter($archivos, fn($f) => pathinfo($f, PATHINFO_EXTENSION) === 'svg'));
     }
 }

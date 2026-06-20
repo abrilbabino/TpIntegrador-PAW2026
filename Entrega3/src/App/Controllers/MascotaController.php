@@ -170,6 +170,7 @@ class MascotaController extends Controller
 
         $post  = $this->request->post();
         $foto  = $this->request->file('foto');
+        $svg   = $this->request->file('svg');
         $id    = (int) ($post['id'] ?? 0);
 
         if ($id <= 0) {
@@ -294,6 +295,22 @@ class MascotaController extends Controller
             $errores['foto'] = 'Error al subir la imagen (código ' . $foto['error'] . ').';
         }
 
+        // SVG (opcional): si no se sube uno nuevo, se conserva el actual
+        $svgRelativa = $mascota->fields['svg'] ?? null;
+        $svgValidoParaMover = false;
+        if ($svg && isset($svg['error'])) {
+            if ($svg['error'] === UPLOAD_ERR_OK) {
+                $errorSvg = \Paw\App\Models\Mascota::validarArchivoSvg($svg);
+                if ($errorSvg !== null) {
+                    $errores['svg'] = $errorSvg;
+                } else {
+                    $svgValidoParaMover = true;
+                }
+            } elseif ($svg['error'] !== UPLOAD_ERR_NO_FILE) {
+                $errores['svg'] = 'Error al subir el SVG (código ' . $svg['error'] . ').';
+            }
+        }
+
         if (!empty($errores)) {
             $tamanos       = $mascotaCollection->getTamanos();
             $especies      = $mascotaCollection->getEspecies();
@@ -305,6 +322,34 @@ class MascotaController extends Controller
             echo $this->twig->render('editar-mascota.html.twig', get_defined_vars());
             return;
         }
+
+        if ($svgValidoParaMover) {
+            $nombreFinalSvg = uniqid('svg_mascota_', true) . '.svg';
+            $directorioSvg  = __DIR__ . '/../../../public/assets/svg/uploads/';
+            if (!is_dir($directorioSvg)) {
+                mkdir($directorioSvg, 0777, true);
+            }
+            if (move_uploaded_file($svg['tmp_name'], $directorioSvg . $nombreFinalSvg)) {
+                $svgRelativa = 'uploads/' . $nombreFinalSvg;
+            } else {
+                $errores['svg'] = 'No se pudo guardar el SVG.';
+                $tamanos       = $mascotaCollection->getTamanos();
+                $especies      = $mascotaCollection->getEspecies();
+                $temperamentos = $mascotaCollection->getTemperamentos();
+                $menu  = $this->menu;
+                $redes = $this->redes;
+                $oldData = $post;
+                $fotos = $this->loadFotosMascota((int)$mascota->fields['id'], $mascota->fields['imagen'] ?? null);
+                echo $this->twig->render('editar-mascota.html.twig', get_defined_vars());
+                return;
+            }
+        }
+
+        // Determinar valor final del SVG
+        if ($svgValidoParaMover) {
+            // Ya se asignó $svgRelativa dentro del bloque de mover
+        }
+        // else: conserva $svgRelativa con el valor actual
 
         if ($fotoValidaParaMover) {
             $nombreFinal = uniqid('mascota_', true) . '.' . $extension;
@@ -339,6 +384,7 @@ class MascotaController extends Controller
             'temperamento' => htmlspecialchars($temperamento, ENT_QUOTES, 'UTF-8'),
             'castrado'     => ($esterilizado === 'si') ? 1 : 0,
             'imagen'       => $imagenRelativa,
+            'svg'          => $svgRelativa,
         ], ['id' => $id]);
 
         header('Location: /mascota/editar?id=' . $id . '&update=success');
@@ -405,6 +451,50 @@ class MascotaController extends Controller
         } else {
             header('Location: /mascota/editar?id=' . $mascotaId . '&error=upload_failed');
         }
+        exit;
+    }
+
+    public function eliminarSvg() {
+        $userSession = $this->request->session('user');
+        if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
+            header('Location: /iniciar-sesion');
+            exit;
+        }
+
+        $postData = $this->request->post();
+        $id = (int) ($postData['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        try {
+            $mascota = $this->model->get($id);
+        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        if (!$mascota || (int)$mascota->fields['refugio_id'] !== (int)$userSession['id']) {
+            header('Location: /perfil');
+            exit;
+        }
+
+        $svgRelativo = $mascota->fields['svg'] ?? '';
+        if ($svgRelativo !== '') {
+            $path = __DIR__ . '/../../../public/assets/svg/' . ltrim($svgRelativo, '/');
+            // Validamos que sea solo dentro de uploads o assets
+            if (file_exists($path) && strpos($svgRelativo, '..') === false && is_file($path)) {
+                unlink($path);
+            }
+
+            // Actualizar la base de datos a null
+            $db = $this->model->getQueryBuilder();
+            $db->update('mascota', ['svg' => null], ['id' => $id]);
+        }
+
+        header('Location: /mascota/editar?id=' . $id . '&update=success');
         exit;
     }
 

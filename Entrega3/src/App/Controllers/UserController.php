@@ -194,6 +194,7 @@ class UserController extends Controller
 
         $post  = $this->request->post();
         $foto  = $this->request->file('foto');
+        $svg   = $this->request->file('svg');
         $userId = (int) $userSession['id'];
 
         $erroresMascota = [];
@@ -299,10 +300,41 @@ class UserController extends Controller
             $erroresMascota['foto'] = 'Error al subir la imagen (código ' . $foto['error'] . ').';
         }
 
+        // SVG (opcional)
+        $svgRelativa = null;
+        $svgValidoParaMover = false;
+        if ($svg && isset($svg['error'])) {
+            if ($svg['error'] === UPLOAD_ERR_OK) {
+                $errorSvg = \Paw\App\Models\Mascota::validarArchivoSvg($svg);
+                if ($errorSvg !== null) {
+                    $erroresMascota['svg'] = $errorSvg;
+                } else {
+                    $svgValidoParaMover = true;
+                }
+            } elseif ($svg['error'] !== UPLOAD_ERR_NO_FILE) {
+                $erroresMascota['svg'] = 'Error al subir el SVG (código ' . $svg['error'] . ').';
+            }
+        }
+
         // Si hay errores, re-renderizar el perfil con los datos ingresados
         if (!empty($erroresMascota)) {
             $this->cargarPerfilRefugio($userSession, [], [], $erroresMascota, $post);
             return;
+        }
+
+        if ($svgValidoParaMover) {
+            $nombreFinalSvg = uniqid('svg_mascota_', true) . '.svg';
+            $directorioSvg  = __DIR__ . '/../../../public/assets/svg/uploads/';
+            if (!is_dir($directorioSvg)) {
+                mkdir($directorioSvg, 0777, true);
+            }
+            if (move_uploaded_file($svg['tmp_name'], $directorioSvg . $nombreFinalSvg)) {
+                $svgRelativa = 'uploads/' . $nombreFinalSvg;
+            } else {
+                $erroresMascota['svg'] = 'No se pudo guardar el SVG.';
+                $this->cargarPerfilRefugio($userSession, [], [], $erroresMascota, $post);
+                return;
+            }
         }
 
         if ($fotoValidaParaMover) {
@@ -335,6 +367,7 @@ class UserController extends Controller
             'vacunado'        => 0,
             'estado_adopcion' => 'DISPONIBLE',
             'imagen'          => $imagenRelativa ?? 'default-pet.jpg',
+            'svg'             => $svgRelativa,
         ]);
 
         header('Location: /perfil?publicado=1#sec-publicar');
