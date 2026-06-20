@@ -153,12 +153,31 @@
                     <span class="msg-error">{{ errores.foto }}</span>
                 {% endif %}
             </li>
+
+            <li class="dato-item">
+                <span class="dato-label">Ilustración SVG</span>
+                <span class="svg-input-row">
+                    <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Solo se permiten archivos .svg.">
+                    {% if mascotaFields.svg|default('') is not empty %}
+                        <button type="submit" form="form-eliminar-svg" class="btn-eliminar-svg-inline" title="Eliminar ilustración actual">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    {% endif %}
+                </span>
+                {% if errores.svg is defined %}
+                    <span class="msg-error">{{ errores.svg }}</span>
+                {% endif %}
+            </li>
         </ul>
 
         <footer class="perfil-datos-acciones">
             <button type="submit" class="btn-guardar-perfil">Guardar</button>
             <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
         </footer>
+    </form>
+
+    <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" style="display: none;">
+        <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
     </form>
     
     <section class="galeria-multimedia">

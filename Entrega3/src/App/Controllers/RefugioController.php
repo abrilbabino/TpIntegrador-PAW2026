@@ -16,7 +16,7 @@ class RefugioController extends Controller
         $redes   = $this->redes;
         $metaDescription = "Conocé los refugios y protectoras de animales asociados a PawMap. Apoyá su labor y encontrá a tu nueva mascota en tu zona.";
 
-
+        
 
         echo $this->twig->render('refugios.html.twig', get_defined_vars());
     }

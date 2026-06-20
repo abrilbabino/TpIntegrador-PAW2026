@@ -44,9 +44,14 @@ class Controller
         // Configuración de Twig 
         $loader = new FilesystemLoader($this->viewsDir);
         
+        $cacheDir = $this->viewsDir . '/cache';
+        if (!is_dir($cacheDir)) {
+            mkdir($cacheDir, 0777, true);
+        }
+
         $this->twig = new Environment($loader, [
-            'cache' => false,
-            'auto_reload' => true,
+            'cache' => $cacheDir,
+            'auto_reload' => true, // Para desarrollo, recarga automática de plantillas
         ]);
 
         $this->twig->addGlobal('session', $_SESSION ?? []);
@@ -133,4 +138,5 @@ class Controller
     {
         $this->model = $model;
     }
+
 }

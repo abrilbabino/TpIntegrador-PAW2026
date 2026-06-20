@@ -69,6 +69,7 @@ $router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
 $router->get( '/perfil/eliminar', 'MascotaController@eliminar');
 $router->post('/mascota/subir-archivo', 'MascotaController@subirArchivoMascota');
 $router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
+$router->post('/mascota/eliminar-svg', 'MascotaController@eliminarSvg');
 
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');

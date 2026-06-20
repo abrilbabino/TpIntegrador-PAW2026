@@ -392,6 +392,12 @@
                 {{ erroresMascota.foto is defined and erroresMascota.foto is not empty ? 'data-server-error="' ~ erroresMascota.foto ~ '"' : '' }}>
             </label>
 
+            <label for="svg">Ilustración SVG <small>(opcional — archivo .svg)</small>
+            <input type="file" id="svg" name="svg" accept="image/svg+xml,.svg"
+                data-file-types-message="Solo se permiten archivos .svg."
+                {{ erroresMascota.svg is defined and erroresMascota.svg is not empty ? 'data-server-error="' ~ erroresMascota.svg ~ '"' : '' }}>
+            </label>
+
             <button type="submit" id="btn-publicar-mascota">Publicar</button>
         </form>
         </details>

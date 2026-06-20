@@ -74,3 +74,53 @@
 .eliminar-foto-form {
     margin: 0;
 }
+
+.svg-preview-edicion {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+}
+
+.svg-preview-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.svg-preview-edicion figcaption {
+    font-size: 0.75rem;
+    color: var(--color-texto-secundario, var(--color-gris-oscuro, #7f8c8d));
+}
+
+.btn-eliminar-svg-inline {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--color-rojo, var(--color-magenta));
+    transition: color 0.2s;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.btn-eliminar-svg-inline:hover {
+    color: var(--color-magenta);
+}
+
+.btn-eliminar-svg-inline .material-symbols-outlined {
+    font-size: 1.4rem;
+}
+
+.svg-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

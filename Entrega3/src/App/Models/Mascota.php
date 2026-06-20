@@ -25,6 +25,7 @@ class Mascota extends Model
         'imagen' => 'default-pet.jpg',
         'sexo' => 'Desconocido',
         'fecha_adopcion' => null,
+        'svg' => null,
     ];
 
     public function setId($id){
@@ -69,5 +70,24 @@ class Mascota extends Model
         else{
             throw new MascotaNotFoundException("No se encontró una mascota con el ID proporcionado");
         }
+    }
+
+    public static function validarArchivoSvg(array $archivo): ?string
+    {
+        if (!isset($archivo['error']) || $archivo['error'] !== UPLOAD_ERR_OK) {
+            return null; // Sin archivo subido, no es error
+        }
+
+        $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
+        $mime      = file_exists($archivo['tmp_name']) ? mime_content_type($archivo['tmp_name']) : '';
+        $contenido = file_exists($archivo['tmp_name'])
+            ? file_get_contents($archivo['tmp_name'], false, null, 0, 512)
+            : '';
+
+        $esValido = $extension === 'svg'
+            && in_array($mime, ['image/svg+xml', 'text/xml', 'text/plain', 'application/xml'], true)
+            && stripos($contenido, '<svg') !== false;
+
+        return $esValido ? null : 'El archivo no es un SVG válido.';
     }
 }
