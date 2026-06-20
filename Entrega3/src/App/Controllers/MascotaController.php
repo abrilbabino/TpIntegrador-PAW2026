@@ -3,6 +3,7 @@
 namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
+use Paw\App\Models\Mascota;
 use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RefugioCollection; 
 use Paw\App\Models\MediaMascotaCollection;
@@ -297,10 +298,11 @@ class MascotaController extends Controller
 
         // SVG (opcional): si no se sube uno nuevo, se conserva el actual
         $svgRelativa = $mascota->fields['svg'] ?? null;
+        $eliminarSvg = !empty($post['eliminar_svg']);
         $svgValidoParaMover = false;
         if ($svg && isset($svg['error'])) {
             if ($svg['error'] === UPLOAD_ERR_OK) {
-                $errorSvg = \Paw\App\Models\Mascota::validarArchivoSvg($svg);
+                $errorSvg = Mascota::validarArchivoSvg($svg);
                 if ($errorSvg !== null) {
                     $errores['svg'] = $errorSvg;
                 } else {
@@ -348,6 +350,8 @@ class MascotaController extends Controller
         // Determinar valor final del SVG
         if ($svgValidoParaMover) {
             // Ya se asignó $svgRelativa dentro del bloque de mover
+        } elseif ($eliminarSvg) {
+            $svgRelativa = null;
         }
         // else: conserva $svgRelativa con el valor actual
 
