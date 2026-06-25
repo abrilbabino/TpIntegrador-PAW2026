@@ -62,7 +62,9 @@
                     if (!isNaN(lat) && !isNaN(lng)) {
                         var marker = L.marker([lat, lng], {icon: refugioIcon}).addTo(map);
                         
-                        var imgUrl = r.imagen ? '/assets/img/' + r.imagen : '/assets/img/default-refugio.jpg';
+                        var imgUrl = r.imagen
+                            ? (r.imagen.startsWith('http') ? r.imagen : '/assets/img/' + r.imagen)
+                            : '/assets/img/default-refugio.jpg';
                         var telHtml = r.telefono ? '<p class="popup-refugio-tel"><span class="material-symbols-outlined">call</span> ' + r.telefono + '</p>' : '';
                         
                         var popupContent = `
