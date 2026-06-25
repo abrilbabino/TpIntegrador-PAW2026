@@ -188,8 +188,6 @@
         flex-direction: column;
         gap: 1rem;
         width: 100%;
-        position: sticky;
-        top: 2rem;
         /* Si el formulario es largo, la foto se queda fija al hacer scroll */
     }
 
