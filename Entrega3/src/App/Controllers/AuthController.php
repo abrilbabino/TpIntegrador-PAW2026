@@ -44,6 +44,12 @@ class AuthController extends Controller
             exit;
         }
 
+        $existenteEmail = $this->model->findByEmail($email);
+        if ($existenteEmail) {
+            header('Location: /iniciar-sesion?error=email_existente&registro=true');
+            exit;
+        }
+
         // Hash seguro
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 

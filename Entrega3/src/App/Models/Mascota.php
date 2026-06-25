@@ -4,7 +4,7 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Exceptions\InvalidValueFormatException;
-use Paw\Core\Exceptions\MascotaNotFoundException;
+use Paw\Core\Exceptions\ModelNotFoundException;
 
 class Mascota extends Model
 {
@@ -66,9 +66,8 @@ class Mascota extends Model
         $record = current($this->queryBuilder->select($this->table, $params));
         if ($record) {
             $this->set($record);
-        }
-        else{
-            throw new MascotaNotFoundException("No se encontró una mascota con el ID proporcionado");
+        } else {
+            throw new ModelNotFoundException("No se encontró una mascota con el ID proporcionado");
         }
     }
 

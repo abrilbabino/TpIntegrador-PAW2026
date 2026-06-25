@@ -69,6 +69,7 @@
                 id="mail"
                 name="email"
                 placeholder="Ingresá tu correo electrónico"
+                {{ error == 'email_existente' ? 'data-server-error="El email ingresado ya está registrado."' : '' }}
                 required
             />
 

@@ -407,37 +407,52 @@ class User extends Model
             $fieldsUsuario['foto_perfil'] = null;
 
         } else {
-            if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
-                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
-
-                // Validar MIME
-                $esImagenValida = false;
-                if (file_exists($archivo['tmp_name'])) {
-                    $mime = mime_content_type($archivo['tmp_name']);
-                    $info = getimagesize($archivo['tmp_name']);
-                    if ($info !== false && strpos($mime, 'image/') === 0) {
-                        $esImagenValida = true;
-                    }
-                }
-
-                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible.';
+            if ($archivo) {
+                if ($archivo['error'] === UPLOAD_ERR_INI_SIZE || $archivo['error'] === UPLOAD_ERR_FORM_SIZE) {
+                    $errores['foto_perfil_o_logo'] = 'La imagen supera el límite máximo permitido por el servidor.';
                     return $errores;
                 }
 
-                try {
-                    // Borrar foto anterior si existe
-                    $currentUser = $this->findById($userId);
-                    if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                        GCSHelper::borrar($currentUser['foto_perfil']);
+                if ($archivo['error'] === UPLOAD_ERR_OK) {
+                    $maxBytes = 2 * 1024 * 1024; // 2 MB
+                    if ($archivo['size'] > $maxBytes) {
+                        $errores['foto_perfil_o_logo'] = 'La imagen no puede superar los 2 MB.';
+                        return $errores;
                     }
 
-                    // Subir nueva foto
-                    $url = GCSHelper::subir($archivo, 'perfil');
-                    $fieldsUsuario['foto_perfil'] = $url;
+                    $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
 
-                } catch (\Exception $e) {
-                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. ' . $e->getMessage();
+                    // Validar MIME
+                    $esImagenValida = false;
+                    if (file_exists($archivo['tmp_name'])) {
+                        $mime = mime_content_type($archivo['tmp_name']);
+                        $info = getimagesize($archivo['tmp_name']);
+                        if ($info !== false && strpos($mime, 'image/') === 0) {
+                            $esImagenValida = true;
+                        }
+                    }
+
+                    if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                        $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible.';
+                        return $errores;
+                    }
+
+                    try {
+                        // Borrar foto anterior si existe
+                        $currentUser = $this->findById($userId);
+                        if ($currentUser && !empty($currentUser['foto_perfil'])) {
+                            GCSHelper::borrar($currentUser['foto_perfil']);
+                        }
+
+                        // Subir nueva foto
+                        $url = GCSHelper::subir($archivo, 'perfil');
+                        $fieldsUsuario['foto_perfil'] = $url;
+
+                    } catch (\Exception $e) {
+                        $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. ' . $e->getMessage();
+                    }
+                } elseif ($archivo['error'] !== UPLOAD_ERR_NO_FILE) {
+                    $errores['foto_perfil_o_logo'] = 'Ocurrió un error al subir la imagen (Código: ' . $archivo['error'] . ').';
                 }
             }
         }

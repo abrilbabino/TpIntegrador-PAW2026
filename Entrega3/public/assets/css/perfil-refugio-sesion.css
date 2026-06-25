@@ -86,6 +86,7 @@
     border: 1px solid var(--color-gris-claro);
     box-shadow: 0 2px 8px var(--color-gris-claro);
     padding: 1.2rem 1.5rem;
+    width: 100%;
 }
 
 .perfil-refugio-datos-header {
@@ -703,8 +704,9 @@ fieldset.perfil-refugio-datos-columnas {
 
     .perfil-refugio-container {
         max-width: 1300px;
+        width: 100%;
         display: grid;
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 280px minmax(600px, 1fr);
         gap: 1.5rem;
         align-items: start;
     }

@@ -43,7 +43,7 @@ class Adoptante extends Model
         if ($record) {
             $this->set($record);
         } else {
-            throw new \Exception("No se encontró un adoptante con el ID proporcionado");
+            throw new \Paw\Core\Exceptions\ModelNotFoundException("No se encontró un adoptante con el ID proporcionado");
         }
     }
 }

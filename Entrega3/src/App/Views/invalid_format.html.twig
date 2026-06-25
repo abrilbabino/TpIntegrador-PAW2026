@@ -1,7 +1,16 @@
 {% extends 'layout/base.html.twig' %}
 
-{% block title %}Formato invalido{% endblock %}
+{% block title %}Formato Inválido{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/error.css" />
+{% endblock %}
 
 {% block main %}
-    <h1 class="error">Formato Invalido, Error: {{ e }}</h1>
+    <section class="error-bg">
+        <article class="error-text">
+            <h1 class="error">Formato Inválido (400)</h1>
+            <p>{{ mensaje }}</p>
+        </article>
+    </section>
 {% endblock %}

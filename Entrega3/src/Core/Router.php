@@ -6,6 +6,7 @@ use Exception;
 use Paw\Core\Exceptions\InvalidValueFormatException;
 use Paw\Core\Request;
 use Paw\Core\Exceptions\RouteNotFoundException;
+use Paw\Core\Exceptions\ModelNotFoundException;
 use Paw\Core\Traits\Loggable;
 
 class Router
@@ -57,7 +58,7 @@ class Router
     public function getController($path, $http_method)
     {
         if (!$this->exists($path, $http_method)) {
-            throw new RouteNotFoundException("No existe ruta para: $path [$http_method]");
+            throw new RouteNotFoundException("No existe ruta para: $path");
         }
         return explode('@', $this->routes[$http_method][$path]);
     }
@@ -77,10 +78,10 @@ class Router
             [$controller, $method] = $this->getController($path, $lookup_method);
             $this->logger->info("Status Code: 200", ["path" => $path, "method" => $http_method]);
             $this->call($controller, $method);
-        } catch (RouteNotFoundException $e) {
+        } catch (RouteNotFoundException | ModelNotFoundException $e) {
             [$controller, $method] = $this->getController($this->notFound, 'GET');
             $this->logger->debug("Status Code: 404", ["ERROR" => $e]);
-            $this->call($controller, $method);
+            $this->call($controller, $method, [$e]);
         } catch (InvalidValueFormatException $e) {
             [$controller, $method] = $this->getController($this->invalidFormat, 'GET');
             $this->logger->debug("Status Code: 400", ["ERROR" => $e]);

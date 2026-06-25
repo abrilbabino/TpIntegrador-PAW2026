@@ -3,6 +3,7 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Exceptions\ModelNotFoundException;
 
 class SolicitudAdopcion extends Model
 {
@@ -112,7 +113,7 @@ class SolicitudAdopcion extends Model
         $solicitud = $this->queryBuilder->selectOne($this->table, ['id' => $solicitudId]);
 
         if (!$solicitud) {
-            throw new \Exception('No se encontró la solicitud especificada.', 404);
+            throw new ModelNotFoundException('No se encontró la solicitud especificada.');
         }
 
         if ((int)$solicitud['refugio_id'] !== $refugioId) {
