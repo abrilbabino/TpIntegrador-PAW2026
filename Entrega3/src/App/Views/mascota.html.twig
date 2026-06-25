@@ -108,14 +108,14 @@
                 <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
             </section>
 
-            <section class="refugio-info">
+            <a href="/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id) }}" class="refugio-info">
                 <img src="/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}"
                      alt="Logo refugio" class="img-refugio">
                 <figcaption class="refugio-texto">
                     <span class="refugio-label">A cargo de:</span>
                     <strong>{{ refugio.fields.nombre_institucion|default('Desconocido') }}</strong>
                 </figcaption>
-            </section>
+            </a>
 
             <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
         </aside>

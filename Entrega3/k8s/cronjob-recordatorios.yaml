@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pawmap-cron-recordatorios
+  labels:
+    app: pawmap
+spec:
+  schedule: "0 9 * * *" # Se ejecuta todos los días a las 09:00 AM. Puedes ajustar esta expresión cron.
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: pawmap-cron
+        spec:
+          containers:
+          - name: pawmap-cron
+            image: us-central1-docker.pkg.dev/project-f3583ede-db03-4872-95c/pawmap-repo/pawmap-app:latest
+            imagePullPolicy: Always
+            command:
+            - php
+            - bin/cron_recordatorios.php
+            envFrom:
+              - configMapRef:
+                  name: pawmap-config
+              - secretRef:
+                  name: pawmap-secrets
+          restartPolicy: OnFailure

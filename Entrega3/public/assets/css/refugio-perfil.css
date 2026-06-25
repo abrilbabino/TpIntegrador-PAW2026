@@ -378,6 +378,7 @@
     .perfil-sidebar {
         position: static;
         align-items: center;
+        justify-self: center;
     }
 
     .perfil-content{

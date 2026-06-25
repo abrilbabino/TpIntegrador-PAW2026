@@ -260,16 +260,18 @@ class PAWVisualizacion {
         return articulo;
     }
 
-    // Ejecuta la validación de límites matemáticos antes de mutar el estado.
     irAPagina(pagina) {
-    const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);
+        const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);
         if (pagina >= 1 && pagina <= totalPaginas) {
             this.currentPage = pagina;
             this.render();
             
-            this.contenedorItems.scrollIntoView({
-                behavior: "smooth",
-                block: "start" 
+            // Calculamos la posicion considerando un margen superior para que el navbar/header no tape la grilla
+            const rect = this.contenedorItems.getBoundingClientRect();
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            window.scrollTo({
+                top: rect.top + scrollTop - 220, // Aumentado a 220px para asegurar espacio bajo el navbar
+                behavior: "smooth"
             });
         }
     }
