@@ -22,6 +22,17 @@ class PAWFiltros {
 
     async init() {
         try {
+            this.container.innerHTML = `
+                <section class="paw-spinner-container" aria-label="Cargando...">
+                    <span class="paw-spinner" aria-hidden="true"></span>
+                </section>
+            `;
+
+            const spinnerBox = this.container.querySelector('.paw-spinner-container');
+            if (spinnerBox) {
+                spinnerBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
             // Extraer URLs únicas de las fuentes
             const uniqueSourceURLs = [...new Set(this.filtrosConfig.map(f => f.sourceURL).filter(Boolean))];
             

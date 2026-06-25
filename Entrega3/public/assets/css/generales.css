@@ -32,10 +32,15 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   background-color: var(--color-fondo);
   color: var(--color-texto);
   font-family: var(--fuente-cuerpo);
   font-size: 1rem;
+}
+
+main {
+  flex: 1;
 }
 
 *,
@@ -64,3 +69,28 @@ a:hover {
 }
 
 
+
+.paw-spinner-container {
+  grid-area: contenido;
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.paw-spinner {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  border: 6px solid var(--color-gris-claro);
+  border-left-color: var(--color-naranja);
+  border-radius: 50%;
+  animation: paw-spin 0.8s linear infinite;
+}
+
+@keyframes paw-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
