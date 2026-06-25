@@ -10,10 +10,10 @@ class PAWRefugioPerfil {
         }
 
         this.initScrollSpy();
-        this.initEdicionInteractiva();
         this.initSolicitudesRefugio();
         this.initVerMasDescripcion();
         this.initAutocompleteUbicacion();
+        this.initEliminarMascota();
     }
 
     initAutocompleteUbicacion() {
@@ -192,41 +192,6 @@ class PAWRefugioPerfil {
         });
     }
 
-    initEdicionInteractiva() {
-        this.form = document.getElementById('perfil-refugio-form');
-        this.editBtn = document.getElementById('btn-edit-refugio');
-        this.cancelBtn = document.getElementById('btn-cancel-refugio');
-
-        if (this.editBtn && this.contenedor) {
-            this.editBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.contenedor.classList.add('is-editing');
-            });
-        }
-
-        if (this.cancelBtn && this.contenedor && this.form) {
-            this.cancelBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.contenedor.classList.remove('is-editing');
-                this.form.reset();
-
-                const inputs = this.form.querySelectorAll('.dato-valor-input');
-                inputs.forEach(input => {
-                    if (input.hasAttribute('data-original')) {
-                        input.value = input.getAttribute('data-original');
-                    }
-                });
-
-                const mensajesError = this.form.querySelectorAll('.msg-error');
-                mensajesError.forEach(msg => msg.remove());
-                const inputsConError = this.form.querySelectorAll('.error, .input-invalido');
-                inputsConError.forEach(input => {
-                    input.classList.remove('error');
-                    input.classList.remove('input-invalido');
-                });
-            });
-        }
-    }
 
     initScrollSpy() {
         const enlaces = document.querySelectorAll('.perfil-refugio-nav a');
@@ -279,5 +244,34 @@ class PAWRefugioPerfil {
         } else {
             if (enlaces[0]) enlaces[0].classList.add('active');
         }
+    }
+
+    initEliminarMascota() {
+        const modal = document.getElementById('modal-confirmar-eliminar');
+        const btnCancelar = document.getElementById('btn-cancelar-eliminar');
+        const btnConfirmar = document.getElementById('btn-confirmar-eliminar');
+        let formToSubmit = null;
+
+        if (!modal || !btnCancelar || !btnConfirmar) return;
+
+        const formsEliminar = document.querySelectorAll('.form-eliminar-mascota');
+        formsEliminar.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formToSubmit = form;
+                modal.showModal();
+            });
+        });
+
+        btnCancelar.addEventListener('click', () => {
+            modal.close();
+            formToSubmit = null;
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (formToSubmit) {
+                formToSubmit.submit();
+            }
+        });
     }
 }

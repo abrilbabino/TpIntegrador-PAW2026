@@ -217,10 +217,12 @@ fieldset.perfil-refugio-datos-columnas {
 /* ===== SECCIONES ===== */
 
 #sec-solicitudes-adopcion,
+#sec-monitoreo,
 #sec-ubicacion,
 #sec-publicar,
+#sec-mascotas-adoptadas,
 .sec-editar-mascota {
-    scroll-margin-top: 180px;
+    scroll-margin-top: 220px;
 }
 
 .perfil-refugio-seccion {
@@ -669,6 +671,19 @@ fieldset.perfil-refugio-datos-columnas {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.form-eliminar-mascota {
+    display: flex;
+    margin: 0;
+}
+
+.btn-eliminar-mascota {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
 }
 
 .perfil-refugio-mapa {
@@ -1162,4 +1177,85 @@ fieldset.perfil-refugio-datos-columnas {
     font-size: 0.8rem;
     color: var(--color-naranja);
     font-weight: 600;
+}
+
+/* ===== Modal Confirmar Eliminar ===== */
+.modal-nativo {
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px var(--color-gris);
+  width: 92%;
+  max-width: 520px;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.modal-nativo::backdrop {
+  background-color: var(--color-azul-oscuro);
+  opacity: 0.55;
+  backdrop-filter: blur(4px);
+}
+
+.modal-nativo header {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--color-gris-claro);
+}
+
+.modal-nativo header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-azul);
+}
+
+.modal-body {
+  padding: 1.5rem 1.75rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.acciones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.75rem;
+  border-top: 1px solid var(--color-gris-claro);
+}
+
+.btn-cancelar {
+  background-color: var(--color-gris-claro);
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: var(--fuente-cuerpo);
+}
+
+.btn-cancelar:hover {
+  background-color: var(--color-gris);
+  color: var(--color-fondo);
+}
+
+.btn-eliminar-confirmado {
+  background-color: var(--color-rojo);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  font-family: var(--fuente-cuerpo);
+}
+
+.btn-eliminar-confirmado:hover {
+  transform: scale(0.98);
+  background-color: darkred;
 }

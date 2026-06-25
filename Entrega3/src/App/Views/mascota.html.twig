@@ -10,8 +10,8 @@
     <article class="seccion-detalle-mascota">
         <section class="galeria-mascota">
             <figure class="imagen-principal-desktop">
-                <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
-                     alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
+                <img src="{{ imagenUrl }}" alt="{{ mascota.fields.nombre|default('Mascota') }}">
             </figure>
 
             {% if mediaExtras is not empty %}
@@ -21,23 +21,25 @@
             <section class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 
                 <figure class="carrusel-slide-item slide-principal-movil">
-                    <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
+                    {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
+                    <img src="{{ imagenUrl }}"
                          alt="{{ mascota.fields.nombre|default('Mascota') }}">
                 </figure>
 
                 {% if mediaExtras is not empty %}
                     {% for media in mediaExtras %}
-                        {% if media.tipo == 'video' %}
-                            <figure class="carrusel-slide-item carrusel-slide--video">
-                                <video controls autoplay loop preload="metadata" playsinline muted poster="{{ media.poster|default('') }}">
-                                    <source src="/{{ media.url }}" type="video/mp4">
+                        <figure class="carrusel-slide-item">
+                            {% set extraUrl = media.url starts with 'http' ? media.url : '/' ~ media.url %}
+                            {% if media.tipo == 'video' %}
+                                <video controls loading="lazy">
+                                    <source src="{{ extraUrl }}" type="video/mp4">
+                                    Tu navegador no soporta videos.
                                 </video>
-                            </figure>
-                        {% else %}
-                            <figure class="carrusel-slide-item">
-                                <img src="/{{ media.url }}" loading="lazy">
-                            </figure>
-                        {% endif %}
+                            {% else %}
+                                <img src="{{ extraUrl }}" loading="lazy"
+                                     alt="Media extra de {{ mascota.fields.nombre|default('Mascota') }}">
+                            {% endif %}
+                        </figure>
                     {% endfor %}
                 {% endif %}
             </section>
@@ -53,13 +55,14 @@
                     {% set svgArchivo = mascota.fields.nombre|default('')|trim|lower ~ '.svg' %}
                 {% endif %}
                 {% if svgArchivo is not empty %}
-                    <figure class="svg-mascota">
-                        <img src="/assets/svg/{{ svgArchivo }}"
-                             alt="Animación de {{ mascota.fields.nombre|default('') }}"
-                             class="svg-mascota-img"
-                             onerror="this.parentElement.style.display='none'">
-                    </figure>
-                {% endif %}
+                <figure class="svg-mascota">
+                    {% set svgUrl = svgArchivo starts with 'http' ? svgArchivo : '/assets/svg/' ~ svgArchivo %}
+                    <img src="{{ svgUrl }}"
+                         alt="Animación de {{ mascota.fields.nombre|default('') }}"
+                         class="svg-mascota-img"
+                         onerror="this.parentElement.style.display='none'">
+                </figure>
+            {% endif %}
 
                 <a href="mascota/libreta?id={{ mascota.fields.id|default('') }}" class="libreta">
                     <span class="material-symbols-outlined">clinical_notes</span>
@@ -108,14 +111,15 @@
                 <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
             </section>
 
-            <section class="refugio-info">
-                <img src="/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}"
+            <a href="/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id) }}" class="refugio-info">
+                {% set refugioImgUrl = refugio.fields.imagen|default('default-refugio.jpg') starts with 'http' ? refugio.fields.imagen : '/assets/img/' ~ refugio.fields.imagen|default('default-refugio.jpg') %}
+                <img src="{{ refugioImgUrl }}"
                      alt="Logo refugio" class="img-refugio">
                 <figcaption class="refugio-texto">
                     <span class="refugio-label">A cargo de:</span>
                     <strong>{{ refugio.fields.nombre_institucion|default('Desconocido') }}</strong>
                 </figcaption>
-            </section>
+            </a>
 
             <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
         </aside>

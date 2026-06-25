@@ -8,7 +8,7 @@
     <section class="perfil-header">
         <figure class="perfil-avatar-wrapper">
             {% set fotoPerfil = user.foto_perfil|default('') %}
-            {% set avatarUrl = fotoPerfil is not empty ? '/assets/img/' ~ fotoPerfil : '' %}
+            {% set avatarUrl = fotoPerfil is not empty ? (fotoPerfil starts with 'http' ? fotoPerfil : '/assets/img/' ~ fotoPerfil) : '' %}
             
             <span id="preview-placeholder" class="avatar-placeholder {{ avatarUrl is not empty ? 'hidden' : '' }}">
                 <span class="material-symbols-outlined">person</span>

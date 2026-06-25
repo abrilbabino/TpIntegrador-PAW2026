@@ -13,7 +13,8 @@
         <section class="nav-acciones-usuario">
             <a href="/perfil" class="icono-usuario">
                 {% if session.user.foto_perfil is defined and session.user.foto_perfil %}
-                    <img src="/assets/img/{{ session.user.foto_perfil }}" alt="Perfil" class="nav-foto-perfil">
+                    {% set navImgUrl = session.user.foto_perfil starts with 'http' ? session.user.foto_perfil : '/assets/img/' ~ session.user.foto_perfil %}
+                    <img src="{{ navImgUrl }}" alt="Perfil" class="nav-foto-perfil">
                 {% else %}
                     <span class="material-symbols-outlined">person</span>
                 {% endif %}

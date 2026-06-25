@@ -122,7 +122,8 @@ class PAWChatWidget {
                     
                     let avatarHtml = '';
                     if (chat.foto_interlocutor) {
-                        avatarHtml = `<div class="chat-list-item-avatar"><img src="/assets/img/${chat.foto_interlocutor}" alt="${chat.interlocutor}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"></div>`;
+                        const avatarUrl = chat.foto_interlocutor.startsWith('http') ? chat.foto_interlocutor : `/assets/img/${chat.foto_interlocutor}`;
+                        avatarHtml = `<div class="chat-list-item-avatar"><img src="${avatarUrl}" alt="${chat.interlocutor}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"></div>`;
                     } else {
                         avatarHtml = `<div class="chat-list-item-avatar" style="background-color: var(--color-verde);"><span class="material-symbols-outlined">pets</span></div>`;
                     }

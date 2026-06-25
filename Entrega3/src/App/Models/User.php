@@ -2,6 +2,7 @@
 
 namespace Paw\App\Models;
 use Paw\Core\Model;
+use Paw\App\Helpers\GCSHelper;
 class User extends Model
 {
     protected $table = 'usuario';
@@ -229,61 +230,9 @@ class User extends Model
             $fieldsUsuario['contrasena'] = password_hash($newPassword, PASSWORD_DEFAULT);
         }
 
-        $eliminarFoto = ($postData['eliminar_foto'] ?? '0') === '1';
-        $pathFisicoBase = __DIR__ . '/../../../public/assets/img/';
-        
-        if ($eliminarFoto) {
-            $currentUser = $this->findById($userId);
-            if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                if (file_exists($pathFisico) && is_file($pathFisico)) {
-                    unlink($pathFisico);
-                }
-            }
-            $fieldsUsuario['foto_perfil'] = null;
-        } else {
-            if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
-                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
-                
-                // Validar MIME y que sea una imagen real
-                $esImagenValida = false;
-                if (file_exists($archivo['tmp_name'])) {
-                    $mime = mime_content_type($archivo['tmp_name']);
-                    $info = getimagesize($archivo['tmp_name']);
-                    if ($info !== false && strpos($mime, 'image/') === 0) {
-                        $esImagenValida = true;
-                    }
-                }
-
-                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible (solo JPG, PNG, WEBP, GIF).';
-                    return $errores;
-                }
-                
-                $nombreFinal = uniqid('perfil_', true) . '.' . $extension;
-                $directorioDestino = $pathFisicoBase . 'uploads/';
-                
-                if (!is_dir($directorioDestino)) {
-                    mkdir($directorioDestino, 0777, true);
-                }
-
-                $rutaAbsoluta = $directorioDestino . $nombreFinal;
-                $rutaRelativa = 'uploads/' . $nombreFinal;
-
-                if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
-                    $currentUser = $this->findById($userId);
-                    if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                        $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                        if (file_exists($pathFisico) && is_file($pathFisico)) {
-                            unlink($pathFisico);
-                        }
-                    }
-                    $fieldsUsuario['foto_perfil'] = $rutaRelativa;
-                } else {
-                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil.';
-                    return $errores;
-                }
-            }
+        $erroresFoto = $this->procesarFotoPerfil($userId, $postData, $archivo, $fieldsUsuario);
+        if (!empty($erroresFoto)) {
+            return array_merge($errores, $erroresFoto);
         }
 
         $this->updateUsuario($userId, $fieldsUsuario);
@@ -310,7 +259,7 @@ class User extends Model
         return $errores;
     }
 
-    public function actualizarPerfilRefugio(int $userId, array $postData, array $sessionUser): array
+    public function actualizarPerfilRefugio(int $userId, array $postData, ?array $archivo, array $sessionUser): array
     {
         $errores = [];
 
@@ -365,6 +314,33 @@ class User extends Model
         $fieldsUsuario = [
             'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         ];
+
+        $erroresFoto = $this->procesarFotoPerfil($userId, $postData, $archivo, $fieldsUsuario);
+        if (!empty($erroresFoto)) {
+            return array_merge($errores, $erroresFoto);
+        }
+
+        $refugioExistente = $this->getRefugio($userId);
+        
+        // Logica de sincronización bidireccional (preservar foto de refugio si existe y usuario no tiene)
+        $imagenRefugio = $refugioExistente ? ($refugioExistente['imagen'] ?? 'default-refugio.jpg') : 'default-refugio.jpg';
+        $fotoUsuario = $sessionUser['foto_perfil'] ?? null;
+
+        if (array_key_exists('foto_perfil', $fieldsUsuario)) {
+            // Se subió o eliminó explícitamente la foto
+            $fieldsRefugioSync = $fieldsUsuario['foto_perfil'] ?? 'default-refugio.jpg';
+        } else {
+            // No se modificó la foto en esta petición. Conservamos lo que haya.
+            if ($imagenRefugio !== 'default-refugio.jpg' && empty($fotoUsuario)) {
+                // Preservar la del refugio y asignarla al usuario
+                $fieldsUsuario['foto_perfil'] = $imagenRefugio;
+                $fieldsRefugioSync = $imagenRefugio;
+            } else {
+                // Por defecto, mandamos la del usuario al refugio para mantenerlos sincronizados
+                $fieldsRefugioSync = $fotoUsuario ?? 'default-refugio.jpg';
+            }
+        }
+
         $this->updateUsuario($userId, $fieldsUsuario);
 
         // Actualizar refugio
@@ -374,10 +350,10 @@ class User extends Model
             'telefono' => htmlspecialchars(trim($postData['telefono'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'alias' => htmlspecialchars(trim($postData['alias'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'cvu' => htmlspecialchars(trim($postData['cvu'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'imagen' => $fieldsRefugioSync,
         ];
 
         // Verificar si existe el refugio en la DB
-        $refugioExistente = $this->getRefugio($userId);
         if ($refugioExistente) {
             $this->queryBuilder->update('refugio', $fieldsRefugio, ['usuario_id' => $userId]);
         } else {
@@ -413,6 +389,57 @@ class User extends Model
             $this->queryBuilder->update('ubicacion', $fields, ['refugio_id' => $userId]);
         } else {
             $this->queryBuilder->insert('ubicacion', $fields);
+        }
+
+        return $errores;
+    }
+
+    private function procesarFotoPerfil(int $userId, array $postData, ?array $archivo, array &$fieldsUsuario): array
+    {
+        $errores = [];
+        $eliminarFoto = ($postData['eliminar_foto'] ?? '0') === '1';
+
+        if ($eliminarFoto) {
+            $currentUser = $this->findById($userId);
+            if ($currentUser && !empty($currentUser['foto_perfil'])) {
+                GCSHelper::borrar($currentUser['foto_perfil']);
+            }
+            $fieldsUsuario['foto_perfil'] = null;
+
+        } else {
+            if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
+                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
+
+                // Validar MIME
+                $esImagenValida = false;
+                if (file_exists($archivo['tmp_name'])) {
+                    $mime = mime_content_type($archivo['tmp_name']);
+                    $info = getimagesize($archivo['tmp_name']);
+                    if ($info !== false && strpos($mime, 'image/') === 0) {
+                        $esImagenValida = true;
+                    }
+                }
+
+                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible.';
+                    return $errores;
+                }
+
+                try {
+                    // Borrar foto anterior si existe
+                    $currentUser = $this->findById($userId);
+                    if ($currentUser && !empty($currentUser['foto_perfil'])) {
+                        GCSHelper::borrar($currentUser['foto_perfil']);
+                    }
+
+                    // Subir nueva foto
+                    $url = GCSHelper::subir($archivo, 'perfil');
+                    $fieldsUsuario['foto_perfil'] = $url;
+
+                } catch (\Exception $e) {
+                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. ' . $e->getMessage();
+                }
+            }
         }
 
         return $errores;

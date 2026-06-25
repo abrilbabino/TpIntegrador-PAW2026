@@ -32,7 +32,8 @@
     "phpmailer/phpmailer": "^7.0",
     "ext-pdo_pgsql": "*",
     "mercadopago/dx-php": ">=3.10",
-    "twig/twig": "^3.27"
+    "twig/twig": "^3.27",
+    "google/cloud-storage": "^2.3"
   },
   "autoload": {
     "psr-4": {

@@ -48,7 +48,8 @@
                 {% for mascota in mascotas %}
                 <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="tarjeta-recomendada">
                     <figure>
-                        <img src="/assets/img/{{ mascota.fields.imagen|default('default.jpg') }}"
+                        {% set imagenUrl = mascota.fields.imagen|default('default.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default.jpg') %}
+                        <img src="{{ imagenUrl }}"
                              alt="{{ mascota.fields.nombre|default('Mascota') }}">
                     </figure>
                     <article class="tarjeta-recomendada-body">

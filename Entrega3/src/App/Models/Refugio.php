@@ -114,12 +114,12 @@ class Refugio extends Model
             LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
             LEFT JOIN usuario u ON s.adoptante_id = u.id
             LEFT JOIN adoptante a ON a.usuario_id = u.id
-            WHERE m.refugio_id = :rid AND md.tipo IN ('foto_seguimiento', 'certificado_med')
+            WHERE m.refugio_id = :rid AND md.tipo IN ('foto_seguimiento', 'certificado_med', 'certificado_vac')
 
             UNION ALL
 
             SELECT 
-                rs.id, 'certificado_med' as tipo, rs.archivo_adjunto as url,
+                rs.id, CASE WHEN LOWER(rs.tipo) = 'vacuna' THEN 'certificado_vac' ELSE 'certificado_med' END as tipo, rs.archivo_adjunto as url,
                 m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
             FROM registro_sanitario rs
             JOIN mascota m ON rs.mascota_id = m.id 

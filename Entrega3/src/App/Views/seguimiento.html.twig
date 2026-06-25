@@ -8,7 +8,8 @@
     <section class="seguimiento-main" {% if errorUpload is not empty %}data-error-upload="true"{% endif %}>
         <article class="pet-card">
             <figure class="imagen-mascota">
-                <img src="/assets/img/{{ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') }}">
+                {% set imgMascotaUrl = mascotaSeleccionada.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascotaSeleccionada.fields.imagen : '/assets/img/' ~ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') %}
+                <img src="{{ imgMascotaUrl }}" alt="{{ mascotaSeleccionada.fields.nombre }}">
             </figure>
             <header class="pet-card-info">
                 <h1>{{ mascotaSeleccionada.fields.nombre|default('') }}</h1>
@@ -138,8 +139,8 @@
                 <label for="tipo_archivo">Tipo de archivo:</label>
                 <select name="tipo_archivo" id="tipo_archivo" required>
                     <option value="foto">Foto de la mascota</option>
-                    <option value="certificado">Certificado Médico / General</option>
-                    <option value="comprobante">Comprobante vinculado a un Registro</option>
+                    <option value="certificado">Certificado de vacunación</option>
+                    <option value="comprobante">Comprobantes medicinales</option>
                 </select>
             </fieldset>
 

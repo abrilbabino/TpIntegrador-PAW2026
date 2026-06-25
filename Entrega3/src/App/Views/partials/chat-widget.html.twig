@@ -5,7 +5,8 @@
         <header id="chat-widget-header" class="chat-widget-header">
             <hgroup class="chat-widget-title">
                 {% if session.user.foto_perfil is defined and session.user.foto_perfil %}
-                    <img src="/assets/img/{{ session.user.foto_perfil }}" alt="Perfil" class="chat-widget-avatar">
+                    {% set chatImgUrl = session.user.foto_perfil starts with 'http' ? session.user.foto_perfil : '/assets/img/' ~ session.user.foto_perfil %}
+                    <img src="{{ chatImgUrl }}" alt="Perfil" class="chat-widget-avatar">
                 {% else %}
                     <span class="material-symbols-outlined chat-widget-avatar-placeholder">account_circle</span>
                 {% endif %}

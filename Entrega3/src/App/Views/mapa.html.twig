@@ -78,7 +78,8 @@
                             <article class="tarjeta-mascota">
                                 <figure class="tarjeta-imagen">
                                     <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="link-imagen">
-                                        <img src="/assets/img/{{ mascota.fields.imagen|default('default-pet.jpg') }}"
+                                        {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
+                                        <img src="{{ imagenUrl }}"
                                              alt="{{ mascota.fields.nombre|default('Mascota') }}">
                                     </a>
                                     <form method="POST" action="/favorito" class="form-favorito-tarjeta">

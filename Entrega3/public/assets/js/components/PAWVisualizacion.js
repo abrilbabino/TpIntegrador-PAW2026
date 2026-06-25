@@ -77,8 +77,9 @@ class PAWVisualizacion {
             class: "link-imagen"
         });
 
+        const imgSrc = mascota.imagen && mascota.imagen.startsWith('http') ? mascota.imagen : `/assets/img/${mascota.imagen || 'default-pet.jpg'}`;
         const img = PAW.nuevoElemento("img", "", {
-            src: `/assets/img/${mascota.imagen || 'default-pet.jpg'}`,
+            src: imgSrc,
             alt: "",
         });
 
@@ -139,8 +140,9 @@ class PAWVisualizacion {
         const articulo = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio" });
 
         const figure = PAW.nuevoElemento("figure", "", { class: "tarjeta-refugio-imagen" });
+        const imgSrc = refugio.imagen && refugio.imagen.startsWith('http') ? refugio.imagen : `/assets/img/${refugio.imagen || 'default-refugio.jpg'}`;
         const img = PAW.nuevoElemento("img", "", {
-            src: `/assets/img/${refugio.imagen || 'default-refugio.jpg'}`,
+            src: imgSrc,
             alt: refugio.nombre_institucion || "Refugio"
         });
         figure.appendChild(img);
@@ -260,16 +262,18 @@ class PAWVisualizacion {
         return articulo;
     }
 
-    // Ejecuta la validación de límites matemáticos antes de mutar el estado.
     irAPagina(pagina) {
-    const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);
+        const totalPaginas = Math.ceil(this.items.length / this.itemsPorPagina);
         if (pagina >= 1 && pagina <= totalPaginas) {
             this.currentPage = pagina;
             this.render();
             
-            this.contenedorItems.scrollIntoView({
-                behavior: "smooth",
-                block: "start" 
+            // Calculamos la posicion considerando un margen superior para que el navbar/header no tape la grilla
+            const rect = this.contenedorItems.getBoundingClientRect();
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            window.scrollTo({
+                top: rect.top + scrollTop - 220, // Aumentado a 220px para asegurar espacio bajo el navbar
+                behavior: "smooth"
             });
         }
     }

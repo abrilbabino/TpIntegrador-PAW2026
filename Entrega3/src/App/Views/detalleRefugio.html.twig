@@ -45,8 +45,9 @@
     <article class="perfil-layout">
         <aside class="perfil-sidebar">
             <figure class="perfil-logo-wrapper">
-                <img src="/assets/img/{{ refugio.fields.imagen|default('default-refugio.jpg') }}"
-                     alt="Logo de {{ refugio.getNombre() }}"
+                {% set refugioImgUrl = refugio.fields.imagen|default('default-refugio.jpg') starts with 'http' ? refugio.fields.imagen : '/assets/img/' ~ refugio.fields.imagen|default('default-refugio.jpg') %}
+                <img src="{{ refugioImgUrl }}"
+                     alt="Logo de {{ refugio.fields.nombre_institucion|default('Refugio') }}"
                      class="perfil-logo">
             </figure>
 
@@ -136,7 +137,8 @@
                         <article class="tarjeta-mascota">
                             <figure class="tarjeta-imagen">
                                 <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="link-imagen">
-                                    <img src="/assets/img/{{ mascota.fields.imagen|default('default.jpg') }}"
+                                    {% set imgMascotaUrl = mascota.fields.imagen|default('default.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default.jpg') %}
+                                    <img src="{{ imgMascotaUrl }}"
                                          alt="{{ mascota.fields.nombre|default('Mascota') }}">
                                 </a>
                                 <form method="POST" action="/favorito" class="form-favorito-tarjeta">

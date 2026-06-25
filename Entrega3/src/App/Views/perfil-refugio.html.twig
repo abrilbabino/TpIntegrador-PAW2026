@@ -6,12 +6,19 @@
 
 {% block main %}
     <section class="perfil-refugio-header">
-        <figure class="perfil-refugio-avatar">
-            {% if user.foto is not empty %}
-                <img src="/assets/img/{{ user.foto }}" alt="">
-            {% else %}
+        <figure class="perfil-avatar-wrapper perfil-refugio-avatar">
+            {% set fotoPerfil = user.foto_perfil|default('') %}
+            {% set avatarUrl = fotoPerfil is not empty ? (fotoPerfil starts with 'http' ? fotoPerfil : '/assets/img/' ~ fotoPerfil) : '' %}
+            
+            <span id="preview-placeholder" class="avatar-placeholder {{ avatarUrl is not empty ? 'hidden' : '' }}">
                 <span class="material-symbols-outlined">person</span>
-            {% endif %}            
+            </span>
+            
+            <img id="image-preview" src="{{ avatarUrl }}" data-original="{{ avatarUrl }}" alt="Foto de perfil" class="{{ avatarUrl is empty ? 'hidden' : '' }}">
+            
+            <figcaption class="avatar-hover-overlay">
+                <span class="material-symbols-outlined">photo_camera</span>
+            </figcaption>
         </figure>
 
         <h1>Hola, {{ user.nombre_usuario }}!</h1>
@@ -31,6 +38,19 @@
         </header>
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
+                <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
+                
+                {% if errores.foto_perfil_o_logo is defined %}
+                    <aside class="alerta-error alerta-espaciada" role="alert">
+                        <span class="material-symbols-outlined">error</span>
+                        <section>
+                            <strong>Error con la foto de perfil:</strong>
+                            <p>{{ errores.foto_perfil_o_logo }}</p>
+                        </section>
+                    </aside>
+                {% endif %}
+
                 <fieldset class="perfil-refugio-datos-columnas">
                     <ul class="columna-datos">
                         <li class="dato-refugio-item">
@@ -233,18 +253,29 @@
                                 {% else %}
                                     <ul class="monitoreo-galeria-fotos">
                                         {% for foto in datos.fotos %}
-                                            <li class="monitoreo-foto-item">
-                                                <a href="/{{ foto.url|trim('/') }}" target="_blank" class="foto-link">
+                                            {% set docUrl = foto.url starts with 'http' ? foto.url : '/' ~ foto.url|trim('/') %}
+                                            <li class="foto-item">
+                                                <a href="{{ docUrl }}" target="_blank" class="foto-link">
                                                     <figure class="monitoreo-foto-figure">
-                                                        {% if foto.tipo == 'certificado_med' %}
+                                                        {% if foto.tipo == 'certificado_med' or foto.tipo == 'certificado_vac' %}
                                                             <span class="monitoreo-doc-placeholder">
                                                                 <span class="material-symbols-outlined">description</span>
                                                             </span>
                                                         {% else %}
-                                                            <img src="/{{ foto.url|trim('/') }}" alt="Seguimiento {{ foto.mascota_nombre }}" class="monitoreo-img">
+                                                            <figure class="monitoreo-preview">
+                                                                <img src="{{ docUrl }}" alt="Seguimiento {{ foto.mascota_nombre }}" class="monitoreo-img">
+                                                            </figure>
                                                         {% endif %}
                                                         <figcaption class="monitoreo-foto-info">
-                                                            <span class="monitoreo-foto-tipo">{{ foto.tipo == 'certificado_med' ? 'Certificado Médico' : 'Foto' }}</span>
+                                                            <span class="monitoreo-foto-tipo">
+                                                                {% if foto.tipo == 'certificado_med' %}
+                                                                    Certificado Médico
+                                                                {% elseif foto.tipo == 'certificado_vac' %}
+                                                                    Certificado de Vacunación
+                                                                {% else %}
+                                                                    Foto
+                                                                {% endif %}
+                                                            </span>
                                                         </figcaption>
                                                     </figure>
                                                 </a>
@@ -339,6 +370,7 @@
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
                 value="{{ oldMascota.fecha_nacimiento|default('') }}"
                 max="{{ 'now'|date('Y-m-d') }}"
+                min="{{ '-30 years'|date('Y-m-d') }}"
                 data-no-future="true"
                 data-future-message="La fecha de nacimiento no puede ser futura."
                 {{ erroresMascota.fecha_nacimiento is defined and erroresMascota.fecha_nacimiento is not empty ? 'data-server-error="' ~ erroresMascota.fecha_nacimiento ~ '"' : '' }}>
@@ -424,9 +456,12 @@
                         <a href="/mascota/editar?id={{ mascota.fields.id }}" class="btn-editar" title="Editar datos">
                            <span class="material-symbols-outlined">edit_square</span>
                        </a>
-                        <a href="/perfil/eliminar?id={{ mascota.fields.id }}" class="btn-eliminar-mascota" title="Eliminar mascota">
-                            <span class="material-symbols-outlined">delete</span>
-                        </a>
+                        <form method="POST" action="/perfil/eliminar" class="form-eliminar-mascota">
+                            <input type="hidden" name="id" value="{{ mascota.fields.id }}">
+                            <button type="submit" class="btn-eliminar-mascota" title="Eliminar mascota">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </form>
                     </li>
                 {% endfor %}
             </ul>
@@ -463,5 +498,28 @@
         {% endif %}
         </details>
     </section>
+    <dialog id="modal-confirmar-eliminar" class="modal-nativo modal-confirmacion">
+        <header>
+            <h2>Confirmar eliminación</h2>
+        </header>
+        <section class="modal-body">
+            <p>¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.</p>
+        </section>
+        <footer class="acciones-modal">
+            <button type="button" class="btn-cancelar js-cerrar-modal" id="btn-cancelar-eliminar">Cancelar</button>
+            <button type="button" class="btn-eliminar-confirmado" id="btn-confirmar-eliminar">Eliminar</button>
+        </footer>
+    </dialog>
+{% endblock %}
 
+{% block content_after_main %}
+    <dialog id="avatar-modal" class="avatar-modal hidden">
+        <span id="avatar-modal-backdrop" class="avatar-modal-backdrop"></span>
+        <section class="avatar-modal-content">
+            <h3>Cambiar foto de perfil</h3>
+            <button type="button" id="modal-upload-btn" class="modal-option-btn bold-btn">Subir foto</button>
+            <button type="button" id="modal-delete-btn" class="modal-option-btn red-btn hidden">Eliminar foto actual</button>
+            <button type="button" id="modal-cancel-btn" class="modal-option-btn cancel-btn">Cancelar</button>
+        </section>
+    </dialog>
 {% endblock %}
