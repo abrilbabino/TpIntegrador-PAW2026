@@ -19,15 +19,16 @@
   padding: 0.5rem;
   margin-right: 1rem;
   justify-content: center;
-  background-color: transparent; 
+  background-color: transparent;
   border: none;
 }
 
 .PAW-MenuAbrir span,
-.PAW-MenuCerrar span{
+.PAW-MenuCerrar span {
   color: var(--color-azul);
   font-size: 2.5rem;
 }
+
 .header-logo {
   position: static;
   transform: none;
@@ -59,7 +60,15 @@
   color: var(--color-azul);
   border: 2px solid var(--color-azul);
   border-radius: 50%;
-  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0;
+  line-height: 1;
 }
 
 .icono-usuario .material-symbols-outlined:hover {
@@ -403,7 +412,7 @@ main>header p {
   }
 
   .PAW-MenuAbrir,
-  .PAW-MenuCerrar{
+  .PAW-MenuCerrar {
     display: none;
   }
 
