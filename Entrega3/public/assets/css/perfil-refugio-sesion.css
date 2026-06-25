@@ -209,7 +209,9 @@ fieldset.perfil-refugio-datos-columnas {
     text-decoration: none;
     border-radius: 20px;
     box-shadow: 0 1px 4px var(--color-gris-claro);
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.2s,
+        color 0.2s;
     background: var(--color-azul-oscuro);
 }
 
@@ -391,7 +393,6 @@ fieldset.perfil-refugio-datos-columnas {
     cursor: pointer;
 }
 
-
 /* ===== SECCION: Publicar ===== */
 
 .perfil-refugio-publicar {
@@ -490,7 +491,6 @@ fieldset.perfil-refugio-datos-columnas {
     -webkit-appearance: auto;
 }
 
-
 /* Inputs y textarea dentro del label */
 .perfil-refugio-publicar input[type="text"],
 .perfil-refugio-publicar input[type="date"],
@@ -549,22 +549,45 @@ fieldset.perfil-refugio-datos-columnas {
     color: var(--color-texto);
 }
 
-/* Botón publicar */
-.perfil-refugio-publicar button {
-    background-color: var(--color-naranja);
-    color: var(--color-fondo);
+/* Botones de publicar mascota */
+.perfil-refugio-publicar .form-acciones {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.perfil-refugio-publicar .btn-publicar-mascota,
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota {
     border: none;
     border-radius: 10px;
     padding: 0.8rem 2rem;
-    min-width: 50%;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    align-self: center;
-    transition: background 0.2s;
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
+    flex: 1;
+    text-align: center;
 }
 
-.perfil-refugio-publicar button:hover {
+.perfil-refugio-publicar .btn-publicar-mascota {
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+}
+
+.perfil-refugio-publicar .btn-publicar-mascota:hover {
+    transform: scale(0.98);
+}
+
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota {
+    background-color: var(--color-rojo);
+    color: var(--color-fondo);
+}
+
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota:hover {
     transform: scale(0.98);
 }
 
@@ -658,7 +681,7 @@ fieldset.perfil-refugio-datos-columnas {
 
 .tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
 .perfil-refugio-datos .btn-editar:hover .material-symbols-outlined {
-    color: var(--color-azul-oscuro)
+    color: var(--color-azul-oscuro);
 }
 
 .btn-eliminar-mascota .material-symbols-outlined {
@@ -778,7 +801,6 @@ fieldset.perfil-refugio-datos-columnas {
         transform: scale(0.98);
     }
 
-
     .perfil-refugio-nav a:hover,
     .perfil-refugio-nav a.active {
         background: var(--color-naranja);
@@ -825,7 +847,9 @@ fieldset.perfil-refugio-datos-columnas {
     margin-bottom: 2rem;
     overflow: hidden;
     border: 1px solid var(--color-gris-claro);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
     padding: 2rem;
     margin-top: 1rem;
 }
@@ -833,8 +857,6 @@ fieldset.perfil-refugio-datos-columnas {
 .perfil-refugio-ubicacion-content:hover {
     box-shadow: 0 6px 20px var(--color-texto);
 }
-
-
 
 .ubicacion-actual-box {
     display: flex;
@@ -972,7 +994,10 @@ fieldset.perfil-refugio-datos-columnas {
     color: var(--color-fondo);
     border: none;
     box-shadow: 0 4px 6px var(--color-texto);
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
     cursor: pointer;
 }
 
@@ -1255,7 +1280,9 @@ fieldset.perfil-refugio-datos-columnas {
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
     font-family: var(--fuente-cuerpo);
 }
 
