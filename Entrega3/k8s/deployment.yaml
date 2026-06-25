@@ -14,6 +14,7 @@ spec:
       labels:
         app: pawmap
     spec:
+      serviceAccountName: pawmap-sa
       containers:
         - name: pawmap-app
           image: us-central1-docker.pkg.dev/project-f3583ede-db03-4872-95c/pawmap-repo/pawmap-app:latest
