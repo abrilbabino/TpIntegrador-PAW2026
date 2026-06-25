@@ -320,6 +320,27 @@ class User extends Model
             return array_merge($errores, $erroresFoto);
         }
 
+        $refugioExistente = $this->getRefugio($userId);
+        
+        // Logica de sincronización bidireccional (preservar foto de refugio si existe y usuario no tiene)
+        $imagenRefugio = $refugioExistente ? ($refugioExistente['imagen'] ?? 'default-refugio.jpg') : 'default-refugio.jpg';
+        $fotoUsuario = $sessionUser['foto_perfil'] ?? null;
+
+        if (array_key_exists('foto_perfil', $fieldsUsuario)) {
+            // Se subió o eliminó explícitamente la foto
+            $fieldsRefugioSync = $fieldsUsuario['foto_perfil'] ?? 'default-refugio.jpg';
+        } else {
+            // No se modificó la foto en esta petición. Conservamos lo que haya.
+            if ($imagenRefugio !== 'default-refugio.jpg' && empty($fotoUsuario)) {
+                // Preservar la del refugio y asignarla al usuario
+                $fieldsUsuario['foto_perfil'] = $imagenRefugio;
+                $fieldsRefugioSync = $imagenRefugio;
+            } else {
+                // Por defecto, mandamos la del usuario al refugio para mantenerlos sincronizados
+                $fieldsRefugioSync = $fotoUsuario ?? 'default-refugio.jpg';
+            }
+        }
+
         $this->updateUsuario($userId, $fieldsUsuario);
 
         // Actualizar refugio
@@ -329,10 +350,10 @@ class User extends Model
             'telefono' => htmlspecialchars(trim($postData['telefono'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'alias' => htmlspecialchars(trim($postData['alias'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'cvu' => htmlspecialchars(trim($postData['cvu'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'imagen' => $fieldsRefugioSync,
         ];
 
         // Verificar si existe el refugio en la DB
-        $refugioExistente = $this->getRefugio($userId);
         if ($refugioExistente) {
             $this->queryBuilder->update('refugio', $fieldsRefugio, ['usuario_id' => $userId]);
         } else {
