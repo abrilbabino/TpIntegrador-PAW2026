@@ -139,4 +139,11 @@ class Controller
         $this->model = $model;
     }
 
+    protected function loadCollection($className)
+    {
+        $model = new $className;
+        $model->setQueryBuilder($this->model->getQueryBuilder());
+        return $model;
+    }
+
 }

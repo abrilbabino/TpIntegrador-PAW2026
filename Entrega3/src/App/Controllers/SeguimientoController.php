@@ -39,8 +39,7 @@ class SeguimientoController extends Controller
         $qb = $this->model->getQueryBuilder();
 
         // Usamos la colección de mascotas para obtener objetos completos
-        $mascotaCol = new MascotaCollection();
-        $mascotaCol->setQueryBuilder($qb);
+        $mascotaCol = $this->loadCollection(MascotaCollection::class);
         $adoptanteId = (int) $user['id'];
         $adopciones = $mascotaCol->getAdopcionesByAdoptante($adoptanteId);
 
@@ -61,8 +60,7 @@ class SeguimientoController extends Controller
                 $mascotaSeleccionada = $mascotaCol->get($mascotaId);
                 
                 // Usamos la colección de registros sanitarios para obtener objetos
-                $registroCol = new RegistroSanitarioCollection();
-                $registroCol->setQueryBuilder($qb);
+                $registroCol = $this->loadCollection(RegistroSanitarioCollection::class);
                 $registros = $registroCol->getByMascota($mascotaId);
                 
                 // LÓGICA DEL BANNER DINÁMICO
@@ -148,18 +146,8 @@ class SeguimientoController extends Controller
         try {
             $url = GCSHelper::subir($archivo, 'seguimiento_mascotas');
             $qb = $this->model->getQueryBuilder();
-            
-            if ($tipoArchivo === 'comprobante' && $registroId) {
-                // Comprobante de registro sanitario
-                $qb->actualizarArchivoRegistroSanitario($registroId, $url, date('Y-m-d'));
-            } else {
-                // Foto o Certificado General
-                $qb->insert('media_mascota', [
-                    'mascota_id' => $mascotaId,
-                    'tipo' => $tipoArchivo === 'foto' ? 'foto_seguimiento' : 'certificado_med',
-                    'url' => $url
-                ]);
-            }
+            $mediaCol = $this->loadCollection(\Paw\App\Models\MediaMascotaCollection::class);
+            $mediaCol->procesarArchivoSeguimiento((int)$mascotaId, $tipoArchivo, $registroId ? (int)$registroId : null, $url);
         } catch (\Exception $e) {
             $this->request->setSession('error_upload', 'Hubo un error al subir el archivo al servidor.');
         }

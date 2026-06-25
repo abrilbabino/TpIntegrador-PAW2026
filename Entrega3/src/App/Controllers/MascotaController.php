@@ -49,12 +49,6 @@ class MascotaController extends Controller
         echo json_encode($response);
         exit;
     }
-    
-    private function loadCollection($className){
-        $model = new $className;
-        $model->setQueryBuilder($this->model->getQueryBuilder());
-        return $model;
-    }
 
     private function loadFotosMascota(int $mascotaId, ?string $imagen): array
     {

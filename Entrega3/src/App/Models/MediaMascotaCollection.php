@@ -23,4 +23,24 @@ class MediaMascotaCollection extends Model
 
         return $media;
     }
+
+    public function procesarArchivoSeguimiento(int $mascotaId, string $tipoArchivo, ?int $registroId, string $url): void
+    {
+        if (in_array($tipoArchivo, ['comprobante', 'certificado']) && $registroId) {
+            $this->queryBuilder->actualizarArchivoRegistroSanitario($registroId, $url, date('Y-m-d'));
+        } else {
+            $tipoMedia = 'certificado_med';
+            if ($tipoArchivo === 'foto') {
+                $tipoMedia = 'foto_seguimiento';
+            } elseif ($tipoArchivo === 'certificado') {
+                $tipoMedia = 'certificado_vac';
+            }
+            
+            $this->queryBuilder->insert($this->table, [
+                'mascota_id' => $mascotaId,
+                'tipo' => $tipoMedia,
+                'url' => $url
+            ]);
+        }
+    }
 }
