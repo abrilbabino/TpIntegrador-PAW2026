@@ -1,7 +1,10 @@
 class PAWPerfil {
     // Encapsula la lógica interactiva del perfil de usuario, incluyendo scroll spy, alertas y previsualización de imágenes.
-    constructor(contenedor) {
+    constructor(contenedor, config = {}) {
         this.contenedor = contenedor;
+        this.formId = config.formId || 'perfil-form';
+        this.editBtnId = config.editBtnId || 'btn-edit-perfil';
+        this.cancelBtnId = config.cancelBtnId || 'btn-cancel-perfil';
     }
 
     render() {
@@ -62,9 +65,9 @@ class PAWPerfil {
 
     // Inicializa referencias al DOM y delega la suscripción de eventos para el modo edición.
     initEdicionInteractiva() {
-        this.form = document.getElementById('perfil-form');
-        this.editBtn = document.getElementById('btn-edit-perfil');
-        this.cancelBtn = document.getElementById('btn-cancel-perfil');
+        this.form = document.getElementById(this.formId);
+        this.editBtn = document.getElementById(this.editBtnId);
+        this.cancelBtn = document.getElementById(this.cancelBtnId);
         this.fileInput = document.getElementById('foto_perfil_o_logo');
         this.imgPreview = document.getElementById('image-preview');
         this.placeholder = document.getElementById('preview-placeholder');

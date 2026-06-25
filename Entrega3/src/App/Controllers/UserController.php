@@ -133,6 +133,7 @@ class UserController extends Controller
         $errores = $this->model->actualizarPerfilRefugio(
             $userId, 
             $this->request->post(), 
+            $this->request->file('foto_perfil_o_logo'),
             $user
         );
 

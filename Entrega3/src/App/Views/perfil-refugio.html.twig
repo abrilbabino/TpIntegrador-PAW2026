@@ -6,12 +6,19 @@
 
 {% block main %}
     <section class="perfil-refugio-header">
-        <figure class="perfil-refugio-avatar">
-            {% if user.foto is not empty %}
-                <img src="/assets/img/{{ user.foto }}" alt="">
-            {% else %}
+        <figure class="perfil-avatar-wrapper perfil-refugio-avatar">
+            {% set fotoPerfil = user.foto_perfil|default('') %}
+            {% set avatarUrl = fotoPerfil is not empty ? '/assets/img/' ~ fotoPerfil : '' %}
+            
+            <span id="preview-placeholder" class="avatar-placeholder {{ avatarUrl is not empty ? 'hidden' : '' }}">
                 <span class="material-symbols-outlined">person</span>
-            {% endif %}            
+            </span>
+            
+            <img id="image-preview" src="{{ avatarUrl }}" data-original="{{ avatarUrl }}" alt="Foto de perfil" class="{{ avatarUrl is empty ? 'hidden' : '' }}">
+            
+            <figcaption class="avatar-hover-overlay">
+                <span class="material-symbols-outlined">photo_camera</span>
+            </figcaption>
         </figure>
 
         <h1>Hola, {{ user.nombre_usuario }}!</h1>
@@ -31,6 +38,19 @@
         </header>
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
+                <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
+                
+                {% if errores.foto_perfil_o_logo is defined %}
+                    <aside class="alerta-error alerta-espaciada" role="alert">
+                        <span class="material-symbols-outlined">error</span>
+                        <section>
+                            <strong>Error con la foto de perfil:</strong>
+                            <p>{{ errores.foto_perfil_o_logo }}</p>
+                        </section>
+                    </aside>
+                {% endif %}
+
                 <fieldset class="perfil-refugio-datos-columnas">
                     <ul class="columna-datos">
                         <li class="dato-refugio-item">
@@ -478,5 +498,17 @@
             <button type="button" class="btn-cancelar js-cerrar-modal" id="btn-cancelar-eliminar">Cancelar</button>
             <button type="button" class="btn-eliminar-confirmado" id="btn-confirmar-eliminar">Eliminar</button>
         </footer>
+    </dialog>
+{% endblock %}
+
+{% block content_after_main %}
+    <dialog id="avatar-modal" class="avatar-modal hidden">
+        <span id="avatar-modal-backdrop" class="avatar-modal-backdrop"></span>
+        <section class="avatar-modal-content">
+            <h3>Cambiar foto de perfil</h3>
+            <button type="button" id="modal-upload-btn" class="modal-option-btn bold-btn">Subir foto</button>
+            <button type="button" id="modal-delete-btn" class="modal-option-btn red-btn hidden">Eliminar foto actual</button>
+            <button type="button" id="modal-cancel-btn" class="modal-option-btn cancel-btn">Cancelar</button>
+        </section>
     </dialog>
 {% endblock %}

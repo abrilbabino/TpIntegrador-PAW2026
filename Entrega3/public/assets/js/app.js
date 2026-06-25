@@ -397,13 +397,27 @@ class AppPAW {
   _initPerfilRefugio() {
     const contenedor = document.querySelector(".perfil-refugio-container");
     if (!contenedor) return;
+
     PAW.cargarScript(
-      "PAW-PerfilRefugio-Script",
-      "/assets/js/components/paw-perfil-refugio.js",
+      "PAW-Perfil-Script",
+      "/assets/js/components/paw-perfil.js",
       () => {
-        const perfilRefugio = new PAWRefugioPerfil(contenedor);
-        perfilRefugio.render();
-      },
+        const editorPerfil = new PAWPerfil(contenedor, {
+            formId: 'perfil-refugio-form',
+            editBtnId: 'btn-edit-refugio',
+            cancelBtnId: 'btn-cancel-refugio'
+        });
+        editorPerfil.render();
+
+        PAW.cargarScript(
+          "PAW-PerfilRefugio-Script",
+          "/assets/js/components/paw-perfil-refugio.js",
+          () => {
+            const perfilRefugio = new PAWRefugioPerfil(contenedor);
+            perfilRefugio.render();
+          },
+        );
+      }
     );
   }
 

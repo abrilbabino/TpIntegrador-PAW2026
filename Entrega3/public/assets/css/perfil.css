@@ -585,7 +585,8 @@
   border-color: var(--color-gris-claro);
 }
 
-.perfil-container.is-editing .perfil-avatar-wrapper {
+.perfil-container.is-editing .perfil-avatar-wrapper,
+.perfil-refugio-container.is-editing .perfil-avatar-wrapper {
   cursor: pointer;
 }
 
@@ -607,7 +608,8 @@
   z-index: 5;
 }
 
-.perfil-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay {
+.perfil-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay,
+.perfil-refugio-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay {
   opacity: 1;
 }
 

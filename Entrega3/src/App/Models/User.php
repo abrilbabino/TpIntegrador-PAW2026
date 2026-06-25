@@ -229,61 +229,9 @@ class User extends Model
             $fieldsUsuario['contrasena'] = password_hash($newPassword, PASSWORD_DEFAULT);
         }
 
-        $eliminarFoto = ($postData['eliminar_foto'] ?? '0') === '1';
-        $pathFisicoBase = __DIR__ . '/../../../public/assets/img/';
-        
-        if ($eliminarFoto) {
-            $currentUser = $this->findById($userId);
-            if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                if (file_exists($pathFisico) && is_file($pathFisico)) {
-                    unlink($pathFisico);
-                }
-            }
-            $fieldsUsuario['foto_perfil'] = null;
-        } else {
-            if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
-                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
-                
-                // Validar MIME y que sea una imagen real
-                $esImagenValida = false;
-                if (file_exists($archivo['tmp_name'])) {
-                    $mime = mime_content_type($archivo['tmp_name']);
-                    $info = getimagesize($archivo['tmp_name']);
-                    if ($info !== false && strpos($mime, 'image/') === 0) {
-                        $esImagenValida = true;
-                    }
-                }
-
-                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible (solo JPG, PNG, WEBP, GIF).';
-                    return $errores;
-                }
-                
-                $nombreFinal = uniqid('perfil_', true) . '.' . $extension;
-                $directorioDestino = $pathFisicoBase . 'uploads/';
-                
-                if (!is_dir($directorioDestino)) {
-                    mkdir($directorioDestino, 0777, true);
-                }
-
-                $rutaAbsoluta = $directorioDestino . $nombreFinal;
-                $rutaRelativa = 'uploads/' . $nombreFinal;
-
-                if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
-                    $currentUser = $this->findById($userId);
-                    if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                        $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                        if (file_exists($pathFisico) && is_file($pathFisico)) {
-                            unlink($pathFisico);
-                        }
-                    }
-                    $fieldsUsuario['foto_perfil'] = $rutaRelativa;
-                } else {
-                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil.';
-                    return $errores;
-                }
-            }
+        $erroresFoto = $this->procesarFotoPerfil($userId, $postData, $archivo, $fieldsUsuario);
+        if (!empty($erroresFoto)) {
+            return array_merge($errores, $erroresFoto);
         }
 
         $this->updateUsuario($userId, $fieldsUsuario);
@@ -310,7 +258,7 @@ class User extends Model
         return $errores;
     }
 
-    public function actualizarPerfilRefugio(int $userId, array $postData, array $sessionUser): array
+    public function actualizarPerfilRefugio(int $userId, array $postData, ?array $archivo, array $sessionUser): array
     {
         $errores = [];
 
@@ -365,6 +313,12 @@ class User extends Model
         $fieldsUsuario = [
             'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         ];
+
+        $erroresFoto = $this->procesarFotoPerfil($userId, $postData, $archivo, $fieldsUsuario);
+        if (!empty($erroresFoto)) {
+            return array_merge($errores, $erroresFoto);
+        }
+
         $this->updateUsuario($userId, $fieldsUsuario);
 
         // Actualizar refugio
@@ -415,6 +369,68 @@ class User extends Model
             $this->queryBuilder->insert('ubicacion', $fields);
         }
 
+        return $errores;
+    }
+
+    private function procesarFotoPerfil(int $userId, array $postData, ?array $archivo, array &$fieldsUsuario): array
+    {
+        $errores = [];
+        $eliminarFoto = ($postData['eliminar_foto'] ?? '0') === '1';
+        $pathFisicoBase = __DIR__ . '/../../../public/assets/img/';
+        
+        if ($eliminarFoto) {
+            $currentUser = $this->findById($userId);
+            if ($currentUser && !empty($currentUser['foto_perfil'])) {
+                $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
+                if (file_exists($pathFisico) && is_file($pathFisico)) {
+                    unlink($pathFisico);
+                }
+            }
+            $fieldsUsuario['foto_perfil'] = null;
+        } else {
+            if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
+                $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
+                
+                // Validar MIME y que sea una imagen real
+                $esImagenValida = false;
+                if (file_exists($archivo['tmp_name'])) {
+                    $mime = mime_content_type($archivo['tmp_name']);
+                    $info = getimagesize($archivo['tmp_name']);
+                    if ($info !== false && strpos($mime, 'image/') === 0) {
+                        $esImagenValida = true;
+                    }
+                }
+
+                if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible (solo JPG, PNG, WEBP, GIF).';
+                    return $errores;
+                }
+                
+                $nombreFinal = uniqid('perfil_', true) . '.' . $extension;
+                $directorioDestino = $pathFisicoBase . 'uploads/';
+                
+                if (!is_dir($directorioDestino)) {
+                    mkdir($directorioDestino, 0777, true);
+                }
+
+                $rutaAbsoluta = $directorioDestino . $nombreFinal;
+                $rutaRelativa = 'uploads/' . $nombreFinal;
+
+                if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
+                    $currentUser = $this->findById($userId);
+                    if ($currentUser && !empty($currentUser['foto_perfil'])) {
+                        $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
+                        if (file_exists($pathFisico) && is_file($pathFisico)) {
+                            unlink($pathFisico);
+                        }
+                    }
+                    $fieldsUsuario['foto_perfil'] = $rutaRelativa;
+                } else {
+                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil.';
+                }
+            }
+        }
+        
         return $errores;
     }
 }
