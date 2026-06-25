@@ -14,6 +14,7 @@ class PAWRefugioPerfil {
         this.initSolicitudesRefugio();
         this.initVerMasDescripcion();
         this.initAutocompleteUbicacion();
+        this.initEliminarMascota();
     }
 
     initAutocompleteUbicacion() {
@@ -279,5 +280,34 @@ class PAWRefugioPerfil {
         } else {
             if (enlaces[0]) enlaces[0].classList.add('active');
         }
+    }
+
+    initEliminarMascota() {
+        const modal = document.getElementById('modal-confirmar-eliminar');
+        const btnCancelar = document.getElementById('btn-cancelar-eliminar');
+        const btnConfirmar = document.getElementById('btn-confirmar-eliminar');
+        let formToSubmit = null;
+
+        if (!modal || !btnCancelar || !btnConfirmar) return;
+
+        const formsEliminar = document.querySelectorAll('.form-eliminar-mascota');
+        formsEliminar.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formToSubmit = form;
+                modal.showModal();
+            });
+        });
+
+        btnCancelar.addEventListener('click', () => {
+            modal.close();
+            formToSubmit = null;
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (formToSubmit) {
+                formToSubmit.submit();
+            }
+        });
     }
 }

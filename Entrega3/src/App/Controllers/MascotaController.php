@@ -262,10 +262,13 @@ class MascotaController extends Controller
         $edad = null;
         if (!empty($fechaNac)) {
             $d = \DateTime::createFromFormat('Y-m-d', $fechaNac);
+            $minDate = (new \DateTime())->modify('-30 years');
             if (!$d || $d->format('Y-m-d') !== $fechaNac) {
                 $errores['fecha_nacimiento'] = 'Fecha de nacimiento inválida.';
             } elseif ($d > new \DateTime()) {
                 $errores['fecha_nacimiento'] = 'La fecha de nacimiento no puede ser futura.';
+            } elseif ($d < $minDate) {
+                $errores['fecha_nacimiento'] = 'La edad máxima permitida es de 30 años.';
             } else {
                 $edad = (int) $d->diff(new \DateTime())->y;
             }
