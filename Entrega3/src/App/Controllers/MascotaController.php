@@ -770,7 +770,8 @@ public function eliminarFoto() {
 
     public function eliminar()
     {
-        $id = (int) ($this->request->get('id') ?? 0);
+        $postData = $this->request->post();
+        $id = (int) ($postData['id'] ?? 0);
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $id <= 0) {
