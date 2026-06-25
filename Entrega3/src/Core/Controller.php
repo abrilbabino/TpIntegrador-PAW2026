@@ -3,7 +3,7 @@
 namespace Paw\Core;
 
 use Paw\Core\Model;
-use Paw\Core\DataBase\QueryBuilder;
+use Paw\Core\Database\QueryBuilder;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
