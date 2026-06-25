@@ -34,7 +34,8 @@
                         {% for rm in refugiosMapa %}
                             {% if count < limitRefugios %}
                                 <li class="refugio-cercano-item">
-                                    <img src="/assets/img/{{ rm.imagen|default('default-refugio.jpg') }}" class="refugio-mini-img" alt="Refugio">
+                                    {% set refugioImgUrl = rm.imagen|default('default-refugio.jpg') starts with 'http' ? rm.imagen : '/assets/img/' ~ rm.imagen|default('default-refugio.jpg') %}
+                                    <img src="{{ refugioImgUrl }}" class="refugio-mini-img" alt="Refugio">
                                     <section class="refugio-mini-info">
                                         <h4>{{ rm.nombre_institucion|default('Refugio') }}</h4>
                                         <p><span class="material-symbols-outlined icon-small">location_on</span> {{ rm.ciudad|default('Ubicación') ~ ', ' ~ rm.provincia|default('') }}</p>
@@ -129,7 +130,8 @@
                             {% for rm in refugiosMapa %}
                                 {% if count2 < limitRefugios %}
                                     <li class="refugio-cercano-item">
-                                        <img src="/assets/img/{{ rm.imagen|default('default-refugio.jpg') }}" class="refugio-mini-img" alt="Refugio">
+                                        {% set refugioImgUrl = rm.imagen|default('default-refugio.jpg') starts with 'http' ? rm.imagen : '/assets/img/' ~ rm.imagen|default('default-refugio.jpg') %}
+                                        <img src="{{ refugioImgUrl }}" class="refugio-mini-img" alt="Refugio">
                                         <section class="refugio-mini-info">
                                             <h4>{{ rm.nombre_institucion|default('Refugio') }}</h4>
                                             <p><span class="material-symbols-outlined icon-small">location_on</span> {{ rm.ciudad|default('Ubicación') ~ ', ' ~ rm.provincia|default('') }}</p>

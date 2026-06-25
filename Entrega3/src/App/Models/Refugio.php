@@ -53,7 +53,7 @@ class Refugio extends Model
         if ($record) {
             $this->set($record);
         } else {
-            throw new \Exception("No se encontró un refugio con el ID proporcionado");
+            throw new \Paw\Core\Exceptions\ModelNotFoundException("No se encontró un refugio con el ID proporcionado");
         }
     }
 

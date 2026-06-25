@@ -9,7 +9,7 @@ use Paw\App\Models\RefugioCollection;
 use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
 use Paw\Core\Exceptions\InvalidValueFormatException;
-use Paw\Core\Exceptions\MascotaNotFoundException;
+use Paw\Core\Exceptions\ModelNotFoundException;
 use Paw\App\Helpers\GCSHelper;
 
 
@@ -126,7 +126,7 @@ class MascotaController extends Controller
 
         try {
             $mascota = $this->model->get($id);
-        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        } catch (ModelNotFoundException | InvalidValueFormatException $e) {
             header('Location: /perfil');
             exit;
         }
@@ -181,7 +181,7 @@ class MascotaController extends Controller
 
         try {
             $mascota = $this->model->get($id);
-        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        } catch (ModelNotFoundException | InvalidValueFormatException $e) {
             header('Location: /perfil');
             exit;
         }
@@ -418,7 +418,7 @@ class MascotaController extends Controller
         // 2. Verificar propiedad de la mascota
         try {
             $mascota = $this->model->get($mascotaId);
-        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        } catch (ModelNotFoundException | InvalidValueFormatException $e) {
             header('Location: /perfil');
             exit;
         }
@@ -466,7 +466,7 @@ class MascotaController extends Controller
 
         try {
             $mascota = $this->model->get($id);
-        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        } catch (ModelNotFoundException | InvalidValueFormatException $e) {
             header('Location: /perfil');
             exit;
         }
@@ -514,7 +514,7 @@ public function eliminarFoto() {
 
     try {
         $mascota = $this->model->get($mascotaId);
-    } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+    } catch (ModelNotFoundException | InvalidValueFormatException $e) {
         header('Location: /perfil');
         exit;
     }
@@ -764,7 +764,7 @@ public function eliminarFoto() {
 
         try {
             $mascota = $this->model->get($id);
-        } catch (MascotaNotFoundException | InvalidValueFormatException $e) {
+        } catch (ModelNotFoundException | InvalidValueFormatException $e) {
             header('Location: /perfil');
             exit;
         }

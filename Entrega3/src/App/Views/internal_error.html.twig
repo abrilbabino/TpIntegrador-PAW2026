@@ -2,6 +2,16 @@
 
 {% block title %}Error Interno del Servidor{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/error.css" />
+{% endblock %}
+
 {% block main %}
-    <h1 class="error">Error Interno del Servidor</h1>
+
+    <section class="error-bg">
+        <article class="error-text">
+            <h1 class="error">Error Interno del Servidor</h1>
+            <p>Ups! Algo salió mal. Por favor, intentá de nuevo más tarde.</p>
+        </article>
+    </section>
 {% endblock %}

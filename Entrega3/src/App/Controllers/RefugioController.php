@@ -65,7 +65,7 @@ class RefugioController extends Controller
         $metaDescription = "Conocé este refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
         
         if ($this->model) {
-            try {
+
                 $refugio = $this->model->get($id);
                 if ($refugio) {
                     $nombreRefugio = htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Refugio');
@@ -87,9 +87,7 @@ class RefugioController extends Controller
                 $provincias = array_unique($provincias);
                 $ciudad = implode(', ', $ciudades);
                 $prov = implode(', ', $provincias);
-            } catch (\Exception $e) {
-                error_log("Error cargando detalle de refugio: " . $e->getMessage());
-            }
+
         }
 
         $favoritoModel = new \Paw\App\Models\Favorito();

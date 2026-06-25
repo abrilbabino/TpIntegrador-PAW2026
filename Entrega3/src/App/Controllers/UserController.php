@@ -27,6 +27,7 @@ class UserController extends Controller
         }
 
         $dbUser = $this->model->findById((int) $userSession['id']);
+        if (array_key_exists('rol', $dbUser)) unset($dbUser['rol']);
         $user = array_merge($userSession, $dbUser);
         $user['rol'] = $userSession['rol'] ?? 'adoptante'; // ← preservar el rol de la sesión
         $rol = $user['rol'];
@@ -145,6 +146,7 @@ class UserController extends Controller
 
         $updatedUser = $this->model->findById($userId);
         if ($updatedUser) {
+            if (array_key_exists('rol', $updatedUser)) unset($updatedUser['rol']);
             $userSession = array_merge($userSession, $updatedUser);
             $this->request->setSession('user', $userSession);
         }
@@ -399,6 +401,7 @@ class UserController extends Controller
 
         $updatedUser = $this->model->findById($userId);
         if ($updatedUser) {
+            if (array_key_exists('rol', $updatedUser)) unset($updatedUser['rol']);
             $userSession = array_merge($userSession, $updatedUser);
             $this->request->setSession('user', $userSession);
         }

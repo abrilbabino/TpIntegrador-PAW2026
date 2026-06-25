@@ -2,6 +2,15 @@
 
 {% block title %}Page Not Found{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/error.css" />
+{% endblock %}
+
 {% block main %}
-    <h1 class="error">Page Not Found</h1>
+    <section class="error-bg">
+        <article class="error-text">
+            <h1 class="error">Página no encontrada (404)</h1>
+            <p>{{ mensaje }}</p>
+        </article>
+    </section>
 {% endblock %}

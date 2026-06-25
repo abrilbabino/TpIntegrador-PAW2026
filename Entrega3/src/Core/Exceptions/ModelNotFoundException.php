@@ -4,6 +4,6 @@ namespace Paw\Core\Exceptions;
 
 use Exception;
 
-class MascotaNotFoundException extends Exception{
+class ModelNotFoundException extends Exception{
     
 }

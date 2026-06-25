@@ -1,8 +1,28 @@
 .error {
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: bold;
-    color: var(--color-magenta);
-    padding: 8rem;
+    color: var(--color-naranja);
+    text-shadow: 1px 1px 2px var(--color-texto);
+    padding: 0;
     text-align: center;
-    margin: 2rem auto;
+    margin: 0 0 1rem 0;
+}
+
+.error-bg {
+    background-image: url('../img/error-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.error-text p {
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px var(--color-texto);
+    color: var(--color-naranja);
+    font-weight: bold;
 }

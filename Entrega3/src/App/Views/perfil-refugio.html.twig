@@ -38,7 +38,7 @@
         </header>
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
-                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input">
+                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar los 2 MB.">
                 <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
                 
                 {% if errores.foto_perfil_o_logo is defined %}
@@ -430,7 +430,10 @@
                 {{ erroresMascota.svg is defined and erroresMascota.svg is not empty ? 'data-server-error="' ~ erroresMascota.svg ~ '"' : '' }}>
             </label>
 
-            <button type="submit" id="btn-publicar-mascota">Publicar</button>
+            <footer class="form-acciones">
+                <button type="submit" id="btn-publicar-mascota" class="btn-publicar-mascota">Publicar</button>
+                <button type="button" id="btn-cancelar-publicar" class="btn-cancelar-publicar-mascota">Cancelar</button>
+            </footer>
         </form>
         </details>
     </section>    <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
