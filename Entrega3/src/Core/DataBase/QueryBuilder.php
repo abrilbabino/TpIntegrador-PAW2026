@@ -270,7 +270,11 @@ class QueryBuilder
 
     public function buscarRefugiosPorTermino(string $tabla, string $termino, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
     {
-        $select = $esConteo ? "COUNT(*)" : "*";
+        if ($esConteo) {
+            $select = "COUNT(*)";
+        } else {
+            $select = "*, (SELECT COUNT(*) FROM mascota m WHERE m.refugio_id = {$tabla}.usuario_id AND m.estado_adopcion = 'DISPONIBLE') as adoptables_disponibles";
+        }
         $sql = "SELECT {$select} FROM {$tabla} WHERE nombre_institucion ILIKE :term1 OR descripcion ILIKE :term2 OR alias ILIKE :term3";
         
         if (!$esConteo && $limite !== null && $offset !== null) {
