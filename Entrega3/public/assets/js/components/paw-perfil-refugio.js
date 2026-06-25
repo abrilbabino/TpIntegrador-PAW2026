@@ -14,6 +14,7 @@ class PAWRefugioPerfil {
         this.initVerMasDescripcion();
         this.initAutocompleteUbicacion();
         this.initEliminarMascota();
+        this.initPublicarMascota();
     }
 
     initAutocompleteUbicacion() {
@@ -273,5 +274,29 @@ class PAWRefugioPerfil {
                 formToSubmit.submit();
             }
         });
+    }
+    initPublicarMascota() {
+        const form = document.getElementById('form-publicar-mascota');
+        const btnCancelar = document.getElementById('btn-cancelar-publicar');
+        const details = form ? form.closest('details') : null;
+
+        // Botón Cancelar: resetea el formulario y cierra el accordion
+        if (btnCancelar && form) {
+            btnCancelar.addEventListener('click', () => {
+                form.reset();
+                if (details) details.removeAttribute('open');
+            });
+        }
+
+        // Si venimos de un guardado exitoso (?publicado=1), cerrar el accordion
+        // El form ya viene vacío porque el controlador redirige sin oldMascota
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('publicado') === '1' && details) {
+            details.removeAttribute('open');
+            // Limpiar el parámetro de la URL sin recargar
+            const url = new URL(window.location.href);
+            url.searchParams.delete('publicado');
+            history.replaceState(null, '', url.toString());
+        }
     }
 }

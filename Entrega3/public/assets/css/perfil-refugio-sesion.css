@@ -1,217 +1,219 @@
 /* ===== PERFIL CONTAINER ===== */
 .perfil-refugio-container {
-    max-width: 700px;
-    margin: 5rem auto 2rem;
-    padding: 0 1rem 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  max-width: 700px;
+  margin: 5rem auto 2rem;
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* ===== HEADER ===== */
 .perfil-refugio-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 1.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem 1rem;
 }
 
 .perfil-refugio-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: var(--color-gris-claro);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--color-gris-claro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
 .perfil-refugio-avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .perfil-refugio-avatar .material-symbols-outlined {
-    font-size: 2.5rem;
-    color: var(--color-gris);
+  font-size: 2.5rem;
+  color: var(--color-gris);
 }
 
 .perfil-refugio-header h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .perfil-refugio-email {
-    font-size: 0.9rem;
-    color: var(--color-gris);
-    margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  margin: 0;
 }
 
 .perfil-dropdown summary h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.25rem;
-    color: var(--color-azul-oscuro);
-    margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--color-azul-oscuro);
+  margin: 0;
 }
 
 .monitoreo-foto-figure {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .perfil-refugio-logout {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.85rem;
-    color: var(--color-rojo);
-    text-decoration: none;
-    margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--color-rojo);
+  text-decoration: none;
+  margin-top: 0.5rem;
 }
 
 /* ===== DATOS PERSONALES ===== */
 .perfil-refugio-datos {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    border: 1px solid var(--color-gris-claro);
-    box-shadow: 0 2px 8px var(--color-gris-claro);
-    padding: 1.2rem 1.5rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  border: 1px solid var(--color-gris-claro);
+  box-shadow: 0 2px 8px var(--color-gris-claro);
+  padding: 1.2rem 1.5rem;
 }
 
 .perfil-refugio-datos-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .perfil-refugio-datos-header h2 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 fieldset.perfil-refugio-datos-columnas {
-    display: flex;
-    gap: 1.5rem;
-    width: 100%;
-    border: none;
-    padding: 0;
-    margin: 0;
-    min-width: 0;
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
 }
 
 .perfil-refugio-datos-columnas .columna-datos {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .dato-refugio-item {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .dato-refugio-label {
-    font-size: 1rem;
-    font-style: italic;
-    color: var(--color-gris);
-    font-weight: normal;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-gris);
+  font-weight: normal;
 }
 
 .dato-refugio-valor {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--color-texto);
-    overflow-wrap: break-word;
-    word-break: break-all;
-    min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-texto);
+  overflow-wrap: break-word;
+  word-break: break-all;
+  min-width: 0;
 }
 
 /* ===== DESCRIPCIÓN COLLAPSIBLE ===== */
 .dato-refugio-descripcion-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .dato-refugio-descripcion-container .descripcion-texto {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin: 0;
-    line-height: 1.4;
-    word-break: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  line-height: 1.4;
+  word-break: normal;
 }
 
 .dato-refugio-descripcion-container .descripcion-texto.expanded {
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
 }
 
 .btn-ver-mas-desc {
-    background: none;
-    border: none;
-    color: var(--color-naranja);
-    font-size: 0.85rem;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0;
-    margin-top: 0.4rem;
-    text-decoration: underline;
+  background: none;
+  border: none;
+  color: var(--color-naranja);
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 0.4rem;
+  text-decoration: underline;
 }
 
 .btn-ver-mas-desc:hover {
-    color: var(--color-azul-oscuro);
+  color: var(--color-azul-oscuro);
 }
 
 /* ===== NAV ANCLA ===== */
 .perfil-refugio-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    background: transparent;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 .perfil-refugio-nav a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.4rem;
-    padding: 1rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-fondo);
-    text-decoration: none;
-    border-radius: 20px;
-    box-shadow: 0 1px 4px var(--color-gris-claro);
-    transition: background 0.2s, color 0.2s;
-    background: var(--color-azul-oscuro);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-fondo);
+  text-decoration: none;
+  border-radius: 20px;
+  box-shadow: 0 1px 4px var(--color-gris-claro);
+  transition:
+    background 0.2s,
+    color 0.2s;
+  background: var(--color-azul-oscuro);
 }
 
 .perfil-refugio-nav a .material-symbols-outlined {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
 
 /* ===== SECCIONES ===== */
@@ -222,271 +224,269 @@ fieldset.perfil-refugio-datos-columnas {
 #sec-publicar,
 #sec-mascotas-adoptadas,
 .sec-editar-mascota {
-    scroll-margin-top: 220px;
+  scroll-margin-top: 220px;
 }
 
 .perfil-refugio-seccion {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    border: 1px solid var(--color-gris-claro);
-    box-shadow: 0 2px 8px var(--color-gris-claro);
-    padding: 1.2rem 1.5rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  border: 1px solid var(--color-gris-claro);
+  box-shadow: 0 2px 8px var(--color-gris-claro);
+  padding: 1.2rem 1.5rem;
 }
 
 .perfil-refugio-seccion h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0;
-    cursor: default;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  cursor: default;
 }
 
 .perfil-refugio-seccion summary {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .perfil-dropdown summary h3,
 .perfil-dropdown summary h2 {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
 }
 
 /* Custom summary for mascota seguimiento */
 .mascota-seguimiento-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
 }
 
 .mascota-seguimiento-summary::-webkit-details-marker {
-    display: none;
+  display: none;
 }
 
 .mascota-seguimiento-summary::after {
-    content: "►";
-    font-size: 0.8rem;
-    color: var(--color-texto);
-    transition: transform 0.2s ease-in-out;
+  content: "►";
+  font-size: 0.8rem;
+  color: var(--color-texto);
+  transition: transform 0.2s ease-in-out;
 }
 
-.mascota-seguimiento-dropdown[open]>.mascota-seguimiento-summary::after {
-    transform: rotate(90deg);
+.mascota-seguimiento-dropdown[open] > .mascota-seguimiento-summary::after {
+  transform: rotate(90deg);
 }
 
 .mascota-seguimiento-summary h4 {
-    margin: 0;
+  margin: 0;
 }
 
 /*vacio*/
 .perfil-refugio-vacio {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 2rem 1rem;
-    color: var(--color-gris-claro);
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  color: var(--color-gris-claro);
+  text-align: center;
 }
 
 .perfil-refugio-vacio .material-symbols-outlined {
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 
 .perfil-refugio-vacio p {
-    margin: 0;
-    font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.9rem;
 }
 
 /* ===== SECCION: Solicitudes de adopcion ===== */
 .perfil-lista-item-adopcion {
-    background-color: var(--color-fondo);
-    border: 1px solid var(--color-gris-claro);
-    border-left: 5px solid var(--color-naranja-claro);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    overflow: hidden;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-left: 5px solid var(--color-naranja-claro);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
 }
 
 /* h4 y p ocupan columna izquierda */
 .perfil-lista-item-adopcion h4 {
-    grid-column: 1;
-    grid-row: 1;
-    margin: 0;
-    font-size: 1.1rem;
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  font-size: 1.1rem;
 }
 
 .perfil-lista-item-adopcion .estado-solicitud {
-    grid-column: 1;
-    grid-row: 2;
-    font-size: 1rem;
-    line-height: 1.4;
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
 .perfil-lista-item-adopcion p {
-    grid-column: 1;
-    grid-row: 3;
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.4;
+  grid-column: 1;
+  grid-row: 3;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
 /* Botones en columna derecha */
 .btn-rechazar {
-    float: right;
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    background-color: var(--color-rojo);
-    color: var(--color-fondo);
-    width: fit-content;
-    text-align: center;
-    margin-top: 1rem;
+  float: right;
+  margin-left: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  background-color: var(--color-rojo);
+  color: var(--color-fondo);
+  width: fit-content;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .btn-aceptar {
-    float: right;
-    margin-left: 0.5rem;
-    cursor: pointer;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    background-color: var(--color-azul-oscuro);
-    color: var(--color-fondo);
-    width: fit-content;
-    text-align: center;
-    margin-top: 1rem;
+  float: right;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  background-color: var(--color-azul-oscuro);
+  color: var(--color-fondo);
+  width: fit-content;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 /* ===== SECCION: Ubicacion ===== */
 
 .perfil-refugio-ubicacion {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    border: 1px solid var(--color-gris-claro);
-    box-shadow: 0 2px 8px var(--color-gris-claro);
-    padding: 1.2rem 1.5rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  border: 1px solid var(--color-gris-claro);
+  box-shadow: 0 2px 8px var(--color-gris-claro);
+  padding: 1.2rem 1.5rem;
 }
 
 .perfil-refugio-ubicacion h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0;
-    cursor: default;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  cursor: default;
 }
 
 .perfil-refugio-ubicacion summary {
-    cursor: pointer;
+  cursor: pointer;
 }
-
 
 /* ===== SECCION: Publicar ===== */
 
 .perfil-refugio-publicar {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    border: 1px solid var(--color-gris-claro);
-    box-shadow: 0 2px 8px var(--color-gris-claro);
-    padding: 1.2rem 1.5rem;
-    overflow: hidden;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  border: 1px solid var(--color-gris-claro);
+  box-shadow: 0 2px 8px var(--color-gris-claro);
+  padding: 1.2rem 1.5rem;
+  overflow: hidden;
 }
 
 .perfil-refugio-publicar h3 {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin: 0 0 0.3rem 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0 0 0.3rem 0;
 }
 
 .perfil-refugio-publicar p {
-    font-size: 1.1rem;
-    margin: 0 0 1rem 0;
-    color: var(--color-texto);
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
+  color: var(--color-texto);
 }
 
 /* Cada campo del formulario */
 .perfil-refugio-publicar form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Cada label+input como bloque con fondo gris */
 .perfil-refugio-publicar label,
 .perfil-refugio-publicar fieldset {
-    display: block;
-    border-radius: 12px;
-    border: 1px solid var(--color-azul);
-    padding: 1rem 1.2rem 0.8rem 1.2rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--color-azul-oscuro);
-    box-sizing: border-box;
-    width: 100%;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--color-azul);
+  padding: 1rem 1.2rem 0.8rem 1.2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-azul-oscuro);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /*revisar*/
 .perfil-refugio-publicar .especie-refugio-radio input {
-    margin: 0;
+  margin: 0;
 }
 
 .perfil-refugio-publicar fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem 1.2rem;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.2rem;
+  margin: 0;
 }
 
 .perfil-refugio-publicar legend {
-    float: left;
-    width: 100%;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--color-azul-oscuro);
-    padding: 0 0 0.4rem 0;
+  float: left;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-azul-oscuro);
+  padding: 0 0 0.4rem 0;
 }
 
 .perfil-refugio-publicar .especie-refugio-radio {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    border: none;
-    background-color: transparent;
-    padding: 0;
-    margin: 0;
-    width: auto;
-    font-size: 1rem;
-    font-weight: normal;
-    border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  font-size: 1rem;
+  font-weight: normal;
+  border-radius: 0;
 }
 
 .perfil-refugio-publicar .especie-refugio-radio span {
-    color: var(--color-texto);
-    font-weight: normal;
-    font-size: 1rem;
+  color: var(--color-texto);
+  font-weight: normal;
+  font-size: 1rem;
 }
 
 .perfil-refugio-publicar .especie-refugio-radio input[type="radio"] {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-    appearance: auto;
-    -webkit-appearance: auto;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  appearance: auto;
+  -webkit-appearance: auto;
 }
-
 
 /* Inputs y textarea dentro del label */
 .perfil-refugio-publicar input[type="text"],
@@ -494,689 +494,713 @@ fieldset.perfil-refugio-datos-columnas {
 .perfil-refugio-publicar input[type="number"],
 .perfil-refugio-publicar input[type="file"],
 .perfil-refugio-publicar textarea {
-    display: block;
-    width: 100%;
-    font-family: var(--fuente-titulos);
-    margin-top: 0.6rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--color-gris-claro);
-    border-radius: 10px;
-    font-size: 1rem;
-    color: var(--color-texto);
-    background-color: var(--color-fondo);
-    box-sizing: border-box;
-    appearance: none;
-    -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  font-family: var(--fuente-titulos);
+  margin-top: 0.6rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 10px;
+  font-size: 1rem;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 #form-ubicacion-refugio input[type="text"] {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border: 1px solid var(--color-gris-claro);
-    border-bottom: 4px solid var(--color-azul);
-    border-radius: 8px;
-    font-family: var(--fuente-cuerpo);
-    outline: none;
-    box-sizing: border-box;
-    color: var(--color-texto);
-    background-color: var(--color-fondo);
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-bottom: 4px solid var(--color-azul);
+  border-radius: 8px;
+  font-family: var(--fuente-cuerpo);
+  outline: none;
+  box-sizing: border-box;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
 }
 
 /* Selects dentro del label (con flecha) */
 .perfil-refugio-publicar select {
-    display: block;
-    width: 100%;
-    font-family: var(--fuente-titulos);
-    margin-top: 0.6rem;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--color-gris-claro);
-    border-radius: 10px;
-    font-size: 1rem;
-    color: var(--color-texto);
-    background-color: var(--color-fondo);
-    box-sizing: border-box;
-    appearance: auto;
-    -webkit-appearance: auto;
+  display: block;
+  width: 100%;
+  font-family: var(--fuente-titulos);
+  margin-top: 0.6rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 10px;
+  font-size: 1rem;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  box-sizing: border-box;
+  appearance: auto;
+  -webkit-appearance: auto;
 }
 
 /* Placeholder gris */
 .perfil-refugio-publicar input::placeholder,
 .perfil-refugio-publicar textarea::placeholder {
-    color: var(--color-texto);
+  color: var(--color-texto);
 }
 
-/* Botón publicar */
-.perfil-refugio-publicar button {
-    background-color: var(--color-naranja);
-    color: var(--color-fondo);
-    border: none;
-    border-radius: 10px;
-    padding: 0.8rem 2rem;
-    min-width: 50%;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    align-self: center;
-    transition: background 0.2s;
+/* Botones de publicar mascota */
+.perfil-refugio-publicar .form-acciones {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 1rem;
 }
 
-.perfil-refugio-publicar button:hover {
-    transform: scale(0.98);
+.perfil-refugio-publicar .btn-publicar-mascota,
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota {
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+  flex: 1;
+  text-align: center;
+}
+
+.perfil-refugio-publicar .btn-publicar-mascota {
+  background-color: var(--color-naranja);
+  color: var(--color-fondo);
+}
+
+.perfil-refugio-publicar .btn-publicar-mascota:hover {
+  transform: scale(0.98);
+}
+
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota {
+  background-color: var(--color-rojo);
+  color: var(--color-fondo);
+}
+
+.perfil-refugio-publicar .btn-cancelar-publicar-mascota:hover {
+  transform: scale(0.98);
 }
 
 .perfil-refugio-publicar summary {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .perfil-refugio-publicar h3 {
-    cursor: default;
+  cursor: default;
 }
 
 /* ===== SECCION: Actualizar/eliminar ===== */
 
 .perfil-editar-mascota {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    border: 1px solid var(--color-gris-claro);
-    box-shadow: 0 2px 8px var(--color-gris-claro);
-    padding: 1.2rem 1.5rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  border: 1px solid var(--color-gris-claro);
+  box-shadow: 0 2px 8px var(--color-gris-claro);
+  padding: 1.2rem 1.5rem;
 }
 
 .perfil-editar-mascota h2 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .perfil-editar-mascota summary {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .perfil-editar-mascota h3 {
-    font-size: 1.3rem;
-    cursor: default;
+  font-size: 1.3rem;
+  cursor: default;
 }
 
 .perfil-refugio-grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 /* Cada tarjeta */
 .tarjeta-refugio-mascota {
-    background-color: var(--color-fondo);
-    border: 1px solid var(--color-gris-claro);
-    border-left: 5px solid var(--color-naranja-claro);
-    border-radius: 12px;
-    padding: 1rem 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    overflow: hidden;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-left: 5px solid var(--color-naranja-claro);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
 }
 
 /* Link con el texto ocupa todo el espacio */
 .tarjeta-refugio-mascota-link {
-    flex: 1;
-    text-decoration: none;
-    color: var(--color-texto);
+  flex: 1;
+  text-decoration: none;
+  color: var(--color-texto);
 }
 
 .tarjeta-refugio-mascota-link h4 {
-    font-size: 1rem;
-    font-weight: bold;
-    margin: 0 0 0.2rem 0;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0 0.2rem 0;
 }
 
 .tarjeta-refugio-mascota-link h4:hover {
-    color: var(--color-naranja);
+  color: var(--color-naranja);
 }
 
 .tarjeta-refugio-mascota-link p {
-    font-size: 0.95rem;
-    margin: 0;
-    color: var(--color-texto);
-    cursor: default;
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--color-texto);
+  cursor: default;
 }
 
 .tarjeta-refugio-mascota p:hover {
-    color: var(--color-texto);
+  color: var(--color-texto);
 }
 
 .tarjeta-refugio-mascota .btn-editar .material-symbols-outlined,
 .perfil-refugio-datos .btn-editar .material-symbols-outlined {
-    color: var(--color-naranja);
+  color: var(--color-naranja);
 }
 
 .tarjeta-refugio-mascota .btn-editar:hover .material-symbols-outlined,
 .perfil-refugio-datos .btn-editar:hover .material-symbols-outlined {
-    color: var(--color-azul-oscuro)
+  color: var(--color-azul-oscuro);
 }
 
 .btn-eliminar-mascota .material-symbols-outlined {
-    font-size: 1.7rem;
+  font-size: 1.7rem;
 }
 
 .btn-eliminar-mascota:hover .material-symbols-outlined {
-    color: var(--color-rojo);
+  color: var(--color-rojo);
 }
 
 .tarjeta-refugio-mascota .btn-editar,
 .btn-eliminar-mascota {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-eliminar-mascota {
-    display: flex;
-    margin: 0;
+  display: flex;
+  margin: 0;
 }
 
 .btn-eliminar-mascota {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
 }
 
 .perfil-refugio-mapa {
-    display: none;
+  display: none;
 }
 
 .monitoreo-item-mascota {
-    padding: 1rem;
-    margin-top: 0.5rem;
-    border: 1px solid var(--color-gris-claro);
-    border-left: 5px solid var(--color-naranja-claro);
-    border-radius: 10px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--color-gris-claro);
+  border-left: 5px solid var(--color-naranja-claro);
+  border-radius: 10px;
 }
 
 /*MEDIA PARA DESKTOP*/
 @media (min-width: 994px) {
+  .perfil-refugio-container {
+    max-width: 1300px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
 
-    .perfil-refugio-container {
-        max-width: 1300px;
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 1.5rem;
-        align-items: start;
-    }
+  /* Header ocupa la 1 columna */
+  .perfil-refugio-header {
+    grid-column: 1;
+    margin-top: 3rem;
+  }
 
-    /* Header ocupa la 1 columna */
-    .perfil-refugio-header {
-        grid-column: 1;
-        margin-top: 3rem;
-    }
+  /* Nav ocupa columna izquierda, fila 2 en adelante */
+  .perfil-refugio-nav {
+    max-width: 1100px;
+    grid-template-columns: 200px 1fr;
+    grid-column: 1;
+    grid-row: 2 / span 5;
+  }
 
-    /* Nav ocupa columna izquierda, fila 2 en adelante */
-    .perfil-refugio-nav {
-        max-width: 1100px;
-        grid-template-columns: 200px 1fr;
-        grid-column: 1;
-        grid-row: 2 / span 5;
-    }
+  /* Contenedor interno con datos + mapa lado a lado */
+  .perfil-refugio-datos-body {
+    display: flex;
+    gap: 1rem;
+    grid-column: 2;
+  }
 
-    /* Contenedor interno con datos + mapa lado a lado */
-    .perfil-refugio-datos-body {
-        display: flex;
-        gap: 1rem;
-        grid-column: 2;
-    }
+  /* La grilla de datos ocupa 2/3 */
+  .perfil-refugio-datos-grid {
+    flex: 1.6;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem 2rem;
+    align-content: start;
+  }
 
-    /* La grilla de datos ocupa 2/3 */
-    .perfil-refugio-datos-grid {
-        flex: 1.6;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.2rem 2rem;
-        align-content: start;
-    }
+  /* El mapa ocupa 1/3 */
+  .perfil-refugio-mapa {
+    flex: 1.4;
+    background-color: var(--color-gris-claro);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    color: var(--color-gris);
+    font-size: 1rem;
+  }
 
-    /* El mapa ocupa 1/3 */
-    .perfil-refugio-mapa {
-        flex: 1.4;
-        background-color: var(--color-gris-claro);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 180px;
-        color: var(--color-gris);
-        font-size: 1rem;
-    }
+  .perfil-refugio-seccion {
+    grid-column: 2;
+  }
 
-    .perfil-refugio-seccion {
-        grid-column: 2;
-    }
+  .perfil-refugio-ubicacion {
+    grid-column: 2;
+  }
 
-    .perfil-refugio-ubicacion {
-        grid-column: 2;
-    }
+  .perfil-refugio-publicar {
+    grid-column: 2;
+  }
 
-    .perfil-refugio-publicar {
-        grid-column: 2;
-    }
+  .perfil-editar-mascota {
+    grid-column: 2;
+  }
 
-    .perfil-editar-mascota {
-        grid-column: 2;
-    }
+  /*boton de solicitud de adopcion*/
+  .btn-rechazar:hover,
+  .btn-aceptar:hover {
+    transform: scale(0.98);
+  }
 
-    /*boton de solicitud de adopcion*/
-    .btn-rechazar:hover,
-    .btn-aceptar:hover {
-        transform: scale(0.98);
-    }
-
-
-    .perfil-refugio-nav a:hover,
-    .perfil-refugio-nav a.active {
-        background: var(--color-naranja);
-    }
+  .perfil-refugio-nav a:hover,
+  .perfil-refugio-nav a.active {
+    background: var(--color-naranja);
+  }
 }
 
 /* ===== INLINE EDITING TOGGLES FOR SHELTER PERFILE ===== */
 .perfil-refugio-container:not(.is-editing) .input-value,
 .perfil-refugio-container:not(.is-editing) .perfil-datos-acciones {
-    display: none;
+  display: none;
 }
 
 .perfil-refugio-container.is-editing .static-value,
 .perfil-refugio-container.is-editing .btn-editar {
-    display: none;
+  display: none;
 }
 
 .perfil-refugio-container.is-editing .input-value {
-    display: block;
+  display: block;
 }
 
 .perfil-refugio-container.is-editing li.dato-refugio-item.input-value {
-    display: flex;
+  display: flex;
 }
 
 .perfil-refugio-container.is-editing .perfil-datos-acciones {
-    display: flex;
+  display: flex;
 }
 
 #perfil-refugio-form {
-    flex: 1.6;
-    display: flex;
-    flex-direction: column;
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
 }
 
 #perfil-refugio-form .perfil-refugio-datos-columnas {
-    flex: 1;
+  flex: 1;
 }
 
 .perfil-refugio-ubicacion-content {
-    background: var(--color-fondo);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px var(--color-texto);
-    margin-bottom: 2rem;
-    overflow: hidden;
-    border: 1px solid var(--color-gris-claro);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    padding: 2rem;
-    margin-top: 1rem;
+  background: var(--color-fondo);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--color-texto);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border: 1px solid var(--color-gris-claro);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  padding: 2rem;
+  margin-top: 1rem;
 }
 
 .perfil-refugio-ubicacion-content:hover {
-    box-shadow: 0 6px 20px var(--color-texto);
+  box-shadow: 0 6px 20px var(--color-texto);
 }
 
-
-
 .ubicacion-actual-box {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    background-color: var(--color-fondo);
-    border: 1px solid var(--color-gris-claro);
-    border-left: 5px solid var(--color-naranja-claro);
-    padding: 1.2rem;
-    border-radius: 10px;
-    margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-left: 5px solid var(--color-naranja-claro);
+  padding: 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
 }
 
 .icono-pin-actual {
-    color: var(--color-naranja);
-    background: var(--color-naranja-claro);
-    padding: 8px;
-    border-radius: 50%;
+  color: var(--color-naranja);
+  background: var(--color-naranja-claro);
+  padding: 8px;
+  border-radius: 50%;
 }
 
 .ubicacion-actual-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
 }
 
 .label-ubicacion {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--color-gris);
-    font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-gris);
+  font-weight: 600;
 }
 
 .valor-ubicacion {
-    font-size: 1.05rem;
-    color: var(--color-texto);
-    line-height: 1.4;
+  font-size: 1.05rem;
+  color: var(--color-texto);
+  line-height: 1.4;
 }
 
 .form-ubicacion-premium {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .grupo-input-ubicacion {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    border: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .label-buscar-ubicacion {
-    font-weight: 600;
-    color: var(--color-azul-oscuro);
-    font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-azul-oscuro);
+  font-size: 1rem;
 }
 
 .input-wrapper-premium {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .input-ubicacion-premium {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    border: 2px solid var(--color-gris-claro);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--color-gris-claro);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
 }
 
 .input-ubicacion-premium:focus {
-    outline: none;
-    border-color: var(--color-azul-oscuro);
+  outline: none;
+  border-color: var(--color-azul-oscuro);
 }
 
 .sugerencias-ubicacion-premium {
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    background: var(--color-fondo);
-    list-style: none;
-    padding: 0;
-    margin: 5px 0 0 0;
-    border: 1px solid var(--color-gris-claro);
-    max-height: 250px;
-    overflow-y: auto;
-    width: 100%;
-    top: 100%;
-    left: 0;
-    text-align: left;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px var(--color-texto);
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background: var(--color-fondo);
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  border: 1px solid var(--color-gris-claro);
+  max-height: 250px;
+  overflow-y: auto;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  text-align: left;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px var(--color-texto);
 }
 
 .sugerencias-ubicacion-premium li {
-    padding: 12px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid var(--color-gris-claro);
-    font-size: 0.95rem;
-    color: var(--color-texto);
-    transition: background-color 0.2s ease;
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-gris-claro);
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  transition: background-color 0.2s ease;
 }
 
 .sugerencias-ubicacion-premium li:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .sugerencias-ubicacion-premium li:hover {
-    background-color: var(--color-fondo);
-    color: var(--color-naranja);
+  background-color: var(--color-fondo);
+  color: var(--color-naranja);
 }
 
 .acciones-ubicacion-premium {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
 }
 
 .btn-guardar-premium {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0.8rem 1.8rem;
-    font-size: 1.05rem;
-    border-radius: 20px;
-    background-color: var(--color-azul-oscuro);
-    color: var(--color-fondo);
-    border: none;
-    box-shadow: 0 4px 6px var(--color-texto);
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.8rem 1.8rem;
+  font-size: 1.05rem;
+  border-radius: 20px;
+  background-color: var(--color-azul-oscuro);
+  color: var(--color-fondo);
+  border: none;
+  box-shadow: 0 4px 6px var(--color-texto);
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .btn-guardar-premium:hover:not(:disabled) {
-    background-color: var(--color-naranja);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px var(--color-naranja);
+  background-color: var(--color-naranja);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--color-naranja);
 }
 
 .btn-guardar-premium:disabled {
-    background-color: var(--color-gris-claro);
-    color: var(--color-gris);
-    box-shadow: none;
-    cursor: not-allowed;
-    transform: none;
+  background-color: var(--color-gris-claro);
+  color: var(--color-gris);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 @media (max-width: 768px) {
-    .perfil-refugio-ubicacion-header {
-        padding: 1.2rem;
-    }
+  .perfil-refugio-ubicacion-header {
+    padding: 1.2rem;
+  }
 
-    .perfil-refugio-ubicacion-content {
-        padding: 1.2rem;
-    }
+  .perfil-refugio-ubicacion-content {
+    padding: 1.2rem;
+  }
 
-    .acciones-ubicacion-premium {
-        justify-content: stretch;
-    }
+  .acciones-ubicacion-premium {
+    justify-content: stretch;
+  }
 
-    .btn-guardar-premium {
-        width: 100%;
-        justify-content: center;
-    }
+  .btn-guardar-premium {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===== SECCION: Monitoreo Post-Adopción ===== */
 .monitoreo-subtitle {
-    font-size: 1.1rem;
-    color: var(--color-azul-oscuro);
-    margin: 1.5rem 0 1rem 0;
-    border-bottom: 2px solid var(--color-naranja);
-    padding-bottom: 0.3rem;
-    display: inline-block;
+  font-size: 1.1rem;
+  color: var(--color-azul-oscuro);
+  margin: 1.5rem 0 1rem 0;
+  border-bottom: 2px solid var(--color-naranja);
+  padding-bottom: 0.3rem;
+  display: inline-block;
 }
 
 .monitoreo-lista-encuestas {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .monitoreo-item-encuesta {
-    background: var(--color-fondo);
-    border: 1px solid var(--color-gris-claro);
-    border-radius: 10px;
-    padding: 1.2rem;
-    border-left: 5px solid var(--color-azul);
+  background: var(--color-fondo);
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 10px;
+  padding: 1.2rem;
+  border-left: 5px solid var(--color-azul);
 }
 
 .monitoreo-item-encuesta.encuesta-alerta {
-    border-left-color: var(--color-rojo);
-    background: var(--color-fondo);
+  border-left-color: var(--color-rojo);
+  background: var(--color-fondo);
 }
 
 .encuesta-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .encuesta-header h5 {
-    margin: 0;
-    font-size: 1.1rem;
-    flex: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  flex: 1;
 }
 
 .encuesta-header h5 small {
-    color: var(--color-gris);
-    font-size: 0.9rem;
-    font-weight: normal;
+  color: var(--color-gris);
+  font-size: 0.9rem;
+  font-weight: normal;
 }
 
 .encuesta-etapa {
-    background: var(--color-azul-oscuro);
-    color: var(--color-fondo);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
+  background: var(--color-azul-oscuro);
+  color: var(--color-fondo);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .encuesta-fecha {
-    font-size: 0.9rem;
-    color: var(--color-gris);
-    font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-gris);
+  font-weight: 500;
 }
 
 .encuesta-detalles summary {
-    cursor: pointer;
-    color: var(--color-naranja);
-    font-weight: 600;
-    margin-bottom: 0.8rem;
+  cursor: pointer;
+  color: var(--color-naranja);
+  font-weight: 600;
+  margin-bottom: 0.8rem;
 }
 
 .encuesta-respuestas-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    background: var(--color-fondo);
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px dashed var(--color-gris-claro);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  background: var(--color-fondo);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px dashed var(--color-gris-claro);
 }
 
 .encuesta-respuestas-grid p {
-    margin: 0;
-    font-size: 0.95rem;
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 .encuesta-comentarios {
-    grid-column: 1 / -1;
-    margin-top: 0.5rem;
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
 }
 
 .monitoreo-galeria-fotos {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
 }
 
 .monitoreo-foto-item {
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--color-gris-claro);
-    transition: transform 0.2s;
-    background: var(--color-fondo);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-gris-claro);
+  transition: transform 0.2s;
+  background: var(--color-fondo);
 }
 
 .monitoreo-foto-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 10px var(--color-gris-claro);
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px var(--color-gris-claro);
 }
 
 .foto-link {
-    text-decoration: none;
-    color: var(--color-texto);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  text-decoration: none;
+  color: var(--color-texto);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .monitoreo-img {
-    width: 100%;
-    height: 180px;
-    object-fit: contain;
-    background-color: var(--color-naranja-fondo);
-    border-bottom: 1px solid var(--color-gris-claro);
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  background-color: var(--color-naranja-fondo);
+  border-bottom: 1px solid var(--color-gris-claro);
 }
 
 .monitoreo-doc-placeholder {
-    width: 100%;
-    height: 180px;
-    background: var(--color-naranja-claro);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid var(--color-gris-claro);
+  width: 100%;
+  height: 180px;
+  background: var(--color-naranja-claro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--color-gris-claro);
 }
 
 .monitoreo-doc-placeholder .material-symbols-outlined {
-    font-size: 3rem;
-    color: var(--color-naranja);
+  font-size: 3rem;
+  color: var(--color-naranja);
 }
 
 .monitoreo-foto-info {
-    padding: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    font-size: 0.9rem;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
 }
 
 .monitoreo-foto-info strong {
-    color: var(--color-azul);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  color: var(--color-azul);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .text-muted {
-    margin-top: 1rem;
-    color: var(--color-gris);
+  margin-top: 1rem;
+  color: var(--color-gris);
 }
 
 .monitoreo-foto-tipo {
-    font-size: 0.8rem;
-    color: var(--color-naranja);
-    font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--color-naranja);
+  font-weight: 600;
 }
 
 /* ===== Modal Confirmar Eliminar ===== */
@@ -1251,7 +1275,9 @@ fieldset.perfil-refugio-datos-columnas {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
   font-family: var(--fuente-cuerpo);
 }
 
