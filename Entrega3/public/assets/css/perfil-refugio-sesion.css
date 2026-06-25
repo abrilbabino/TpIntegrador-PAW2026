@@ -706,8 +706,6 @@ fieldset.perfil-refugio-datos-columnas {
         grid-template-columns: 200px 1fr;
         grid-column: 1;
         grid-row: 2 / span 5;
-        position: sticky;
-        top: 1rem;
     }
 
     /* Contenedor interno con datos + mapa lado a lado */
