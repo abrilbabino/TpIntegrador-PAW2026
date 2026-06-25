@@ -2,6 +2,7 @@
 
 namespace Paw\App\Models;
 use Paw\Core\Model;
+use Paw\App\Helpers\GCSHelper;
 class User extends Model
 {
     protected $table = 'usuario';
@@ -376,22 +377,19 @@ class User extends Model
     {
         $errores = [];
         $eliminarFoto = ($postData['eliminar_foto'] ?? '0') === '1';
-        $pathFisicoBase = __DIR__ . '/../../../public/assets/img/';
-        
+
         if ($eliminarFoto) {
             $currentUser = $this->findById($userId);
             if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                if (file_exists($pathFisico) && is_file($pathFisico)) {
-                    unlink($pathFisico);
-                }
+                GCSHelper::borrar($currentUser['foto_perfil']);
             }
             $fieldsUsuario['foto_perfil'] = null;
+
         } else {
             if ($archivo && $archivo['error'] === UPLOAD_ERR_OK) {
                 $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
-                
-                // Validar MIME y que sea una imagen real
+
+                // Validar MIME
                 $esImagenValida = false;
                 if (file_exists($archivo['tmp_name'])) {
                     $mime = mime_content_type($archivo['tmp_name']);
@@ -402,35 +400,27 @@ class User extends Model
                 }
 
                 if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible (solo JPG, PNG, WEBP, GIF).';
+                    $errores['foto_perfil_o_logo'] = 'El archivo subido no es una imagen válida o su formato no es compatible.';
                     return $errores;
                 }
-                
-                $nombreFinal = uniqid('perfil_', true) . '.' . $extension;
-                $directorioDestino = $pathFisicoBase . 'uploads/';
-                
-                if (!is_dir($directorioDestino)) {
-                    mkdir($directorioDestino, 0777, true);
-                }
 
-                $rutaAbsoluta = $directorioDestino . $nombreFinal;
-                $rutaRelativa = 'uploads/' . $nombreFinal;
-
-                if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
+                try {
+                    // Borrar foto anterior si existe
                     $currentUser = $this->findById($userId);
                     if ($currentUser && !empty($currentUser['foto_perfil'])) {
-                        $pathFisico = $pathFisicoBase . $currentUser['foto_perfil'];
-                        if (file_exists($pathFisico) && is_file($pathFisico)) {
-                            unlink($pathFisico);
-                        }
+                        GCSHelper::borrar($currentUser['foto_perfil']);
                     }
-                    $fieldsUsuario['foto_perfil'] = $rutaRelativa;
-                } else {
-                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil.';
+
+                    // Subir nueva foto
+                    $url = GCSHelper::subir($archivo, 'perfil');
+                    $fieldsUsuario['foto_perfil'] = $url;
+
+                } catch (\Exception $e) {
+                    $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. ' . $e->getMessage();
                 }
             }
         }
-        
+
         return $errores;
     }
 }

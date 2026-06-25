@@ -8,6 +8,7 @@ use Paw\App\Models\Adoptante;
 use Paw\App\Models\Refugio;
 use Paw\App\Models\Favorito;
 use Paw\App\Models\MascotaCollection;
+use Paw\App\Helpers\GCSHelper;
  
 class UserController extends Controller
 {
@@ -327,30 +328,20 @@ class UserController extends Controller
         }
 
         if ($svgValidoParaMover) {
-            $nombreFinalSvg = uniqid('svg_mascota_', true) . '.svg';
-            $directorioSvg  = __DIR__ . '/../../../public/assets/svg/uploads/';
-            if (!is_dir($directorioSvg)) {
-                mkdir($directorioSvg, 0777, true);
-            }
-            if (move_uploaded_file($svg['tmp_name'], $directorioSvg . $nombreFinalSvg)) {
-                $svgRelativa = 'uploads/' . $nombreFinalSvg;
-            } else {
-                $erroresMascota['svg'] = 'No se pudo guardar el SVG.';
+            try {
+                $svgRelativa = GCSHelper::subir($svg, 'mascotas_svg');
+            } catch (\Exception $e) {
+                $erroresMascota['svg'] = 'No se pudo guardar el SVG: ' . $e->getMessage();
                 $this->cargarPerfilRefugio($userSession, [], [], $erroresMascota, $post);
                 return;
             }
         }
 
         if ($fotoValidaParaMover) {
-            $nombreFinal = uniqid('mascota_', true) . '.' . $extension;
-            $directorio  = __DIR__ . '/../../../public/assets/img/uploads/';
-            if (!is_dir($directorio)) {
-                mkdir($directorio, 0777, true);
-            }
-            if (move_uploaded_file($foto['tmp_name'], $directorio . $nombreFinal)) {
-                $imagenRelativa = 'uploads/' . $nombreFinal;
-            } else {
-                $erroresMascota['foto'] = 'No se pudo guardar la imagen.';
+            try {
+                $imagenRelativa = GCSHelper::subir($foto, 'mascotas');
+            } catch (\Exception $e) {
+                $erroresMascota['foto'] = 'No se pudo guardar la imagen: ' . $e->getMessage();
                 $this->cargarPerfilRefugio($userSession, [], [], $erroresMascota, $post);
                 return;
             }

@@ -77,8 +77,9 @@ class PAWVisualizacion {
             class: "link-imagen"
         });
 
+        const imgSrc = mascota.imagen && mascota.imagen.startsWith('http') ? mascota.imagen : `/assets/img/${mascota.imagen || 'default-pet.jpg'}`;
         const img = PAW.nuevoElemento("img", "", {
-            src: `/assets/img/${mascota.imagen || 'default-pet.jpg'}`,
+            src: imgSrc,
             alt: "",
         });
 
@@ -139,8 +140,9 @@ class PAWVisualizacion {
         const articulo = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio" });
 
         const figure = PAW.nuevoElemento("figure", "", { class: "tarjeta-refugio-imagen" });
+        const imgSrc = refugio.imagen && refugio.imagen.startsWith('http') ? refugio.imagen : `/assets/img/${refugio.imagen || 'default-refugio.jpg'}`;
         const img = PAW.nuevoElemento("img", "", {
-            src: `/assets/img/${refugio.imagen || 'default-refugio.jpg'}`,
+            src: imgSrc,
             alt: refugio.nombre_institucion || "Refugio"
         });
         figure.appendChild(img);

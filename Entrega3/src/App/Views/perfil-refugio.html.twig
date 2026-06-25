@@ -8,7 +8,7 @@
     <section class="perfil-refugio-header">
         <figure class="perfil-avatar-wrapper perfil-refugio-avatar">
             {% set fotoPerfil = user.foto_perfil|default('') %}
-            {% set avatarUrl = fotoPerfil is not empty ? '/assets/img/' ~ fotoPerfil : '' %}
+            {% set avatarUrl = fotoPerfil is not empty ? (fotoPerfil starts with 'http' ? fotoPerfil : '/assets/img/' ~ fotoPerfil) : '' %}
             
             <span id="preview-placeholder" class="avatar-placeholder {{ avatarUrl is not empty ? 'hidden' : '' }}">
                 <span class="material-symbols-outlined">person</span>
@@ -253,15 +253,18 @@
                                 {% else %}
                                     <ul class="monitoreo-galeria-fotos">
                                         {% for foto in datos.fotos %}
-                                            <li class="monitoreo-foto-item">
-                                                <a href="/{{ foto.url|trim('/') }}" target="_blank" class="foto-link">
+                                            {% set docUrl = foto.url starts with 'http' ? foto.url : '/' ~ foto.url|trim('/') %}
+                                            <li class="foto-item">
+                                                <a href="{{ docUrl }}" target="_blank" class="foto-link">
                                                     <figure class="monitoreo-foto-figure">
                                                         {% if foto.tipo == 'certificado_med' %}
                                                             <span class="monitoreo-doc-placeholder">
                                                                 <span class="material-symbols-outlined">description</span>
                                                             </span>
                                                         {% else %}
-                                                            <img src="/{{ foto.url|trim('/') }}" alt="Seguimiento {{ foto.mascota_nombre }}" class="monitoreo-img">
+                                                            <figure class="monitoreo-preview">
+                                                                <img src="{{ docUrl }}" alt="Seguimiento {{ foto.mascota_nombre }}" class="monitoreo-img">
+                                                            </figure>
                                                         {% endif %}
                                                         <figcaption class="monitoreo-foto-info">
                                                             <span class="monitoreo-foto-tipo">{{ foto.tipo == 'certificado_med' ? 'Certificado Médico' : 'Foto' }}</span>

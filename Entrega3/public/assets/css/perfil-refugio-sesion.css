@@ -217,10 +217,12 @@ fieldset.perfil-refugio-datos-columnas {
 /* ===== SECCIONES ===== */
 
 #sec-solicitudes-adopcion,
+#sec-monitoreo,
 #sec-ubicacion,
 #sec-publicar,
+#sec-mascotas-adoptadas,
 .sec-editar-mascota {
-    scroll-margin-top: 180px;
+    scroll-margin-top: 220px;
 }
 
 .perfil-refugio-seccion {

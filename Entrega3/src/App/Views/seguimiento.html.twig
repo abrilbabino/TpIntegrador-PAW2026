@@ -8,7 +8,8 @@
     <section class="seguimiento-main" {% if errorUpload is not empty %}data-error-upload="true"{% endif %}>
         <article class="pet-card">
             <figure class="imagen-mascota">
-                <img src="/assets/img/{{ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') }}">
+                {% set imgMascotaUrl = mascotaSeleccionada.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascotaSeleccionada.fields.imagen : '/assets/img/' ~ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') %}
+                <img src="{{ imgMascotaUrl }}" alt="{{ mascotaSeleccionada.fields.nombre }}">
             </figure>
             <header class="pet-card-info">
                 <h1>{{ mascotaSeleccionada.fields.nombre|default('') }}</h1>

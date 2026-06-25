@@ -197,7 +197,8 @@
             {% for foto in fotos %}
                 <li class="foto-item">
                     <figure>
-                        <img src="/{{ foto.url }}" alt="Foto extra de la mascota" class="foto-extra-preview">
+                        {% set extraUrl = foto.url starts with 'http' ? foto.url : '/' ~ foto.url %}
+                        <img src="{{ extraUrl }}" alt="Foto extra de la mascota" class="foto-extra-preview">
                         <figcaption>
                             <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
                                 <input type="hidden" name="id" value="{{ foto.id }}">

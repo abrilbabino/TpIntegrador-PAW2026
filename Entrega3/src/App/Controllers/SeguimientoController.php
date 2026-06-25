@@ -6,6 +6,7 @@ use Paw\Core\Controller;
 use Paw\App\Models\EncuestaAdaptacion;
 use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
+use Paw\App\Helpers\GCSHelper;
 
 class SeguimientoController extends Controller
 {
@@ -144,31 +145,23 @@ class SeguimientoController extends Controller
             exit;
         }
 
-        $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $nombreFinal = 'seguimiento_' . $mascotaId . '_' . time() . '.' . $extension;
-        
-        $directorioDestino = __DIR__ . '/../../../public/assets/img/uploads/';
-        if (!is_dir($directorioDestino)) {
-            mkdir($directorioDestino, 0777, true);
-        }
-
-        $rutaAbsoluta = $directorioDestino . $nombreFinal;
-        $rutaRelativa = '/assets/img/uploads/' . $nombreFinal;
-
-        if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
+        try {
+            $url = GCSHelper::subir($archivo, 'seguimiento_mascotas');
             $qb = $this->model->getQueryBuilder();
             
             if ($tipoArchivo === 'comprobante' && $registroId) {
                 // Comprobante de registro sanitario
-                $qb->actualizarArchivoRegistroSanitario($registroId, $rutaRelativa, date('Y-m-d'));
+                $qb->actualizarArchivoRegistroSanitario($registroId, $url, date('Y-m-d'));
             } else {
                 // Foto o Certificado General
                 $qb->insert('media_mascota', [
                     'mascota_id' => $mascotaId,
                     'tipo' => $tipoArchivo === 'foto' ? 'foto_seguimiento' : 'certificado_med',
-                    'url' => $rutaRelativa
+                    'url' => $url
                 ]);
             }
+        } catch (\Exception $e) {
+            $this->request->setSession('error_upload', 'Hubo un error al subir el archivo al servidor.');
         }
 
         header('Location: /seguimiento?id=' . $mascotaId);

@@ -10,6 +10,7 @@ use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
 use Paw\Core\Exceptions\InvalidValueFormatException;
 use Paw\Core\Exceptions\MascotaNotFoundException;
+use Paw\App\Helpers\GCSHelper;
 
 
 class MascotaController extends Controller
@@ -334,15 +335,10 @@ class MascotaController extends Controller
         }
 
         if ($svgValidoParaMover) {
-            $nombreFinalSvg = uniqid('svg_mascota_', true) . '.svg';
-            $directorioSvg  = __DIR__ . '/../../../public/assets/svg/uploads/';
-            if (!is_dir($directorioSvg)) {
-                mkdir($directorioSvg, 0777, true);
-            }
-            if (move_uploaded_file($svg['tmp_name'], $directorioSvg . $nombreFinalSvg)) {
-                $svgRelativa = 'uploads/' . $nombreFinalSvg;
-            } else {
-                $errores['svg'] = 'No se pudo guardar el SVG.';
+            try {
+                $svgRelativa = GCSHelper::subir($svg, 'mascotas_svg');
+            } catch (\Exception $e) {
+                $errores['svg'] = 'No se pudo guardar el SVG: ' . $e->getMessage();
                 $tamanos       = $mascotaCollection->getTamanos();
                 $especies      = $mascotaCollection->getEspecies();
                 $temperamentos = $mascotaCollection->getTemperamentos();
@@ -364,15 +360,10 @@ class MascotaController extends Controller
         // else: conserva $svgRelativa con el valor actual
 
         if ($fotoValidaParaMover) {
-            $nombreFinal = uniqid('mascota_', true) . '.' . $extension;
-            $directorio  = __DIR__ . '/../../../public/assets/img/uploads/';
-            if (!is_dir($directorio)) {
-                mkdir($directorio, 0777, true);
-            }
-            if (move_uploaded_file($foto['tmp_name'], $directorio . $nombreFinal)) {
-                $imagenRelativa = 'uploads/' . $nombreFinal;
-            } else {
-                $errores['foto'] = 'No se pudo guardar la imagen.';
+            try {
+                $imagenRelativa = GCSHelper::subir($foto, 'mascotas');
+            } catch (\Exception $e) {
+                $errores['foto'] = 'No se pudo guardar la imagen: ' . $e->getMessage();
                 $tamanos       = $mascotaCollection->getTamanos();
                 $especies      = $mascotaCollection->getEspecies();
                 $temperamentos = $mascotaCollection->getTemperamentos();
@@ -444,23 +435,21 @@ class MascotaController extends Controller
         }
 
         // 3. Procesar el archivo
-        $extension = strtolower(pathinfo($archivo['name'] ?? '', PATHINFO_EXTENSION));
-        $nombreFinal = 'media_' . $mascotaId . '_' . uniqid() . '.' . $extension;
-        $directorio = __DIR__ . '/../../../public/assets/img/uploads/';
-
-        if (!is_dir($directorio)) {
-            mkdir($directorio, 0777, true);
-        }
-
-        if (move_uploaded_file($archivo['tmp_name'], $directorio . $nombreFinal)) {
+        try {
+            $url = GCSHelper::subir($archivo, 'media_mascotas');
             $db = $this->model->getQueryBuilder();
+            
+            // Determinar si es foto o video
+            $esVideo = str_starts_with($archivo['type'] ?? '', 'video/');
+            
             $db->insert('media_mascota', [
                 'mascota_id' => $mascotaId,
-                'tipo'       => 'foto',
-                'url'        => 'assets/img/uploads/' . $nombreFinal
+                'tipo'       => $esVideo ? 'video' : 'foto',
+                'url'        => $url
             ]);
             header('Location: /mascota/editar?id=' . $mascotaId . '&upload=success');
-        } else {
+        } catch (\Exception $e) {
+            error_log("Error subirArchivoMascota: " . $e->getMessage());
             header('Location: /mascota/editar?id=' . $mascotaId . '&error=upload_failed');
         }
         exit;
@@ -495,10 +484,13 @@ class MascotaController extends Controller
 
         $svgRelativo = $mascota->fields['svg'] ?? '';
         if ($svgRelativo !== '') {
-            $path = __DIR__ . '/../../../public/assets/svg/' . ltrim($svgRelativo, '/');
-            // Validamos que sea solo dentro de uploads o assets
-            if (file_exists($path) && strpos($svgRelativo, '..') === false && is_file($path)) {
-                unlink($path);
+            if (GCSHelper::esUrlBucket($svgRelativo)) {
+                GCSHelper::borrar($svgRelativo);
+            } else {
+                $path = __DIR__ . '/../../../public/assets/svg/' . ltrim($svgRelativo, '/');
+                if (file_exists($path) && strpos($svgRelativo, '..') === false && is_file($path)) {
+                    @unlink($path);
+                }
             }
 
             // Actualizar la base de datos a null
@@ -548,10 +540,14 @@ public function eliminarFoto() {
     }
 
     $url = trim((string) ($foto['url'] ?? ''));
-    if ($url !== '' && strpos($url, '..') === false) {
-        $path = __DIR__ . '/../../../public/' . ltrim($url, '/');
-        if (is_file($path)) {
-            @unlink($path);
+    if ($url !== '') {
+        if (GCSHelper::esUrlBucket($url)) {
+            GCSHelper::borrar($url);
+        } elseif (strpos($url, '..') === false) {
+            $path = __DIR__ . '/../../../public/' . ltrim($url, '/');
+            if (is_file($path)) {
+                @unlink($path);
+            }
         }
     }
 
@@ -747,23 +743,13 @@ public function eliminarFoto() {
             return;
         }
 
-        $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $nombreFinal = 'certificado_reg_' . $registro_id . '_' . time() . '.' . $extension;
-        
-        $directorioDestino = __DIR__ . '/../../../public/assets/img/uploads/';
-        if (!is_dir($directorioDestino)) {
-            mkdir($directorioDestino, 0777, true);
-        }
-
-        $rutaAbsoluta = $directorioDestino . $nombreFinal;
-        $rutaRelativa = '/assets/img/uploads/' . $nombreFinal;
-
-        if (move_uploaded_file($archivo['tmp_name'], $rutaAbsoluta)) {
+        try {
+            $url = GCSHelper::subir($archivo, 'libreta_mascotas');
             $regSanitario = $this->loadCollection(RegistroSanitarioCollection::class);
-            $regSanitario->completarRegistroSanitario($registro_id, $rutaRelativa, date('Y-m-d'));
-        } else {
-            $motivo = 'move_fail_' . (is_writable($directorioDestino) ? 'writable' : 'not_writable');
-            file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] move_uploaded_file failed. tmp: " . $archivo['tmp_name'] . " dest: " . $rutaAbsoluta . " is_writable: " . (is_writable($directorioDestino) ? 'yes' : 'no') . "\n", FILE_APPEND);
+            $regSanitario->completarRegistroSanitario($registro_id, $url, date('Y-m-d'));
+        } catch (\Exception $e) {
+            $motivo = 'gcs_upload_failed';
+            file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] GCSHelper::subir failed: " . $e->getMessage() . "\n", FILE_APPEND);
             header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id . '&motivo=' . $motivo);
             return;
         }
