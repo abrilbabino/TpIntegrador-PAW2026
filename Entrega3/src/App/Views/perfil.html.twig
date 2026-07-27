@@ -160,8 +160,9 @@
                     <li class="perfil-card">
                         <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota') }}">
                             <figure class="perfil-card-img">
+                                {% set favImagenUrl = fav.imagen|default('default-pet.jpg') starts with 'http' ? fav.imagen : '/assets/img/' ~ fav.imagen|default('default-pet.jpg') %}
                                 <img
-                                    src="/assets/img/{{ fav.imagen|default('default-pet.jpg') }}"
+                                    src="{{ favImagenUrl }}"
                                     alt="{{ fav.nombre|default('Mascota') }}"
                                 />
                             </figure>
