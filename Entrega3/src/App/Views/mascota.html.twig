@@ -63,16 +63,44 @@
                          onerror="this.parentElement.style.display='none'">
                 </figure>
             {% endif %}
-
                 <a href="mascota/libreta?id={{ mascota.fields.id|default('') }}" class="libreta">
                     <span class="material-symbols-outlined">clinical_notes</span>
                 </a>
                 <form method="POST" action="/favorito" class="form-favorito">
-                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">    
+                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
                     <button type="submit" class="boton-favorito {{ esFavorito is defined and esFavorito ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
                         <span class="material-symbols-outlined">favorite</span>
                     </button>
                 </form>
+
+                {# Botón compartir con dropdown (a la derecha del corazón) #}
+                <nav class="compartir-wrapper"
+                     data-nombre="{{ mascota.fields.nombre|default('esta mascota') }}"
+                     data-especie="{{ mascota.fields.especie|default('animal')|capitalize }}">
+                    <button type="button" class="boton-compartir" aria-label="Compartir" aria-expanded="false">
+                        <span class="material-symbols-outlined">ios_share</span>
+                    </button>
+                    <menu class="compartir-dropdown" hidden>
+                        <li>
+                            <a class="compartir-opcion compartir-wpp" href="#" target="_blank" rel="noopener noreferrer">
+                                <img src="/assets/svg/whatsapp.svg" alt="WhatsApp" class="icono-redes">
+                                WhatsApp
+                            </a>
+                        </li>
+                        <li>
+                            <button type="button" class="compartir-opcion compartir-ig">
+                                <img src="/assets/svg/instagram.svg" alt="Instagram" class="icono-redes">
+                                Instagram
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="compartir-opcion compartir-tt">
+                                <img src="/assets/svg/tiktok.svg" alt="TikTok" class="icono-redes">
+                                TikTok
+                            </button>
+                        </li>
+                    </menu>
+                </nav>
             </header>
 
             {% set esp = mascota.fields.especie|default('Desconocido')|capitalize %}
@@ -121,6 +149,7 @@
                 </figcaption>
             </a>
 
+
             <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
         </aside>
     </article>
@@ -128,4 +157,76 @@
 
 {% block scripts %}
     <script src="/assets/js/mascota.js"></script>
+    <script>
+    (function () {
+        var wrapper = document.querySelector('.compartir-wrapper');
+        if (!wrapper) return;
+
+        var nombre  = wrapper.dataset.nombre;
+        var especie = wrapper.dataset.especie;
+        var url     = window.location.href;
+        var msg     = '¡Mirá a ' + nombre + ' buscando hogar! Es un/a ' + especie + ' en adopción en PawMap. \nEntrá acá para conocerlo/a mejor:\n' + url;
+        var btn      = wrapper.querySelector('.boton-compartir');
+        var dropdown = wrapper.querySelector('.compartir-dropdown');
+
+        // Abrir/cerrar dropdown
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var abierto = !dropdown.hidden;
+            dropdown.hidden = abierto;
+            btn.setAttribute('aria-expanded', String(!abierto));
+        });
+
+        // Cerrar al hacer click afuera
+        document.addEventListener('click', function () {
+            dropdown.hidden = true;
+            btn.setAttribute('aria-expanded', 'false');
+        });
+        dropdown.addEventListener('click', function (e) { e.stopPropagation(); });
+
+        // WhatsApp
+        var wppLink = wrapper.querySelector('.compartir-wpp');
+        wppLink.href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+
+        function abrirApp(label, appUrl) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(msg).then(function () {
+                    mostrarToast('¡Mensaje copiado! Abriendo ' + label + '... 📋');
+                    setTimeout(function() {
+                        window.open(appUrl, '_blank');
+                    }, 1500);
+                }).catch(function () {
+                    mostrarToast('No se pudo copiar (requiere HTTPS). URL: ' + url);
+                    window.open(appUrl, '_blank');
+                });
+            } else {
+                mostrarToast('No se pudo copiar automáticamente.');
+                window.open(appUrl, '_blank');
+            }
+            dropdown.hidden = true;
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        wrapper.querySelector('.compartir-ig').addEventListener('click', function (e) { 
+            e.preventDefault();
+            abrirApp('Instagram', 'https://instagram.com'); 
+        });
+        wrapper.querySelector('.compartir-tt').addEventListener('click', function (e) { 
+            e.preventDefault();
+            abrirApp('TikTok', 'https://tiktok.com'); 
+        });
+
+        function mostrarToast(texto) {
+            var toast = document.createElement('div');
+            toast.className = 'compartir-toast';
+            toast.textContent = texto;
+            document.body.appendChild(toast);
+            setTimeout(function () { toast.classList.add('compartir-toast--visible'); }, 10);
+            setTimeout(function () {
+                toast.classList.remove('compartir-toast--visible');
+                setTimeout(function () { toast.remove(); }, 400);
+            }, 3000);
+        }
+    })();
+    </script>
 {% endblock %}
