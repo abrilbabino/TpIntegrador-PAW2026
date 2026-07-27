@@ -730,7 +730,7 @@ public function eliminarFoto() {
         }
 
         $archivo = $this->request->file('archivo');
-        file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] FILES: " . print_r($_FILES, true) . " POST: " . print_r($_POST, true) . " \n", FILE_APPEND);
+
         if (!$archivo || $archivo['error'] !== UPLOAD_ERR_OK) {
             $errCode = $archivo ? $archivo['error'] : 'no_file';
             header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id . '&motivo=' . $errCode);
@@ -743,7 +743,7 @@ public function eliminarFoto() {
             $regSanitario->completarRegistroSanitario($registro_id, $url, date('Y-m-d'));
         } catch (\Exception $e) {
             $motivo = 'gcs_upload_failed';
-            file_put_contents(__DIR__ . '/../../../logs/debug_carga.log', "[" . date('Y-m-d H:i:s') . "] GCSHelper::subir failed: " . $e->getMessage() . "\n", FILE_APPEND);
+
             header('Location: /mascota/libreta?id=' . $mascota_id . '&error=error_carga&registro_id=' . $registro_id . '&motivo=' . $motivo);
             return;
         }
