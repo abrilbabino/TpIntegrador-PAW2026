@@ -6,8 +6,8 @@ namespace Paw\App\Models;
 
 class Cirugia extends RegistroSanitario
 {
-    public function getIconoHtml(): string
+    public function getIcono(): string
     {
-        return '<span class="material-symbols-outlined">surgical</span>';
+        return 'surgical';
     }
 }

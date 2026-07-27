@@ -198,7 +198,6 @@ class PAWVisualizacion {
         const figure = PAW.nuevoElemento("figure", "", { class: `card-icon-container ${iconClass}` });
         
         let iconName = registro.icono || "medical_services";
-        iconName = iconName.replace(/<[^>]*>/g, '').trim();
         if (!iconName) iconName = "medical_services";
 
         const icon = PAW.nuevoElemento("span", iconName, { class: "material-symbols-outlined" });

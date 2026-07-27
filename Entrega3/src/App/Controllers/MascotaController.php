@@ -638,7 +638,7 @@ public function eliminarFoto() {
                 'observaciones'    => $registro->fields['observaciones'],
                 'anio'             => $anio,
                 'mes'              => $mes,
-                'icono'            => $registro->getIconoHtml()
+                'icono'            => $registro->getIcono()
             ];
         }
 
