@@ -10,13 +10,7 @@ class MensajeCollection extends Model
 
     public function getMensajesPorSolicitud(int $solicitudId): array
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT m.*, r.nombre_usuario as remitente_nombre, r.rol as remitente_rol 
-                FROM mensaje m 
-                JOIN usuario r ON m.remitente_id = r.id 
-                WHERE m.solicitud_id = :solicitud_id 
-                ORDER BY m.fecha_envio ASC";
-        $mensajesDB = $qb->rawQuery($sql, [':solicitud_id' => $solicitudId]);
+        $mensajesDB = $this->queryBuilder->obtenerMensajesPorSolicitud($solicitudId);
 
         $mensajes = [];
         foreach ($mensajesDB as $row) {
@@ -44,23 +38,12 @@ class MensajeCollection extends Model
 
     public function getUnreadCount(int $usuarioId): int
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE destinatario_id = :destinatario_id AND leido = false";
-        $count = $qb->rawQueryValue($sql, [':destinatario_id' => $usuarioId]);
-
-        return (int)$count;
+        return $this->queryBuilder->contarMensajesNoLeidos($usuarioId);
     }
 
     public function getUnreadCountBySolicitud(int $solicitudId, int $usuarioId): int
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE solicitud_id = :solicitud_id AND destinatario_id = :destinatario_id AND leido = false";
-        $count = $qb->rawQueryValue($sql, [
-            ':solicitud_id' => $solicitudId,
-            ':destinatario_id' => $usuarioId
-        ]);
-
-        return (int)$count;
+        return $this->queryBuilder->contarMensajesNoLeidosPorSolicitud($solicitudId, $usuarioId);
     }
 
     public function guardar(Mensaje $mensaje)

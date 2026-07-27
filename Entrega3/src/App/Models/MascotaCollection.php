@@ -196,13 +196,7 @@ class MascotaCollection extends Model
 
     public function obtenerMascotasApiData(array $favoritosIds = []): array
     {
-        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, m.tamano, m.temperamento, m.especie, m.refugio_id, 
-                       u.provincia, u.ciudad
-                FROM mascota m
-                LEFT JOIN ubicacion u ON m.refugio_id = u.refugio_id
-                WHERE m.estado_adopcion = 'DISPONIBLE'";
-
-        $rows = $this->queryBuilder->rawQuery($sql);
+        $rows = $this->queryBuilder->obtenerMascotasDisponiblesConUbicacion();
 
         $mascotasData = [];
         foreach ($rows as $row) {

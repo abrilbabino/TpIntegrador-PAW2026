@@ -392,6 +392,147 @@ class QueryBuilder
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
     }
+
+    public function obtenerFavoritosPorAdoptante(string $tabla, int $adoptanteId): array
+    {
+        $sql = "SELECT f.id AS favorito_id, m.*
+                FROM {$tabla} f
+                INNER JOIN mascota m ON m.id = f.mascota_id
+                WHERE f.adoptante_id = :adoptante_id
+                  AND m.estado_adopcion = 'DISPONIBLE'
+                ORDER BY f.id DESC";
+
+        return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
+    }
+
+    public function eliminarFavorito(string $tabla, int $favoritoId, int $adoptanteId): bool
+    {
+        $sql = "DELETE FROM {$tabla} WHERE id = :id AND adoptante_id = :adoptante_id";
+        $sentencia = $this->pdo->prepare($sql);
+        $sentencia->bindValue(':id', $favoritoId, PDO::PARAM_INT);
+        $sentencia->bindValue(':adoptante_id', $adoptanteId, PDO::PARAM_INT);
+        $sentencia->execute();
+
+        return $sentencia->rowCount() > 0;
+    }
+
+    public function obtenerMensajesPorSolicitud(int $solicitudId): array
+    {
+        $sql = "SELECT m.*, r.nombre_usuario as remitente_nombre, r.rol as remitente_rol
+                FROM mensaje m
+                JOIN usuario r ON m.remitente_id = r.id
+                WHERE m.solicitud_id = :solicitud_id
+                ORDER BY m.fecha_envio ASC";
+
+        return $this->rawQuery($sql, [':solicitud_id' => $solicitudId]);
+    }
+
+    public function contarMensajesNoLeidos(int $usuarioId): int
+    {
+        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE destinatario_id = :destinatario_id AND leido = false";
+        return (int) $this->rawQueryValue($sql, [':destinatario_id' => $usuarioId]);
+    }
+
+    public function contarMensajesNoLeidosPorSolicitud(int $solicitudId, int $usuarioId): int
+    {
+        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE solicitud_id = :solicitud_id AND destinatario_id = :destinatario_id AND leido = false";
+        return (int) $this->rawQueryValue($sql, [
+            ':solicitud_id' => $solicitudId,
+            ':destinatario_id' => $usuarioId,
+        ]);
+    }
+
+    public function obtenerMascotasDisponiblesConUbicacion(): array
+    {
+        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, m.tamano, m.temperamento, m.especie, m.refugio_id,
+                       u.provincia, u.ciudad
+                FROM mascota m
+                LEFT JOIN ubicacion u ON m.refugio_id = u.refugio_id
+                WHERE m.estado_adopcion = 'DISPONIBLE'";
+
+        return $this->rawQuery($sql);
+    }
+
+    public function obtenerRefugioConUbicacion(int $id): array|false
+    {
+        $sql = "SELECT r.*, u.ciudad, u.provincia, u.direccion
+                FROM refugio r
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id
+                WHERE r.usuario_id = :id";
+
+        $resultados = $this->rawQuery($sql, [':id' => $id]);
+        return $resultados[0] ?? false;
+    }
+
+    public function obtenerEncuestasPorRefugio(int $refugioId): array
+    {
+        $sql = "SELECT e.*, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre, u.contacto as adoptante_contacto
+                FROM encuesta_adopcion e
+                JOIN mascota m ON e.mascota_id = m.id
+                JOIN usuario u ON e.adoptante_id = u.id
+                LEFT JOIN adoptante a ON a.usuario_id = u.id
+                WHERE m.refugio_id = :rid
+                ORDER BY e.fecha_encuesta DESC";
+
+        return $this->rawQuery($sql, [':rid' => $refugioId]);
+    }
+
+    public function obtenerFotosSeguimientoPorRefugio(int $refugioId): array
+    {
+        $sql = "SELECT
+                    md.id, md.tipo, md.url,
+                    m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
+                FROM media_mascota md
+                JOIN mascota m ON md.mascota_id = m.id
+                LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
+                LEFT JOIN usuario u ON s.adoptante_id = u.id
+                LEFT JOIN adoptante a ON a.usuario_id = u.id
+                WHERE m.refugio_id = :rid AND md.tipo IN ('foto_seguimiento', 'certificado_med', 'certificado_vac')
+
+                UNION ALL
+
+                SELECT
+                    rs.id, CASE WHEN LOWER(rs.tipo) = 'vacuna' THEN 'certificado_vac' ELSE 'certificado_med' END as tipo, rs.archivo_adjunto as url,
+                    m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
+                FROM registro_sanitario rs
+                JOIN mascota m ON rs.mascota_id = m.id
+                LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
+                LEFT JOIN usuario u ON s.adoptante_id = u.id
+                LEFT JOIN adoptante a ON a.usuario_id = u.id
+                WHERE m.refugio_id = :rid AND rs.archivo_adjunto IS NOT NULL
+
+                ORDER BY id DESC";
+
+        return $this->rawQuery($sql, [':rid' => $refugioId]);
+    }
+
+    public function obtenerTodosRefugiosConAdoptables(string $tabla): array
+    {
+        $sql = "SELECT r.*, u.ciudad, u.provincia,
+                       COALESCE(md.adoptables, 0) as adoptables_disponibles
+                FROM {$tabla} r
+                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id
+                LEFT JOIN (
+                    SELECT refugio_id, COUNT(id) as adoptables
+                    FROM mascota
+                    WHERE estado_adopcion = 'DISPONIBLE'
+                    GROUP BY refugio_id
+                ) md ON r.usuario_id = md.refugio_id
+                ORDER BY r.nombre_institucion ASC";
+
+        return $this->rawQuery($sql);
+    }
+
+    public function obtenerPreguntasTestCompatibilidad(): array
+    {
+        $sql = "SELECT p.nombre AS pregunta_nombre, p.titulo AS pregunta_titulo, o.valor, o.etiqueta, o.subtitulo, o.emoji
+                FROM test_compatibilidad_pregunta p
+                LEFT JOIN test_compatibilidad_opcion o ON p.id = o.pregunta_id
+                ORDER BY p.orden, o.orden";
+
+        return $this->rawQuery($sql);
+    }
+
     /**
      * Inserta un registro en la tabla indicada.
      * @return string|false El ID del registro insertado o false si falla.
@@ -537,6 +678,30 @@ class QueryBuilder
             throw $e;
         }
     }
+
+    public function procesarSolicitudAdopcion(string $tabla, int $solicitudId, string $nuevoEstado, ?int $mascotaId, string $fecha): void
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $this->update($tabla, [
+                'estado' => $nuevoEstado,
+                'fecha_aceptacion' => $fecha
+            ], ['id' => $solicitudId]);
+
+            if ($mascotaId !== null) {
+                $this->update('mascota', [
+                    'estado_adopcion' => 'ADOPTADO',
+                    'fecha_adopcion' => $fecha
+                ], ['id' => $mascotaId]);
+            }
+
+            $this->pdo->commit();
+        } catch (\Exception $e) {
+            $this->pdo->rollBack();
+            throw $e;
+        }
+    }
+
     public function selectCompatibles(string $table, array $filtros): array
     {
         $conditions = [];

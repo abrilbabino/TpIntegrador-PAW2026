@@ -33,12 +33,7 @@ class Adoptante extends Model
             throw new \Exception("El ID del adoptante debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT * FROM adoptante WHERE usuario_id = :id";
-        
-        $stmt = $this->queryBuilder->getConnection()->prepare($sql);
-        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
-        $stmt->execute();
-        $record = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $record = $this->queryBuilder->selectOne($this->table, ['usuario_id' => $id]);
 
         if ($record) {
             $this->set($record);

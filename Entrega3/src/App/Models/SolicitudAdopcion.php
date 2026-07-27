@@ -125,25 +125,11 @@ class SolicitudAdopcion extends Model
         }
 
         $nuevoEstado = ($accion === 'aceptar') ? 'APROBADA' : 'RECHAZADA';
+        $mascotaId = ($accion === 'aceptar') ? (int)$solicitud['mascota_id'] : null;
 
-        $this->queryBuilder->getConnection()->beginTransaction();
         try {
-            $this->queryBuilder->update($this->table, [
-                'estado' => $nuevoEstado,
-                'fecha_aceptacion' => date('Y-m-d H:i:s')
-            ], ['id' => $solicitudId]);
-
-            if ($accion === 'aceptar') {
-                $mascotaId = (int)$solicitud['mascota_id'];
-                $this->queryBuilder->update('mascota', [
-                    'estado_adopcion' => 'ADOPTADO',
-                    'fecha_adopcion' => date('Y-m-d H:i:s')
-                ], ['id' => $mascotaId]);
-            }
-
-            $this->queryBuilder->getConnection()->commit();
+            $this->queryBuilder->procesarSolicitudAdopcion($this->table, $solicitudId, $nuevoEstado, $mascotaId, date('Y-m-d H:i:s'));
         } catch (\Exception $e) {
-            $this->queryBuilder->getConnection()->rollBack();
             throw new \Exception('Error al actualizar la base de datos: ' . $e->getMessage(), 500);
         }
 

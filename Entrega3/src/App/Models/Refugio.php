@@ -40,15 +40,7 @@ class Refugio extends Model
             throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
         }
 
-        $sql = "SELECT r.*, u.ciudad, u.provincia, u.direccion 
-                FROM refugio r 
-                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
-                WHERE r.usuario_id = :id";
-        
-        $stmt = $this->queryBuilder->getConnection()->prepare($sql);
-        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
-        $stmt->execute();
-        $record = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $record = $this->queryBuilder->obtenerRefugioConUbicacion($id);
 
         if ($record) {
             $this->set($record);
@@ -89,48 +81,12 @@ class Refugio extends Model
 
     public function getEncuestas(): array
     {
-        $id = $this->getId();
-        $sqlEncuestas = "
-            SELECT e.*, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre, u.contacto as adoptante_contacto 
-            FROM encuesta_adopcion e 
-            JOIN mascota m ON e.mascota_id = m.id 
-            JOIN usuario u ON e.adoptante_id = u.id 
-            LEFT JOIN adoptante a ON a.usuario_id = u.id
-            WHERE m.refugio_id = :rid 
-            ORDER BY e.fecha_encuesta DESC
-        ";
-        return $this->queryBuilder->rawQuery($sqlEncuestas, [':rid' => $id]);
+        return $this->queryBuilder->obtenerEncuestasPorRefugio($this->getId());
     }
 
     public function getFotosSeguimiento(): array
     {
-        $id = $this->getId();
-        $sqlFotos = "
-            SELECT 
-                md.id, md.tipo, md.url, 
-                m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
-            FROM media_mascota md 
-            JOIN mascota m ON md.mascota_id = m.id 
-            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
-            LEFT JOIN usuario u ON s.adoptante_id = u.id
-            LEFT JOIN adoptante a ON a.usuario_id = u.id
-            WHERE m.refugio_id = :rid AND md.tipo IN ('foto_seguimiento', 'certificado_med', 'certificado_vac')
-
-            UNION ALL
-
-            SELECT 
-                rs.id, CASE WHEN LOWER(rs.tipo) = 'vacuna' THEN 'certificado_vac' ELSE 'certificado_med' END as tipo, rs.archivo_adjunto as url,
-                m.id as mascota_id, m.nombre as mascota_nombre, COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre
-            FROM registro_sanitario rs
-            JOIN mascota m ON rs.mascota_id = m.id 
-            LEFT JOIN solicitud_de_adopcion s ON s.mascota_id = m.id AND s.estado = 'APROBADA'
-            LEFT JOIN usuario u ON s.adoptante_id = u.id
-            LEFT JOIN adoptante a ON a.usuario_id = u.id
-            WHERE m.refugio_id = :rid AND rs.archivo_adjunto IS NOT NULL
-
-            ORDER BY id DESC
-        ";
-        return $this->queryBuilder->rawQuery($sqlFotos, [':rid' => $id]);
+        return $this->queryBuilder->obtenerFotosSeguimientoPorRefugio($this->getId());
     }
 
     public function getSeguimientoAgrupado(): array
