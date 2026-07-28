@@ -59,6 +59,9 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    background-color: var(--color-fondo);
+    box-shadow: 0 4px 12px var(--color-gris-claro);
+    aspect-ratio: 4 / 3;
 }
 
 .carrusel-mascota .paw-carrusel-slide--video.playing::after {
@@ -550,6 +553,9 @@ menu.compartir-dropdown {
         object-fit: cover;
         border-radius: 16px;
         display: block;
+        background-color: var(--color-fondo);
+        box-shadow: 0 2px 8px var(--color-texto);
+        aspect-ratio: 16 / 10;
     }
 
     .carrusel-mascota {
