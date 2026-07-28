@@ -15,101 +15,33 @@ class AuthController extends Controller
      */
     public function register()
     {
-        $request= $this->request;
+        $request = $this->request;
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-    
-        $name     = trim($request->get('name') ?? '');
-        $email    = trim($request->get('email') ?? '');
-        $username = trim($request->get('username') ?? '');
-        $password = $request->get('password') ?? '';
-        $rol = $request->get('rol') ?? '';
 
-        // Validación básica
-        if (!$name || !$email || !$username || !$password) {
-            header('Location: /?auth=login&error=campos');
-            exit;
-        }
-
-        // Sanitizar
-        $name     = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-        $email    = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
-
-        $existente = $this->model->findByUsername($username);
-        if ($existente) {
-            header('Location: /?auth=login&error=usuario_existente&registro=true');
-            exit;
-        }
-
-        $existenteEmail = $this->model->findByEmail($email);
-        if ($existenteEmail) {
-            header('Location: /?auth=login&error=email_existente&registro=true');
-            exit;
-        }
-
-        // Hash seguro
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-        // Crear usuario
-
-        $userId = $this->model->crearUsuario([
-            'nombre_usuario' => $username,
-            'email'          => $email,
-            'contrasena'     => $passwordHash,
-            'contacto'       => null,
-        ]);
-        $this->log->info("Usuario creado", ['userId' => $userId]); /// temporal
-
-        // Crear refugio o adoptante según el rol
-        if ($rol === 'refugio') {
-            $this->model->crearRefugio([
-                'usuario_id'         => $userId,
-                'nombre_institucion' => $name,
-                'cuit'               => null,
+        try {
+            $sessionUser = $this->model->registrar([
+                'name'             => $request->get('name'),
+                'email'            => $request->get('email'),
+                'username'         => $request->get('username'),
+                'password'         => $request->get('password'),
+                'rol'              => $request->get('rol'),
+                'apellido'         => $request->get('apellido'),
+                'dni'              => $request->get('dni'),
+                'fecha_nacimiento' => $request->get('fecha_nacimiento'),
             ]);
-            $this->log->info("Refugio creado", ['refugio_id' => $userId]); /// temporal
 
-            $refugio = $this->model->getRefugio((int) $userId);
-
-            $sessionUserRefugio = [
-                'id'             => $userId,
-                'nombre_usuario' => $username,
-                'email'          => $email,
-                'rol'            => 'refugio',
-                'refugio_id'     => $refugio ? $refugio['usuario_id'] : null,
-            ];
-            
-            $this->request->setSession('user', $sessionUserRefugio);
-
-        } else {
-            $this->model->crearAdoptante([
-                'usuario_id' => $userId,
-                'nombre'     => $name,
-                'apellido'   => '',
-            ]);
-            $this->log->info("Adoptante creado", ['adoptante_id' => $userId]); /// temporal
-
-            $adoptante = $this->model->getAdoptante((int) $userId);
-
-            $sessionUser = [
-                'id'             => $userId,
-                'nombre_usuario' => $username,
-                'email'          => $email,
-                'rol'            => 'adoptante',
-                'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
-                'foto_perfil'    => null,
-                'contacto'       => null,
-            ];
-            
             $this->request->setSession('user', $sessionUser);
-        }
-        $this->log->info("Registro exitoso", ['username' => $username]);
+            $this->log->info("Registro exitoso", ['username' => $sessionUser['nombre_usuario']]);
 
-        header('Location: /perfil?registro_exitoso=1');
-        exit;
+            header('Location: /perfil?registro_exitoso=1');
+            exit;
+        } catch (\Exception $e) {
+            header('Location: /?auth=login&error=' . $e->getMessage() . '&registro=true');
+            exit;
+        }
     }
 
     /**

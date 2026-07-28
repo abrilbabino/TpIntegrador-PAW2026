@@ -518,3 +518,8 @@ main>header p {
     white-space: nowrap;
   }
 }
+
+/* Utilidad general */
+.oculto {
+  display: none;
+}

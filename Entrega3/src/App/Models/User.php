@@ -137,6 +137,102 @@ class User extends Model
     }
 
     /**
+     * Registra un nuevo usuario (y su perfil asociado) realizando las validaciones necesarias.
+     */
+    public function registrar(array $datos): array
+    {
+        $name     = trim($datos['name'] ?? '');
+        $email    = trim($datos['email'] ?? '');
+        $username = trim($datos['username'] ?? '');
+        $password = $datos['password'] ?? '';
+        $rol      = $datos['rol'] ?? '';
+
+        $apellido         = trim($datos['apellido'] ?? '');
+        $dni              = trim($datos['dni'] ?? '');
+        $fecha_nacimiento = trim($datos['fecha_nacimiento'] ?? '');
+
+        // Validación básica
+        if (!$name || !$email || !$username || !$password) {
+            throw new \Exception('campos');
+        }
+
+        if ($rol === 'adoptante' || $rol === '') {
+            if (!$apellido || !$dni || !$fecha_nacimiento) {
+                throw new \Exception('campos');
+            }
+            if (!preg_match('/^[0-9]{7,8}$/', $dni)) {
+                throw new \Exception('campos');
+            }
+            $fecha_nacimiento_time = strtotime($fecha_nacimiento);
+            if (!$fecha_nacimiento_time || $fecha_nacimiento_time > time()) {
+                throw new \Exception('campos');
+            }
+        }
+
+        // Sanitizar
+        $name     = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $apellido = htmlspecialchars($apellido, ENT_QUOTES, 'UTF-8');
+        $dni      = htmlspecialchars($dni, ENT_QUOTES, 'UTF-8');
+        $email    = filter_var($email, FILTER_SANITIZE_EMAIL);
+        $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+
+        $existente = $this->findByUsername($username);
+        if ($existente) {
+            throw new \Exception('usuario_existente');
+        }
+
+        $existenteEmail = $this->findByEmail($email);
+        if ($existenteEmail) {
+            throw new \Exception('email_existente');
+        }
+
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $userId = $this->crearUsuario([
+            'nombre_usuario' => $username,
+            'email'          => $email,
+            'contrasena'     => $passwordHash,
+            'contacto'       => null,
+        ]);
+
+        if ($rol === 'refugio') {
+            $this->crearRefugio([
+                'usuario_id'         => $userId,
+                'nombre_institucion' => $name,
+                'cuit'               => null,
+            ]);
+
+            $refugio = $this->getRefugio((int) $userId);
+            return [
+                'id'             => $userId,
+                'nombre_usuario' => $username,
+                'email'          => $email,
+                'rol'            => 'refugio',
+                'refugio_id'     => $refugio ? $refugio['usuario_id'] : null,
+            ];
+        } else {
+            $this->crearAdoptante([
+                'usuario_id'          => $userId,
+                'nombre'              => $name,
+                'apellido'            => $apellido,
+                'dni'                 => $dni,
+                'fecha_de_nacimiento' => $fecha_nacimiento,
+            ]);
+
+            $adoptante = $this->getAdoptante((int) $userId);
+            return [
+                'id'             => $userId,
+                'nombre_usuario' => $username,
+                'email'          => $email,
+                'rol'            => 'adoptante',
+                'adoptante_id'   => $adoptante ? $adoptante['usuario_id'] : null,
+                'foto_perfil'    => null,
+                'contacto'       => null,
+            ];
+        }
+    }
+
+    /**
      * Busca un usuario por email y retorna un solo registro.
      */
     public function findByEmail(string $email): array|false

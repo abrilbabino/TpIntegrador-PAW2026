@@ -103,6 +103,11 @@
   font-size: 0.95rem;
 }
 
+.login-form .oculto,
+.registro-form .oculto {
+  display: none;
+}
+
 .login-form input,
 .registro-form input,
 .registro-input {

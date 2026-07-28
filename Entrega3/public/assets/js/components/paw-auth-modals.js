@@ -72,5 +72,38 @@ class PAWAuthModals {
             const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '');
             window.history.replaceState({}, document.title, newUrl);
         }
+
+        const rolSelect = document.getElementById('rol');
+        if (rolSelect) {
+            const toggleAdoptanteFields = (rol) => {
+                const adoptanteFields = document.querySelectorAll('.adoptante-field');
+                const labelName = document.getElementById('label-name');
+                const inputName = document.getElementById('name');
+                
+                if (rol === 'adoptante') {
+                    if (labelName) labelName.textContent = 'Nombre';
+                    if (inputName) inputName.placeholder = 'Ingresá tu nombre';
+                    adoptanteFields.forEach(field => {
+                        field.classList.remove('oculto');
+                        if (field.tagName === 'INPUT') field.required = true;
+                    });
+                } else {
+                    if (labelName) labelName.textContent = 'Nombre de la institución';
+                    if (inputName) inputName.placeholder = 'Ingresá el nombre de la institución';
+                    adoptanteFields.forEach(field => {
+                        field.classList.add('oculto');
+                        if (field.tagName === 'INPUT') {
+                            field.required = false;
+                            field.value = '';
+                        }
+                    });
+                }
+            };
+
+            rolSelect.addEventListener('change', (e) => toggleAdoptanteFields(e.target.value));
+            
+            // Check initial state in case twig didn't set it perfectly for the JS side
+            toggleAdoptanteFields(rolSelect.value);
+        }
     }
 }
