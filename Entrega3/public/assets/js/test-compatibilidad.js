@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function isCurrentStepAnswered() {
         const currentStepElement = steps[currentStep];
-        const radioButtons = currentStepElement.querySelectorAll('input[type="radio"]');
-        return Array.from(radioButtons).some(radio => radio.checked);
+        const inputs = currentStepElement.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        return Array.from(inputs).some(input => input.checked);
     }
 
     function mostrarErrorTest(mensaje) {
@@ -48,13 +48,23 @@ document.addEventListener('DOMContentLoaded', function() {
         currentStepElement.appendChild(errorSpan);
     }
     
-    // Escuchar cambios en los radios para borrar el error si el usuario selecciona algo
+    // Escuchar cambios en los radios y checkboxes para borrar el error si el usuario selecciona algo
     steps.forEach(step => {
-        const radios = step.querySelectorAll('input[type="radio"]');
-        radios.forEach(radio => {
-            radio.addEventListener('change', () => {
+        const inputs = step.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
                 const errorPrevio = step.querySelector('.msg-error.test-error');
                 if (errorPrevio) errorPrevio.remove();
+
+                if (input.type === 'checkbox') {
+                    if (input.value === 'ninguno' && input.checked) {
+                        const otros = step.querySelectorAll('input[type="checkbox"]:not([value="ninguno"])');
+                        otros.forEach(o => o.checked = false);
+                    } else if (input.value !== 'ninguno' && input.checked) {
+                        const ninguno = step.querySelector('input[type="checkbox"][value="ninguno"]');
+                        if (ninguno) ninguno.checked = false;
+                    }
+                }
             });
         });
     });
