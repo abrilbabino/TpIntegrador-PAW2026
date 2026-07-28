@@ -17,6 +17,7 @@ class Mascota extends Model
         'especie' => null,
         'descripcion' => null,
         'edad' => null,
+        'fecha_nacimiento' => null,
         'tamano' => null,
         'temperamento' => null,
         'estado_adopcion' => null,

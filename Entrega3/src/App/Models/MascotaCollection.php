@@ -569,6 +569,7 @@ class MascotaCollection extends Model
             'especie'         => $especieSegura,
             'descripcion'     => $descripcionSegura,
             'edad'            => $edad,
+            'fecha_nacimiento'=> $fechaNac ?: null,
             'tamano'          => $tamanoSeguro,
             'sexo'            => $sexoSeguro,
             'temperamento'    => $temperamentoSeguro,

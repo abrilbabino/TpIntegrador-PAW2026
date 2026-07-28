@@ -235,7 +235,7 @@ class QueryBuilder
 
     public function obtenerValoresUnicos(string $tabla, string $campo): array
     {
-        $sql = "SELECT DISTINCT {$campo} FROM {$tabla} WHERE {$campo} IS NOT NULL AND {$campo} != '' ORDER BY {$campo}";
+        $sql = "SELECT DISTINCT LOWER(TRIM({$campo})) AS {$campo} FROM {$tabla} WHERE {$campo} IS NOT NULL AND TRIM({$campo}) != '' ORDER BY {$campo}";
         return $this->rawQuery($sql);
     }
 

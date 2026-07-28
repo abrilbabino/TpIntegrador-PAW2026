@@ -3,12 +3,13 @@
 {% set mascotaFields = mascota.fields|default([]) %}
 {% set nombreActual = oldData.nombre|default(mascotaFields.nombre|default('')) %}
 {% set especieActual = oldData.especie|default(mascotaFields.especie|default('')) %}
-{% set tamanioActual = oldData.tamanio|default(oldData.tamano|default(mascotaFields.tamano|default(''))) %}
+{% set tamanioActual = (oldData.tamanio|default(oldData.tamano|default(mascotaFields.tamano|default(''))))|lower %}
 {% set temperamentoActual = oldData.temperamento|default(mascotaFields.temperamento|default('')) %}
 {% set sexoActual = (oldData.sexo|default(mascotaFields.sexo|default('')))|lower %}
 {% set esterilizadoActual = oldData.esterilizado|default((mascotaFields.castrado|default(0) == 1) ? 'si' : 'no') %}
 {% set descripcionActual = oldData.descripcion_mascota|default(oldData.descripcion|default(mascotaFields.descripcion|default(''))) %}
-{% set fechaNacimientoActual = oldData.fecha_nacimiento|default(mascotaFields.fecha_nacimiento|default('')) %}
+{% set fechaDB = mascotaFields.fecha_nacimiento|default('') %}
+{% set fechaNacimientoActual = oldData.fecha_nacimiento|default(fechaDB) %}
 {% set fotos = fotos|default([]) %}
 
 {% block title %}Editar Mascota - PawMap{% endblock %}
@@ -36,10 +37,11 @@
         </aside>
     {% endif %}
 
-    <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
-        <header class="perfil-datos-header">
-            <h2>Editar Mascota</h2>
-        </header>
+    <section class="perfil-datos perfil-datos-unificada">
+        <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" novalidate>
+            <header class="perfil-datos-header">
+                <h2>Editar Mascota</h2>
+            </header>
 
         <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
 
@@ -137,7 +139,7 @@
 
             <li class="dato-item">
                 <span class="dato-label">Descripción</span>
-                <textarea name="descripcion_mascota" class="dato-valor-input input-value {{ errores.descripcion_mascota is defined ? 'input-invalido' : '' }}" maxlength="500">{{ descripcionActual }}</textarea>
+                <textarea name="descripcion_mascota" class="dato-valor-input input-value {{ errores.descripcion_mascota is defined ? 'input-invalido' : '' }}" maxlength="500" rows="1">{{ descripcionActual }}</textarea>
                 {% if errores.descripcion_mascota is defined %}
                     <span class="msg-error">{{ errores.descripcion_mascota }}</span>
                 {% endif %}
@@ -153,7 +155,7 @@
 
             <li class="dato-item">
                 <span class="dato-label">Foto Principal</span>
-                <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
+                <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value input-file-padding {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
                 {% if errores.foto is defined %}
                     <span class="msg-error">{{ errores.foto }}</span>
                 {% endif %}
@@ -162,7 +164,7 @@
             <li class="dato-item">
                 <span class="dato-label">Ilustración SVG</span>
                 <span class="svg-input-row">
-                    <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Solo se permiten archivos .svg.">
+                    <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value input-file-padding {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Solo se permiten archivos .svg.">
                     {% if mascotaFields.svg|default('') is not empty %}
                         <button type="submit" form="form-eliminar-svg" class="btn-eliminar-svg-inline" title="Eliminar ilustración actual">
                             <span class="material-symbols-outlined">delete</span>
@@ -173,31 +175,24 @@
                     <span class="msg-error">{{ errores.svg }}</span>
                 {% endif %}
             </li>
+            <li class="dato-item">
+                <form id="form-subir-archivo" method="POST" action="/mascota/subir-archivo" enctype="multipart/form-data">
+                    <input id="mascota_id" type="hidden" name="mascota_id" value="{{ mascotaFields.id|default(0) }}">
+                    <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
+                    <input type="file" name="archivo_multimedia" id="archivo_multimedia" accept="image/*" class="dato-valor-input input-file-padding" onchange="this.form.submit()" required>
+                </form>
+            </li>
+
+            <li class="dato-item">
+                <footer class="perfil-datos-acciones">
+                    <button type="submit" form="form-editar-mascota" class="btn-guardar-perfil">Guardar</button>
+                    <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
+                </footer>
+            </li>
         </ul>
-
-        <footer class="perfil-datos-acciones">
-            <button type="submit" class="btn-guardar-perfil">Guardar</button>
-            <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
-        </footer>
     </form>
 
-    <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" style="display: none;">
-        <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
-    </form>
-    
     <section class="galeria-multimedia">
-        <form method="POST" action="/mascota/subir-archivo" enctype="multipart/form-data" class="perfil-datos">
-            <h3>Fotos Adicionales</h3>
-            <input id="mascota_id" type="hidden" name="mascota_id" value="{{ mascotaFields.id|default(0) }}">
-            
-            <ul class="perfil-datos-grid">
-                <li class="dato-item">
-                    <label for="archivo_multimedia" class="dato-label">Seleccionar nueva foto para el carrusel</label>
-                    <input type="file" name="archivo_multimedia" id="archivo_multimedia" accept="image/*" required>
-                    <button type="submit" class="btn-guardar-perfil">Subir foto</button>
-                </li>
-            </ul>
-        </form> 
         <ul class="galeria-grid">
             {% for foto in fotos %}
                 <li class="foto-item">
@@ -216,4 +211,9 @@
             {% endfor %}
         </ul>
     </section>
+
+    <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" hidden>
+        <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
+    </form>
+</section>
 {% endblock %}

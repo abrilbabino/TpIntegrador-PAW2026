@@ -376,6 +376,7 @@ class MascotaController extends Controller
             'especie'      => htmlspecialchars($especie, ENT_QUOTES, 'UTF-8'),
             'descripcion'  => htmlspecialchars($descripcionMascota, ENT_QUOTES, 'UTF-8'),
             'edad'         => $edad,
+            'fecha_nacimiento' => $fechaNac ?: null,
             'tamano'       => htmlspecialchars($tamanio, ENT_QUOTES, 'UTF-8'),
             'sexo'         => htmlspecialchars($sexo, ENT_QUOTES, 'UTF-8'),
             'temperamento' => htmlspecialchars($temperamento, ENT_QUOTES, 'UTF-8'),

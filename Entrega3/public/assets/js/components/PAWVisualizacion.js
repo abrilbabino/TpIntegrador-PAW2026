@@ -47,7 +47,7 @@ class PAWVisualizacion {
     // Utiliza Array.prototype.slice() para extraer funcionalmente la sublista de items que corresponde estrictamente a la ventana matemática de la página actual.
     renderizarItems() {
         this.contenedorItems.innerHTML = "";
-        
+
         if (!this.items || this.items.length === 0) {
             this.contenedorItems.innerHTML = "<p>No se encontraron resultados.</p>";
             return;
@@ -116,9 +116,9 @@ class PAWVisualizacion {
         const seccionInfo = PAW.nuevoElemento("section", "", { class: "tarjeta-info" });
 
         const linkPerfil = PAW.nuevoElemento("a", "", { href: `/mascota?id=${mascota.id}`, class: "verPerfil" });
-
-        const nombre = PAW.nuevoElemento("h3", mascota.nombre || 'Sin nombre', {});
-
+        const rawNombre = mascota.nombre || 'Sin nombre';
+        const nombreCapitalizado = rawNombre.charAt(0).toUpperCase() + rawNombre.slice(1).toLowerCase();
+        const nombre = PAW.nuevoElemento("h3", nombreCapitalizado, {});
         const tamano = mascota.tamano ? mascota.tamano.charAt(0).toUpperCase() + mascota.tamano.slice(1).toLowerCase() : 'Desconocido';
         const temperamento = mascota.temperamento ? mascota.temperamento.charAt(0).toUpperCase() + mascota.temperamento.slice(1).toLowerCase() : 'Desconocido';
         const edad = mascota.edad || '0';
@@ -149,7 +149,7 @@ class PAWVisualizacion {
 
         const info = PAW.nuevoElemento("article", "", { class: "tarjeta-refugio-info" });
         const header = PAW.nuevoElemento("header", "", { class: "tarjeta-refugio-header" });
-        
+
         const h3 = PAW.nuevoElemento("h3", "", {});
         const idRefugio = refugio.id || refugio.usuario_id;
         const linkPerfil = PAW.nuevoElemento("a", refugio.nombre_institucion || 'Sin nombre', {
@@ -196,7 +196,7 @@ class PAWVisualizacion {
         const articulo = PAW.nuevoElemento("article", "", { class: `card-registro ${cardClass}` });
 
         const figure = PAW.nuevoElemento("figure", "", { class: `card-icon-container ${iconClass}` });
-        
+
         let iconName = registro.icono || "medical_services";
         if (!iconName) iconName = "medical_services";
 
@@ -205,14 +205,14 @@ class PAWVisualizacion {
 
         const section = PAW.nuevoElemento("section", "", { class: "card-content" });
         const header = PAW.nuevoElemento("header", "", {});
-        
+
         const h3 = PAW.nuevoElemento("h3", registro.titulo || "Registro", {});
         const pDate = PAW.nuevoElemento("p", "", { class: "card-date" });
         pDate.appendChild(PAW.nuevoElemento("span", "calendar_today", { class: "material-symbols-outlined" }));
-        
+
         const fechaAUsar = registro.fecha_realizada || registro.fecha_programada || "";
         pDate.appendChild(document.createTextNode(` ${fechaAUsar}`));
-        
+
         header.appendChild(h3);
         header.appendChild(pDate);
         section.appendChild(header);
@@ -240,20 +240,20 @@ class PAWVisualizacion {
                 btn.addEventListener('click', () => {
                     const idInput = document.getElementById('completar_registro_id');
                     const modal = document.getElementById('modal-completar-registro');
-                    if(idInput && modal) {
+                    if (idInput && modal) {
                         idInput.value = registro.id;
                         modal.showModal();
                     }
                 });
                 articulo.appendChild(btn);
             }
-            
+
             const footer = PAW.nuevoElemento("footer", "Pendiente", { class: "badge badge-pendiente" });
             articulo.appendChild(footer);
         } else {
             const iconCheck = PAW.nuevoElemento("span", "check_circle", { class: "icono-completado material-symbols-outlined", "aria-label": "Completado" });
             articulo.appendChild(iconCheck);
-            
+
             const footer = PAW.nuevoElemento("footer", "Completado", { class: "badge badge-completado" });
             articulo.appendChild(footer);
         }
@@ -266,7 +266,7 @@ class PAWVisualizacion {
         if (pagina >= 1 && pagina <= totalPaginas) {
             this.currentPage = pagina;
             this.render();
-            
+
             // Calculamos la posicion considerando un margen superior para que el navbar/header no tape la grilla
             const rect = this.contenedorItems.getBoundingClientRect();
             const scrollTop = window.scrollY || document.documentElement.scrollTop;

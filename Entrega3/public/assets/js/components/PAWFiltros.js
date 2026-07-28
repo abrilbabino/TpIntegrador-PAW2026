@@ -115,7 +115,9 @@ class PAWFiltros {
             // Si el filtro tiene datos auxiliares (sourceURL), usarlos para poblar las opciones
             const fuenteDatos = this.datosAuxiliares[filtro.prop] || this.items;
             fuenteDatos.forEach(item => {
-                if (item[filtro.prop] != null && item[filtro.prop] !== "") valoresUnicos.add(item[filtro.prop]);
+                if (item[filtro.prop] != null && item[filtro.prop] !== "") {
+                    valoresUnicos.add(item[filtro.prop].toString().trim().toLowerCase());
+                }
             });
             const opcionesOrdenadas = Array.from(valoresUnicos).sort();
 
