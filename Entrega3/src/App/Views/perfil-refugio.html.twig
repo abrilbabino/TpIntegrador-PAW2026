@@ -1,4 +1,4 @@
-{% extends 'layout/base.html.twig' %}
+﻿{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -501,6 +501,114 @@
         {% endif %}
         </details>
     </section>
+
+    <section class="sec-estadisticas" id="sec-estadisticas">
+        <h2 class="estadisticas-main-title">Métricas y Estadísticas del Refugio</h2>
+                        <section class="perfil-stats-dashboard">
+                
+                <section class="kpi-container">
+                    <article class="kpi-card">
+                        <span class="material-symbols-outlined kpi-icon">pets</span>
+                        <section class="kpi-data">
+                            <h4 class="kpi-title">Total Mascotas</h4>
+                            <span class="kpi-value">{{ estadisticas.kpis.totalMascotas|default(0) }}</span>
+                        </section>
+                    </article>
+                    <article class="kpi-card">
+                        <span class="material-symbols-outlined kpi-icon">volunteer_activism</span>
+                        <section class="kpi-data">
+                            <h4 class="kpi-title">Adopciones Exitosas</h4>
+                            <span class="kpi-value">{{ estadisticas.kpis.adopcionesExitosas|default(0) }}</span>
+                        </section>
+                    </article>
+                    <article class="kpi-card">
+                        <span class="material-symbols-outlined kpi-icon">mail</span>
+                        <section class="kpi-data">
+                            <h4 class="kpi-title">Solicitudes Recibidas</h4>
+                            <span class="kpi-value">{{ estadisticas.kpis.totalSolicitudes|default(0) }}</span>
+                        </section>
+                    </article>
+                </section>
+
+                <section class="dashboard-grid">
+                    
+                    <figure class="paw-chart">
+                        <figcaption><h3>Estado de Adopciones</h3></figcaption>
+                        {% if estadisticas.estado is empty or estadisticas.kpis.totalMascotas == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <dl class="paw-chart-list">
+                                {% for key, count in estadisticas.estado %}
+                                    {% set percent = (count / estadisticas.kpis.totalMascotas * 100)|round %}
+                                    <dt>{{ key }} ({{ count }})</dt>
+                                        <dd><span class="paw-chart-bar" style="--percent: {{ percent }}%;"></span></dd>
+                                {% endfor %}
+                            </dl>
+                        {% endif %}
+                    </figure>
+
+                    <figure class="paw-chart paw-pie-container">
+                        <figcaption><h3>Mascotas por Especie</h3></figcaption>
+                        {% if estadisticas.especie is empty or estadisticas.kpis.totalMascotas == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.especie|json_encode|e('html_attr') }}" data-chart-type="doughnut">
+                                <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
+                            </section>
+                        {% endif %}
+                    </figure>
+
+                    <figure class="paw-chart paw-pie-container">
+                        <figcaption><h3>Tamaño de Mascotas</h3></figcaption>
+                        {% if estadisticas.tamano is empty or estadisticas.kpis.totalMascotas == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.tamano|json_encode|e('html_attr') }}" data-chart-type="pie">
+                                <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
+                            </section>
+                        {% endif %}
+                    </figure>
+
+                    <figure class="paw-chart">
+                        <figcaption><h3>Temperamento</h3></figcaption>
+                        {% if estadisticas.temperamento is empty or estadisticas.kpis.totalMascotas == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <dl class="paw-chart-list">
+                                {% for key, count in estadisticas.temperamento %}
+                                    {% set percent = (count / estadisticas.kpis.totalMascotas * 100)|round %}
+                                    <dt>{{ key }} ({{ count }})</dt>
+                                        <dd><span class="paw-chart-bar" style="--percent: {{ percent }}%;"></span></dd>
+                                {% endfor %}
+                            </dl>
+                        {% endif %}
+                    </figure>
+
+                    <figure class="paw-chart paw-pie-container">
+                        <figcaption><h3>Estado de Solicitudes</h3></figcaption>
+                        {% if estadisticas.solicitudes is empty or estadisticas.kpis.totalSolicitudes == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.solicitudes|json_encode|e('html_attr') }}" data-chart-type="pie">
+                                <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
+                            </section>
+                        {% endif %}
+                    </figure>
+
+                    <figure class="paw-chart paw-pie-container">
+                        <figcaption><h3>Castrados / Esterilizados</h3></figcaption>
+                        {% if estadisticas.castrado is empty or estadisticas.kpis.totalMascotas == 0 %}
+                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                        {% else %}
+                            <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.castrado|json_encode|e('html_attr') }}" data-chart-type="pie">
+                                <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
+                            </section>
+                        {% endif %}
+                    </figure>
+
+                </section>
+            </section>
+    </section>
     <dialog id="modal-confirmar-eliminar" class="modal-nativo modal-confirmacion">
         <header>
             <h2>Confirmar eliminación</h2>
@@ -513,6 +621,8 @@
             <button type="button" class="btn-eliminar-confirmado" id="btn-confirmar-eliminar">Eliminar</button>
         </footer>
     </dialog>
+
+    
 {% endblock %}
 
 {% block content_after_main %}
@@ -525,4 +635,21 @@
             <button type="button" id="modal-cancel-btn" class="modal-option-btn cancel-btn">Cancelar</button>
         </section>
     </dialog>
+
+    
 {% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/paw-charts.js"></script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
