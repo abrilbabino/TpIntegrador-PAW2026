@@ -2,9 +2,9 @@
 
 {% set mascotaFields = mascota.fields|default([]) %}
 {% set nombreActual = oldData.nombre|default(mascotaFields.nombre|default('')) %}
-{% set especieActual = oldData.especie|default(mascotaFields.especie|default('')) %}
+{% set especieActual = (oldData.especie|default(mascotaFields.especie|default('')))|lower %}
 {% set tamanioActual = (oldData.tamanio|default(oldData.tamano|default(mascotaFields.tamano|default(''))))|lower %}
-{% set temperamentoActual = oldData.temperamento|default(mascotaFields.temperamento|default('')) %}
+{% set temperamentoActual = (oldData.temperamento|default(mascotaFields.temperamento|default('')))|lower %}
 {% set sexoActual = (oldData.sexo|default(mascotaFields.sexo|default('')))|lower %}
 {% set esterilizadoActual = oldData.esterilizado|default((mascotaFields.castrado|default(0) == 1) ? 'si' : 'no') %}
 {% set descripcionActual = oldData.descripcion_mascota|default(oldData.descripcion|default(mascotaFields.descripcion|default(''))) %}
@@ -60,7 +60,7 @@
                     <option value="">Seleccioná una especie</option>
                     {% for e in especies %}
                         {% set especieValor = e.fields.especie|default('') %}
-                        <option value="{{ especieValor }}" {{ (especieActual == especieValor) ? 'selected' : '' }}>
+                        <option value="{{ especieValor }}" {{ (especieActual == especieValor|lower) ? 'selected' : '' }}>
                             {{ especieValor|capitalize }}
                         </option>
                     {% endfor %}
@@ -93,7 +93,7 @@
                     <option value="">Seleccioná un temperamento</option>
                     {% for t in temperamentos %}
                         {% set temperamentoValor = t.fields.temperamento|default('') %}
-                        <option value="{{ temperamentoValor }}" {{ (temperamentoActual == temperamentoValor) ? 'selected' : '' }}>
+                        <option value="{{ temperamentoValor }}" {{ (temperamentoActual == temperamentoValor|lower) ? 'selected' : '' }}>
                             {{ temperamentoValor|capitalize }}
                         </option>
                     {% endfor %}
@@ -155,7 +155,23 @@
 
             <li class="dato-item">
                 <span class="dato-label">Foto Principal</span>
-                <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value input-file-padding {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
+                <span class="svg-input-row">
+                    <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value input-file-padding {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB.">
+                </span>
+                {% set foto_actual = mascotaFields.imagen|default('') %}
+                {% if foto_actual is not empty and foto_actual != 'default-pet.jpg' and foto_actual != 'icon.png' %}
+                    {% set imgMascotaUrl = foto_actual starts with 'http' ? foto_actual : '/assets/img/' ~ foto_actual %}
+                    <ul class="galeria-grid" style="margin-top: 15px; padding: 0; overflow: hidden;">
+                        <li class="foto-item" style="margin: 0;">
+                            <figure>
+                                <img src="{{ imgMascotaUrl }}" alt="Vista previa de foto principal" class="foto-extra-preview">
+                                <figcaption>
+                                    <button type="submit" form="form-eliminar-foto-principal" class="btn-eliminar-foto" title="Eliminar foto principal">Eliminar</button>
+                                </figcaption>
+                            </figure>
+                        </li>
+                    </ul>
+                {% endif %}
                 {% if errores.foto is defined %}
                     <span class="msg-error">{{ errores.foto }}</span>
                 {% endif %}
@@ -165,22 +181,27 @@
                 <span class="dato-label">Ilustración SVG</span>
                 <span class="svg-input-row">
                     <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value input-file-padding {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Solo se permiten archivos .svg.">
-                    {% if mascotaFields.svg|default('') is not empty %}
-                        <button type="submit" form="form-eliminar-svg" class="btn-eliminar-svg-inline" title="Eliminar ilustración actual">
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    {% endif %}
                 </span>
+                {% if mascotaFields.svg|default('') is not empty %}
+                    {% set svgUrl = mascotaFields.svg starts with 'http' ? mascotaFields.svg : '/assets/svg/' ~ mascotaFields.svg %}
+                    <ul class="galeria-grid" style="margin-top: 15px; padding: 0; overflow: hidden;">
+                        <li class="foto-item" style="margin: 0;">
+                            <figure>
+                                <img src="{{ svgUrl }}" alt="Vista previa SVG" class="foto-extra-preview" style="object-fit: contain; padding: 10px;">
+                                <figcaption>
+                                    <button type="submit" form="form-eliminar-svg" class="btn-eliminar-foto" title="Eliminar ilustración actual">Eliminar</button>
+                                </figcaption>
+                            </figure>
+                        </li>
+                    </ul>
+                {% endif %}
                 {% if errores.svg is defined %}
                     <span class="msg-error">{{ errores.svg }}</span>
                 {% endif %}
             </li>
             <li class="dato-item">
-                <form id="form-subir-archivo" method="POST" action="/mascota/subir-archivo" enctype="multipart/form-data">
-                    <input id="mascota_id" type="hidden" name="mascota_id" value="{{ mascotaFields.id|default(0) }}">
-                    <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
-                    <input type="file" name="archivo_multimedia" id="archivo_multimedia" accept="image/*" class="dato-valor-input input-file-padding" onchange="this.form.submit()" required>
-                </form>
+                <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
+                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*" multiple class="dato-valor-input input-file-padding">
             </li>
 
             <li class="dato-item">
@@ -215,5 +236,14 @@
     <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" hidden>
         <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
     </form>
+    
+    <form id="form-eliminar-foto-principal" method="POST" action="/mascota/eliminar-foto-principal" hidden>
+        <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
+    </form>
+
+
 </section>
+
+
+
 {% endblock %}

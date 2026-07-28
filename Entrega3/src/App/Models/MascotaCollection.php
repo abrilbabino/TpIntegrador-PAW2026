@@ -5,6 +5,7 @@ namespace Paw\App\Models;
 use Paw\Core\Model;
 
 use Paw\App\Models\Mascota;
+use Paw\App\Helpers\GCSHelper;
 
 class MascotaCollection extends Model
 {
@@ -581,5 +582,141 @@ class MascotaCollection extends Model
         ]);
 
         return [];
+    }
+
+    public function actualizarMascotaConArchivos(int $id, array $datosMascota, array $archivos): void
+    {
+        $db = $this->getQueryBuilder();
+        $mascota = $this->get($id);
+        
+        $imagenRelativa = $mascota->fields['imagen'] ?? 'default-pet.jpg';
+        $fotoValidaParaMover = false;
+        
+        // Manejar subida de Foto Principal
+        $foto = $archivos['foto'] ?? null;
+        if ($foto && isset($foto['error']) && $foto['error'] === UPLOAD_ERR_OK) {
+            $fotoValidaParaMover = true;
+        }
+
+        $svgRelativa = $mascota->fields['svg'] ?? null;
+        $svgValidoParaMover = false;
+        $svg = $archivos['svg'] ?? null;
+        if ($svg && isset($svg['error']) && $svg['error'] === UPLOAD_ERR_OK) {
+            $svgValidoParaMover = true;
+        } elseif (!empty($datosMascota['eliminar_svg'])) {
+            $svgRelativa = null;
+        }
+
+        if ($svgValidoParaMover) {
+            $svgRelativa = GCSHelper::subir($svg, 'mascotas_svg');
+        }
+
+        if ($fotoValidaParaMover) {
+            $imagenRelativa = GCSHelper::subir($foto, 'mascotas');
+        }
+
+        $edad = null;
+        if (!empty($datosMascota['fecha_nacimiento'])) {
+            $d = \DateTime::createFromFormat('Y-m-d', $datosMascota['fecha_nacimiento']);
+            if ($d) {
+                $edad = (int) $d->diff(new \DateTime())->y;
+            }
+        } else {
+            $edad = $mascota->fields['edad'] ?? null;
+        }
+
+        $datosUpdate = [
+            'nombre'       => htmlspecialchars($datosMascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'especie'      => htmlspecialchars($datosMascota['especie'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'descripcion'  => htmlspecialchars($datosMascota['descripcion_mascota'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'edad'         => $edad,
+            'fecha_nacimiento' => !empty($datosMascota['fecha_nacimiento']) ? $datosMascota['fecha_nacimiento'] : null,
+            'tamano'       => htmlspecialchars($datosMascota['tamanio'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'sexo'         => htmlspecialchars($datosMascota['sexo'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'temperamento' => htmlspecialchars($datosMascota['temperamento'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'castrado'     => (($datosMascota['esterilizado'] ?? '') === 'si') ? 1 : 0,
+            'imagen'       => $imagenRelativa,
+            'svg'          => $svgRelativa,
+        ];
+
+        $db->update('mascota', $datosUpdate, ['id' => $id]);
+
+        // Guardar fotos adicionales
+        $archivosExtra = $archivos['archivo_multimedia'] ?? null;
+        if ($archivosExtra) {
+            if (isset($archivosExtra['name']) && is_array($archivosExtra['name'])) {
+                $count = count($archivosExtra['name']);
+                for ($i = 0; $i < $count; $i++) {
+                    if ($archivosExtra['error'][$i] === UPLOAD_ERR_OK) {
+                        $archivoIndividual = [
+                            'name'     => $archivosExtra['name'][$i],
+                            'type'     => $archivosExtra['type'][$i],
+                            'tmp_name' => $archivosExtra['tmp_name'][$i],
+                            'error'    => $archivosExtra['error'][$i],
+                            'size'     => $archivosExtra['size'][$i],
+                        ];
+                        try {
+                            $urlExtra = GCSHelper::subir($archivoIndividual, 'media_mascotas');
+                            $esVideo = str_starts_with($archivoIndividual['type'] ?? '', 'video/');
+                            $db->insert('media_mascota', [
+                                'mascota_id' => $id,
+                                'tipo'       => $esVideo ? 'video' : 'foto',
+                                'url'        => $urlExtra
+                            ]);
+                        } catch (\Exception $e) {
+                            error_log("Error guardando foto extra múltiple: " . $e->getMessage());
+                        }
+                    }
+                }
+            } elseif (isset($archivosExtra['error']) && $archivosExtra['error'] === UPLOAD_ERR_OK) {
+                try {
+                    $urlExtra = GCSHelper::subir($archivosExtra, 'media_mascotas');
+                    $esVideo = str_starts_with($archivosExtra['type'] ?? '', 'video/');
+                    $db->insert('media_mascota', [
+                        'mascota_id' => $id,
+                        'tipo'       => $esVideo ? 'video' : 'foto',
+                        'url'        => $urlExtra
+                    ]);
+                } catch (\Exception $e) {
+                    error_log("Error guardando foto extra individual: " . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    public function eliminarSvg(int $id): void
+    {
+        $mascota = $this->get($id);
+        $svgRelativo = $mascota->fields['svg'] ?? '';
+        if ($svgRelativo !== '') {
+            if (GCSHelper::esUrlBucket($svgRelativo)) {
+                GCSHelper::borrar($svgRelativo);
+            } else {
+                $path = __DIR__ . '/../../../../public/assets/svg/' . ltrim($svgRelativo, '/');
+                if (file_exists($path) && strpos($svgRelativo, '..') === false && is_file($path)) {
+                    @unlink($path);
+                }
+            }
+            $db = $this->getQueryBuilder();
+            $db->update('mascota', ['svg' => null], ['id' => $id]);
+        }
+    }
+
+    public function eliminarFotoPrincipal(int $id): void
+    {
+        $mascota = $this->get($id);
+        $fotoRelativo = $mascota->fields['imagen'] ?? '';
+        if ($fotoRelativo !== '' && $fotoRelativo !== 'default-pet.jpg') {
+            if (GCSHelper::esUrlBucket($fotoRelativo)) {
+                GCSHelper::borrar($fotoRelativo);
+            } else {
+                $path = __DIR__ . '/../../../../public/assets/img/' . ltrim($fotoRelativo, '/');
+                if (file_exists($path) && strpos($fotoRelativo, '..') === false && is_file($path)) {
+                    @unlink($path);
+                }
+            }
+            $db = $this->getQueryBuilder();
+            $db->update('mascota', ['imagen' => 'default-pet.jpg'], ['id' => $id]);
+        }
     }
 }

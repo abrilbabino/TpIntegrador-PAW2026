@@ -895,3 +895,9 @@ textarea.dato-valor-input {
   color: var(--color-rojo);
   font-size: 1.5rem;
 }
+
+@media (max-width: 768px) {
+  .perfil-datos-grid {
+    grid-template-columns: 1fr;
+  }
+}

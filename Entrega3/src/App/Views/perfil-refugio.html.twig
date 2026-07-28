@@ -1,4 +1,4 @@
-﻿{% extends 'layout/base.html.twig' %}
+{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -334,10 +334,20 @@
     </section>
 
     <section class="perfil-refugio-publicar" id="sec-publicar">
-        <details class="perfil-dropdown">
+        <details class="perfil-dropdown" {% if request.get('publicado') == '1' %}open{% endif %}>
         <summary> <h3>Publicar Mascota</h3> </summary>
         <p>Agrega los datos de la nueva mascota:</p>
     
+        {% if request.get('publicado') == '1' %}
+            <aside class="alerta-exito" role="status">
+                <span class="material-symbols-outlined">check_circle</span>
+                <section>
+                    <strong>¡Publicación Exitosa!</strong>
+                    <p>La mascota se ha publicado correctamente.</p>
+                </section>
+            </aside>
+        {% endif %}
+
         <form id="form-publicar-mascota" method="POST" action="/perfil/mascota/publicar" enctype="multipart/form-data">
             <label for="nombre">Nombre
             <input type="text" id="nombre" name="nombre" placeholder="Ingresá el nombre de la mascota"
