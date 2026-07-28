@@ -102,7 +102,7 @@ class PAWAuthModals {
 
             rolSelect.addEventListener('change', (e) => toggleAdoptanteFields(e.target.value));
             
-            // Check initial state in case twig didn't set it perfectly for the JS side
+            // Verificamos el estado inicial en caso de que Twig no haya coincidido exactamente
             toggleAdoptanteFields(rolSelect.value);
         }
     }

@@ -160,11 +160,19 @@ class User extends Model
             if (!$apellido || !$dni || !$fecha_nacimiento) {
                 throw new \Exception('campos');
             }
+            if (!preg_match('/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u', $name)) {
+                throw new \Exception('campos'); // or specific error
+            }
+            if (!preg_match('/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u', $apellido)) {
+                throw new \Exception('campos');
+            }
             if (!preg_match('/^[0-9]{7,8}$/', $dni)) {
                 throw new \Exception('campos');
             }
             $fecha_nacimiento_time = strtotime($fecha_nacimiento);
-            if (!$fecha_nacimiento_time || $fecha_nacimiento_time > time()) {
+            // Debe tener al menos 18 años
+            $dieciocho_anios_atras = strtotime('-18 years');
+            if (!$fecha_nacimiento_time || $fecha_nacimiento_time > $dieciocho_anios_atras) {
                 throw new \Exception('campos');
             }
         }
