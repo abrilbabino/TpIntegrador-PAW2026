@@ -75,7 +75,6 @@ $router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');
 $router->post('/formulario-adopcion/enviar', 'AdopcionController@enviar');
-$router->get('/adopcion-exitosa', 'PageController@adopcionExitosa');
 
 // Test de compatibilidad
 $router->get('/test-de-compatibilidad', 'TestController@test');
@@ -122,7 +121,6 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 // Contacto
 $router->get('/contacto', 'PageController@contacto');
 $router->post('/contacto/enviar', 'PageController@contactoEnviar');
-$router->get('/contacto-exitoso', 'PageController@contactoExitoso');
 
 // Donaciones
 $router->get('/donar', 'DonacionController@index');

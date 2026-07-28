@@ -5,6 +5,7 @@ namespace Paw\App\Controllers;
 use Paw\Core\Controller;
 use Paw\App\Models\Mascota;
 use Paw\App\Models\MediaMascotaCollection;
+use Paw\App\Models\User;
 use Paw\Core\MailService;
 
 class AdopcionController extends Controller
@@ -33,7 +34,7 @@ class AdopcionController extends Controller
         [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
 
         // Obtener datos del adoptante para pre-completar el formulario
-        $userModel = new \Paw\App\Models\User;
+        $userModel = new User;
         $userModel->setQueryBuilder($this->model->getQueryBuilder());
         $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
         $userData = $userModel->findById((int)$userSession['id']);
@@ -92,7 +93,21 @@ class AdopcionController extends Controller
                 ]
             );
 
-            header('Location: /adopcion-exitosa');
+            $id = $mascota_id;
+            [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
+            $userModel = new User;
+            $userModel->setQueryBuilder($this->model->getQueryBuilder());
+            $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+            $userData = $userModel->findById((int)$userSession['id']);
+
+            echo $this->twig->render('formulario-adopcion.html.twig', [
+                'mascota' => $mascota,
+                'mediaExtras' => $mediaExtras,
+                'adoptanteData' => $adoptanteData,
+                'userData' => $userData,
+                'flash_type' => 'adopcion'
+            ]);
+            exit;
         }
     }
 

@@ -104,12 +104,6 @@ class PageController extends Controller
         echo $this->twig->render('como-adoptar.html.twig', get_defined_vars());
     }
 
-    public function adopcionExitosa()
-    {
-        $menu = $this->menu;
-        $redes = $this->redes;
-        echo $this->twig->render('adopcion-exitosa.html.twig', get_defined_vars());
-    }
 
     public function contacto()
     {
@@ -136,14 +130,13 @@ class PageController extends Controller
                 'mensaje' => $this->request->get('mensaje'),
             ]
         );
-        header("Location: /contacto-exitoso");
-    }
-    public function contactoExitoso()
-    {
-        $titulo = "Contacto Exitoso - PawMap";
-        $menu = $this->menu;
-        $redes = $this->redes;
-        echo $this->twig->render('contacto-exitoso.html.twig', get_defined_vars());
+        echo $this->twig->render('contacto.html.twig', [
+            'titulo' => 'Contacto - PawMap',
+            'menu' => $this->menu,
+            'redes' => $this->redes,
+            'flash_type' => 'contacto'
+        ]);
+        exit;
     }
     public function donacion()
     {

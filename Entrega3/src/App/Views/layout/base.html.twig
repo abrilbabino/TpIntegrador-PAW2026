@@ -30,6 +30,46 @@
     {% include 'partials/auth-modals.html.twig' %}
 
     {% block content_after_main %}{% endblock %}
+
+    {% if flash_type is defined %}
+        <input type="checkbox" id="mostrar-exito" class="modal-exito-check" checked />
+        <label for="mostrar-exito" class="fondo-modal-exito"></label>
+        
+        <aside class="modal-exito-raw-wrapper">
+            
+            {% if flash_type == 'donacion' %}
+                <section class="contenedor-exito">
+                    <span class="icono-exito emoji-confeti">🎉</span>
+                    <h2>¡Muchas gracias por tu compromiso!</h2>
+                    {% include 'partials/donacion-exitosa-modal.html.twig' with {'data': flash_data} %}
+                    <a href="/donar" class="link-volver">← Volver a donaciones</a>
+                </section>
+                
+            {% elseif flash_type == 'adopcion' %}
+                <section class="mensaje-exito">
+                    <figure class="success-icon">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </figure>
+                    <h1>¡Solicitud confirmada!</h1>
+                    <p>Hemos procesado tu solicitud correctamente.<br> El personal ha sido notificado por correo electrónico y se pondrá en contacto con usted a la brevedad.</p>
+                    <a href="/adoptar" class="btn-volver">VOLVER A ADOPTAR</a>
+                </section>
+                
+            {% elseif flash_type == 'contacto' %}
+                <section class="success-card">
+                    <figure class="success-icon">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </figure>
+                    <h1>¡Mensaje Enviado!</h1>
+                    <p>Gracias por ponerte en contacto con PawMap. Hemos recibido tu mensaje correctamente y nos comunicaremos con vos a la brevedad.</p>
+                    <nav>
+                        <a href="/" class="btn-home">Volver al Inicio</a>
+                    </nav>
+                </section>
+            {% endif %}
+        </aside>
+    {% endif %}
+
     {% block scripts %}{% endblock %}
   </body>
 </html>

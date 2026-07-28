@@ -1,0 +1,35 @@
+<p class="mensaje-intencion">Tu intención de donar <strong>${{ data.monto|default('') }}</strong> a <strong>{{ data.refugio_nombre|default('') }}</strong> fue registrada.</p>
+<hr>
+
+{% if data.metodo_pago|default('') == 'transferencia' %}
+    <section class="info-transferencia">
+        <h3>Próximo paso: Realizá la transferencia</h3>
+        <p>Para completar tu donación, transferí el monto desde tu home banking o billetera virtual (Mercado Pago, MODO, Ualá, etc.) a la cuenta del refugio:</p>
+        <p><strong>Refugio:</strong> {{ data.refugio_nombre|default('') }}</p>
+        <p><strong>ALIAS:</strong> <span class="codigo-inline">{{ data.refugio_alias|default('') }}</span></p>
+        <p><strong>CVU:</strong> <span class="codigo-inline">{{ data.refugio_cvu|default('') }}</span></p>
+        {% if data.comprobanteStatus is defined %}
+            <aside class="status-comprobante {{ data.comprobanteStatus.success ? 'status-exito' : 'status-error' }}">
+                {% if data.comprobanteStatus.success %}
+                    <span>¡Comprobante enviado al email del refugio ({{ data.refugio_email|default('') }}) con éxito!</span>
+                {% else %}
+                    <span>Error al enviar el comprobante: {{ data.comprobanteStatus.error|default('') }}</span>
+                {% endif %}
+            </aside>
+        {% else %}
+            <form action="/enviar-comprobante" method="POST" enctype="multipart/form-data" class="form-comprobante">
+                <input type="hidden" name="refugio_id" value="{{ data.refugio_id|default('') }}">
+                <input type="hidden" name="monto" value="{{ data.monto_raw|default('') }}">
+                <fieldset class="comprobante-wrapper">
+                    <legend>¿Ya transferiste? Adjuntá el comprobante (Opcional):</legend>
+                    <input type="file" name="comprobante" accept="image/*,.pdf" required>
+                    <button type="submit" class="btn-comprobante">Enviar Comprobante</button>
+                </fieldset>
+            </form>
+        {% endif %}
+    </section>
+{% else %}
+    <section class="info-mp">
+        <p>El pago fue procesado a través de Mercado Pago. Deberías recibir el correo de confirmación de la plataforma en unos instantes.</p>
+    </section>
+{% endif %}
