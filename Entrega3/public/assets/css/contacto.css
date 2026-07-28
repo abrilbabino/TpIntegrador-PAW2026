@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     margin: 3rem;
     gap: 3rem;
 }
@@ -13,9 +13,13 @@
 }
 
 .informacion {
-    width: 350px;
-    margin-top: 3.5rem;
+    width: 100%;
+    margin-top: 0;
     flex-shrink: 0;
+}
+
+.hero-banner h1 {
+    font-size: 2.5rem;
 }
 
 .envia-mensaje {
@@ -62,6 +66,7 @@
     padding: 2rem;
     border-radius: 10px;
     border-left: 5px solid var(--color-naranja);
+    margin: 0;
 }
 
 .info-sidebar:hover {
@@ -85,28 +90,23 @@
     color: var(--color-azul);
 }
 
-
 .map-link {
     color: var(--color-azul);
     font-weight: 700;
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 994px) {
     .contacto {
-        flex-direction: column;
+        flex-direction: row;
     }
 
-    .informacion{
-        width: 100%;
-        margin-top: 0;
+    .informacion {
+        width: 350px;
+        margin-top: 3.5rem;
     }
 
     .hero-banner h1 {
-        font-size: 2.5rem;
-    }
-
-    .info-sidebar {
-        margin: 0;
+        font-size: 3rem;
     }
 }

@@ -139,11 +139,17 @@
 
 .perfil-datos-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.6rem 1.5rem;
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+@media (min-width: 994px) {
+  .perfil-datos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .dato-item {
@@ -894,10 +900,4 @@ textarea.dato-valor-input {
 .alerta-error span {
   color: var(--color-rojo);
   font-size: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .perfil-datos-grid {
-    grid-template-columns: 1fr;
-  }
 }

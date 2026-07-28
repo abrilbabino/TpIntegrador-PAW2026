@@ -196,7 +196,7 @@
     padding: 0.5rem 1rem;
     border-radius: 50px;
     width: fit-content;
-    margin-top: 0.5rem;
+    margin: 1rem auto 0;
 }
 
 .perfil-badge-aliado .material-symbols-outlined {
@@ -215,7 +215,7 @@
 }
 
 .perfil-section-title {
-    font-size: 1.8rem;
+    font-size: 1.35rem;
     font-weight: 900;
     color: var(--color-azul);
     margin: 0 0 1.5rem 0;
@@ -233,7 +233,7 @@
 
 .perfil-about-container {
     max-width: 725px;
-    margin-top: 5rem;
+    margin: 0;
 }
 
 .llamar-desktop {
@@ -248,7 +248,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0.5rem 0 1.8rem 0;
+    margin-bottom: 0.8rem;
+    flex-direction: row;
+    align-items: center;
 }
 
 .perfil-about-header .perfil-section-title {
@@ -256,7 +258,7 @@
 }
 
 .perfil-about {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     line-height: 1.85;
     color: var(--color-texto);
     background: var(--color-fondo);
@@ -302,8 +304,8 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .perfil-tag {
@@ -312,10 +314,10 @@
     gap: 0.3rem;
     background: var(--color-naranja);
     color: var(--color-fondo);
-    padding: 0.45rem 1rem 0.45rem 0.55rem;
+    padding: 0.35rem 0.75rem 0.35rem 0.4rem;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 0.83rem;
+    font-size: 0.72rem;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     line-height: 1;
@@ -343,7 +345,7 @@
 .perfil-pets-section {
     width: 100%;
     grid-column: 1 / -1;
-    margin: 0 3.5rem;
+    margin: 0;
     padding: 0;
 }
 
@@ -357,7 +359,7 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
 }
 
@@ -659,7 +661,7 @@
     align-items: center;
     justify-content: space-evenly;
     gap: 1.5rem;
-    margin-top: 0.5rem;
+    margin: 1rem auto 0;
     margin-bottom: 0.5rem;
     flex-grow: 1;
 }
@@ -921,7 +923,7 @@
     align-items: center;
     justify-content: space-evenly;
     gap: 1.5rem;
-    margin-top: 0.5rem;
+    margin: 1rem auto 0;
     margin-bottom: 0.5rem;
     flex-grow: 1;
 }
@@ -1038,4 +1040,102 @@
 
 .input-archivo {
     margin-top: 5px;
+}
+@media (min-width: 994px) {
+    .perfil-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem 1rem;
+        margin: 1rem auto 0;
+        padding: 0;
+    }
+
+    .perfil-sidebar {
+        justify-self: flex-end;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .perfil-content {
+        margin-top: 3rem;
+    }
+
+    .perfil-stats,
+    .perfil-actions {
+        width: 280px;
+    }
+
+    .perfil-title-section h1 {
+        font-size: 3.8rem;
+        text-align: left;
+    }
+
+    .perfil-badge-aliado {
+        margin-top: 0.5rem;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .perfil-title-mobile {
+        display: none;
+    }
+
+    .perfil-title-desktop {
+        display: flex;
+    }
+
+    .perfil-about-container {
+        margin-top: 5rem;
+    }
+
+    .llamar-desktop {
+        display: inline-flex;
+    }
+
+    .llamar-mobile {
+        display: none;
+    }
+
+    .perfil-about {
+        padding: 2rem 2.5rem;
+        font-size: 1.2rem;
+        border-radius: 20px;
+        border-left-width: 6px;
+    }
+
+    .perfil-section-title {
+        font-size: 1.8rem;
+    }
+
+    .perfil-tags {
+        margin-top: 1.5rem;
+        gap: 0.6rem;
+    }
+
+    .perfil-tag {
+        font-size: 0.83rem;
+        padding: 0.45rem 1rem 0.45rem 0.55rem;
+    }
+
+    .perfil-tag .material-symbols-outlined {
+        font-size: 0.95rem;
+        width: 18px;
+        height: 18px;
+    }
+
+    .perfil-about-header {
+        margin: 0.5rem 0 1.8rem 0;
+        flex-direction: row;
+    }
+
+    .perfil-pets-section {
+        margin: 0 3.5rem;
+    }
+
+    .perfil-pets-section .grilla-mascotas {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .paw-pie-wrapper {
+        flex-direction: row;
+    }
 }
