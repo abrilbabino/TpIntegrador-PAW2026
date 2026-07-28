@@ -63,16 +63,16 @@
 
         <form class="registro-form" method="POST" action="/register">
             <label for="name" id="label-name">Nombre</label>
-            <input type="text" id="name" name="name" placeholder="Ingresá tu nombre" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" required />
+            <input type="text" id="name" name="name" placeholder="Ingresá tu nombre" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" {{ error == 'nombre_invalido' ? 'data-server-error="El nombre debe tener entre 2 y 50 caracteres y solo letras."' : '' }} required />
 
             <label for="apellido" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}">Apellido</label>
-            <input type="text" id="apellido" name="apellido" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" placeholder="Ingresá tu apellido" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" {% if registro != 'refugio' %}required{% endif %} />
+            <input type="text" id="apellido" name="apellido" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" placeholder="Ingresá tu apellido" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" {{ error == 'apellido_invalido' ? 'data-server-error="El apellido debe tener entre 2 y 50 caracteres y solo letras."' : '' }} {% if registro != 'refugio' %}required{% endif %} />
 
             <label for="dni" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}">DNI</label>
-            <input type="text" id="dni" name="dni" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" placeholder="Ingresá tu DNI" pattern="[0-9]{7,8}" minlength="7" maxlength="8" title="Debe ingresar exactamente 7 u 8 cifras (por ejemplo: 12345678)" {% if registro != 'refugio' %}required{% endif %} />
+            <input type="text" id="dni" name="dni" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" placeholder="Ingresá tu DNI" pattern="[0-9]{7,8}" minlength="7" maxlength="8" title="Debe ingresar exactamente 7 u 8 cifras (por ejemplo: 12345678)" {{ error == 'dni_invalido' ? 'data-server-error="El DNI debe tener exactamente 7 u 8 números."' : '' }} {% if registro != 'refugio' %}required{% endif %} />
 
             <label for="fecha_nacimiento" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}">Fecha de nacimiento</label>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" max="{{ '-18 years'|date('Y-m-d') }}" title="Debes ser mayor de 18 años para registrarte" {% if registro != 'refugio' %}required{% endif %} />
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="adoptante-field {% if registro == 'refugio' %}oculto{% endif %}" max="{{ '-16 years'|date('Y-m-d') }}" title="Debes ser mayor de 16 años para registrarte" {{ error == 'fecha_invalida' ? 'data-server-error="La fecha de nacimiento no es válida."' : '' }} {{ error == 'edad_invalida' ? 'data-server-error="Debes tener al menos 16 años de edad."' : '' }} {% if registro != 'refugio' %}required{% endif %} />
 
             <label for="mail">Correo Electrónico</label>
             <input

@@ -80,7 +80,7 @@
             <li class="dato-item">
                 <label class="dato-label" for="fecha_de_nacimiento">Fecha de Nacimiento</label>
                 <p class="dato-valor static-value">{{ adoptante.fecha_de_nacimiento|default('dd / mm / aaaa') }}</p>
-                <input type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}" max="{{ 'now'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." {% if errores.fecha_de_nacimiento is defined %}data-server-error="{{ errores.fecha_de_nacimiento }}"{% endif %}>
+                <input type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}" max="{{ '-16 years'|date('Y-m-d') }}" data-no-future="true" data-future-message="Debes tener al menos 16 años de edad." {% if errores.fecha_de_nacimiento is defined %}data-server-error="{{ errores.fecha_de_nacimiento }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <label class="dato-label" for="contacto">Teléfono</label>

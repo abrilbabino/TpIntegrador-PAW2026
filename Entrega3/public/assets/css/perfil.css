@@ -516,11 +516,6 @@
   display: none;
 }
 
-.perfil-container.is-editing {
-  display: flex;
-  flex-direction: column;
-  max-width: 900px;
-}
 
 .perfil-container.is-editing .input-value {
   display: block;

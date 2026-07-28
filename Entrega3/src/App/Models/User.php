@@ -3,6 +3,7 @@
 namespace Paw\App\Models;
 use Paw\Core\Model;
 use Paw\App\Helpers\GCSHelper;
+use Paw\Core\Exceptions\InvalidValueFormatException;
 class User extends Model
 {
     protected $table = 'usuario';
@@ -153,27 +154,32 @@ class User extends Model
 
         // Validación básica
         if (!$name || !$email || !$username || !$password) {
-            throw new \Exception('campos');
+            throw new InvalidValueFormatException('campos');
         }
 
         if ($rol === 'adoptante' || $rol === '') {
             if (!$apellido || !$dni || !$fecha_nacimiento) {
-                throw new \Exception('campos');
+                throw new InvalidValueFormatException('campos');
             }
-            if (!preg_match('/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u', $name)) {
-                throw new \Exception('campos'); // or specific error
+            if (strlen($name) < 2 || strlen($name) > 50 || !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u', $name)) {
+                throw new InvalidValueFormatException('nombre_invalido');
             }
-            if (!preg_match('/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u', $apellido)) {
-                throw new \Exception('campos');
+            if (strlen($apellido) < 2 || strlen($apellido) > 50 || !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u', $apellido)) {
+                throw new InvalidValueFormatException('apellido_invalido');
             }
-            if (!preg_match('/^[0-9]{7,8}$/', $dni)) {
-                throw new \Exception('campos');
+            
+            $dniLimpio = preg_replace('/[^0-9]/', '', $dni);
+            if (strlen($dniLimpio) < 7 || strlen($dniLimpio) > 8 || !preg_match('/^[0-9\.]{7,10}$/', $dni)) {
+                throw new InvalidValueFormatException('dni_invalido');
             }
-            $fecha_nacimiento_time = strtotime($fecha_nacimiento);
-            // Debe tener al menos 18 años
-            $dieciocho_anios_atras = strtotime('-18 years');
-            if (!$fecha_nacimiento_time || $fecha_nacimiento_time > $dieciocho_anios_atras) {
-                throw new \Exception('campos');
+
+            $d = \DateTime::createFromFormat('Y-m-d', $fecha_nacimiento);
+            if (!$d || $d->format('Y-m-d') !== $fecha_nacimiento || $d > new \DateTime()) {
+                throw new InvalidValueFormatException('fecha_invalida');
+            }
+            $hace16Anios = (new \DateTime())->modify('-16 years');
+            if ($d > $hace16Anios) {
+                throw new InvalidValueFormatException('edad_invalida');
             }
         }
 
