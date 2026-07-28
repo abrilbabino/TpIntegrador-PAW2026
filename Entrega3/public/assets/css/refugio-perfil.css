@@ -1,4 +1,4 @@
-.perfil-layout {
+﻿.perfil-layout {
     justify-content: center;
     max-width: 1300px;
     margin: 1rem auto 0;
@@ -381,7 +381,7 @@
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 2rem;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
 }
 
 .perfil-sidebar {
@@ -502,7 +502,8 @@
     border-top: 4px solid var(--color-azul);
 }
 
-.kpi-card:hover {
+.kpi-card:hover,
+.kpi-card:active {
     transform: translateY(-5px);
     box-shadow: 0 1px 5px var(--color-gris-claro);
 }
@@ -548,7 +549,7 @@
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     align-items: stretch;
     margin-top: 2rem;
@@ -558,7 +559,7 @@
 .paw-chart {
     background: var(--color-fondo);
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1.5rem 1rem;
     margin: 0;
     border: 1px solid var(--color-gris-claro);
     border-left: 4px solid var(--color-azul);
@@ -567,7 +568,8 @@
     flex-direction: column;
 }
 
-.paw-chart:hover {
+.paw-chart:hover,
+.paw-chart:active {
     transform: translateY(-5px);
     box-shadow: 0 1px 5px var(--color-gris-claro);
 }
@@ -625,7 +627,8 @@
     cursor: pointer;
 }
 
-.paw-chart-list dd:hover {
+.paw-chart-list dd:hover,
+.paw-chart-list dd:active {
     transform: scale(1.03);
     opacity: 0.9;
     box-shadow: 0 2px 8px var(--color-gris);
@@ -690,7 +693,8 @@
     transform-origin: 0px 0px;
 }
 
-.paw-pie-slice:hover {
+.paw-pie-slice:hover,
+.paw-pie-slice:active {
     transform: scale(1.05);
     opacity: 0.9;
 }
@@ -887,5 +891,13 @@
 
     .paw-pie-wrapper {
         flex-direction: row;
+    }
+
+    .paw-chart {
+        padding: 2rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     }
 }
