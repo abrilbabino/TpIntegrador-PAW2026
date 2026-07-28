@@ -325,7 +325,7 @@ class PAWFiltros {
                     cta.innerHTML = `
                         <h3><span class="material-symbols-outlined">pets</span> ¿Representás a un Refugio?</h3>
                         <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
-                        <a href="/iniciar-sesion?registro=refugio" class="btn-registro-refugio">
+                        <a href="?auth=login&registro=refugio" class="btn-registro-refugio">
                             <span class="material-symbols-outlined">add_circle</span> Registrate
                         </a>
                     `;

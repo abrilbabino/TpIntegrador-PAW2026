@@ -1,19 +1,19 @@
-{% extends 'layout/base.html.twig' %}
-
-{% block title %}Iniciar Sesión - PawMap{% endblock %}
-
 {% set error = request.get('error') %}
+{% set auth = request.get('auth') %}
 {% set registro = request.get('registro') %}
 
-{% block main_attributes %}class="sesion-container"{% endblock %}
-
-{% block main %}
-    <section class="login-section">
+<dialog id="modal-login" class="modal-auth">
+    <section class="modal-auth-content">
         <header class="sesion-header">
             <h1>Iniciar Sesión</h1>
             <figure class="avatar">
-                <span class="material-symbols-outlined">person</span>
+                <img src="/assets/img/icon.png" alt="Logo PawMap">
             </figure>
+            <form method="dialog" class="auth-close-form">
+                <button type="submit" class="auth-close-btn" aria-label="Cerrar modal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </form>
         </header>
 
         <form class="login-form" method="POST" action="/login">
@@ -41,22 +41,24 @@
                 <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
             </fieldset>
 
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit" class="btn-auth">Iniciar Sesión</button>
         </form>
-        <p>
+        <p class="auth-switch">
             ¿No tenes cuenta aún?
-            <label for="mostrar-registro" class="registro-link">Registrate aquí</label>
+            <button type="button" class="btn-link" id="btn-switch-register">Registrate aquí</button>
         </p>
     </section>
-{% endblock %}
+</dialog>
 
-{% block content_after_main %}
-    <input type="checkbox" id="mostrar-registro" class="registro-check" {{ registro is not null ? 'checked' : '' }} />
-    <label for="mostrar-registro" class="fondo-registro"></label>
-    <aside class="registro-panel">
+<dialog id="modal-register" class="modal-auth">
+    <section class="modal-auth-content">
         <header class="registro-header">
             <h2>Registrarme</h2>
-            <label for="mostrar-registro" class="registro-cerrar">✕</label>
+            <form method="dialog" class="auth-close-form">
+                <button type="submit" class="auth-close-btn" aria-label="Cerrar modal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </form>
         </header>
 
         <form class="registro-form" method="POST" action="/register">
@@ -101,10 +103,7 @@
                 <option value="refugio" {{ (registro is not null and registro == 'refugio') ? 'selected' : '' }}>Soy un refugio / protectora</option>
             </select>
 
-            <button type="submit">Registrarme</button>
+            <button type="submit" class="btn-auth">Registrarme</button>
         </form>
-    </aside>
-{% endblock %}
-
-{% block scripts %}
-{% endblock %}
+    </section>
+</dialog>

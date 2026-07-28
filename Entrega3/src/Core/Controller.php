@@ -132,6 +132,7 @@ class Controller
         $this->twig->addGlobal('menu', $this->menu);
         $this->twig->addGlobal('redes', $this->redes);
         $this->twig->addGlobal('notificaciones', $this->notificaciones);
+        $this->twig->addGlobal('request', $this->request);
     }
 
     public function setModel(Model $model)

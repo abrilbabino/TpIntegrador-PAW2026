@@ -95,15 +95,6 @@ class PageController extends Controller
         echo $this->twig->render('busqueda.html.twig', get_defined_vars());
     }
 
-    public function iniciarSesion()
-    {
-        $titulo = "Iniciar Sesión";
-        $menu = $this->menu;
-        $redes = $this->redes;
-        $request = $this->request;
-        echo $this->twig->render('iniciar-sesion.html.twig', get_defined_vars());
-    }
-
     public function comoAdoptar()
     {
         $titulo = "Como Adoptar - PawMap";

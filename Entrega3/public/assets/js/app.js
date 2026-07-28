@@ -20,7 +20,7 @@ class AppPAW {
     this._initChatWidget();
     this._initChatPage();
     this._initLibreta();
-    this._initIniciarSesion();
+    this._initAuthModals();
     this._initSeguimiento();
     this._initBusquedaResultados();
   }
@@ -49,14 +49,14 @@ class AppPAW {
     }
   }
 
-  _initIniciarSesion() {
-    const contenedorSesion = document.querySelector(".mostrar-contraseña");
-    if (contenedorSesion) {
+  _initAuthModals() {
+    const loginModal = document.getElementById("modal-login");
+    if (loginModal) {
       PAW.cargarScript(
-        "PAW-Iniciar-Sesion-Script",
-        "/assets/js/components/paw-iniciar-sesion.js",
+        "PAW-Auth-Modals-Script",
+        "/assets/js/components/paw-auth-modals.js",
         () => {
-          new PAWIniciarSesion();
+          new PAWAuthModals();
         }
       );
     }

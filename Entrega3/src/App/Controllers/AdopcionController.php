@@ -21,7 +21,7 @@ class AdopcionController extends Controller
 
         // Si no está logueado o no es adoptante, redirigir a login
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /iniciar-sesion?error=perfil_requerido');
+            header('Location: /?auth=login&error=perfil_requerido');
             exit;
         }
 
@@ -58,7 +58,7 @@ class AdopcionController extends Controller
 
         // Seguridad: Verificar sesión en el envío también
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 

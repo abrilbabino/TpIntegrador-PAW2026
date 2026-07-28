@@ -16,7 +16,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user)) {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -128,7 +128,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user) || $this->request->method() !== 'POST') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -160,7 +160,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user) || $this->request->method() !== 'POST') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 

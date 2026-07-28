@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         // Validación básica
         if (!$name || !$email || !$username || !$password) {
-            header('Location: /iniciar-sesion?error=campos');
+            header('Location: /?auth=login&error=campos');
             exit;
         }
 
@@ -40,13 +40,13 @@ class AuthController extends Controller
 
         $existente = $this->model->findByUsername($username);
         if ($existente) {
-            header('Location: /iniciar-sesion?error=usuario_existente&registro=true');
+            header('Location: /?auth=login&error=usuario_existente&registro=true');
             exit;
         }
 
         $existenteEmail = $this->model->findByEmail($email);
         if ($existenteEmail) {
-            header('Location: /iniciar-sesion?error=email_existente&registro=true');
+            header('Location: /?auth=login&error=email_existente&registro=true');
             exit;
         }
 
@@ -127,7 +127,7 @@ class AuthController extends Controller
 
         // Validar que los campos no estén vacíos
         if (empty($username) || empty($password)) {
-            header('Location: /iniciar-sesion?error=1');
+            header('Location: /?auth=login&error=1');
             exit;
         }
 
@@ -139,14 +139,14 @@ class AuthController extends Controller
 
         if (!$usuario) {
             $this->log->info("Login fallido: usuario no encontrado", ['username' => $username]);
-            header('Location: /iniciar-sesion?error=1');
+            header('Location: /?auth=login&error=1');
             exit;
         }
 
         // Verificar contraseña con password_verify
         if (!password_verify($password, $usuario['contrasena'])) {
             $this->log->info("Login fallido: contraseña incorrecta", ['username' => $username]);
-            header('Location: /iniciar-sesion?error=1');
+            header('Location: /?auth=login&error=1');
             exit;
         }
 
@@ -194,7 +194,7 @@ class AuthController extends Controller
 
         $this->request->destroySession();
 
-        header('Location: /iniciar-sesion');
+        header('Location: /?auth=login');
         exit;
     }
 }

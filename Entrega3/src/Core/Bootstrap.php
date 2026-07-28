@@ -50,7 +50,7 @@ $router->setControllerFactory($controllerFactory);
 
 // Páginas estáticas
 $router->get('/', 'PageController@index');
-$router->get('/iniciar-sesion', 'PageController@iniciarSesion');
+
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // $router->get('/donar', 'PageController@donar');
 $router->get('/mapa', 'PageController@mapa');

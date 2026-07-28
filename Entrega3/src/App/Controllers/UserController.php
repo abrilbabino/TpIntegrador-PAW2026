@@ -22,7 +22,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession)) {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -185,7 +185,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -223,7 +223,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -251,7 +251,7 @@ class UserController extends Controller
 
         if (empty($userSession) || $this->request->method() !== 'POST'
             || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -283,7 +283,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -322,7 +322,7 @@ class UserController extends Controller
 
         if (empty($userSession) || $this->request->method() !== 'POST'
             || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
