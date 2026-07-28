@@ -233,6 +233,7 @@ menu.compartir-dropdown {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -269,9 +270,17 @@ menu.compartir-dropdown {
     display: block;
 }
 
-.compartir-wpp { color: var(--color-verde); }
-.compartir-ig { color: var(--color-magenta); }
-.compartir-tt { color: var(--color-negro); }
+.compartir-wpp {
+    color: var(--color-verde);
+}
+
+.compartir-ig {
+    color: var(--color-magenta);
+}
+
+.compartir-tt {
+    color: var(--color-negro);
+}
 
 .compartir-toast {
     position: fixed;
@@ -524,7 +533,7 @@ menu.compartir-dropdown {
         display: grid;
         grid-template-columns: 1.5fr 1fr;
         gap: 4rem;
-        align-items: start;
+        align-items: stretch;
         max-width: 1680px;
         margin: 0 auto;
         padding: 6rem 2rem 5rem 2rem;
@@ -611,6 +620,16 @@ menu.compartir-dropdown {
         min-height: 670px;
         box-shadow: 0 2px 12px var(--color-texto);
         margin: 0;
+    }
+
+    .sobre-mi {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .sobre-mi-box {
+        flex-grow: 1;
     }
 
     .drag-handle {
