@@ -1290,3 +1290,17 @@ fieldset.perfil-refugio-datos-columnas {
     transform: scale(0.98);
     background-color: darkred;
 }
+
+.sec-estadisticas {
+    grid-column: 1 / -1;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+.estadisticas-main-title {
+    font-size: 1.6rem;
+    color: var(--color-azul);
+    margin-bottom: 2rem;
+    text-align: left;
+    font-weight: 700;
+}
+

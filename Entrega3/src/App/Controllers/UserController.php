@@ -110,6 +110,56 @@ class UserController extends Controller
             $temperamentos = $mascotaCollection->getTemperamentos();
             
             $seguimientoAgrupado = $refugioModel->getSeguimientoAgrupado();
+            
+            $todasLasMascotas = $mascotaCollection->getAll(['refugio_id' => $refugioId]);
+            $statsEspecie = [];
+            $statsEstado = [];
+            $statsTamano = [];
+            $statsTemperamento = [];
+            $statsCastrado = [];
+            
+            if (is_array($todasLasMascotas)) {
+                foreach ($todasLasMascotas as $m) {
+                    $estado = empty($m->fields['estado_adopcion']) ? 'Desconocido' : ucfirst(strtolower($m->fields['estado_adopcion']));
+                    $especie = empty($m->fields['especie']) ? 'Desconocido' : ucfirst(strtolower($m->fields['especie']));
+                    $tamano = empty($m->fields['tamano']) ? 'Desconocido' : ucfirst(strtolower($m->fields['tamano']));
+                    $temperamento = empty($m->fields['temperamento']) ? 'Desconocido' : ucfirst(strtolower($m->fields['temperamento']));
+                    
+                    if (isset($m->fields['castrado'])) {
+                        $castrado = ($m->fields['castrado'] == 1 || $m->fields['castrado'] === true || strtolower($m->fields['castrado']) == 'si') ? 'Sí' : 'No';
+                    } else {
+                        $castrado = 'Desconocido';
+                    }
+                    
+                    $statsEstado[$estado] = ($statsEstado[$estado] ?? 0) + 1;
+                    $statsEspecie[$especie] = ($statsEspecie[$especie] ?? 0) + 1;
+                    $statsTamano[$tamano] = ($statsTamano[$tamano] ?? 0) + 1;
+                    $statsTemperamento[$temperamento] = ($statsTemperamento[$temperamento] ?? 0) + 1;
+                    $statsCastrado[$castrado] = ($statsCastrado[$castrado] ?? 0) + 1;
+                }
+            }
+
+            $statsSolicitudes = [];
+            if (is_array($solicitudes)) {
+                foreach ($solicitudes as $sol) {
+                    $estadoSol = empty($sol['estado']) ? 'Desconocido' : ucfirst(strtolower($sol['estado']));
+                    $statsSolicitudes[$estadoSol] = ($statsSolicitudes[$estadoSol] ?? 0) + 1;
+                }
+            }
+            
+            $estadisticas = [
+                'kpis' => [
+                    'totalMascotas' => is_array($todasLasMascotas) ? count($todasLasMascotas) : 0,
+                    'adopcionesExitosas' => $statsEstado['Adoptado'] ?? ($statsEstado['Adoptada'] ?? 0),
+                    'totalSolicitudes' => is_array($solicitudes) ? count($solicitudes) : 0
+                ],
+                'especie' => $statsEspecie,
+                'estado' => $statsEstado,
+                'tamano' => $statsTamano,
+                'temperamento' => $statsTemperamento,
+                'castrado' => $statsCastrado,
+                'solicitudes' => $statsSolicitudes
+            ];
         }
         $resultados_importacion = $this->request->session('resultados_importacion');
         if (isset($_SESSION['resultados_importacion'])) {
