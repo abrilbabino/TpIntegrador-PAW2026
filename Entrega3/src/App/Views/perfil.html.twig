@@ -166,7 +166,7 @@
                                     alt="{{ fav.nombre|default('Mascota') }}"
                                 />
                             </figure>
-                            <h4>{{ fav.nombre|default('Sin nombre') }}</h4>
+                            <h4>{{ fav.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ fav.edad|default('?') }} año(s)
                                 · {{ fav.tamano|default('—') }}
@@ -197,7 +197,7 @@
             <ul class="perfil-lista">
                 {% for sol in solicitudes %}
                     <li class="perfil-lista-item">
-                        <h4>{{ sol.nombre|default('Mascota') }}</h4>
+                        <h4>{{ sol.nombre|default('Mascota')|capitalize }}</h4>
                         <p>
                             {{ sol.edad|default('?') }} año(s)
                             · {{ sol.tamano|default('—') }}
@@ -224,7 +224,7 @@
             <ul class="perfil-lista">
                 {% for ad in adopciones %}
                     <li class="perfil-lista-item">
-                        <h4>{{ ad.nombre|default('Mascota') }}</h4>
+                        <h4>{{ ad.nombre|default('Mascota')|capitalize }}</h4>
                         <p>
                             {{ ad.edad|default('?') }} año(s)
                             · {{ ad.tamano|default('—') }}

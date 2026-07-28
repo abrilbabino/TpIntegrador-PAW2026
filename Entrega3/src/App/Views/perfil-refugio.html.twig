@@ -364,6 +364,15 @@
                     </label>
                     {% set errorEspecie = '' %}
                 {% endfor %}
+                    <label class="especie-refugio-radio">
+                        <input type="radio" name="especie" value="otro"
+                               required
+                               {{ (oldMascota.especie|default('') == 'otro') ? 'checked' : '' }}>
+                        <span>Otro...</span>
+                    </label>
+                <input type="text" id="nueva_especie" name="nueva_especie" class="input-otro" placeholder="Escribí la nueva especie" value="{{ oldMascota.nueva_especie|default('') }}"
+                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                       title="Solo se permiten letras y espacios.">
             </fieldset>
             
             <label for="fecha_nacimiento">Fecha de nacimiento
@@ -383,11 +392,9 @@
             <label for="tamanio">Tamaño
             <select id="tamanio" name="tamanio" required {{ erroresMascota.tamanio is defined and erroresMascota.tamanio is not empty ? 'data-server-error="' ~ erroresMascota.tamanio ~ '"' : '' }}>
                 <option value="">Seleccioná un tamaño</option>
-                {% for t in tamanos %}
-                    <option value="{{ t.fields.tamano }}" {{ (oldMascota.tamanio|default('') == t.fields.tamano) ? 'selected' : '' }}>
-                        {{ t.fields.tamano|capitalize }}
-                    </option>
-                {% endfor %}
+                <option value="pequeño" {{ (oldMascota.tamanio|default('') == 'pequeño') ? 'selected' : '' }}>Pequeño</option>
+                <option value="mediano" {{ (oldMascota.tamanio|default('') == 'mediano') ? 'selected' : '' }}>Mediano</option>
+                <option value="grande" {{ (oldMascota.tamanio|default('') == 'grande') ? 'selected' : '' }}>Grande</option>
             </select>
             </label>
 
@@ -406,7 +413,11 @@
                         {{ t.fields.temperamento|capitalize }}
                     </option>
                 {% endfor %}
+                <option value="otro" {{ (oldMascota.temperamento|default('') == 'otro') ? 'selected' : '' }}>Otro...</option>
             </select>
+            <input type="text" id="nuevo_temperamento" name="nuevo_temperamento" class="input-otro" placeholder="Escribí el nuevo temperamento" value="{{ oldMascota.nuevo_temperamento|default('') }}"
+                   pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                   title="Solo se permiten letras y espacios.">
             </label>
 
             <label for="esterilizado">¿Está esterilizado?
@@ -436,8 +447,44 @@
             </footer>
         </form>
         </details>
-    </section>    <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
-        <details class="perfil-dropdown">
+
+        <details class="perfil-dropdown dropdown-importar" {% if request.get('importacion') == 'finalizada' or request.get('importacion') == 'error' %}open{% endif %}>
+            <summary> <h3>Importar Mascotas (CSV)</h3> </summary>
+            <p class="importar-descripcion">Sube un archivo `.csv` para registrar muchas mascotas a la vez. <a href="/assets/docs/plantilla_mascotas.csv" download>Descargar plantilla de ejemplo</a>.</p>
+            
+            {% if resultados_importacion is defined and resultados_importacion is not empty and resultados_importacion.cantidad_exito > 0 %}
+                <aside class="alerta-exito" role="status">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    <section>
+                        <strong>¡Importación Exitosa!</strong>
+                        <p>Se registraron exitosamente {{ resultados_importacion.cantidad_exito }} mascotas en la base de datos.</p>
+                    </section>
+                </aside>
+            {% endif %}
+
+            {% set erroresCsv = '' %}
+            {% if error_importacion == 'falla_subida' %}
+                 {% set erroresCsv = 'Error al subir el archivo o no se seleccionó ningún archivo.' %}
+            {% elseif error_importacion == 'extension_invalida' %}
+                 {% set erroresCsv = 'El archivo debe ser un .csv válido.' %}
+            {% elseif resultados_importacion is defined and resultados_importacion.errores|length > 0 %}
+                 {% set erroresCsv = resultados_importacion.errores|join(' | ') %}
+            {% endif %}
+
+            <form id="form-importar-mascotas" method="POST" action="/perfil/mascota/importar" enctype="multipart/form-data" novalidate>
+                <label for="csv_mascotas">Seleccionar Archivo CSV:
+                    <input type="file" id="csv_mascotas" class="input-archivo" name="csv_mascotas" accept=".csv" required 
+                           {% if erroresCsv != '' %}data-server-error="{{ erroresCsv|raw }}"{% endif %}>
+                </label>
+                <footer class="form-acciones">
+                    <button type="submit" class="btn-publicar-mascota">Importar Archivo</button>
+                </footer>
+            </form>
+        </details>
+    </section>
+
+    <section class="perfil-editar-mascota sec-editar-mascota" id="sec-editar-mascota">
+        <details class="perfil-dropdown" {% if request.get('deleted') == '1' %}open{% endif %}>
         <summary> <h3>Actualizar/Eliminar Mascota</h3> </summary>
         {% if mascotas is empty %}
             <article class="perfil-vacio">
@@ -449,7 +496,7 @@
                 {% for mascota in mascotas %}
                     <li class="tarjeta-refugio-mascota">
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota') }}">
-                            <h4>{{ mascota.fields.nombre|default('Sin nombre') }}</h4>
+                            <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} año(s)
                                 · {{ mascota.fields.tamano|default('—') }}
@@ -485,7 +532,7 @@
                 {% for mascota in mascotasAdoptadas %}
                     <li class="tarjeta-refugio-mascota">
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota') }}">
-                            <h4>{{ mascota.fields.nombre|default('Sin nombre') }}</h4>
+                            <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} año(s)
                                 · {{ mascota.fields.tamano|default('—') }}

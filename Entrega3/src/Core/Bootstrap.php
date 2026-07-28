@@ -97,6 +97,7 @@ $router->post('/perfil/guardar', 'UserController@guardar');
 $router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
 $router->post('/perfil/refugio/ubicacion', 'UserController@guardarUbicacion');
 $router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
+$router->post('/perfil/mascota/importar', 'UserController@importarMascotasCsv');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');

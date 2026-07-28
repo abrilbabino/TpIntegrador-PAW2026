@@ -74,7 +74,7 @@
 
                             <a href="/mascota?id={{ mascota.fields.id|default('')|escape('html_attr') }}" class="verPerfil"> 
                                 <section class="tarjeta-info">
-                                    <h3>{{ mascota.fields.nombre|default('') }}</h3>
+                                    <h3>{{ mascota.fields.nombre|default('')|capitalize }}</h3>
                                     <p>
                                         {{ mascota.fields.edad|default('') }} años - 
                                         {{ mascota.fields.tamano|default('')|capitalize }} - 

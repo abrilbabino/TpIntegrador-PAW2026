@@ -21,11 +21,11 @@
 }
 
 .no-scroll {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .display-contents {
-    display: contents;
+  display: contents;
 }
 
 body {
@@ -91,6 +91,11 @@ a:hover {
 }
 
 @keyframes paw-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

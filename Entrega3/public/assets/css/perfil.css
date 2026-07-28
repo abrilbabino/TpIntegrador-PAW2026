@@ -772,6 +772,23 @@
   display: none;
 }
 
+.perfil-container input[type="text"].input-otro,
+.perfil-refugio-container input[type="text"].input-otro {
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: none;
+}
+
+.perfil-container select:has(option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-container label:has(select option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-container fieldset:has(input[type="radio"][value="otro"]:checked) input[type="text"].input-otro,
+.perfil-refugio-container select:has(option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-refugio-container label:has(select option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-refugio-container fieldset:has(input[type="radio"][value="otro"]:checked) input[type="text"].input-otro {
+  display: block;
+}
+
 /* Alertas de error/éxito premium */
 .alerta-exito,
 .alerta-error {
@@ -815,6 +832,12 @@
 .alerta-exito span {
   color: var(--color-fondo);
   font-size: 1.5rem;
+}
+
+.alerta-exito section p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-verde);
 }
 
 .alerta-error {

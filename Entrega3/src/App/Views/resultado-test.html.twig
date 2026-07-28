@@ -53,7 +53,7 @@
                              alt="{{ mascota.fields.nombre|default('Mascota') }}">
                     </figure>
                     <article class="tarjeta-recomendada-body">
-                        <h4>{{ mascota.fields.nombre|default('Sin nombre') }}</h4>
+                        <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                         <p>
                             {{ mascota.fields.edad|default('0') }} años
                             &middot; {{ mascota.fields.tamano|default('')|capitalize }}

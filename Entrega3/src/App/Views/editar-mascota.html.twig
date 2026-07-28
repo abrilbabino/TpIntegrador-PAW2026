@@ -62,7 +62,11 @@
                             {{ especieValor|capitalize }}
                         </option>
                     {% endfor %}
+                    <option value="otro" {{ (especieActual == 'otro') ? 'selected' : '' }}>Otro...</option>
                 </select>
+                <input type="text" id="nueva_especie" name="nueva_especie" class="dato-valor-input input-value input-otro" placeholder="Escribí la nueva especie" value="{{ mascota.nueva_especie|default('') }}"
+                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                       title="Solo se permiten letras y espacios.">
                 {% if errores.especie is defined %}
                     <span class="msg-error">{{ errores.especie }}</span>
                 {% endif %}
@@ -72,12 +76,9 @@
                 <span class="dato-label">Tamaño *</span>
                 <select name="tamanio" class="dato-valor-input input-value {{ errores.tamanio is defined ? 'input-invalido' : '' }}" required>
                     <option value="">Seleccioná un tamaño</option>
-                    {% for t in tamanos %}
-                        {% set tamanoValor = t.fields.tamano|default('') %}
-                        <option value="{{ tamanoValor }}" {{ (tamanioActual == tamanoValor) ? 'selected' : '' }}>
-                            {{ tamanoValor|capitalize }}
-                        </option>
-                    {% endfor %}
+                    <option value="pequeño" {{ (tamanioActual == 'pequeño') ? 'selected' : '' }}>Pequeño</option>
+                    <option value="mediano" {{ (tamanioActual == 'mediano') ? 'selected' : '' }}>Mediano</option>
+                    <option value="grande" {{ (tamanioActual == 'grande') ? 'selected' : '' }}>Grande</option>
                 </select>
                 {% if errores.tamanio is defined %}
                     <span class="msg-error">{{ errores.tamanio }}</span>
@@ -94,7 +95,11 @@
                             {{ temperamentoValor|capitalize }}
                         </option>
                     {% endfor %}
+                    <option value="otro" {{ (temperamentoActual == 'otro') ? 'selected' : '' }}>Otro...</option>
                 </select>
+                <input type="text" id="nuevo_temperamento" name="nuevo_temperamento" class="dato-valor-input input-value input-otro" placeholder="Escribí el nuevo temperamento" value="{{ mascota.nuevo_temperamento|default('') }}"
+                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+                       title="Solo se permiten letras y espacios.">
                 {% if errores.temperamento is defined %}
                     <span class="msg-error">{{ errores.temperamento }}</span>
                 {% endif %}

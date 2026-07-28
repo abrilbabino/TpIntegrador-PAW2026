@@ -94,7 +94,7 @@
                                 <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="verPerfil">
                                     <section class="tarjeta-info">
                                         <header class="tarjeta-info-header">
-                                            <h3>{{ mascota.fields.nombre|default('Sin nombre') }}</h3>
+                                            <h3>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h3>
                                             <span class="btn-ver-perfil-mobile">Ver Perfil</span>
                                         </header>
                                         <p>

@@ -150,7 +150,7 @@
                             </figure>
                             <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="verPerfil">
                                 <figcaption class="tarjeta-info">
-                                    <h3>{{ mascota.fields.nombre|default('Sin nombre') }}</h3>
+                                    <h3>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h3>
                                     <p>
                                         {{ mascota.fields.edad|default('0') }} años -
                                         {{ mascota.fields.tamano|default('Desconocido')|capitalize }} -

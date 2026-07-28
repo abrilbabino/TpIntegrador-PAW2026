@@ -48,7 +48,7 @@
         <aside class="info-mascota">
             <span class="drag-handle"></span>
             <header class="info-header">
-                <h2>{{ mascota.fields.nombre|default('Mascota') }}</h2>
+                <h2>{{ mascota.fields.nombre|default('Mascota')|capitalize }}</h2>
                 {% set svgArchivo = mascota.fields.svg|default('')|trim %}
                 {% if svgArchivo is empty %}
                     {# Retrocompatibilidad: mascotas antiguas sin campo svg usan el nombre #}
@@ -108,7 +108,7 @@
 
             <section class="sobre-mi">
                 <h4>SOBRE MÍ</h4>
-                <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
+                <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.')|capitalize }}</p>
             </section>
 
             <a href="/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id) }}" class="refugio-info">

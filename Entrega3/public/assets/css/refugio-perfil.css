@@ -167,8 +167,13 @@
     gap: 0.5rem;
 }
 
-.perfil-title-mobile { display: none; }
-.perfil-title-desktop { display: flex; }
+.perfil-title-mobile {
+    display: none;
+}
+
+.perfil-title-desktop {
+    display: flex;
+}
 
 .perfil-title-section h1 {
     font-size: 3.8rem;
@@ -272,14 +277,17 @@
     margin-top: 4rem;
     padding: 2rem;
 }
+
 .perfil-not-found__icon {
     font-size: 60px;
     color: var(--color-naranja);
 }
+
 .perfil-not-found__title {
     color: var(--color-azul);
     margin-top: 1rem;
 }
+
 .perfil-not-found__link {
     display: inline-block;
     margin-top: 1rem;
@@ -381,11 +389,12 @@
         justify-self: center;
     }
 
-    .perfil-content{
+    .perfil-content {
         margin: 0;
     }
 
-    .perfil-stats, .perfil-actions {
+    .perfil-stats,
+    .perfil-actions {
         width: 100%;
     }
 
@@ -398,8 +407,13 @@
         margin: 1rem auto 0;
     }
 
-    .perfil-title-mobile { display: flex; }
-    .perfil-title-desktop { display: none; }
+    .perfil-title-mobile {
+        display: flex;
+    }
+
+    .perfil-title-desktop {
+        display: none;
+    }
 
     .perfil-title-section.perfil-title-mobile {
         align-items: center;
@@ -417,8 +431,13 @@
         margin: 0;
     }
 
-    .llamar-desktop { display: none; }
-    .llamar-mobile  { display: inline-flex; }
+    .llamar-desktop {
+        display: none;
+    }
+
+    .llamar-mobile {
+        display: inline-flex;
+    }
 
     .perfil-about {
         padding: 1.4rem 1.4rem 1.4rem 1.8rem;
@@ -455,11 +474,50 @@
         margin-bottom: 0.8rem;
     }
 
-    .perfil-pets-section{
-        margin:0;
+    .perfil-pets-section {
+        margin: 0;
     }
 
     .perfil-pets-section .grilla-mascotas {
         grid-template-columns: 1fr;
     }
+}
+
+/* Clases para importador CSV */
+.dropdown-importar {
+    margin-top: 1rem;
+}
+
+.importar-descripcion {
+    margin-bottom: 1rem;
+    color: var(--color-gris);
+}
+
+.alerta-error {
+    color: var(--color-rojo);
+}
+
+.alerta-exito {
+    background-color: var(--color-verde-claro);
+    color: var(--color-verde);
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.alerta-error-lista {
+    background-color: var(--color-rojo-claro);
+    color: var(--color-rojo);
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.lista-errores {
+    margin-left: 20px;
+    font-size: 0.9em;
+}
+
+.input-archivo {
+    margin-top: 5px;
 }
