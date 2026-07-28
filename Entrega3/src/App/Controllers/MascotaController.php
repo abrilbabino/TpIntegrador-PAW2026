@@ -78,7 +78,7 @@ class MascotaController extends Controller
         $ubicaciones = [];
         $ubicacionTexto = 'Ubicación a confirmar';
         if ($mascota && $mascota->fields['refugio_id']) {
-            $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$mascota->fields['refugio_id']);
+            $ubicaciones = $refugios->obtenerUbicaciones((int)$mascota->fields['refugio_id']);
             $ciudades = [];
             $provincias = [];
             foreach ($ubicaciones as $u) {
@@ -284,19 +284,16 @@ class MascotaController extends Controller
             exit;
         }
 
+        $mediaCollection = $this->loadCollection('\Paw\App\Models\MediaMascotaCollection');
+
         // 3. Procesar el archivo
         try {
             $url = GCSHelper::subir($archivo, 'media_mascotas');
-            $db = $this->model->getQueryBuilder();
-            
-            // Determinar si es foto o video
-            $esVideo = str_starts_with($archivo['type'] ?? '', 'video/');
-            
-            $insertId = $db->insert('media_mascota', [
-                'mascota_id' => $mascotaId,
-                'tipo'       => $esVideo ? 'video' : 'foto',
-                'url'        => $url
-            ]);
+            $insertId = $mediaCollection->agregarMedia(
+                $mascotaId,
+                $esVideo ? 'video' : 'foto',
+                $url
+            );
             
             $wantsJson = isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
             if ($wantsJson) {
@@ -656,8 +653,8 @@ public function eliminarFoto() {
         }
 
         if ($mascota && (int)$mascota->fields['refugio_id'] === (int) $userSession['id']) {
-            $db = $this->model->getQueryBuilder();
-            $db->delete('mascota', ['id' => $id]);
+            $mascotaCollection = $this->loadCollection('\Paw\App\Models\MascotaCollection');
+            $mascotaCollection->eliminar($id);
         }
 
         header('Location: /perfil?deleted=1#sec-editar-mascota');

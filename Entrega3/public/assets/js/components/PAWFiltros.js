@@ -399,8 +399,9 @@ class PAWFiltros {
     }
 
     aplicarFiltros() {
-        const queryUbicacion = (this.estadoFiltros['ubicacion'] || "").toLowerCase().trim();
-        const todasLasCiudades = [...new Set(this.items.map(i => (i.ciudad || "").toLowerCase().trim()).filter(c=>c))];
+        const removeAccentsGlobal = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const queryUbicacion = removeAccentsGlobal((this.estadoFiltros['ubicacion'] || "").toLowerCase().trim());
+        const todasLasCiudades = [...new Set(this.items.map(i => removeAccentsGlobal((i.ciudad || "").toLowerCase().trim())).filter(c=>c))];
         const queryTieneCiudadExacta = queryUbicacion ? todasLasCiudades.some(c => queryUbicacion.includes(c)) : false;
 
         this.itemsFiltrados = this.items.filter(item => {
@@ -421,7 +422,9 @@ class PAWFiltros {
                 } 
                 // 2. Evaluación estricta para el resto (Selects, Radios)
                 else {
-                    if (valorBuscado !== "" && String(item[prop]) !== String(valorBuscado)) {
+                    const strItem = removeAccentsGlobal(String(item[prop] || "").toLowerCase().trim());
+                    const strBuscado = removeAccentsGlobal(String(valorBuscado || "").toLowerCase().trim());
+                    if (strBuscado !== "" && strItem !== strBuscado) {
                         cumple = false;
                         break; 
                     }
@@ -430,8 +433,8 @@ class PAWFiltros {
 
             // 3. Filtrar por ubicación (prioridad ciudad sobre provincia)
             if (cumple && queryUbicacion) {
-                const ciudad = (item.ciudad || "").toLowerCase().trim();
-                const provincia = (item.provincia || "").toLowerCase().trim();
+                const ciudad = removeAccentsGlobal((item.ciudad || "").toLowerCase().trim());
+                const provincia = removeAccentsGlobal((item.provincia || "").toLowerCase().trim());
                 
                 const matchCiudad = ciudad && (queryUbicacion.includes(ciudad) || ciudad.includes(queryUbicacion));
                 const matchProvincia = provincia && (queryUbicacion.includes(provincia) || provincia.includes(queryUbicacion));

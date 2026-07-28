@@ -25,6 +25,15 @@ class MediaMascotaCollection extends Model
         return $media;
     }
 
+    public function agregarMedia(int $mascotaId, string $tipo, string $url): int
+    {
+        return $this->queryBuilder->insert($this->table, [
+            'mascota_id' => $mascotaId,
+            'tipo'       => $tipo,
+            'url'        => $url
+        ]);
+    }
+
     public function procesarArchivoSeguimiento(int $mascotaId, string $tipoArchivo, ?int $registroId, string $url): void
     {
         if (in_array($tipoArchivo, ['comprobante', 'certificado']) && $registroId) {

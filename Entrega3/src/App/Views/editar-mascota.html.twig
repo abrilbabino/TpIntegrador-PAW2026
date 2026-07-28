@@ -27,12 +27,26 @@
         </aside>
     {% endif %}
 
+    {% if request.get('delete') == 'success' %}
+        <aside class="alerta-exito" role="status">
+            <span class="material-symbols-outlined">check_circle</span>
+            <section>
+                <strong>¡Foto eliminada!</strong>
+                <p>La foto se ha eliminado correctamente.</p>
+            </section>
+        </aside>
+    {% endif %}
+
     {% if request.get('error') is not null %}
         <aside class="alerta-error" role="alert">
             <span class="material-symbols-outlined">error</span>
             <section>
                 <strong>Ocurrió un inconveniente</strong>
-                <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
+                {% if request.get('error') == 'foto_no_encontrada' %}
+                    <p>La foto ya fue eliminada o no se pudo encontrar.</p>
+                {% else %}
+                    <p>Ocurrió un error al guardar los cambios. Intentalo de nuevo.</p>
+                {% endif %}
             </section>
         </aside>
     {% endif %}

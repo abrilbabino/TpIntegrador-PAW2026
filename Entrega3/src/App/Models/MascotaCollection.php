@@ -719,4 +719,10 @@ class MascotaCollection extends Model
             $db->update('mascota', ['imagen' => 'default-pet.jpg'], ['id' => $id]);
         }
     }
+
+    public function eliminar(int $id): void
+    {
+        $db = $this->getQueryBuilder();
+        $db->delete($this->table, ['id' => $id]);
+    }
 }

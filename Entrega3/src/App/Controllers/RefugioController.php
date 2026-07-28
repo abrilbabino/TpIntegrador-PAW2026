@@ -76,7 +76,7 @@ class RefugioController extends Controller
                 $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
                 $mascotas = $mascotaCollection->getAll(['refugio_id' => $id, 'estado_adopcion' => 'DISPONIBLE']);
                 
-                $ubicaciones = $this->model->getQueryBuilder()->obtenerUbicacionesPorRefugio((int)$id);
+                $ubicaciones = $this->model->obtenerUbicaciones((int)$id);
                 $ciudades = [];
                 $provincias = [];
                 foreach ($ubicaciones as $u) {

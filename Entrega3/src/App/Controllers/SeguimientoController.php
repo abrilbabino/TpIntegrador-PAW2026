@@ -196,18 +196,7 @@ class SeguimientoController extends Controller
         $encuesta->evaluarAlerta();
 
         // Insertar en la BD
-        $this->model->getQueryBuilder()->insert($encuesta->table, [
-            'mascota_id' => $encuesta->fields['mascota_id'],
-            'adoptante_id' => $encuesta->fields['adoptante_id'],
-            'fecha_encuesta' => $encuesta->fields['fecha_encuesta'],
-            'etapa' => $encuesta->fields['etapa'],
-            'conducta' => $encuesta->fields['conducta'],
-            'sueno' => $encuesta->fields['sueno'],
-            'alimentacion' => $encuesta->fields['alimentacion'],
-            'progreso_general' => $encuesta->fields['progreso_general'],
-            'comentarios' => $encuesta->fields['comentarios'],
-            'alerta_generada' => $encuesta->fields['alerta_generada'] ? 1 : 0
-        ]);
+        $encuesta->save();
 
         header('Location: /seguimiento?id=' . $mascotaId);
         exit;

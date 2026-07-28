@@ -65,4 +65,21 @@ class EncuestaAdaptacion extends Model
         $this->fields['alerta_generada'] = $alerta;
         return $alerta;
     }
+
+    public function save(): void
+    {
+        $db = $this->getQueryBuilder();
+        $db->insert($this->table, [
+            'mascota_id' => $this->fields['mascota_id'],
+            'adoptante_id' => $this->fields['adoptante_id'],
+            'fecha_encuesta' => $this->fields['fecha_encuesta'],
+            'etapa' => $this->fields['etapa'],
+            'conducta' => $this->fields['conducta'],
+            'sueno' => $this->fields['sueno'],
+            'alimentacion' => $this->fields['alimentacion'],
+            'progreso_general' => $this->fields['progreso_general'],
+            'comentarios' => $this->fields['comentarios'],
+            'alerta_generada' => $this->fields['alerta_generada'] ? 1 : 0
+        ]);
+    }
 }
