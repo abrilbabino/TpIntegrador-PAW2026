@@ -3,9 +3,11 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Traits\Notificable;
 
 class EncuestaAdaptacion extends Model
 {
+    use Notificable;
     public $table = 'encuesta_adopcion';
     public $fields = [
         'id' => null,
@@ -81,5 +83,16 @@ class EncuestaAdaptacion extends Model
             'comentarios' => $this->fields['comentarios'],
             'alerta_generada' => $this->fields['alerta_generada'] ? 1 : 0
         ]);
+        
+        // Logica de notificaciones (Adoptante -> Refugio)
+        $mascotaData = $db->selectOne('mascota', ['id' => (int)$this->fields['mascota_id']]);
+        if ($mascotaData) {
+            $this->notificar(
+                $mascotaData['refugio_id'],
+                "Nueva Actualización de Seguimiento",
+                "El adoptante respondió una encuesta de adaptación de " . $mascotaData['nombre'],
+                '/perfil'
+            );
+        }
     }
 }

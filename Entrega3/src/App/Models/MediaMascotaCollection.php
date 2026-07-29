@@ -4,9 +4,11 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\App\Helpers\GCSHelper;
+use Paw\Core\Traits\Notificable;
 
 class MediaMascotaCollection extends Model
 {
+    use Notificable;
     public string $table = 'media_mascota';
 
     public function getMultimedia(int $mascotaId, ?string $imagenPrincipal): array
@@ -51,6 +53,17 @@ class MediaMascotaCollection extends Model
                 'tipo' => $tipoMedia,
                 'url' => $url
             ]);
+        }
+        
+        // Logica de notificaciones (Adoptante -> Refugio)
+        $mascotaData = $this->queryBuilder->selectOne('mascota', ['id' => $mascotaId]);
+        if ($mascotaData) {
+            $this->notificar(
+                $mascotaData['refugio_id'],
+                "Nueva Actualización de Seguimiento",
+                "El adoptante subió nueva información fotográfica/documental de " . $mascotaData['nombre'],
+                '/perfil'
+            );
         }
     }
 

@@ -4,11 +4,11 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Exceptions\ModelNotFoundException;
-use Paw\App\Models\NotificacionCollection;
-use Paw\App\Models\Notificacion;
+use Paw\Core\Traits\Notificable;
 
 class SolicitudAdopcion extends Model
 {
+    use Notificable;
     public $table = 'solicitud_de_adopcion';
 
     public $fields = [
@@ -100,6 +100,17 @@ class SolicitudAdopcion extends Model
         ];
 
         $this->queryBuilder->insert($this->table, $data);
+        
+        // Logica de notificaciones (Nueva Solicitud)
+        $mascotaData = $this->queryBuilder->selectOne('mascota', ['id' => $this->fields['mascota_id']]);
+        if ($mascotaData) {
+            $this->notificar(
+                $refugio_id,
+                "Nueva Solicitud de Adopción",
+                "Han enviado una solicitud para adoptar a " . $mascotaData['nombre'],
+                '/perfil'
+            );
+        }
     }
 
     /**
@@ -134,27 +145,34 @@ class SolicitudAdopcion extends Model
             
             // Logica de notificaciones
             $adoptanteId = (int)$solicitud['adoptante_id'];
-            $titulo = "Solicitud $nuevoEstado";
-            $mensaje = ($nuevoEstado === 'APROBADA') 
-                ? "Tu solicitud de adopción ha sido aprobada. ¡Felicidades!" 
-                : "Tu solicitud de adopción ha sido rechazada.";
+            
+            $mascotaData = $this->queryBuilder->selectOne('mascota', ['id' => (int)$solicitud['mascota_id']]);
+            $nombreMascota = $mascotaData ? $mascotaData['nombre'] : 'la mascota';
+            
+            $titulo = "Actualización de Solicitud";
+            $estadoParseado = ($nuevoEstado === 'APROBADA') ? 'Aprobada' : 'Rechazada';
+            $mensaje = "Tu solicitud por $nombreMascota ha sido $estadoParseado.";
                 
-            $notifCollection = new NotificacionCollection();
-            $notifCollection->setQueryBuilder($this->queryBuilder);
-            
-            $notificacion = new Notificacion();
-            $notificacion->set([
-                'usuario_id' => $adoptanteId,
-                'titulo' => $titulo,
-                'mensaje' => $mensaje,
-                'enlace' => '/perfil'
-            ]);
-            
-            // Guardamos en la base de datos
-            $notifCollection->agregarNotificacion($notificacion);
+            $this->notificar($adoptanteId, $titulo, $mensaje, '/perfil');
 
-            // Publicamos en Redis Pub/Sub para WebSockets
-            $notifCollection->enviarNotificacionTiempoReal($notificacion);
+            // Notificar a usuarios que tienen a la mascota en favoritos
+            if ($nuevoEstado === 'APROBADA' && $mascotaId !== null) {
+                $favoritos = $this->queryBuilder->rawQuery("SELECT adoptante_id FROM favorito WHERE mascota_id = :mascota_id", [':mascota_id' => $mascotaId]);
+                foreach ($favoritos as $fav) {
+                    $favAdoptanteId = (int)$fav['adoptante_id'];
+                    // No notificar al adoptante que acaba de adoptar a la mascota
+                    if ($favAdoptanteId === $adoptanteId) {
+                        continue;
+                    }
+                    
+                    $this->notificar(
+                        $favAdoptanteId,
+                        "¡Final Feliz!",
+                        "La mascota $nombreMascota que estaba en tus favoritos por fin encontró un hogar.",
+                        '/perfil'
+                    );
+                }
+            }
 
         } catch (\Exception $e) {
             throw new \Exception('Error al actualizar la base de datos: ' . $e->getMessage(), 500);
