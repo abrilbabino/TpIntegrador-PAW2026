@@ -4,6 +4,8 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Exceptions\ModelNotFoundException;
+use Paw\App\Models\NotificacionCollection;
+use Paw\App\Models\Notificacion;
 
 class SolicitudAdopcion extends Model
 {
@@ -129,6 +131,31 @@ class SolicitudAdopcion extends Model
 
         try {
             $this->queryBuilder->procesarSolicitudAdopcion($this->table, $solicitudId, $nuevoEstado, $mascotaId, date('Y-m-d H:i:s'));
+            
+            // Logica de notificaciones
+            $adoptanteId = (int)$solicitud['adoptante_id'];
+            $titulo = "Solicitud $nuevoEstado";
+            $mensaje = ($nuevoEstado === 'APROBADA') 
+                ? "Tu solicitud de adopción ha sido aprobada. ¡Felicidades!" 
+                : "Tu solicitud de adopción ha sido rechazada.";
+                
+            $notifCollection = new NotificacionCollection();
+            $notifCollection->setQueryBuilder($this->queryBuilder);
+            
+            $notificacion = new Notificacion();
+            $notificacion->set([
+                'usuario_id' => $adoptanteId,
+                'titulo' => $titulo,
+                'mensaje' => $mensaje,
+                'enlace' => '/perfil'
+            ]);
+            
+            // Guardamos en la base de datos
+            $notifCollection->agregarNotificacion($notificacion);
+
+            // Publicamos en Redis Pub/Sub para WebSockets
+            $notifCollection->enviarNotificacionTiempoReal($notificacion);
+
         } catch (\Exception $e) {
             throw new \Exception('Error al actualizar la base de datos: ' . $e->getMessage(), 500);
         }

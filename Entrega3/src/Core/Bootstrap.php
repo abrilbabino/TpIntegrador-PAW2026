@@ -108,6 +108,10 @@ $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 // Solicitudes API
 $router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
 
+// Notificaciones API
+$router->get('/api/notificaciones', 'NotificacionController@getRecientes');
+$router->post('/api/notificaciones/leer', 'NotificacionController@marcarLeidas');
+
 // Chat
 $router->get('/chat', 'ChatController@verChat');
 $router->post('/chat/enviar', 'ChatController@enviarMensaje');

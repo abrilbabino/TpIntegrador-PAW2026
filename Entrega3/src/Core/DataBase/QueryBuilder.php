@@ -841,4 +841,19 @@ class QueryBuilder
         $encuestasRealizadas = $this->rawQuery($sql, [':mid' => $mascotaId, ':aid' => $adoptanteId]);
         return array_column($encuestasRealizadas, 'etapa');
     }
+
+    public function obtenerNotificacionesNoLeidas(string $table, int $usuarioId): array
+    {
+        $sql = "SELECT * FROM {$table} WHERE usuario_id = :usuario_id AND leida = false ORDER BY fecha_creacion DESC";
+        return $this->rawQuery($sql, [':usuario_id' => $usuarioId]);
+    }
+
+    public function obtenerNotificacionesRecientes(string $table, int $usuarioId, int $limit): array
+    {
+        $sql = "SELECT * FROM {$table} WHERE usuario_id = :usuario_id ORDER BY fecha_creacion DESC LIMIT :limit";
+        return $this->rawQuery($sql, [
+            ':usuario_id' => $usuarioId,
+            ':limit' => ['value' => $limit, 'type' => \PDO::PARAM_INT]
+        ]);
+    }
 }

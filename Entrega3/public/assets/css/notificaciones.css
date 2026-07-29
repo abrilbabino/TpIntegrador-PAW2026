@@ -1,0 +1,161 @@
+/* Contenedor principal de la campanita */
+.contenedor-notificaciones {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Botón de la campanita */
+.btn-campanita {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    color: var(--color-azul);
+    transition: transform 0.2s ease, color 0.2s ease;
+    align-self: flex-start; /* Alinea arriba junto con la foto de perfil */
+}
+
+.btn-campanita:hover {
+    color: var(--color-naranja);
+    transform: scale(1.12);
+}
+
+.btn-campanita .material-symbols-outlined {
+    font-size: 32px;
+}
+
+
+/* Badge (el número rojito) */
+.badge-notificaciones {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border: 2px solid var(--color-fondo);
+}
+
+/* Dropdown (Mobile First) */
+.dropdown-notificaciones {
+    position: fixed;
+    top: 60px;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-gris-claro);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--color-gris-claro);
+    z-index: 1000;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.dropdown-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-gris-claro);
+    background-color: var(--color-fondo);
+}
+
+.dropdown-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-texto);
+}
+
+.lista-notificaciones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.lista-notificaciones::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lista-notificaciones::-webkit-scrollbar-thumb {
+    background-color: var(--color-gris-claro);
+    border-radius: 4px;
+}
+
+.noti-item {
+    border-bottom: 1px solid var(--color-gris-claro);
+}
+
+.noti-item:last-child {
+    border-bottom: none;
+}
+
+.noti-no-leida {
+    background-color: var(--color-naranja-fondo);
+}
+
+.noti-link {
+    display: block;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--color-texto);
+    transition: background-color 0.2s;
+}
+
+.noti-link:hover {
+    background-color: var(--color-fondo);
+}
+
+.noti-content strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-naranja);
+}
+
+.noti-content p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.noti-content small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-gris);
+}
+
+.noti-vacia {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--color-gris);
+    font-size: 0.9rem;
+}
+
+@media screen and (min-width: 994px) {
+    .btn-campanita .material-symbols-outlined {
+        font-size: 44px;
+    }
+    
+    .dropdown-notificaciones {
+        position: absolute;
+        top: 100%;
+        right: -1rem;
+        left: auto;
+        width: 300px;
+    }
+}

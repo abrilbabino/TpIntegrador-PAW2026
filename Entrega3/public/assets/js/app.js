@@ -23,6 +23,20 @@ class AppPAW {
     this._initAuthModals();
     this._initSeguimiento();
     this._initBusquedaResultados();
+    this._initNotificaciones();
+  }
+
+  _initNotificaciones() {
+    const btnCampanita = document.getElementById("btn-campanita");
+    if (btnCampanita) {
+      PAW.cargarScript(
+        "PAW-Notificaciones-Script",
+        "/assets/js/components/paw-notificaciones.js",
+        () => {
+          new PAWNotificaciones();
+        }
+      );
+    }
   }
 
   _initSeguimiento() {

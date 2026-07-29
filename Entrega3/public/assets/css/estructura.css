@@ -136,11 +136,51 @@
 .icono-usuario p,
 .icono-usuario p:hover {
   color: var(--color-azul);
-  transform: (1);
+  transform: scale(1);
   grid-area: "desc";
   font-size: 0.8rem;
   grid-row: 2;
   pointer-events: none;
+}
+
+/* Mobile First: Ocultar en móviles, mostrar en nav-acciones en desktop */
+.perfil-desktop {
+  display: none;
+}
+
+/* Estilos para el perfil dentro del menú hamburguesa (Mobile First) */
+.perfil-menu-mobile {
+  background-color: var(--color-naranja-claro);
+  margin: -1.5rem -1rem 1rem -1rem;
+  padding: 1.5rem 1rem;
+  display: flex;
+}
+
+.perfil-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  text-decoration: none;
+  width: 100%;
+}
+
+.nav-foto-perfil-mobile {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-azul);
+}
+
+.perfil-mobile-link .material-symbols-outlined {
+  font-size: 65px;
+  color: var(--color-azul);
+}
+
+.perfil-mobile-nombre {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-texto);
 }
 
 .header-busqueda {
@@ -457,6 +497,14 @@ main>header p {
 
   .icono-usuario p {
     font-size: 1rem;
+  }
+
+  .perfil-desktop {
+    display: grid;
+  }
+
+  .perfil-menu-mobile {
+    display: none !important;
   }
 
   .footer-principal {
