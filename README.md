@@ -10,9 +10,14 @@ El objetivo de PawMap es centralizar la información de animales en adopción y 
 
 ### Modulo de Usuario y Acceso
 **Gestion de Sesiones:** Login y registro diferenciado para Adoptantes y Refugios.  
+
 **Perfil de Usuario:**
 - *Adoptante:* Edición de datos personales y carga de foto de perfil, "Favoritos", estado de solicitudes, historial de adopciones y seguimiento sanitario. 
 - *Refugio:* Datos institucionales, contacto y ubicación.
+
+*(Nuevo)* **Sistema de Rate Limit:** Bloqueo temporal de ingresos al sistema tras superar un límite de intentos fallidos (ej: 5 intentos) para evitar accesos no autorizados.
+
+*(Nuevo)* **Sistema de Seguridad CSRF:** Generación e inyección de tokens aleatorios en campos ocultos de los formularios para evitar la falsificación de peticiones.
 
 ### Modulo de Navegacion e Información
 **Buscador General:** Barra de búsqueda global e integrada en la plataforma que permite realizar consultas en todo el sitio, buscando coincidencias de forma simultánea tanto en los perfiles de las mascotas como en los datos de los refugios (por nombres, palabras clave o características).
@@ -21,6 +26,8 @@ El objetivo de PawMap es centralizar la información de animales en adopción y 
 adopción.
 
 **Seccion de Donaciones:** Interfaz que lista los métodos de donación de cada refugio recuperados de la base de datos (ej. CBU, Alias bancario o links externos como Mercado Pago). 
+
+*(Nuevo)* **Sistema de Reseñas:** Sección en el inicio para que los adoptantes puedan dejar comentarios y reseñas sobre su experiencia. 
 
 ### Modulo de Refugios
 **Listado dinámico de todos los refugios registrados.**
@@ -39,6 +46,14 @@ adopción.
 
 **Ficha de Detalle:** Galería de imágenes (MediaMascota), animación svg y descripción técnica.
 
+*(Nuevo)*  **Cola de Espera Inteligente:** Botón "Avisame" en filtros de búsqueda vacíos que inscribe al usuario en una cola para notificarle automáticamente cuando ingrese una mascota con esas características.
+
+*(Nuevo)*  **Algoritmo de "Mascotas Invisibles":** Sistema que calcula un "puntaje de invisibilidad" (cruzando visitas y días en adopción) para destacar automáticamente en el inicio a los animales más olvidados.
+
+*(Nuevo)*  **Generador de Medallitas / Chapitas:** Botón para imprimir una imagen QR que enlaza directamente al perfil público de la mascota en PawMap.
+
+*(Nuevo)*  **Botón de Compartir:** Accesos directos en el perfil de la mascota para enviar su ficha técnica y enlace a WhatsApp, Instagram y TikTok.
+
 ### Módulo de Vinculación (Test y Solicitudes)
 **Test de Compatibilidad:** Formulario dinámico que procesa las respuestas del usuario y sugiere mascotas afines segun estilo de vida y entorno del adoptante.
 
@@ -47,6 +62,15 @@ adopción.
 **Sistema de Mensajería Interna (Chat Refugio-Adoptante):** Canal de comunicación directo e integrado. Una vez que el refugio aprueba una solicitud, se habilita un chat privado para coordinar la entrega o despejar dudas.
 
 **Formulario de Contacto:** Interfaz dedicada para que los usuarios visitantes puedan enviar consultas generales, reportes o propuestas de colaboración directamente a los administradores de la plataforma PawMap.
+
+### Módulo de notificaciones
+*(Nuevo)*  **Notificaciones (Campanita):** Ícono en el menú superior para emitir alertas automáticas e instantáneas sobre los distintos procesos del sistema. 
+Eventos Notificados: 
+  - El sistema avisa sobre la aprobación de solicitudes.
+  - El ingreso de nuevas solicitudes de adopción al refugio. 
+  - Recepción de mensajes en el chat.
+  - Carga y recordatorios de registros sanitarios (vía Cron)
+  - Alertas cuando una "mascota favorita" es adoptada por otra persona.
 
 ### Modulo de Seguimiento Post-Adopción
 **Calendario Sanitario:** Cronograma de vacunas y desparasitaciones generado automáticamente.
@@ -70,6 +94,10 @@ vacunas.
 
 **Dashboard de Monitoreo:** Vista para supervisar las encuestas y fotos enviadas por los
 adoptantes.
+
+*(Nuevo)*  **Importador Masivo de Mascotas:** Herramienta para que los refugios suban archivos .csv o Excel, validando e insertando múltiples registros en la base de datos de una sola vez.
+
+*(Nuevo)*  **Panel de Estadísticas Gráficas (Dashboard):** Pestaña en el perfil del refugio con gráficos sobre el rendimiento de sus publicaciones y el flujo de adopciones.
 
 ### Módulo de Arquitectura SEO y Visibilidad (Técnico) 
 **Metaetiquetas:** Descripciones meta dinámicas en las páginas del sitio adaptadas al contenido específico de cada sección.
