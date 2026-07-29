@@ -216,6 +216,31 @@ class QueryBuilder
         return $sentencia->fetchColumn();
     }
 
+    public function rawExecute(string $sql, array $binds = []): void
+    {
+        $sentencia = $this->pdo->prepare($sql);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+    }
+
+    public function incrementarVisitas(string $table, int $id): void
+    {
+        $sql = "UPDATE {$table} SET visitas = visitas + 1 WHERE id = :id";
+        $this->rawExecute($sql, ['id' => $id]);
+    }
+
+    public function getMascotasInvisibles(string $table, int $limite): array
+    {
+        $sql = "
+            SELECT m.*, ((CURRENT_DATE - m.fecha_publicacion::date) / (m.visitas + 1.0)) AS puntaje_invisibilidad
+            FROM {$table} m WHERE m.estado_adopcion = 'DISPONIBLE'
+            ORDER BY puntaje_invisibilidad DESC, m.visitas ASC, m.fecha_publicacion ASC
+            LIMIT :limite
+        ";
+        
+        return $this->rawQuery($sql, ['limite' => $limite]);
+    }
+
     private function addPagination(string $query, ?int $limit): string
     {
         if (is_null($limit) || $limit <= 0) {

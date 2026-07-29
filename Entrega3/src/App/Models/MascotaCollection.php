@@ -725,4 +725,15 @@ class MascotaCollection extends Model
         $db = $this->getQueryBuilder();
         $db->delete($this->table, ['id' => $id]);
     }
+
+    public function incrementarVisitas(int $id): void
+    {
+        $this->getQueryBuilder()->incrementarVisitas($this->table, $id);
+    }
+
+    public function getMascotasInvisibles(int $limite = 8): array
+    {
+        $resultados = $this->getQueryBuilder()->getMascotasInvisibles($this->table, $limite);
+        return $this->mapMascotas($resultados);
+    }
 }
