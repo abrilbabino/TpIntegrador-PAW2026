@@ -133,3 +133,7 @@ $router->post('/enviar-comprobante', 'DonacionController@enviarComprobante');
 
 // SEO
 $router->get('/sitemap.xml', 'PageController@sitemap');
+
+// Generar QR
+$router->get('/generar-qr', 'QrController@index');
+$router->get('/generar-qr/imagen', 'QrController@generarImagen');

@@ -78,7 +78,7 @@ class Controller
             ],
             [
                 "href" => "/test-de-compatibilidad",
-                "name" => "Test de Compatibilidad",
+                "name" => "Test",
                 "icon" => "quiz",
                 "type" => "link",
             ],
@@ -98,6 +98,12 @@ class Controller
                 "href" => "/refugios",
                 "name" => "Refugios",
                 "icon" => "location_city",
+                "type" => "link",
+            ],
+            [
+                "href" => "/generar-qr",
+                "name" => "Generar QR",
+                "icon" => "qr_code_2",
                 "type" => "link",
             ],
             [

@@ -896,4 +896,20 @@ class QueryBuilder
             ':limit' => ['value' => $limit, 'type' => \PDO::PARAM_INT]
         ]);
     }
+
+    public function obtenerAdoptantePorMascota(int $mascotaId): ?array
+    {
+        $sql = "SELECT a.nombre, a.apellido, s.telefono, u.email
+                FROM solicitud_de_adopcion s
+                JOIN adoptante a ON s.adoptante_id = a.usuario_id
+                JOIN usuario u ON a.usuario_id = u.id
+                WHERE s.mascota_id = :mascota_id
+                  AND (s.estado = 'APROBADO' OR s.estado = 'APROBADA')
+                LIMIT 1";
+        $sentencia = $this->pdo->prepare($sql);
+        $sentencia->bindValue(':mascota_id', $mascotaId, PDO::PARAM_INT);
+        $sentencia->execute();
+        $resultado = $sentencia->fetch(PDO::FETCH_ASSOC);
+        return $resultado ?: null;
+    }
 }

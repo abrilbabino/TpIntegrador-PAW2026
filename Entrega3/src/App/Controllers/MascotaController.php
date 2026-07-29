@@ -112,6 +112,12 @@ class MascotaController extends Controller
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
         $esFavorito = in_array($id, $favoritosIds);
 
+        // Si la mascota está adoptada, cargar los datos del dueño para mostrar en la sección "Sobre Mí"
+        $adoptante = null;
+        if (($mascota->fields['estado_adopcion'] ?? '') === 'ADOPTADO') {
+            $adoptante = $this->model->getQueryBuilder()->obtenerAdoptantePorMascota((int)$mascota->fields['id']);
+        }
+
         echo $this->twig->render('mascota.html.twig', get_defined_vars());
     }
 

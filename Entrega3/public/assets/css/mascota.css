@@ -104,7 +104,7 @@
 }
 
 .info-header {
-    grid-template-areas: "titulo svg libreta favorito compartir";
+    grid-template-areas: "titulo svg qr libreta favorito compartir";
     display: grid;
     justify-content: space-between;
     align-items: center;
@@ -138,7 +138,7 @@
     cursor: pointer;
 }
 
-.boton-favorito:hover {
+.boton-favorito:hover, .favorito-activo {
     transform: scale(1.15);
 }
 
@@ -151,24 +151,42 @@
     font-variation-settings: 'FILL' 1;
 }
 
-.libreta {
-    grid-area: libreta;
+.svg-mascota {
+    grid-area: svg;
+    justify-self: end;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    color: var(--color-azul);
-    font-size: 2.5rem;
-    text-decoration: none;
+}
+.svg-mascota-img {
+    height: 60px;
+    width: auto;
+    max-width: 80px;
 }
 
+.libreta, .btn-qr {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-azul);
+    transition: color 0.2s, transform 0.2s;
+    text-decoration: none;
+}
+.libreta {
+    grid-area: libreta;
+}
 .libreta:hover {
     color: var(--color-naranja);
     transform: scale(1.15);
 }
-
 .libreta .material-symbols-outlined {
-    font-size: inherit;
+    font-size: 2.5rem;
 }
+
 
 .compartir-wrapper {
     grid-area: compartir;
