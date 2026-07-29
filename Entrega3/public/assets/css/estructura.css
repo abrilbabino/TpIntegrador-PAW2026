@@ -151,8 +151,8 @@
 /* Estilos para el perfil dentro del menú hamburguesa (Mobile First) */
 .perfil-menu-mobile {
   background-color: var(--color-naranja-claro);
-  margin: -1.5rem -1rem 1rem -1rem;
-  padding: 1.5rem 1rem;
+  margin: -1.5rem -1rem 0 -1rem;
+  padding: 1rem 1rem;
   display: flex;
 }
 

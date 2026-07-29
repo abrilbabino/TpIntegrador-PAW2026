@@ -39,6 +39,15 @@
   object-position: center;
 }
 
+.perfil-avatar-wrapper.is-cropping img {
+  position: absolute;
+  object-fit: unset;
+  border-radius: 0;
+  max-width: none;
+  max-height: none;
+  cursor: grab;
+}
+
 .perfil-avatar-wrapper .material-symbols-outlined {
   font-size: 2.5rem;
   color: var(--color-gris);
@@ -651,9 +660,13 @@ textarea.dato-valor-input {
   z-index: 5;
 }
 
-.perfil-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay,
-.perfil-refugio-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay {
-  opacity: 1;
+.perfil-container.is-editing .perfil-avatar-wrapper:not(.is-dragging):hover .avatar-hover-overlay,
+.perfil-refugio-container.is-editing .perfil-avatar-wrapper:not(.is-dragging):hover .avatar-hover-overlay {
+  opacity: 0.5;
+}
+
+.perfil-avatar-wrapper.is-dragging .avatar-hover-overlay {
+  opacity: 0 !important;
 }
 
 .avatar-hover-overlay span {
