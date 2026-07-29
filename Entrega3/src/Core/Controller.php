@@ -56,6 +56,19 @@ class Controller
 
         $this->twig->addGlobal('session', $_SESSION ?? []);
 
+        // Custom Twig Filters
+       $this->twig->addFilter(new \Twig\TwigFilter('fecha_en_letras', function ($dateString) {
+           $timestamp = is_numeric($dateString) ? $dateString : strtotime($dateString);
+           if (!$timestamp) return $dateString;
+          
+           $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+           $dia = date('d', $timestamp);
+           $mes = $meses[date('n', $timestamp) - 1];
+           $anio = date('Y', $timestamp);
+          
+           return "a los {$dia} días del mes de {$mes} de {$anio}";
+       }));
+
 
         $this -> menu = [
             [

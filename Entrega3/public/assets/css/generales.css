@@ -99,3 +99,14 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+.texto-descarga-pdf {
+  margin-top: 15px;
+  font-size: 0.9em;
+  color: var(--color-gris);
+}
+
+.btn-volver-gris {
+  background-color: var(--color-gris) !important;
+  margin-bottom: 10px;
+}

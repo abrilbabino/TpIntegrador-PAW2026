@@ -79,6 +79,7 @@ $router->post('/formulario-adopcion/enviar', 'AdopcionController@enviar');
 // Test de compatibilidad
 $router->get('/test-de-compatibilidad', 'TestController@test');
 $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
+$router->get('/formulario-adopcion/descargar-acuerdo', 'AdopcionController@descargarAcuerdo');
 
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');

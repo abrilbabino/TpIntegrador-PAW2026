@@ -7,6 +7,7 @@ use Paw\App\Models\Mascota;
 use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\User;
 use Paw\Core\MailService;
+use Paw\Core\PdfService;
 
 class AdopcionController extends Controller
 {
@@ -95,6 +96,7 @@ class AdopcionController extends Controller
 
             $id = $mascota_id;
             [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
+            
             $userModel = new User;
             $userModel->setQueryBuilder($this->model->getQueryBuilder());
             $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
@@ -105,10 +107,63 @@ class AdopcionController extends Controller
                 'mediaExtras' => $mediaExtras,
                 'adoptanteData' => $adoptanteData,
                 'userData' => $userData,
-                'flash_type' => 'adopcion'
+                'flash_type' => 'adopcion',
+                'descargar_pdf_mascota_id' => $id,
             ]);
             exit;
         }
+    }
+
+    public function descargarAcuerdo()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userSession = $this->request->session('user');
+        if (!$userSession || $userSession['rol'] !== 'adoptante') {
+            http_response_code(403);
+            echo "Acceso denegado. Solo los adoptantes pueden descargar el acuerdo.";
+            exit;
+        }
+
+        $mascota_id = $this->request->get('mascota_id');
+        if (!$mascota_id) {
+            http_response_code(400);
+            echo "ID de mascota no proporcionado.";
+            exit;
+        }
+
+        [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
+        
+        $userModel = new User;
+        $userModel->setQueryBuilder($this->model->getQueryBuilder());
+        $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+        $userData = $userModel->findById((int)$userSession['id']);
+
+        $pdfService = new PdfService();
+        $publicDir = __DIR__ . '/../../../public';
+        $fotoPath = $pdfService->imageToBase64($mascota->fields['imagen'] ?? '', $publicDir);
+
+        $htmlPdf = $this->twig->render('pdf/acuerdo_adopcion.html.twig', [
+            'adoptante_nombre' => $adoptanteData['nombre'] ?? $this->model->fields['nombre'],
+            'adoptante_apellido' => $adoptanteData['apellido'] ?? $this->model->fields['apellido'],
+            'adoptante_email' => $userData['email'] ?? $this->model->fields['email'],
+            'mascota_nombre' => $mascota->fields['nombre'],
+            'mascota_especie' => $mascota->fields['especie'] ?? 'Desconocida',
+            'mascota_foto' => $fotoPath,
+        ]);
+
+        $pdfBinary = $pdfService->generarDesdeHtml($htmlPdf);
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="acuerdo_adopcion_' . $mascota_id . '.pdf"');
+        header('Content-Length: ' . strlen($pdfBinary));
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
+
+        echo $pdfBinary;
+        exit;
     }
 
     private function cargarMascota($id)

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Compromiso de Adopción Responsable</title>
+    <style>
+        header, main, section, figure, footer, article {
+            display: block;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            margin: 40px;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .info-section {
+            margin-bottom: 30px;
+        }
+        .info-section h3 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-table th, .info-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #f2f2f2;
+            width: 30%;
+        }
+        .terms {
+            font-size: 0.9em;
+            margin-top: 20px;
+            text-align: justify;
+        }
+        .signatures {
+            margin-top: 50px;
+            width: 100%;
+        }
+        .signature-box {
+            width: 45%;
+            display: inline-block;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .signature-line {
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 5px;
+        }
+        .pet-photo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .pet-photo img {
+            max-width: 250px;
+            max-height: 250px;
+            border-radius: 10px;
+            border: 3px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Acuerdo de Adopción Responsable</h1>
+        <p style="text-align: center; font-style: italic; color: #555;"> Compromiso registrado {{ 'now'|fecha_en_letras }}</p>
+    </header>
+
+    <main>
+        <figure class="pet-photo">
+            {% if mascota_foto %}
+                <img src="{{ mascota_foto }}" alt="Foto de {{ mascota_nombre }}">
+            {% endif %}
+        </figure>
+
+        <section class="info-section">
+            <h3>Datos del Adoptante</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Nombre Completo</th>
+                    <td>{{ adoptante_nombre }} {{ adoptante_apellido }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ adoptante_email }}</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="info-section">
+            <h3>Datos de la Mascota</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Nombre</th>
+                    <td>{{ mascota_nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Especie</th>
+                    <td>{{ mascota_especie }}</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="terms">
+            <h3>Términos y Condiciones</h3>
+            <p>Al adoptar a esta mascota, te comprometes a:</p>
+            <ul>
+                <li>Brindarle un hogar seguro, alimento adecuado y atención veterinaria cuando lo requiera.</li>
+                <li>Mantener al día su libreta sanitaria, aplicando las vacunas correspondientes.</li>
+                <li>Notificar al refugio ante cualquier cambio de domicilio o pérdida.</li>
+                <li>Permitir y facilitar el seguimiento de la mascota por parte del refugio, respondiendo a encuestas o visitas programadas para verificar su bienestar.</li>
+            </ul>
+            <p><strong>El incumplimiento de este contrato puede resultar en la revocación de la adopción.</strong></p>
+        </section>
+
+        <section class="signatures" style="text-align: center; font-weight: bold; margin-top: 40px; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px;">
+            Aceptado electrónicamente por {{ adoptante_nombre }} {{ adoptante_apellido }} el {{ 'now'|date('d/m/Y') }}.
+        </section>
+    </main>
+
+    <footer>
+        <p style="text-align: center; margin-top: 50px; font-size: 0.8em; color: #7f8c8d;">
+            Generado automáticamente por PawMap el {{ 'now'|date('d/m/Y H:i') }}
+        </p>
+    </footer>
+
+</body>
+</html>
