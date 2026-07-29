@@ -4,7 +4,8 @@ class PAWNotificaciones {
         this.badge = document.getElementById('badge-notificaciones');
         this.dropdown = document.getElementById('dropdown-notificaciones');
         this.lista = document.getElementById('lista-notificaciones');
-        
+        this.btnMarcarTodas = document.getElementById('btn-marcar-todas-leidas');
+
         if (!this.btnCampanita) return;
 
         this.usuarioId = this.btnCampanita.getAttribute('data-usuario-id');
@@ -19,7 +20,7 @@ class PAWNotificaciones {
     async init() {
         // 1. Cargar notificaciones iniciales via AJAX
         await this.cargarNotificacionesIniciales();
-        
+
         // 2. Conectar WebSocket
         this.conectarWebSocket();
 
@@ -28,6 +29,13 @@ class PAWNotificaciones {
             e.stopPropagation();
             this.toggleDropdown();
         });
+
+        if (this.btnMarcarTodas) {
+            this.btnMarcarTodas.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.marcarComoLeidas(); // Marca todas
+            });
+        }
 
         document.addEventListener('click', (e) => {
             if (this.dropdownAbierto && !this.btnCampanita.contains(e.target) && !this.dropdown.contains(e.target)) {
@@ -54,8 +62,8 @@ class PAWNotificaciones {
         // En producción sería wss://pawmap.lat/ws, localmente usamos ws://localhost:8081
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const host = window.location.hostname;
-        const wsUrl = host === 'localhost' || host === '127.0.0.1' 
-            ? `ws://${host}:8081` 
+        const wsUrl = host === 'localhost' || host === '127.0.0.1'
+            ? `ws://${host}:8081`
             : `${protocol}//${host}/ws`;
 
         this.socket = new WebSocket(wsUrl);
@@ -94,11 +102,20 @@ class PAWNotificaciones {
 
     actualizarUI() {
         // Actualizar badge
+        this.badge.textContent = this.noLeidasCount;
         if (this.noLeidasCount > 0) {
-            this.badge.textContent = this.noLeidasCount;
             this.badge.classList.remove('oculto');
         } else {
             this.badge.classList.add('oculto');
+        }
+
+        // Botón marcar todas
+        if (this.btnMarcarTodas) {
+            if (this.noLeidasCount > 0) {
+                this.btnMarcarTodas.classList.remove('oculto');
+            } else {
+                this.btnMarcarTodas.classList.add('oculto');
+            }
         }
 
         // Renderizar lista
@@ -109,13 +126,22 @@ class PAWNotificaciones {
         }
 
         this.notificaciones.forEach(notif => {
+            const noLeida = notif.leida === false || notif.leida === 0 || notif.leida === '0' || notif.leida === 'f';
             const li = document.createElement('li');
-            li.className = `noti-item ${!notif.leida ? 'noti-no-leida' : ''}`;
-            
-            const link = document.createElement('a');
-            link.href = notif.enlace || '#';
-            link.className = 'noti-link';
-            
+            li.className = `noti-item ${noLeida ? 'noti-no-leida' : ''}`;
+
+            const contentElement = document.createElement('a');
+            contentElement.className = 'noti-link';
+
+            // Si NO está leída, al hacer click la marcamos como leída individualmente
+            if (noLeida && notif.id) {
+                contentElement.style.cursor = 'pointer';
+                contentElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.marcarUnaComoLeida(notif.id);
+                });
+            }
+
             const content = `
                 <div class="noti-content">
                     <strong>${notif.titulo}</strong>
@@ -123,8 +149,8 @@ class PAWNotificaciones {
                     <small>${this.formatearFecha(notif.fecha_creacion)}</small>
                 </div>
             `;
-            link.innerHTML = content;
-            li.appendChild(link);
+            contentElement.innerHTML = content;
+            li.appendChild(contentElement);
             this.lista.appendChild(li);
         });
     }
@@ -140,9 +166,6 @@ class PAWNotificaciones {
     abrirDropdown() {
         this.dropdown.classList.remove('oculto');
         this.dropdownAbierto = true;
-        if (this.noLeidasCount > 0) {
-            this.marcarComoLeidas();
-        }
     }
 
     cerrarDropdown() {
@@ -150,33 +173,48 @@ class PAWNotificaciones {
         this.dropdownAbierto = false;
     }
 
-    async marcarComoLeidas() {
+    marcarUnaComoLeida(id) {
+        const notif = this.notificaciones.find(n => n.id === id);
+        if (!notif) return;
+        const noLeida = notif.leida === false || notif.leida === 0 || notif.leida === '0' || notif.leida === 'f';
+        if (!noLeida) return;
+
+        notif.leida = true;
+        this.noLeidasCount = Math.max(0, this.noLeidasCount - 1);
+        this.actualizarUI();
+
+        fetch('/api/notificaciones/leer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: [id] }),
+            keepalive: true
+        }).catch(e => console.error('Error marcando notificación como leída', e));
+    }
+
+    marcarComoLeidas() {
         const noLeidasIds = this.notificaciones
-            .filter(n => !n.leida && n.id)
+            .filter(n => n.leida === false || n.leida === 0 || n.leida === '0' || n.leida === 'f')
             .map(n => n.id);
 
-        // Actualizamos localmente primero
+        // Actualizamos localmente primero (feedback instantáneo)
         this.noLeidasCount = 0;
         this.notificaciones.forEach(n => n.leida = true);
         this.actualizarUI();
 
         if (noLeidasIds.length === 0) return;
 
-        try {
-            await fetch('/api/notificaciones/leer', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ids: noLeidasIds })
-            });
-        } catch (e) {
-            console.error('Error marcando como leídas', e);
-        }
+        // Fire-and-forget: no esperamos la respuesta del servidor
+        fetch('/api/notificaciones/leer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: noLeidasIds })
+        }).catch(e => console.error('Error marcando como leídas', e));
     }
 
     formatearFecha(fechaStr) {
         if (!fechaStr) return 'Justo ahora';
         const d = new Date(fechaStr);
         if (isNaN(d)) return 'Justo ahora';
-        return d.toLocaleDateString('es-AR') + ' ' + d.toLocaleTimeString('es-AR', {hour: '2-digit', minute:'2-digit'});
+        return d.toLocaleDateString('es-AR') + ' ' + d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     }
 }

@@ -672,7 +672,7 @@ class QueryBuilder
                        u.email as adoptante_email, u.nombre_usuario as adoptante_nombre
                 FROM registro_sanitario rs
                 JOIN mascota m ON rs.mascota_id = m.id
-                JOIN solicitud_de_adopcion s ON m.id = s.mascota_id AND s.estado = 'APROBADO'
+                JOIN solicitud_de_adopcion s ON m.id = s.mascota_id AND s.estado = 'APROBADA'
                 JOIN adoptante a ON s.adoptante_id = a.usuario_id
                 JOIN usuario u ON a.usuario_id = u.id
                 WHERE rs.estado = 'PENDIENTE' 
@@ -724,6 +724,15 @@ class QueryBuilder
                     'estado_adopcion' => 'ADOPTADO',
                     'fecha_adopcion' => $fecha
                 ], ['id' => $mascotaId]);
+
+                // Rechazar automaticamente las demas solicitudes pendientes de la misma mascota
+                $sql = "UPDATE {$tabla} SET estado = 'RECHAZADA', fecha_aceptacion = :fecha WHERE mascota_id = :mascota_id AND id != :solicitud_id AND estado = 'PENDIENTE'";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([
+                    ':fecha' => $fecha,
+                    ':mascota_id' => $mascotaId,
+                    ':solicitud_id' => $solicitudId
+                ]);
             }
 
             $this->pdo->commit();

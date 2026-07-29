@@ -130,11 +130,16 @@ cd Entrega3
 php bin/cron_recordatorios.php
 ```
 
+### Comando para probar las notificaciones
+```bash
+cd Entrega3
+php bin/websocket-server.php
+```
+
 ## Deploy
 
-### Ngrok
 
-_Para probar la aplicación con todas sus funcionalidades activas (incluyendo el servicio de correo):_  
+### Ngrok
 La aplicación se encuentra disponible de forma temporal a través de un túnel de ngrok.  
 **Solicitud de acceso**: Por favor, contactar para obtener el enlace activo de la sesión actual.
 

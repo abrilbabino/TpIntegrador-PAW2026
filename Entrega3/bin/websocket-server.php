@@ -1,6 +1,8 @@
 <?php
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;

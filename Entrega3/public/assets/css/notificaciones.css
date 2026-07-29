@@ -68,6 +68,10 @@
 }
 
 .dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
     padding: 1rem;
     border-bottom: 1px solid var(--color-gris-claro);
     background-color: var(--color-fondo);
@@ -77,6 +81,19 @@
     margin: 0;
     font-size: 1rem;
     color: var(--color-texto);
+}
+
+.btn-marcar-todas-leidas {
+    background: none;
+    border: none;
+    color: var(--color-azul);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-marcar-todas-leidas:hover {
+    text-decoration: underline;
 }
 
 .lista-notificaciones {
@@ -156,6 +173,6 @@
         top: 100%;
         right: -1rem;
         left: auto;
-        width: 300px;
+        width: 400px;
     }
 }

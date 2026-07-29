@@ -32,7 +32,12 @@ class NotificacionController extends Controller
 
         try {
             $notificaciones = $this->model->getRecientes($usuarioId);
-            $noLeidasCount = count(array_filter($notificaciones, fn($n) => !$n['leida']));
+            
+            // PostgreSQL PDO puede devolver '0', '1', 'f', 't', 0, 1 o booleanos
+            $noLeidasCount = count(array_filter($notificaciones, function($n) {
+                $leida = $n['leida'];
+                return $leida === false || $leida === 0 || $leida === '0' || $leida === 'f';
+            }));
 
             echo json_encode([
                 'success' => true, 
@@ -67,7 +72,8 @@ class NotificacionController extends Controller
 
         $usuarioId = (int)$userSession['id'];
         
-        $ids = $this->request->post('ids') ?? [];
+        $postData = $this->request->post();
+        $ids = $postData['ids'] ?? [];
         if (!is_array($ids) && is_string($ids)) {
             $ids = json_decode($ids, true) ?? [];
         }

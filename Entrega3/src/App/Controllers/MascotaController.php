@@ -628,7 +628,7 @@ public function eliminarFoto() {
         try {
             $url = GCSHelper::subir($archivo, 'libreta_mascotas');
             $regSanitario = $this->loadCollection(RegistroSanitarioCollection::class);
-            $regSanitario->completarRegistroSanitario($registro_id, $url, date('Y-m-d'));
+            $regSanitario->completarRegistroSanitario($registro_id, $url, date('Y-m-d'), $userSession);
         } catch (\Exception $e) {
             $motivo = 'gcs_upload_failed';
 

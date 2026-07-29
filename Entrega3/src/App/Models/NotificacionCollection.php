@@ -22,7 +22,7 @@ class NotificacionCollection extends Model
     {
         foreach ($ids as $id) {
             // Add a check to ensure the notification belongs to the user
-            $this->queryBuilder->update($this->table, ['leida' => 'true'], [
+            $this->queryBuilder->update($this->table, ['leida' => true], [
                 'id' => (int)$id,
                 'usuario_id' => $usuarioId
             ]);
@@ -36,7 +36,9 @@ class NotificacionCollection extends Model
             throw new \Exception(implode(', ', $errores));
         }
 
-        return $this->queryBuilder->insert($this->table, $notificacion->fields);
+        $id = $this->queryBuilder->insert($this->table, $notificacion->fields);
+        $notificacion->fields['id'] = $id;
+        return (bool)$id;
     }
 
     public function enviarNotificacionTiempoReal(Notificacion $notificacion): void
@@ -51,6 +53,7 @@ class NotificacionCollection extends Model
             ]);
             
             $payload = json_encode([
+                'id' => $notificacion->fields['id'] ?? null,
                 'usuario_id' => $notificacion->fields['usuario_id'],
                 'titulo' => $notificacion->fields['titulo'],
                 'mensaje' => $notificacion->fields['mensaje'],
