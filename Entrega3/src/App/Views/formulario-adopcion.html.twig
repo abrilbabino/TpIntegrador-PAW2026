@@ -17,7 +17,7 @@
             <figure class="imagen-principal-desktop">
                 {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                 <img src="{{ imagenUrl }}"
-                     alt="Foto de {{ mascota.fields.nombre|default('la mascota') }}">
+                     alt="Foto de {{ mascota.fields.nombre|default('la mascota')|capitalize }}">
             </figure>
 
             {% if mediaExtras is not empty %}
@@ -29,7 +29,7 @@
                 <figure class="carrusel-slide-item slide-principal-movil">
                     {% set imagenUrlForm = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                     <img src="{{ imagenUrlForm }}"
-                         alt="Foto de {{ mascota.fields.nombre|default('la mascota') }}">
+                         alt="Foto de {{ mascota.fields.nombre|default('la mascota')|capitalize }}">
                 </figure>
 
                 {% if mediaExtras is not empty %}

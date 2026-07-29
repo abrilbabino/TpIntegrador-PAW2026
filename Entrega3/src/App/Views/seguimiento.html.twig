@@ -9,10 +9,10 @@
         <article class="pet-card">
             <figure class="imagen-mascota">
                 {% set imgMascotaUrl = mascotaSeleccionada.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascotaSeleccionada.fields.imagen : '/assets/img/' ~ mascotaSeleccionada.fields.imagen|default('default-pet.jpg') %}
-                <img src="{{ imgMascotaUrl }}" alt="{{ mascotaSeleccionada.fields.nombre }}">
+                <img src="{{ imgMascotaUrl }}" alt="{{ mascotaSeleccionada.fields.nombre|capitalize }}">
             </figure>
             <header class="pet-card-info">
-                <h1>{{ mascotaSeleccionada.fields.nombre|default('') }}</h1>
+                <h1>{{ mascotaSeleccionada.fields.nombre|default('')|capitalize }}</h1>
                 <p>{{ mascotaSeleccionada.fields.especie|default('') }} - {{ mascotaSeleccionada.fields.edad|default('') }} años</p>
             </header>
         </article>
@@ -110,7 +110,7 @@
             </header>
 
             <button class="btn-comprobante" onclick="abrirModalSubida('foto')">
-                Fotos de {{ mascotaSeleccionada.fields.nombre|default('') }}
+                Fotos de {{ mascotaSeleccionada.fields.nombre|default('')|capitalize }}
                 <span class="material-symbols-outlined icono-comprobante">attach_file</span>
             </button>
             <button class="btn-comprobante" onclick="abrirModalSubida('certificado')">

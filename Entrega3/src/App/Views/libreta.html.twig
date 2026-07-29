@@ -1,6 +1,6 @@
 {% extends 'layout/base.html.twig' %}
 
-{% block title %}Libreta Sanitaria - {{ mascota.fields.nombre|default('Mascota') }} - PawMap{% endblock %}
+{% block title %}Libreta Sanitaria - {{ mascota.fields.nombre|default('Mascota')|capitalize }} - PawMap{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="/assets/css/libreta.css" />
@@ -10,7 +10,7 @@
 
 {% block main %}
     <header class="hero-libreta">
-        <h1>Libreta Sanitaria de {{ mascota.fields.nombre|default('Mascota') }}</h1>
+        <h1>Libreta Sanitaria de {{ mascota.fields.nombre|default('Mascota')|capitalize }}</h1>
     </header>
 
     {% if request.get('error') == 'permisos_denegados' %}

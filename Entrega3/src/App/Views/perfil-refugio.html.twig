@@ -505,7 +505,7 @@
             <ul class="perfil-refugio-grid">
                 {% for mascota in mascotas %}
                     <li class="tarjeta-refugio-mascota">
-                        <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota') }}">
+                        <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} año(s)
@@ -541,7 +541,7 @@
             <ul class="perfil-refugio-grid">
                 {% for mascota in mascotasAdoptadas %}
                     <li class="tarjeta-refugio-mascota">
-                        <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota') }}">
+                        <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} año(s)

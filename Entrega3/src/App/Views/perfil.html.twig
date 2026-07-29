@@ -158,12 +158,12 @@
             <ul class="perfil-cards-grid">
                 {% for fav in favoritos %}
                     <li class="perfil-card">
-                        <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota') }}">
+                        <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota')|capitalize }}">
                             <figure class="perfil-card-img">
                                 {% set favImagenUrl = fav.imagen|default('default-pet.jpg') starts with 'http' ? fav.imagen : '/assets/img/' ~ fav.imagen|default('default-pet.jpg') %}
                                 <img
                                     src="{{ favImagenUrl }}"
-                                    alt="{{ fav.nombre|default('Mascota') }}"
+                                    alt="{{ fav.nombre|default('Mascota')|capitalize }}"
                                 />
                             </figure>
                             <h4>{{ fav.nombre|default('Sin nombre')|capitalize }}</h4>
