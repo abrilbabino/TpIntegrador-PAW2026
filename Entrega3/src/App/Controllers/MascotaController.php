@@ -64,6 +64,11 @@ class MascotaController extends Controller
         $redes = $this->redes;
         $id    = $request->get('id');
 
+        // Sumar +1 al contador de visitas para el ranking de Mascotas Invisibles
+        if (!empty($id)) {
+            $this->model->incrementarVisitas((int)$id);
+        }
+
         $mascota = $this->model->get($id);
         
         $nombre = htmlspecialchars($mascota->fields['nombre'] ?? '');

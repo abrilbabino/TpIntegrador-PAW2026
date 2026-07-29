@@ -17,7 +17,8 @@ class PageController extends Controller
         $menu = $this->menu;
         $redes = $this->redes;
         
-        $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
+        // Algoritmo de Mascotas Invisibles: Obtener las 8 mascotas más olvidadas
+        $mascotas = $this->model->getMascotasInvisibles(8);
 
         $refugioCollection = new \Paw\App\Models\RefugioCollection();
         $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
