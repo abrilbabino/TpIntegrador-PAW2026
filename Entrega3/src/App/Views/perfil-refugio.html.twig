@@ -1,4 +1,4 @@
-{% extends 'layout/base.html.twig' %}
+﻿{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -25,7 +25,7 @@
         <p class="perfil-refugio-email">{{ user.email|default('') }}</p>
         <a href="/logout" class="perfil-refugio-logout">
             <span class="material-symbols-outlined">logout</span>
-            Cerrar sesión
+            Cerrar sesi&oacute;n
         </a>
     </section>
 
@@ -62,7 +62,7 @@
                             {% endif %}
                         </li>
                         <li class="dato-refugio-item">
-                            <label class="dato-refugio-label" for="telefono">Teléfono:</label>
+                            <label class="dato-refugio-label" for="telefono">Tel&eacute;fono:</label>
                             <p class="dato-refugio-valor static-value">{{ refugio.telefono|default('—') }}</p>
                             <input type="tel" id="telefono" name="telefono" value="{{ oldData.telefono|default(refugio.telefono|default('')) }}" data-original="{{ refugio.telefono|default('') }}" class="dato-valor-input input-value {{ errores.telefono is defined ? 'input-invalido' : '' }}" minlength="6" maxlength="20" pattern="^\+?[0-9\s\-]{6,20}$">
                             {% if errores.telefono is defined %}
@@ -80,7 +80,7 @@
                     </ul>
                     <ul class="columna-datos">
                         <li class="dato-refugio-item">
-                            <label class="dato-refugio-label" for="descripcion">Descripción:</label>
+                            <label class="dato-refugio-label" for="descripcion">Descripci&oacute;n:</label>
                             <article class="static-value dato-refugio-descripcion-container">
                                 <p class="dato-refugio-valor descripcion-texto">{{ refugio.descripcion|default('-')|nl2br }}</p>
                                 <button type="button" class="btn-ver-mas-desc hidden-desc">Ver más</button>
@@ -125,7 +125,7 @@
         </a>
         <a href="#sec-monitoreo">
             <span class="material-symbols-outlined">monitor_heart</span>
-            Monitoreo Post-Adopción
+            Monitoreo Post-Adopci&oacute;n
         </a>
         <a href="#sec-ubicacion">
             <span class="material-symbols-outlined">location_on</span>
@@ -148,11 +148,11 @@
     <!-- Sección: Solicitudes -->
      <section class="perfil-refugio-seccion" id="sec-solicitudes-adopcion">
         <details class="perfil-dropdown">
-        <summary> <h3>Solicitudes de adopción</h3> </summary>
+        <summary> <h3>Solicitudes de adopci&oacute;n</h3> </summary>
         {% if solicitudes is empty %}
             <article class="perfil-refugio-vacio">
                 <span class="material-symbols-outlined">mail</span>
-                <p>Todavía no recibiste solicitudes de adopción.</p>
+                <p>Todav&iacute;a no recibiste solicitudes de adopci&oacute;n.</p>
             </article>
         {% else %}
             <ul class="perfil-refugio-lista-adopcion">
@@ -173,7 +173,7 @@
                         </mark>
                         <p>
                             Detalle de la mascota: <br>
-                            {{ sol.edad|default('?') }} año(s)
+                            {{ sol.edad|default('?') }} a&ntilde;o(s)
                             · {{ sol.tamano|default('—') }}
                             · {{ sol.temperamento|default('—') }}
                         </p>
@@ -190,7 +190,7 @@
 
     <section class="perfil-refugio-seccion" id="sec-monitoreo">
         <details class="perfil-dropdown">
-        <summary> <h3>Monitoreo Post-Adopción</h3> </summary>
+        <summary> <h3>Monitoreo Post-Adopci&oacute;n</h3> </summary>
         
         {% if seguimientoAgrupado is empty %}
             <article class="perfil-refugio-vacio">
@@ -350,7 +350,7 @@
 
         <form id="form-publicar-mascota" method="POST" action="/perfil/mascota/publicar" enctype="multipart/form-data">
             <label for="nombre">Nombre
-            <input type="text" id="nombre" name="nombre" placeholder="Ingresá el nombre de la mascota"
+            <input type="text" id="nombre" name="nombre" placeholder="Ingres&aacute; el nombre de la mascota"
                 value="{{ oldMascota.nombre|default('') }}"
                 minlength="2"
                 maxlength="60"
@@ -395,13 +395,13 @@
                 {{ erroresMascota.fecha_nacimiento is defined and erroresMascota.fecha_nacimiento is not empty ? 'data-server-error="' ~ erroresMascota.fecha_nacimiento ~ '"' : '' }}>
             </label>
 
-            <label for="descripcion_mascota">Descripción
-            <textarea id="descripcion_mascota" name="descripcion_mascota" placeholder="Ingresá una descripción de la mascota" maxlength="500" {{ erroresMascota.descripcion_mascota is defined and erroresMascota.descripcion_mascota is not empty ? 'data-server-error="' ~ erroresMascota.descripcion_mascota ~ '"' : '' }}>{{ oldMascota.descripcion_mascota|default('') }}</textarea>
+            <label for="descripcion_mascota">Descripci&oacute;n
+            <textarea id="descripcion_mascota" name="descripcion_mascota" placeholder="Ingres&aacute; una descripción de la mascota" maxlength="500" {{ erroresMascota.descripcion_mascota is defined and erroresMascota.descripcion_mascota is not empty ? 'data-server-error="' ~ erroresMascota.descripcion_mascota ~ '"' : '' }}>{{ oldMascota.descripcion_mascota|default('') }}</textarea>
             </label>
 
-            <label for="tamanio">Tamaño
+            <label for="tamanio">Tama&ntilde;o
             <select id="tamanio" name="tamanio" required {{ erroresMascota.tamanio is defined and erroresMascota.tamanio is not empty ? 'data-server-error="' ~ erroresMascota.tamanio ~ '"' : '' }}>
-                <option value="">Seleccioná un tamaño</option>
+                <option value="">Seleccion&aacute; un tamaño</option>
                 <option value="pequeño" {{ (oldMascota.tamanio|default('') == 'pequeño') ? 'selected' : '' }}>Pequeño</option>
                 <option value="mediano" {{ (oldMascota.tamanio|default('') == 'mediano') ? 'selected' : '' }}>Mediano</option>
                 <option value="grande" {{ (oldMascota.tamanio|default('') == 'grande') ? 'selected' : '' }}>Grande</option>
@@ -417,7 +417,7 @@
 
             <label for="temperamento">Temperamento
             <select id="temperamento" name="temperamento" required {{ erroresMascota.temperamento is defined and erroresMascota.temperamento is not empty ? 'data-server-error="' ~ erroresMascota.temperamento ~ '"' : '' }}>
-                <option value="">Seleccioná un temperamento</option>
+                <option value="">Seleccion&aacute; un temperamento</option>
                 {% for t in temperamentos %}
                     <option value="{{ t.fields.temperamento }}" {{ (oldMascota.temperamento|default('') == t.fields.temperamento) ? 'selected' : '' }}>
                         {{ t.fields.temperamento|capitalize }}
@@ -430,22 +430,22 @@
                    title="Solo se permiten letras y espacios.">
             </label>
 
-            <label for="esterilizado">¿Está esterilizado?
+            <label for="esterilizado">¿Est&aacute; esterilizado?
             <select id="esterilizado" name="esterilizado" required {{ erroresMascota.esterilizado is defined and erroresMascota.esterilizado is not empty ? 'data-server-error="' ~ erroresMascota.esterilizado ~ '"' : '' }}>
-                <option value="si" {{ (oldMascota.esterilizado|default('') == 'si') ? 'selected' : '' }}>Sí</option>
+                <option value="si" {{ (oldMascota.esterilizado|default('') == 'si') ? 'selected' : '' }}>S&iacute;</option>
                 <option value="no" {{ (oldMascota.esterilizado|default('no') != 'si') ? 'selected' : '' }}>No</option>
             </select>
             </label>
 
-            <label for="foto">Foto <small>(opcional, máx. 2 MB — JPG, PNG, WEBP)</small>
+            <label for="foto">Foto <small>(opcional, m&aacute;x. 2 MB — JPG, PNG, WEBP)</small>
             <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp"
                 data-max-file-size="2097152"
                 data-max-file-message="La imagen no puede superar 2 MB."
-                data-file-types-message="Archivo no válido. Solo JPG, PNG o WEBP."
+                data-file-types-message="Archivo no v&aacute;lido. Solo JPG, PNG o WEBP."
                 {{ erroresMascota.foto is defined and erroresMascota.foto is not empty ? 'data-server-error="' ~ erroresMascota.foto ~ '"' : '' }}>
             </label>
 
-            <label for="svg">Ilustración SVG <small>(opcional — archivo .svg)</small>
+            <label for="svg">Ilustraci&oacute;n SVG <small>(opcional — archivo .svg)</small>
             <input type="file" id="svg" name="svg" accept="image/svg+xml,.svg"
                 data-file-types-message="Solo se permiten archivos .svg."
                 {{ erroresMascota.svg is defined and erroresMascota.svg is not empty ? 'data-server-error="' ~ erroresMascota.svg ~ '"' : '' }}>
@@ -466,7 +466,7 @@
                 <aside class="alerta-exito" role="status">
                     <span class="material-symbols-outlined">check_circle</span>
                     <section>
-                        <strong>¡Importación Exitosa!</strong>
+                        <strong>¡Importaci&oacute;n Exitosa!</strong>
                         <p>Se registraron exitosamente {{ resultados_importacion.cantidad_exito }} mascotas en la base de datos.</p>
                     </section>
                 </aside>
@@ -474,9 +474,9 @@
 
             {% set erroresCsv = '' %}
             {% if error_importacion == 'falla_subida' %}
-                 {% set erroresCsv = 'Error al subir el archivo o no se seleccionó ningún archivo.' %}
+                 {% set erroresCsv = 'Error al subir el archivo o no se seleccionó ning&uacute;n archivo.' %}
             {% elseif error_importacion == 'extension_invalida' %}
-                 {% set erroresCsv = 'El archivo debe ser un .csv válido.' %}
+                 {% set erroresCsv = 'El archivo debe ser un .csv v&aacute;lido.' %}
             {% elseif resultados_importacion is defined and resultados_importacion.errores|length > 0 %}
                  {% set erroresCsv = resultados_importacion.errores|join(' | ') %}
             {% endif %}
@@ -499,7 +499,7 @@
         {% if mascotas is empty %}
             <article class="perfil-vacio">
                 <span class="material-symbols-outlined">pets</span>
-                <p>Todavía no tenés mascotas publicadas.</p>
+                <p>Todav&iacute;a no ten&eacute;s mascotas publicadas.</p>
             </article>
         {% else %}
             <ul class="perfil-refugio-grid">
@@ -508,7 +508,7 @@
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
-                                {{ mascota.fields.edad|default('?') }} año(s)
+                                {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
                                 · {{ mascota.fields.tamano|default('—') }}
                                 · {{ mascota.fields.temperamento|default('—') }}
                             </p>
@@ -535,7 +535,7 @@
         {% if mascotasAdoptadas is empty %}
             <article class="perfil-vacio">
                 <span class="material-symbols-outlined">volunteer_activism</span>
-                <p>Todavía no tenés mascotas adoptadas.</p>
+                <p>Todav&iacute;a no ten&eacute;s mascotas adoptadas.</p>
             </article>
         {% else %}
             <ul class="perfil-refugio-grid">
@@ -544,7 +544,7 @@
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
-                                {{ mascota.fields.edad|default('?') }} año(s)
+                                {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
                                 · {{ mascota.fields.tamano|default('—') }}
                                 · {{ mascota.fields.temperamento|default('—') }}
                             </p>
@@ -560,7 +560,7 @@
     </section>
 
     <section class="sec-estadisticas" id="sec-estadisticas">
-        <h2 class="estadisticas-main-title">Métricas y Estadísticas del Refugio</h2>
+        <h2 class="estadisticas-main-title">M&eacute;tricas y Estad&iacute;sticas del Refugio</h2>
                         <section class="perfil-stats-dashboard">
                 
                 <section class="kpi-container">
@@ -592,7 +592,7 @@
                     <figure class="paw-chart">
                         <figcaption><h3>Estado de Adopciones</h3></figcaption>
                         {% if estadisticas.estado is empty or estadisticas.kpis.totalMascotas == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <dl class="paw-chart-list">
                                 {% for key, count in estadisticas.estado %}
@@ -607,7 +607,7 @@
                     <figure class="paw-chart paw-pie-container">
                         <figcaption><h3>Mascotas por Especie</h3></figcaption>
                         {% if estadisticas.especie is empty or estadisticas.kpis.totalMascotas == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.especie|json_encode|e('html_attr') }}" data-chart-type="doughnut">
                                 <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
@@ -616,9 +616,9 @@
                     </figure>
 
                     <figure class="paw-chart paw-pie-container">
-                        <figcaption><h3>Tamaño de Mascotas</h3></figcaption>
+                        <figcaption><h3>Tama&ntilde;o de Mascotas</h3></figcaption>
                         {% if estadisticas.tamano is empty or estadisticas.kpis.totalMascotas == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.tamano|json_encode|e('html_attr') }}" data-chart-type="pie">
                                 <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
@@ -629,7 +629,7 @@
                     <figure class="paw-chart">
                         <figcaption><h3>Temperamento</h3></figcaption>
                         {% if estadisticas.temperamento is empty or estadisticas.kpis.totalMascotas == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <dl class="paw-chart-list">
                                 {% for key, count in estadisticas.temperamento %}
@@ -644,7 +644,7 @@
                     <figure class="paw-chart paw-pie-container">
                         <figcaption><h3>Estado de Solicitudes</h3></figcaption>
                         {% if estadisticas.solicitudes is empty or estadisticas.kpis.totalSolicitudes == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.solicitudes|json_encode|e('html_attr') }}" data-chart-type="pie">
                                 <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
@@ -655,7 +655,7 @@
                     <figure class="paw-chart paw-pie-container">
                         <figcaption><h3>Castrados / Esterilizados</h3></figcaption>
                         {% if estadisticas.castrado is empty or estadisticas.kpis.totalMascotas == 0 %}
-                            <p class="paw-chart-empty">No hay datos a�n.</p>
+                            <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.castrado|json_encode|e('html_attr') }}" data-chart-type="pie">
                                 <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
@@ -668,10 +668,10 @@
     </section>
     <dialog id="modal-confirmar-eliminar" class="modal-nativo modal-confirmacion">
         <header>
-            <h2>Confirmar eliminación</h2>
+            <h2>Confirmar eliminaci&oacute;n</h2>
         </header>
         <section class="modal-body">
-            <p>¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.</p>
+            <p>¿Est&aacute;s seguro de que deseas eliminar esta mascota? Esta acci&oacute;n no se puede deshacer.</p>
         </section>
         <footer class="acciones-modal">
             <button type="button" class="btn-cancelar js-cerrar-modal" id="btn-cancelar-eliminar">Cancelar</button>
