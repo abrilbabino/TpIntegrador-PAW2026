@@ -185,11 +185,15 @@ class QueryBuilder
         return [$where, $binds];
     }
 
-    private function bindValues(PDOStatement $sentencia, array $binds): void
+    private function bindValues(\PDOStatement $sentencia, array $binds): void
     {
         foreach ($binds as $key => $val) {
             if (is_array($val) && isset($val['value'], $val['type'])) {
                 $sentencia->bindValue($key, $val['value'], $val['type']);
+            } elseif (is_bool($val)) {
+                $sentencia->bindValue($key, $val, \PDO::PARAM_BOOL);
+            } elseif (is_null($val)) {
+                $sentencia->bindValue($key, $val, \PDO::PARAM_NULL);
             } else {
                 $sentencia->bindValue($key, $val);
             }
@@ -545,9 +549,11 @@ class QueryBuilder
         $query = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
         $sentencia = $this->pdo->prepare($query);
         
+        $binds = [];
         foreach ($data as $key => $value) {
-            $sentencia->bindValue(":{$key}", $value);
+            $binds[":{$key}"] = $value;
         }
+        $this->bindValues($sentencia, $binds);
         
         $sentencia->execute();
         return $this->pdo->lastInsertId();
