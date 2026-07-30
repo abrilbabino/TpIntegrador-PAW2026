@@ -20,7 +20,7 @@ YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-PROJECT="project-f3583ede-db03-4872-95c"
+PROJECT="project-f7af048a-a298-4d12-b7e"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="${SCRIPT_DIR}/config.json"
 

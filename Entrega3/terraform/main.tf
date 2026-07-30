@@ -17,7 +17,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "tp3-terraform-naj-2"
+    bucket = "pawmap-bucket"
     prefix = "terraform/state"
   }
 }
