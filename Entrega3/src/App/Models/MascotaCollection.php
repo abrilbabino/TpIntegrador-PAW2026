@@ -222,6 +222,11 @@ class MascotaCollection extends Model
         return $mascotasData;
     }
 
+    public function getAdoptanteDeMascota(int $mascotaId): ?array
+    {
+        return $this->queryBuilder->obtenerAdoptantePorMascota($mascotaId);
+    }
+
     public function importarMascotasCsv(string $rutaTemporalCsv, int $idUsuario): array
     {
         $valoresDeCampo = static function (array $items, string $campo): array {

@@ -133,8 +133,28 @@
             </section>
 
             <section class="sobre-mi">
-                <h4>SOBRE MÍ</h4>
-                <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.')|capitalize }}</p>
+                {% if mascota.fields.estado_adopcion == 'ADOPTADO' and adoptante %}
+                    <h4>DATOS DE MI FAMILIA</h4>
+                    <address class="sobre-mi-box contacto-dueno-box">
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">person</span> 
+                            <strong>Nombre:</strong> {{ adoptante.nombre|capitalize }} {{ adoptante.apellido|capitalize }}
+                        </p>
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">phone</span> 
+                            <strong>Teléfono:</strong>
+                            <a href="tel:{{ adoptante.telefono|default('') }}" class="link-contacto">{{ adoptante.telefono|default('No registrado') }}</a>
+                        </p>
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">mail</span> 
+                            <strong>Email:</strong>
+                            <a href="mailto:{{ adoptante.email|default('') }}" class="link-contacto">{{ adoptante.email|default('No registrado') }}</a>
+                        </p>
+                    </address>
+                {% else %}
+                    <h4>SOBRE MÍ</h4>
+                    <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.')|capitalize }}</p>
+                {% endif %}
             </section>
 
             <a href="/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id) }}" class="refugio-info">
@@ -148,7 +168,9 @@
             </a>
 
 
-            <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+            {% if mascota.fields.estado_adopcion != 'ADOPTADO' %}
+                <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+            {% endif %}
         </aside>
     </article>
 {% endblock %}

@@ -1001,7 +1001,7 @@ class QueryBuilder
 
     public function obtenerAdoptantePorMascota(int $mascotaId): ?array
     {
-        $sql = "SELECT a.nombre, a.apellido, s.telefono, u.email
+        $sql = "SELECT a.nombre, a.apellido, u.contacto as telefono, u.email
                 FROM solicitud_de_adopcion s
                 JOIN adoptante a ON s.adoptante_id = a.usuario_id
                 JOIN usuario u ON a.usuario_id = u.id

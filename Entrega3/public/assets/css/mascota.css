@@ -670,3 +670,33 @@ menu.compartir-dropdown {
         font-size: 1.1rem;
     }
 }
+
+.contacto-dueno-box {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.contacto-dueno-box p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icono-contacto {
+    color: var(--color-naranja);
+}
+
+.link-contacto {
+    color: var(--color-azul);
+    text-decoration: none;
+    font-weight: 600;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.link-contacto:hover {
+    text-decoration: underline;
+}
