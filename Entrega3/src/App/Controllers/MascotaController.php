@@ -8,6 +8,7 @@ use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RefugioCollection; 
 use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
+use Paw\App\Models\Favorito;
 use Paw\Core\Exceptions\InvalidValueFormatException;
 use Paw\Core\Exceptions\ModelNotFoundException;
 use Paw\App\Helpers\GCSHelper;
@@ -35,8 +36,7 @@ class MascotaController extends Controller
             session_write_close();
         }
         
-        $favoritoModel = new \Paw\App\Models\Favorito();
-        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritoModel = $this->loadModel(Favorito::class);
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
         $mascotasData = $this->model->obtenerMascotasApiData($favoritosIds);
@@ -52,8 +52,7 @@ class MascotaController extends Controller
 
     private function loadFotosMascota(int $mascotaId, ?string $imagen): array
     {
-        $mediaCol = new MediaMascotaCollection();
-        $mediaCol->setQueryBuilder($this->model->getQueryBuilder());
+        $mediaCol = $this->loadCollection(MediaMascotaCollection::class);
         return $mediaCol->getMultimedia($mascotaId, $imagen);
     }
 
@@ -75,9 +74,8 @@ class MascotaController extends Controller
         $especie = htmlspecialchars(strtolower($mascota->fields['especie'] ?? 'mascota'));
         $metaDescription = "Conocé a {$nombre}, un {$especie} en adopción. Descubrí su historia y si es tu compañero ideal en PawMap.";
 
-        $refugios = new RefugioCollection();
-        $refugios->setQueryBuilder($this->model->getQueryBuilder());
-        $refugio =$refugios->get($mascota->fields['refugio_id']);
+        $refugios = $this->loadCollection(RefugioCollection::class);
+        $refugio = $refugios->get($mascota->fields['refugio_id']);
 
         
         $ubicaciones = [];
@@ -100,15 +98,13 @@ class MascotaController extends Controller
             }
         }
 
-        $mediaCol = new MediaMascotaCollection();
-        $mediaCol->setQueryBuilder($this->model->getQueryBuilder());
+        $mediaCol = $this->loadCollection(MediaMascotaCollection::class);
         $mediaExtras = $mediaCol->getMultimedia(
             (int)$mascota->fields['id'],
             $mascota->fields['imagen'] ?? null
         );
 
-        $favoritoModel = new \Paw\App\Models\Favorito();
-        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritoModel = $this->loadModel(Favorito::class);
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
         $esFavorito = in_array($id, $favoritosIds);
 
@@ -156,8 +152,7 @@ class MascotaController extends Controller
         $esterilizadoActual = ($mascotaFields['castrado'] == 1) ? 'si' : 'no';
         $descripcionActual  = $mascotaFields['descripcion'] ?? '';
         $fechaNacimientoActual = $mascotaFields['fecha_nacimiento'] ?? '';
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         $tamanos       = $mascotaCollection->getTamanos();
         $especies      = $mascotaCollection->getEspecies();
         $temperamentos = $mascotaCollection->getTemperamentos();
@@ -202,8 +197,7 @@ class MascotaController extends Controller
             exit;
         }
 
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         $valoresDeCampo = static function (array $items, string $campo): array {
             return array_map(
                 static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
@@ -264,14 +258,11 @@ class MascotaController extends Controller
             exit;
         }
 
-        $mascotaId = filter_input(INPUT_POST, 'mascota_id', FILTER_VALIDATE_INT);
-        if ($mascotaId === false || $mascotaId === null) {
-            $postData = $this->request->post();
-            $mascotaId = (int) ($postData['mascota_id'] ?? 0);
-        }
-
+        $postData = $this->request->post();
+        $mascotaId = (int) ($postData['mascota_id'] ?? 0);
+        
         if ($mascotaId <= 0) {
-            error_log("ERROR: Intento de subir foto con ID inválido. POST data: " . json_encode($_POST));
+            error_log("ERROR: Intento de subir foto con ID inválido. POST data: " . json_encode($postData));
             header('Location: /perfil?error=id_invalido');
             exit;
         }
@@ -295,7 +286,7 @@ class MascotaController extends Controller
             exit;
         }
 
-        $mediaCollection = $this->loadCollection('\Paw\App\Models\MediaMascotaCollection');
+        $mediaCollection = $this->loadCollection(MediaMascotaCollection::class);
 
         // 3. Procesar el archivo
         try {
@@ -306,7 +297,7 @@ class MascotaController extends Controller
                 $url
             );
             
-            $wantsJson = isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
+            $wantsJson = $this->request->server('HTTP_ACCEPT') && str_contains($this->request->server('HTTP_ACCEPT'), 'application/json');
             if ($wantsJson) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -321,7 +312,7 @@ class MascotaController extends Controller
         } catch (\Exception $e) {
             error_log("Error subirArchivoMascota: " . $e->getMessage());
             
-            $wantsJson = isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
+            $wantsJson = $this->request->server('HTTP_ACCEPT') && str_contains($this->request->server('HTTP_ACCEPT'), 'application/json');
             if ($wantsJson) {
                 http_response_code(500);
                 header('Content-Type: application/json');
@@ -361,8 +352,7 @@ class MascotaController extends Controller
             exit;
         }
 
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         $mascotaCollection->eliminarSvg($id);
 
         header('Location: /mascota/editar?id=' . $id . '&update=success');
@@ -396,8 +386,7 @@ class MascotaController extends Controller
             exit;
         }
 
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         $mascotaCollection->eliminarFotoPrincipal($id);
 
         header('Location: /mascota/editar?id=' . $id . '&update=success');
@@ -433,8 +422,7 @@ public function eliminarFoto() {
     }
 
     try {
-        $mediaCollection = new MediaMascotaCollection();
-        $mediaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mediaCollection = $this->loadCollection(MediaMascotaCollection::class);
         $mediaCollection->eliminarFotoAdicional($mediaId, $mascotaId);
     } catch (\Exception $e) {
         header('Location: /mascota/editar?id=' . $mascotaId . '&error=foto_no_encontrada');
@@ -664,7 +652,7 @@ public function eliminarFoto() {
         }
 
         if ($mascota && (int)$mascota->fields['refugio_id'] === (int) $userSession['id']) {
-            $mascotaCollection = $this->loadCollection('\Paw\App\Models\MascotaCollection');
+            $mascotaCollection = $this->loadCollection(MascotaCollection::class);
             $mascotaCollection->eliminar($id);
         }
 

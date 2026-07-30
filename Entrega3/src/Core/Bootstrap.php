@@ -101,6 +101,7 @@ $router->post('/perfil/mascota/importar', 'UserController@importarMascotasCsv');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
+$router->post('/resena/guardar', 'ResenaController@guardar');
 
 // Favoritos
 $router->post('/api/favorito/toggle', 'FavoritoController@toggle');

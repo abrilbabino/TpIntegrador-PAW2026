@@ -3,6 +3,8 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Exceptions\InvalidValueFormatException;
+use Paw\Core\Exceptions\ModelNotFoundException;
 
 class Adoptante extends Model
 {
@@ -30,7 +32,7 @@ class Adoptante extends Model
     public function load($id)
     {
         if (!is_numeric($id) || $id < 0) {
-            throw new \Exception("El ID del adoptante debe ser un entero mayor a 0");
+            throw new InvalidValueFormatException("El ID del adoptante debe ser un entero mayor a 0");
         }
 
         $record = $this->queryBuilder->selectOne($this->table, ['usuario_id' => $id]);
@@ -38,7 +40,7 @@ class Adoptante extends Model
         if ($record) {
             $this->set($record);
         } else {
-            throw new \Paw\Core\Exceptions\ModelNotFoundException("No se encontró un adoptante con el ID proporcionado");
+            throw new ModelNotFoundException("No se encontró un adoptante con el ID proporcionado");
         }
     }
 }

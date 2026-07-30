@@ -3,6 +3,8 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Exceptions\InvalidValueFormatException;
+use Exception;
 
 class NotificacionCollection extends Model
 {
@@ -33,7 +35,7 @@ class NotificacionCollection extends Model
     {
         $errores = $notificacion->validar();
         if (!empty($errores)) {
-            throw new \Exception(implode(', ', $errores));
+            throw new InvalidValueFormatException(implode(', ', $errores));
         }
 
         $id = $this->queryBuilder->insert($this->table, $notificacion->fields);
@@ -62,7 +64,7 @@ class NotificacionCollection extends Model
             ]);
             
             $client->publish('notificaciones', $payload);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($this->logger) {
                 $this->logger->error("Error publicando notificación en Redis: " . $e->getMessage());
             }

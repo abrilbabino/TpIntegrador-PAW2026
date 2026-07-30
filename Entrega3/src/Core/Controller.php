@@ -148,8 +148,19 @@ class Controller
 
     protected function loadCollection($className)
     {
+        $qb = $this->model ? $this->model->getQueryBuilder() : new QueryBuilder($this->connection, $this->log);
+        $collection = new $className;
+        $collection->setQueryBuilder($qb);
+        return $collection;
+    }
+
+    protected function loadModel($className)
+    {
+        $qb = $this->model ? $this->model->getQueryBuilder() : new QueryBuilder($this->connection, $this->log);
         $model = new $className;
-        $model->setQueryBuilder($this->model->getQueryBuilder());
+        if (method_exists($model, 'setQueryBuilder')) {
+            $model->setQueryBuilder($qb);
+        }
         return $model;
     }
 

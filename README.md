@@ -164,6 +164,12 @@ cd Entrega3
 php bin/websocket-server.php
 ```
 
+### Comando para probar el worker
+```bash
+cd Entrega3
+php bin/worker.php
+```
+
 ## Deploy
 
 

@@ -18,21 +18,29 @@ trait Notificable
      */
     protected function notificar(int $usuarioId, string $titulo, string $mensaje, string $enlace): void
     {
-        if (!property_exists($this, 'queryBuilder') || !$this->queryBuilder) {
-            throw new \Exception("El trait Notificable requiere que la clase tenga la propiedad queryBuilder inicializada.");
-        }
+        try {
+            $redisHost = getenv('REDIS_HOST') ?: '127.0.0.1';
+            $redisPort = getenv('REDIS_PORT') ?: '6379';
+            $client = new \Predis\Client([
+                'scheme' => 'tcp',
+                'host'   => $redisHost,
+                'port'   => $redisPort,
+            ]);
 
-        $notificacion = new Notificacion();
-        $notificacion->set([
-            'usuario_id' => $usuarioId,
-            'titulo' => $titulo,
-            'mensaje' => $mensaje,
-            'enlace' => $enlace
-        ]);
-        
-        $notifCollection = new NotificacionCollection();
-        $notifCollection->setQueryBuilder($this->queryBuilder);
-        $notifCollection->agregarNotificacion($notificacion);
-        $notifCollection->enviarNotificacionTiempoReal($notificacion);
+            $jobPayload = json_encode([
+                'tipo' => 'notificacion',
+                'datos' => [
+                    'usuario_id' => $usuarioId,
+                    'titulo' => $titulo,
+                    'mensaje' => $mensaje,
+                    'enlace' => $enlace
+                ]
+            ]);
+
+            $client->rpush('paw_jobs_queue', $jobPayload);
+        } catch (\Exception $e) {
+            // Fallback log
+            error_log("No se pudo encolar la notificación en Redis: " . $e->getMessage());
+        }
     }
 }

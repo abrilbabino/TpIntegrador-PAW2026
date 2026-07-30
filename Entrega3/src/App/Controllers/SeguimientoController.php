@@ -4,8 +4,10 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\EncuestaAdaptacion;
+use Paw\App\Models\EncuestaAdaptacionCollection;
 use Paw\App\Models\MascotaCollection;
 use Paw\App\Models\RegistroSanitarioCollection;
+use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Helpers\GCSHelper;
 
 class SeguimientoController extends Controller
@@ -32,8 +34,8 @@ class SeguimientoController extends Controller
         $titulo = "Seguimiento Post-Adopción - PawMap";
 
         $errorUpload = $this->request->session('error_upload');
-        if ($errorUpload) {
-            unset($_SESSION['error_upload']);
+        if ($errorUpload !== null) {
+            $this->request->unsetSession('error_upload');
         }
 
         $qb = $this->model->getQueryBuilder();
@@ -146,7 +148,7 @@ class SeguimientoController extends Controller
         try {
             $url = GCSHelper::subir($archivo, 'seguimiento_mascotas');
             $qb = $this->model->getQueryBuilder();
-            $mediaCol = $this->loadCollection(\Paw\App\Models\MediaMascotaCollection::class);
+            $mediaCol = $this->loadCollection(MediaMascotaCollection::class);
             $mediaCol->procesarArchivoSeguimiento((int)$mascotaId, $tipoArchivo, $registroId ? (int)$registroId : null, $url);
         } catch (\Exception $e) {
             $this->request->setSession('error_upload', 'Hubo un error al subir el archivo al servidor.');
@@ -179,8 +181,7 @@ class SeguimientoController extends Controller
         $progreso = $this->request->get('progreso_general');
         $comentarios = $this->request->get('comentarios');
 
-        $encuesta = new EncuestaAdaptacion();
-        $encuesta->setQueryBuilder($this->model->getQueryBuilder());
+        $encuesta = $this->loadModel(EncuestaAdaptacion::class);
         $encuesta->set([
             'mascota_id' => $mascotaId,
             'adoptante_id' => $adoptanteId,
@@ -196,7 +197,8 @@ class SeguimientoController extends Controller
         $encuesta->evaluarAlerta();
 
         // Insertar en la BD
-        $encuesta->save();
+        $encuestaCollection = $this->loadCollection(EncuestaAdaptacionCollection::class);
+        $encuestaCollection->guardar($encuesta);
 
         header('Location: /seguimiento?id=' . $mascotaId);
         exit;

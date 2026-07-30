@@ -24,6 +24,20 @@ class AppPAW {
     this._initSeguimiento();
     this._initBusquedaResultados();
     this._initNotificaciones();
+    this._initResenas();
+  }
+
+  _initResenas() {
+    const formResenas = document.querySelector('[data-paw-resena-form]');
+    if (formResenas) {
+      PAW.cargarScript(
+        "PAW-Resenas-Script",
+        "/assets/js/components/paw-resenas.js",
+        () => {
+          new window.PAWResenas();
+        }
+      );
+    }
   }
 
   _initNotificaciones() {
@@ -45,7 +59,7 @@ class AppPAW {
       PAW.cargarScript(
         "PAW-Seguimiento-Script",
         "/assets/js/components/paw-seguimiento.js",
-        () => {}
+        () => { }
       );
     }
   }
@@ -395,7 +409,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-importar-mascotas, #form-editar-mascota, .form-registro, #form-subir-archivo, #form-encuesta"); if (forms.length === 0) {
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-importar-mascotas, #form-editar-mascota, .form-registro, #form-subir-archivo, #form-encuesta, #form-nueva-resena"); if (forms.length === 0) {
       return;
     }
 
@@ -417,9 +431,9 @@ class AppPAW {
       "/assets/js/components/paw-perfil.js",
       () => {
         const editorPerfil = new PAWPerfil(contenedor, {
-            formId: 'perfil-refugio-form',
-            editBtnId: 'btn-edit-refugio',
-            cancelBtnId: 'btn-cancel-refugio'
+          formId: 'perfil-refugio-form',
+          editBtnId: 'btn-edit-refugio',
+          cancelBtnId: 'btn-cancel-refugio'
         });
         editorPerfil.render();
 

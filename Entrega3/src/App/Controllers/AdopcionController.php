@@ -8,9 +8,12 @@ use Paw\App\Models\MediaMascotaCollection;
 use Paw\App\Models\User;
 use Paw\Core\MailService;
 
+use Paw\App\Models\SolicitudAdopcion;
+use Paw\App\Models\SolicitudAdopcionCollection;
+
 class AdopcionController extends Controller
 {
-    public ?string $modelName = \Paw\App\Models\SolicitudAdopcion::class;
+    public ?string $modelName = SolicitudAdopcionCollection::class;
 
     public function formulario()
     {
@@ -34,8 +37,7 @@ class AdopcionController extends Controller
         [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
 
         // Obtener datos del adoptante para pre-completar el formulario
-        $userModel = new User;
-        $userModel->setQueryBuilder($this->model->getQueryBuilder());
+        $userModel = $this->loadModel(User::class);
         $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
         $userData = $userModel->findById((int)$userSession['id']);
 
@@ -70,33 +72,38 @@ class AdopcionController extends Controller
         // Inyectar el ID del adoptante desde la sesión (como favoritos)
         $datos['adoptante_id'] = $userSession['id'];
 
-        $this->model->set($datos);
-        $errores = $this->model->validar();
+        $solicitudEntity = new SolicitudAdopcion();
+        $solicitudEntity->set($datos);
+        $errores = $solicitudEntity->validar();
 
-        $mascota_id = $this->model->fields['mascota_id'];
+        // Verificar duplicados
+        if (empty($errores) && $this->model->existeSolicitud((int)$datos['adoptante_id'], (int)$datos['mascota_id'])) {
+            $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota.';
+        }
+
+        $mascota_id = $solicitudEntity->fields['mascota_id'];
 
         if (count($errores) > 0) {
             [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
             echo $this->twig->render('formulario-adopcion.html.twig', get_defined_vars());
         } else {
             $mascota = $this->cargarMascota($mascota_id);
-            $this->model->guardar($mascota->fields['refugio_id']);
+            $this->model->guardar($solicitudEntity, $mascota->fields['refugio_id']);
 
             $mailService = new MailService;
             $mailService->enviarConfirmacionAdopcion(
                 $config->get('MAIL_PERSONAL'),
                 [
                     'nombre_mascota' => $mascota->fields['nombre'],
-                    'nombre' => $this->model->fields['nombre'],
-                    'apellido' => $this->model->fields['apellido'],
-                    'email' => $this->model->fields['email'],
+                    'nombre' => $solicitudEntity->fields['nombre'],
+                    'apellido' => $solicitudEntity->fields['apellido'],
+                    'email' => $solicitudEntity->fields['email'],
                 ]
             );
 
             $id = $mascota_id;
             [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
-            $userModel = new User;
-            $userModel->setQueryBuilder($this->model->getQueryBuilder());
+            $userModel = $this->loadModel(User::class);
             $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
             $userData = $userModel->findById((int)$userSession['id']);
 
@@ -113,8 +120,7 @@ class AdopcionController extends Controller
 
     private function cargarMascota($id)
     {
-        $mascota = new Mascota;
-        $mascota->setQueryBuilder($this->model->getQueryBuilder());
+        $mascota = $this->loadModel(Mascota::class);
         $mascota->load($id);
         return $mascota;
     }
@@ -123,8 +129,7 @@ class AdopcionController extends Controller
     {
         $mascota = $this->cargarMascota($id);
 
-        $mediaCol = new MediaMascotaCollection;
-        $mediaCol->setQueryBuilder($mascota->getQueryBuilder());
+        $mediaCol = $this->loadCollection(MediaMascotaCollection::class);
         $mediaExtras = $mediaCol->getMultimedia(
             (int)$mascota->fields['id'],
             $mascota->fields['imagen'] ?? null

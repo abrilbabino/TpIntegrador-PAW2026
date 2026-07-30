@@ -912,4 +912,47 @@ class QueryBuilder
         $resultado = $sentencia->fetch(PDO::FETCH_ASSOC);
         return $resultado ?: null;
     }
+
+    public function insertarResena(array $datos): void
+    {
+        $sql = "INSERT INTO resena (adoptante_id, mascota_id, refugio_id, calificacion, comentario) 
+                VALUES (:adoptante_id, :mascota_id, :refugio_id, :calificacion, :comentario)";
+        $this->rawExecute($sql, [
+            ':adoptante_id' => $datos['adoptante_id'],
+            ':mascota_id'   => $datos['mascota_id'],
+            ':refugio_id'   => $datos['refugio_id'],
+            ':calificacion' => $datos['calificacion'],
+            ':comentario'   => $datos['comentario'],
+        ]);
+    }
+
+    public function obtenerResenasDestacadas(int $limite = 5): array
+    {
+        $sql = "SELECT r.id, r.calificacion, r.comentario, r.fecha_creacion,
+                       COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre,
+                       u.foto_perfil as adoptante_foto,
+                       m.nombre as mascota_nombre, m.imagen as mascota_foto
+                FROM resena r
+                JOIN usuario u ON r.adoptante_id = u.id
+                LEFT JOIN adoptante a ON a.usuario_id = u.id
+                JOIN mascota m ON r.mascota_id = m.id
+                ORDER BY r.fecha_creacion DESC
+                LIMIT :limit";
+        return $this->rawQuery($sql, [':limit' => ['value' => $limite, 'type' => \PDO::PARAM_INT]]);
+    }
+
+    public function obtenerAdopcionesSinResena(int $adoptanteId): array
+    {
+        $sql = "SELECT s.mascota_id, m.nombre as mascota_nombre, m.imagen as mascota_foto, m.refugio_id
+                FROM solicitud_de_adopcion s
+                JOIN mascota m ON s.mascota_id = m.id
+                WHERE s.adoptante_id = :adoptante_id 
+                  AND (s.estado = 'APROBADA' OR s.estado = 'APROBADO')
+                  AND NOT EXISTS (
+                      SELECT 1 FROM resena r 
+                      WHERE r.adoptante_id = s.adoptante_id 
+                        AND r.mascota_id = s.mascota_id
+                  )";
+        return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
+    }
 }

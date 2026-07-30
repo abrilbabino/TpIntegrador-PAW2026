@@ -4,6 +4,8 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\RefugioCollection;
+use Paw\App\Models\MascotaCollection;
+use Paw\App\Models\Favorito;
 
 class RefugioController extends Controller
 {
@@ -72,8 +74,7 @@ class RefugioController extends Controller
                     $metaDescription = "Conocé a {$nombreRefugio}, un refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
                 }
                 
-                $mascotaCollection = new \Paw\App\Models\MascotaCollection();
-                $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+                $mascotaCollection = $this->loadCollection(MascotaCollection::class);
                 $mascotas = $mascotaCollection->getAll(['refugio_id' => $id, 'estado_adopcion' => 'DISPONIBLE']);
                 
                 $ubicaciones = $this->model->obtenerUbicaciones((int)$id);
@@ -90,8 +91,7 @@ class RefugioController extends Controller
 
         }
 
-        $favoritoModel = new \Paw\App\Models\Favorito();
-        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritoModel = $this->loadModel(Favorito::class);
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
         echo $this->twig->render('detalleRefugio.html.twig', get_defined_vars());

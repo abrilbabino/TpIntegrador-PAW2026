@@ -8,6 +8,7 @@ use Paw\App\Models\Adoptante;
 use Paw\App\Models\Refugio;
 use Paw\App\Models\Favorito;
 use Paw\App\Models\MascotaCollection;
+use Paw\App\Models\SolicitudAdopcionCollection;
 use Paw\App\Helpers\GCSHelper;
  
 class UserController extends Controller
@@ -44,9 +45,7 @@ class UserController extends Controller
         $menu  = $this->menu;
         $redes = $this->redes;
  
-        // Cargar modelo Adoptante
-        $adoptanteModel = new Adoptante();
-        $adoptanteModel->setQueryBuilder($this->model->getQueryBuilder());
+        $adoptanteModel = $this->loadModel(Adoptante::class);
         $adoptanteModel->load((int) $user['id']);
         $adoptante = $adoptanteModel->fields;
 
@@ -57,12 +56,10 @@ class UserController extends Controller
         $adoptanteId = $user['id'] ?? null;
  
         if ($adoptanteId) {
-            $favoritoModel = new Favorito();
-            $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+            $favoritoModel = $this->loadModel(Favorito::class);
             $favoritos = $favoritoModel->getByAdoptanteId((int) $adoptanteId);
  
-            $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
-            $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $solicitudesCollection = $this->loadCollection(SolicitudAdopcionCollection::class);
             
             $solicitudes = $solicitudesCollection->getSolicitudesAdoptante((int) $adoptanteId);
             $adopciones  = $solicitudesCollection->getAdopcionesAdoptante((int) $adoptanteId);
@@ -78,8 +75,7 @@ class UserController extends Controller
         $redes = $this->redes;
         $request = $this->request;
         // Cargar modelo Refugio
-        $refugioModel = new Refugio();
-        $refugioModel->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioModel = $this->loadModel(Refugio::class);
         $refugioModel->load((int) $user['id']);
         $refugio = $refugioModel->fields;
         $refugioId = $user['id'] ?? null;
@@ -96,13 +92,11 @@ class UserController extends Controller
         $seguimientoAgrupado = [];
        
         if ($refugioId) {
-            $mascotaCollection = new \Paw\App\Models\MascotaCollection();
-            $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $mascotaCollection = $this->loadCollection(MascotaCollection::class);
             $mascotas = $mascotaCollection->getByRefugioId((int) $refugioId);
             $mascotasAdoptadas = $mascotaCollection->getAll(['refugio_id' => $refugioId, 'estado_adopcion' => 'ADOPTADO']);
 
-            $solicitudesCollection = new \Paw\App\Models\SolicitudAdopcionCollection();
-            $solicitudesCollection->setQueryBuilder($this->model->getQueryBuilder());
+            $solicitudesCollection = $this->loadCollection(SolicitudAdopcionCollection::class);
             $solicitudes = $solicitudesCollection->getSolicitudesRefugio((int) $refugioId);
 
             $tamanos       = $mascotaCollection->getTamanos();
@@ -162,13 +156,13 @@ class UserController extends Controller
             ];
         }
         $resultados_importacion = $this->request->session('resultados_importacion');
-        if (isset($_SESSION['resultados_importacion'])) {
-            unset($_SESSION['resultados_importacion']);
+        if ($resultados_importacion !== null) {
+            $this->request->unsetSession('resultados_importacion');
         }
         
         $error_importacion = $this->request->session('error_importacion');
-        if (isset($_SESSION['error_importacion'])) {
-            unset($_SESSION['error_importacion']);
+        if ($error_importacion !== null) {
+            $this->request->unsetSession('error_importacion');
         }
         $mascotaPublicada = ($this->request->get('publicado') === '1');
         $titulo = "Mi Refugio - PawMap";
@@ -260,8 +254,7 @@ class UserController extends Controller
         $svg   = $this->request->file('svg');
         $userId = (int) $userSession['id'];
 
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         $erroresMascota = $mascotaCollection->guardarMascotaIndividual($post, $foto, $svg, $userId);
 
         if (!empty($erroresMascota)) {
@@ -342,8 +335,7 @@ class UserController extends Controller
             exit;
         }
 
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
         
         $resultados = $mascotaCollection->importarMascotasCsv($csv['tmp_name'], $userId);
 

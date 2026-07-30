@@ -16,9 +16,7 @@ class TestController extends Controller
         $redes = $this->redes;
         $metaDescription = "Hacé el test de compatibilidad de PawMap para descubrir qué tipo de mascota (perro o gato) se adapta mejor a tu estilo de vida y hogar.";
 
-        $qb = $this->model->getQueryBuilder();
-        $preguntaCollection = new TestCompatibilidadPreguntaCollection();
-        $preguntaCollection->setQueryBuilder($qb);
+        $preguntaCollection = $this->loadCollection(TestCompatibilidadPreguntaCollection::class);
         $preguntas = $preguntaCollection->getAll();
 
         echo $this->twig->render('test-compatibilidad.html.twig', get_defined_vars());
@@ -26,21 +24,20 @@ class TestController extends Controller
 
     public function resultado()
     {
+        $postData = $this->request->post();
         $respuestas = [
-            'pregunta1' => $_POST['pregunta1'] ?? null,
-            'pregunta2' => $_POST['pregunta2'] ?? null,
-            'pregunta3' => $_POST['pregunta3'] ?? null,
-            'pregunta4' => $_POST['pregunta4'] ?? null,
-            'pregunta5' => $_POST['pregunta5'] ?? null
+            'pregunta1' => $postData['pregunta1'] ?? null,
+            'pregunta2' => $postData['pregunta2'] ?? null,
+            'pregunta3' => $postData['pregunta3'] ?? null,
+            'pregunta4' => $postData['pregunta4'] ?? null,
+            'pregunta5' => $postData['pregunta5'] ?? null
         ];
 
         $test = new TestDeCompatibilidad();
         $test->setRespuestas(json_encode($respuestas));
         $filtrosSQL = $test->construirFiltrosBusqueda();
 
-        $qb = $this->model->getQueryBuilder();
-        $mascotaCollection = new MascotaCollection();
-        $mascotaCollection->setQueryBuilder($qb);
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
 
         $mascotas = $mascotaCollection->buscarCompatibles($filtrosSQL);
 

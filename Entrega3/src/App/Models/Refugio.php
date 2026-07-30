@@ -3,6 +3,8 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Exceptions\InvalidValueFormatException;
+use Paw\Core\Exceptions\ModelNotFoundException;
 
 class Refugio extends Model
 {
@@ -37,7 +39,7 @@ class Refugio extends Model
     public function load($id)
     {
         if (!is_numeric($id) || $id < 0) {
-            throw new \Exception("El ID del refugio debe ser un entero mayor a 0");
+            throw new InvalidValueFormatException("El ID del refugio debe ser un entero mayor a 0");
         }
 
         $record = $this->queryBuilder->obtenerRefugioConUbicacion($id);
@@ -45,7 +47,7 @@ class Refugio extends Model
         if ($record) {
             $this->set($record);
         } else {
-            throw new \Paw\Core\Exceptions\ModelNotFoundException("No se encontró un refugio con el ID proporcionado");
+            throw new ModelNotFoundException("No se encontró un refugio con el ID proporcionado");
         }
     }
 

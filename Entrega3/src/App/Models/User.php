@@ -4,6 +4,7 @@ namespace Paw\App\Models;
 use Paw\Core\Model;
 use Paw\App\Helpers\GCSHelper;
 use Paw\Core\Exceptions\InvalidValueFormatException;
+use Exception;
 class User extends Model
 {
     protected $table = 'usuario';
@@ -192,12 +193,12 @@ class User extends Model
 
         $existente = $this->findByUsername($username);
         if ($existente) {
-            throw new \Exception('usuario_existente');
+            throw new Exception('usuario_existente');
         }
 
         $existenteEmail = $this->findByEmail($email);
         if ($existenteEmail) {
-            throw new \Exception('email_existente');
+            throw new Exception('email_existente');
         }
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
