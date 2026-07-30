@@ -69,8 +69,28 @@ class AuthController extends Controller
         // Buscar usuario en base de datos
         $usuario = $this->model->findByUsername($username);
 
+        // Instanciar RateLimit
+        $rateLimit = $this->loadModel(\Paw\App\Models\RateLimit::class);
+
+        // Verificar bloqueo antes de validar la contraseña
+        $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
+        if ($minutosRestantes > 0) {
+            $this->log->info("Login fallido: usuario bloqueado por rate limit", ['username' => $username, 'minutos' => $minutosRestantes]);
+            header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+            exit;
+        }
+
         if (!$usuario) {
             $this->log->info("Login fallido: usuario no encontrado", ['username' => $username]);
+            $rateLimit->registrarIntentoFallido($username);
+            
+            // Re-verificar si este último intento lo bloqueó
+            $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
+            if ($minutosRestantes > 0) {
+                header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+                exit;
+            }
+
             header('Location: /?auth=login&error=1');
             exit;
         }
@@ -78,11 +98,23 @@ class AuthController extends Controller
         // Verificar contraseña con password_verify
         if (!password_verify($password, $usuario['contrasena'])) {
             $this->log->info("Login fallido: contraseña incorrecta", ['username' => $username]);
+            $rateLimit->registrarIntentoFallido($username);
+
+            // Re-verificar si este último intento lo bloqueó
+            $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
+            if ($minutosRestantes > 0) {
+                header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+                exit;
+            }
+
             header('Location: /?auth=login&error=1');
             exit;
         }
 
-        // Login exitoso: guardar datos en sesión
+        // Login exitoso: resetear intentos fallidos
+        $rateLimit->resetearIntentos($username);
+
+        // Guardar datos en sesión
         $sessionUser = [
             'id'             => $usuario['id'],
             'nombre_usuario' => $usuario['nombre_usuario'],

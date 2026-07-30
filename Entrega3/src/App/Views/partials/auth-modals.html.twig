@@ -23,8 +23,9 @@
                 id="nombre_usuario"
                 name="nombre_usuario"
                 placeholder="Ingresá tu usuario"
-                {{ error == 'campos' ? 'data-server-error="Por favor completá todos los campos obligatorios."' : '' }}
-                {{ error == '1' ? 'class="input-invalido"' : '' }}
+                {% if error == 'campos' %}data-server-error="Por favor completá todos los campos obligatorios."{% endif %}
+                {% if error == '1' %}class="input-invalido"{% endif %}
+                {% if error == 'bloqueado' %}class="input-invalido" data-server-error="Demasiados intentos. Tu cuenta está bloqueada. Por favor, intenta de nuevo en {{ request.get('minutos') }} minuto(s)."{% endif %}
                 required
             />
 
@@ -35,7 +36,8 @@
                     id="contrasena"
                     name="contrasena"
                     placeholder="Ingresá tu contraseña"
-                    {{ error == '1' ? 'data-server-error="Usuario o contraseña incorrectos."' : '' }}
+                    {% if error == '1' %}data-server-error="Usuario o contraseña incorrectos."{% endif %}
+                    {% if error == 'bloqueado' %}class="input-invalido"{% endif %}
                     required
                 />
                 <span class="material-symbols-outlined simbolos mostrar-contraseña">visibility_off</span>
