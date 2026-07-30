@@ -8,6 +8,8 @@ class PAWResenas {
         if (this.form || this.modal) {
             this.init();
         }
+        
+        this.initEditDelete();
     }
 
     init() {
@@ -39,6 +41,69 @@ class PAWResenas {
                 if (e.target === this.modal) this.modal.close();
             });
         }
+    }
+
+    initEditDelete() {
+        const modalEditar = document.getElementById('modal-editar-resena');
+        const formEliminar = document.getElementById('form-eliminar-resena');
+        
+        if (modalEditar) {
+            const btnCerrarEditar = document.getElementById('btn-cerrar-modal-editar-resena');
+            if (btnCerrarEditar) btnCerrarEditar.addEventListener('click', () => modalEditar.close());
+            
+            modalEditar.addEventListener('click', (e) => {
+                if (e.target === modalEditar) modalEditar.close();
+            });
+        }
+
+        document.querySelectorAll('.btn-icon[data-action="editar-resena"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!modalEditar) return;
+                
+                const id = btn.dataset.id;
+                const calificacion = btn.dataset.calificacion;
+                const comentario = btn.dataset.comentario;
+                
+                document.getElementById('editar_resena_id').value = id;
+                document.getElementById('editar_comentario').value = comentario;
+                
+                const radio = document.getElementById('edit_star' + calificacion);
+                if (radio) radio.checked = true;
+                
+                modalEditar.showModal();
+            });
+        });
+
+        const modalEliminar = document.getElementById('modal-confirmar-eliminar-resena');
+        if (modalEliminar) {
+            const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar-resena');
+            const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar-resena');
+
+            const cerrarModalEliminar = () => modalEliminar.close();
+
+            if (btnCancelarEliminar) btnCancelarEliminar.addEventListener('click', cerrarModalEliminar);
+            
+            modalEliminar.addEventListener('click', (e) => {
+                if (e.target === modalEliminar) cerrarModalEliminar();
+            });
+
+            if (btnConfirmarEliminar) {
+                btnConfirmarEliminar.addEventListener('click', () => {
+                    if (formEliminar) {
+                        formEliminar.submit();
+                    }
+                });
+            }
+        }
+
+        document.querySelectorAll('.btn-icon[data-action="eliminar-resena"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (modalEliminar) {
+                    document.getElementById('eliminar_resena_id').value = btn.dataset.id;
+                    modalEliminar.showModal();
+                }
+            });
+        });
     }
 }
 

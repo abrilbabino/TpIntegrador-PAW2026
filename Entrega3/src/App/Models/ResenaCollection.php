@@ -43,4 +43,30 @@ class ResenaCollection extends Model
             'comentario' => $resena->fields['comentario']
         ]);
     }
+
+    public function actualizarResena(int $id, int $adoptanteId, int $calificacion, string $comentario): void
+    {
+        if ($calificacion < 1 || $calificacion > 5) {
+            throw new InvalidValueFormatException("La calificación debe estar entre 1 y 5.");
+        }
+        if (strlen(trim($comentario)) < 10 || strlen(trim($comentario)) > 250) {
+            throw new InvalidValueFormatException("El comentario debe tener entre 10 y 250 caracteres.");
+        }
+
+        $this->queryBuilder->update($this->table, [
+            'calificacion' => $calificacion,
+            'comentario' => trim($comentario)
+        ], [
+            'id' => $id,
+            'adoptante_id' => $adoptanteId
+        ]);
+    }
+
+    public function eliminarResena(int $id, int $adoptanteId): void
+    {
+        $this->queryBuilder->delete($this->table, [
+            'id' => $id,
+            'adoptante_id' => $adoptanteId
+        ]);
+    }
 }

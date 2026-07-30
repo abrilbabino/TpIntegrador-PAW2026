@@ -93,7 +93,7 @@
         <a href="/adoptar" class="boton-principal boton-centrado">Ver Todas las mascotas</a>
     </section>
 
-    <section class="seccion-resenas">
+    <section class="seccion-resenas" id="seccion-resenas">
         <header>
             <h2>Lo que dicen nuestros adoptantes</h2>
         </header>
@@ -113,6 +113,20 @@
                                 <h3>{{ resena.adoptante_nombre }}</h3>
                                 <p>Adoptó a <strong>{{ resena.mascota_nombre }}</strong></p>
                             </figcaption>
+                            {% if userSession is defined and userSession.id == resena.adoptante_id %}
+                                <menu class="acciones-resena-tarjeta">
+                                    <li>
+                                        <button type="button" class="btn-icon" aria-label="Editar reseña" data-action="editar-resena" data-id="{{ resena.id }}" data-calificacion="{{ resena.calificacion }}" data-comentario="{{ resena.comentario }}">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn-icon" aria-label="Eliminar reseña" data-action="eliminar-resena" data-id="{{ resena.id }}">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </li>
+                                </menu>
+                            {% endif %}
                         </figure>
                         <aside class="calificacion-estrellas">
                             {% for i in 1..5 %}
@@ -181,6 +195,55 @@
                 </article>
             </dialog>
 
+        {% endif %}
+
+        {% if userSession is defined %}
+            <dialog id="modal-editar-resena" class="modal-resena">
+                <article class="tarjeta-resena nueva-resena">
+                    <button type="button" id="btn-cerrar-modal-editar-resena" class="modal-resena-close"><span class="material-symbols-outlined">close</span></button>
+                    <form action="/resena/editar" method="POST" id="form-editar-resena">
+                        <fieldset>
+                            <legend>Editar tu reseña</legend>
+                            <input type="hidden" name="id" id="editar_resena_id" value="">
+                            
+                            <label>Calificación:</label>
+                            <fieldset class="rating-stars" data-resena-stars>
+                                <input type="radio" id="edit_star5" name="calificacion" value="5" required />
+                                <label for="edit_star5" title="5 estrellas" class="material-symbols-outlined">star</label>
+                                
+                                <input type="radio" id="edit_star4" name="calificacion" value="4" />
+                                <label for="edit_star4" title="4 estrellas" class="material-symbols-outlined">star</label>
+                                
+                                <input type="radio" id="edit_star3" name="calificacion" value="3" />
+                                <label for="edit_star3" title="3 estrellas" class="material-symbols-outlined">star</label>
+                                
+                                <input type="radio" id="edit_star2" name="calificacion" value="2" />
+                                <label for="edit_star2" title="2 estrellas" class="material-symbols-outlined">star</label>
+                                
+                                <input type="radio" id="edit_star1" name="calificacion" value="1" />
+                                <label for="edit_star1" title="1 estrella" class="material-symbols-outlined">star</label>
+                            </fieldset>
+
+                            <label for="editar_comentario">Comentario:</label>
+                            <textarea id="editar_comentario" name="comentario" required minlength="10" maxlength="250" placeholder="Contanos tu experiencia..."></textarea>
+
+                            <button type="submit" class="boton-principal">Guardar Cambios</button>
+                        </fieldset>
+                    </form>
+                </article>
+            </dialog>
+
+            <form action="/resena/eliminar" method="POST" id="form-eliminar-resena" style="display: none;">
+                <input type="hidden" name="id" id="eliminar_resena_id" value="">
+            </form>
+
+            {% include 'partials/modal-confirmacion.html.twig' with {
+                'id': 'modal-confirmar-eliminar-resena',
+                'titulo': '¿Estás seguro?',
+                'mensaje': 'Esta acción no se puede deshacer. Se eliminará tu reseña permanentemente.',
+                'modal_suffix': 'eliminar-resena',
+                'boton_texto': 'Eliminar'
+            } %}
         {% endif %}
     </section>
 {% endblock %}

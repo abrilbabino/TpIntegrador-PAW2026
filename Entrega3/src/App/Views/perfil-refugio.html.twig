@@ -1,4 +1,4 @@
-﻿{% extends 'layout/base.html.twig' %}
+{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -658,7 +658,7 @@
                             <p class="paw-chart-empty">No hay datos a&uacute;n.</p>
                         {% else %}
                             <section class="paw-js-pie-chart" data-chart-data="{{ estadisticas.castrado|json_encode|e('html_attr') }}" data-chart-type="pie">
-                                <p class="paw-chart-loading">Cargando gr�fico interactivo...</p>
+                                <p class="paw-chart-loading">Cargando gráfico interactivo...</p>
                             </section>
                         {% endif %}
                     </figure>
@@ -666,18 +666,14 @@
                 </section>
             </section>
     </section>
-    <dialog id="modal-confirmar-eliminar" class="modal-nativo modal-confirmacion">
-        <header>
-            <h2>Confirmar eliminaci&oacute;n</h2>
-        </header>
-        <section class="modal-body">
-            <p>¿Est&aacute;s seguro de que deseas eliminar esta mascota? Esta acci&oacute;n no se puede deshacer.</p>
-        </section>
-        <footer class="acciones-modal">
-            <button type="button" class="btn-cancelar js-cerrar-modal" id="btn-cancelar-eliminar">Cancelar</button>
-            <button type="button" class="btn-eliminar-confirmado" id="btn-confirmar-eliminar">Eliminar</button>
-        </footer>
-    </dialog>
+    
+    {% include 'partials/modal-confirmacion.html.twig' with {
+        'id': 'modal-confirmar-eliminar',
+        'titulo': 'Confirmar eliminación',
+        'mensaje': '¿Estás seguro de que deseas eliminar esta mascota? Esta acción no se puede deshacer.',
+        'modal_suffix': 'eliminar',
+        'boton_texto': 'Eliminar'
+    } %}
 
     
 {% endblock %}

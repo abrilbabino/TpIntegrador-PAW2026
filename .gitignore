@@ -26,4 +26,5 @@ Entrega3/config.json
 Entrega3/terraform/.terraform/
 Entrega3/terraform/tfplan
 
-
+#Redis
+dump.rdb

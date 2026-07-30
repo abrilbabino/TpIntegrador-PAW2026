@@ -928,7 +928,7 @@ class QueryBuilder
 
     public function obtenerResenasDestacadas(int $limite = 5): array
     {
-        $sql = "SELECT r.id, r.calificacion, r.comentario, r.fecha_creacion,
+        $sql = "SELECT r.id, r.calificacion, r.comentario, r.fecha_creacion, r.adoptante_id,
                        COALESCE(NULLIF(TRIM(CONCAT(a.nombre, ' ', a.apellido)), ''), u.nombre_usuario) as adoptante_nombre,
                        u.foto_perfil as adoptante_foto,
                        m.nombre as mascota_nombre, m.imagen as mascota_foto

@@ -28,8 +28,8 @@ class AppPAW {
   }
 
   _initResenas() {
-    const formResenas = document.querySelector('[data-paw-resena-form]');
-    if (formResenas) {
+    const seccionResenas = document.getElementById('seccion-resenas');
+    if (seccionResenas) {
       PAW.cargarScript(
         "PAW-Resenas-Script",
         "/assets/js/components/paw-resenas.js",

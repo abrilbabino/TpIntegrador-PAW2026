@@ -97,6 +97,38 @@
     color: var(--color-naranja);
 }
 
+.acciones-resena-tarjeta {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.acciones-resena-tarjeta .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-gris);
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.acciones-resena-tarjeta .btn-icon:hover {
+    background-color: var(--color-gris-claro);
+    color: var(--color-azul);
+}
+
+.acciones-resena-tarjeta .btn-icon[data-action="eliminar-resena"]:hover {
+    color: var(--color-rojo);
+}
+
 .perfil-autor figcaption h3 {
     margin: 0;
     font-size: 1.2rem;

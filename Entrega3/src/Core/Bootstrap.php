@@ -102,6 +102,8 @@ $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
 $router->post('/resena/guardar', 'ResenaController@guardar');
+$router->post('/resena/editar', 'ResenaController@editar');
+$router->post('/resena/eliminar', 'ResenaController@eliminar');
 
 // Favoritos
 $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
