@@ -124,13 +124,17 @@ class AppPAW {
   _initBusquedaResultados() {
     const contenedor = document.getElementById("busqueda-resultados");
     if (contenedor) {
-      PAW.cargarScript(
-        "PAW-Busqueda-Resultados-Script",
-        "/assets/js/components/paw-busqueda-resultados.js",
-        () => {
-          new PAWBusquedaResultados();
-        }
-      );
+      PAW.cargarScript("PAW-Paginacion-Script", "/assets/js/components/paw-paginacion.js", () => {
+        PAW.cargarScript("PAW-Visualizacion-Script", "/assets/js/components/PAWVisualizacion.js", () => {
+          PAW.cargarScript(
+            "PAW-Busqueda-Resultados-Script",
+            "/assets/js/components/paw-busqueda-resultados.js",
+            () => {
+              new PAWBusquedaResultados();
+            }
+          );
+        });
+      });
     }
   }
 
