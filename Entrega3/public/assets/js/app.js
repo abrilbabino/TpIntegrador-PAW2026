@@ -17,6 +17,7 @@ class AppPAW {
     this._initPerfilRefugio();
     this._initFavoritos();
     this._initModalExito();
+    this._initDescargaPDF();
     this._initChatWidget();
     this._initChatPage();
     this._initLibreta();
@@ -133,6 +134,14 @@ class AppPAW {
         // Limpiar la URL para que no vuelva a aparecer al recargar
         const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
         window.history.replaceState({}, document.title, newUrl || window.location.pathname);
+      });
+  }
+
+  _initDescargaPDF() {
+    const btnDescarga = document.getElementById('btn-descarga-pdf');
+    if (btnDescarga) {
+      PAW.cargarScript("paw-formulario-adopcion", "/assets/js/formulario-adopcion.js", () => {
+        new PAWFormularioAdopcion();
       });
     }
   }

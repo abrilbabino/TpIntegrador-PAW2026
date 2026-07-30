@@ -10,6 +10,7 @@ use Paw\Core\MailService;
 
 use Paw\App\Models\SolicitudAdopcion;
 use Paw\App\Models\SolicitudAdopcionCollection;
+use Paw\Core\PdfService;
 
 class AdopcionController extends Controller
 {
@@ -112,10 +113,55 @@ class AdopcionController extends Controller
                 'mediaExtras' => $mediaExtras,
                 'adoptanteData' => $adoptanteData,
                 'userData' => $userData,
-                'flash_type' => 'adopcion'
+                'flash_type' => 'adopcion',
+                'descargar_pdf_mascota_id' => $id,
             ]);
             exit;
         }
+    }
+
+    public function descargarAcuerdo()
+    {
+        $userSession = $this->request->session('user');
+        if (!$userSession || $userSession['rol'] !== 'adoptante') {
+            header('Location: /');
+            return;
+        }
+
+        $mascota_id = $this->request->get('mascota_id');
+        if (!$mascota_id) {
+            header('Location: /adoptar');
+            return;
+        }
+
+        [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
+        
+        $userModel = $this->loadModel(User::class);
+        $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+        $userData = $userModel->findById((int)$userSession['id']);
+
+        $pdfService = new PdfService();
+        $publicDir = $this->request->server('DOCUMENT_ROOT');
+        $fotoPath = $pdfService->imageToBase64($mascota->fields['imagen'] ?? '', $publicDir);
+
+        $htmlPdf = $this->twig->render('pdf/acuerdo_adopcion.html.twig', [
+            'adoptante_nombre' => $adoptanteData['nombre'] ?? $this->model->fields['nombre'],
+            'adoptante_apellido' => $adoptanteData['apellido'] ?? $this->model->fields['apellido'],
+            'adoptante_email' => $userData['email'] ?? $this->model->fields['email'],
+            'mascota_nombre' => $mascota->fields['nombre'],
+            'mascota_especie' => $mascota->fields['especie'] ?? 'Desconocida',
+            'mascota_foto' => $fotoPath
+        ]);
+
+        $pdfBinary = $pdfService->generarDesdeHtml($htmlPdf);
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="acuerdo_adopcion_' . $mascota_id . '.pdf"');
+        header('Content-Length: ' . strlen($pdfBinary));
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
+
+        echo $pdfBinary;
     }
 
     private function cargarMascota($id)

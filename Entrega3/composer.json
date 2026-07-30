@@ -37,7 +37,8 @@
     "cboden/ratchet": "^0.4.4",
     "clue/redis-react": "^2.8",
     "predis/predis": "^3.5",
-    "chillerlan/php-qrcode": "^6.0"
+    "chillerlan/php-qrcode": "^6.0",
+    "dompdf/dompdf": "^3.1"
   },
   "autoload": {
     "psr-4": {
