@@ -396,6 +396,90 @@ class PAWFiltros {
 
             this.aplicarFiltros();
         });
+
+        // Evento para suscribirse a la Cola de Espera
+        document.addEventListener('paw-cola-espera-solicitada', () => {
+            // Filtrar los valores vacíos o no relevantes para el backend
+            const filtrosActivos = Object.fromEntries(
+                Object.entries(this.estadoFiltros).filter(([k, v]) => v !== "" && k !== "ubicacion_lat" && k !== "ubicacion_lon" && k !== "ubicacion")
+            );
+
+            // Si hay ubicación en string y pudimos deducir ciudad o provincia en el frontend, 
+            // el backend necesita provincia/ciudad estricto, o le mandamos lo que buscó
+            // por simplificación, mandamos todo lo que está en estadoFiltros.
+            
+            const formData = new URLSearchParams();
+            for (const key in filtrosActivos) {
+                if (typeof filtrosActivos[key] === 'object') {
+                    if (filtrosActivos[key].min !== "") formData.append(`${key}_min`, filtrosActivos[key].min);
+                    if (filtrosActivos[key].max !== "") formData.append(`${key}_max`, filtrosActivos[key].max);
+                } else {
+                    formData.append(key, filtrosActivos[key]);
+                }
+            }
+
+            // Obtenemos el prefijo de la URL de API (por si estamos en XAMPP o PHP built-in)
+            const basePath = window.location.pathname.includes('/public/')
+                ? window.location.pathname.split('/public/')[0] + '/public'
+                : '';
+            const endpointUrl = basePath + '/cola-espera/suscribir';
+
+            fetch(endpointUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            })
+            .then(res => {
+                if (res.status === 401) {
+                    const loginModal = document.getElementById('modal-login');
+                    if (loginModal) {
+                        loginModal.showModal();
+                        throw new Error("OPEN_LOGIN");
+                    }
+                }
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return res.json();
+                } else {
+                    throw new Error("Respuesta no válida del servidor");
+                }
+            })
+            .then(data => {
+                const isSuccess = data.success;
+                const modal = document.getElementById('modal-js-alerta');
+                if (modal) {
+                    const titulo = document.getElementById('modal-js-alerta-titulo');
+                    const mensaje = document.getElementById('modal-js-alerta-mensaje');
+                    const icono = document.getElementById('modal-js-alerta-icono');
+
+                    titulo.innerText = isSuccess ? "¡Alerta creada!" : "¡Ups!";
+                    mensaje.innerText = data.message || (isSuccess ? "Te avisaremos cuando ingrese un animal con estas características." : "Error inesperado.");
+                    
+                    if (icono) {
+                        icono.innerText = isSuccess ? "check_circle" : "info";
+                    }
+
+                    modal.showModal();
+                } else {
+                    alert(data.message || (isSuccess ? "Suscripción exitosa" : "No se pudo suscribir"));
+                }
+            })
+            .catch(err => {
+                if (err.message === "OPEN_LOGIN") return; // Ya abrimos el modal de login
+                
+                console.error("Error en Cola de Espera", err);
+                const modal = document.getElementById('modal-js-alerta');
+                if (modal) {
+                    document.getElementById('modal-js-alerta-titulo').innerText = "Iniciá Sesión";
+                    document.getElementById('modal-js-alerta-mensaje').innerText = "Para suscribirte a la cola de espera necesitás iniciar sesión primero.";
+                    const icono = document.getElementById('modal-js-alerta-icono');
+                    if (icono) icono.innerText = "lock";
+                    modal.showModal();
+                } else {
+                    alert("Para suscribirte a la cola de espera necesitás iniciar sesión primero.");
+                }
+            });
+        });
     }
 
     aplicarFiltros() {

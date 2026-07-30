@@ -25,9 +25,18 @@ class QueryBuilder
 
     public function select(string $table, array $conditions = [], array $precios = [], ?int $limit = null, ?int $offset = null): array
     {
-        [$where, $binds] = $this->buildWhere($conditions, 'AND', $precios);
+        [$where, $binds] = $this->buildWhere($conditions, 'AND', $precios, $table);
         
-        $query = "SELECT * FROM {$table} WHERE {$where}";
+        if ($table === 'mascota' || $table === 'cola_espera') {
+            $query = "SELECT {$table}.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento 
+                      FROM {$table} 
+                      LEFT JOIN especie e ON {$table}.especie_id = e.id 
+                      LEFT JOIN tamano t ON {$table}.tamano_id = t.id 
+                      LEFT JOIN temperamento temp ON {$table}.temperamento_id = temp.id 
+                      WHERE {$where}";
+        } else {
+            $query = "SELECT * FROM {$table} WHERE {$where}";
+        }
         $query = $this->addPagination($query, $limit);
 
         $sentencia = $this->pdo->prepare($query);
@@ -40,9 +49,17 @@ class QueryBuilder
 
     public function count(string $table, array $conditions = [], array $precios = []): array
     {
-        [$where, $binds] = $this->buildWhere($conditions, 'AND', $precios);
+        [$where, $binds] = $this->buildWhere($conditions, 'AND', $precios, $table);
         
-        $query = "SELECT COUNT(*) as total FROM {$table} WHERE {$where}";
+        if ($table === 'mascota' || $table === 'cola_espera') {
+            $query = "SELECT COUNT(*) as total FROM {$table} 
+                      LEFT JOIN especie e ON {$table}.especie_id = e.id 
+                      LEFT JOIN tamano t ON {$table}.tamano_id = t.id 
+                      LEFT JOIN temperamento temp ON {$table}.temperamento_id = temp.id 
+                      WHERE {$where}";
+        } else {
+            $query = "SELECT COUNT(*) as total FROM {$table} WHERE {$where}";
+        }
             
         $sentencia = $this->pdo->prepare($query);
         $this->bindValues($sentencia, $binds);
@@ -54,19 +71,25 @@ class QueryBuilder
 
     public function obtenerMascotasFiltradas(array $filtros, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
     {
+        $baseJoins = "
+            LEFT JOIN especie e ON m.especie_id = e.id
+            LEFT JOIN tamano t ON m.tamano_id = t.id
+            LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
+        ";
+
         $sql = $esConteo
-            ? "SELECT COUNT(*) FROM mascota m WHERE m.estado_adopcion = 'DISPONIBLE'"
-            : "SELECT m.* FROM mascota m WHERE m.estado_adopcion = 'DISPONIBLE'";
+            ? "SELECT COUNT(*) FROM mascota m $baseJoins WHERE m.estado_adopcion = 'DISPONIBLE'"
+            : "SELECT m.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento FROM mascota m $baseJoins WHERE m.estado_adopcion = 'DISPONIBLE'";
 
         $binds = [];
 
         if (!empty($filtros['especie'])) {
-            $sql .= " AND m.especie = :especie";
+            $sql .= " AND e.nombre = :especie";
             $binds[':especie'] = $filtros['especie'];
         }
 
         if (!empty($filtros['tamano'])) {
-            $sql .= " AND m.tamano = :tamano";
+            $sql .= " AND t.nombre = :tamano";
             $binds[':tamano'] = $filtros['tamano'];
         }
 
@@ -96,7 +119,7 @@ class QueryBuilder
         }
 
         if (!empty($filtros['temperamento'])) {
-            $sql .= " AND m.temperamento = :temperamento";
+            $sql .= " AND temp.nombre = :temperamento";
             $binds[':temperamento'] = $filtros['temperamento'];
         }
 
@@ -154,17 +177,25 @@ class QueryBuilder
                 continue;
             }
 
-            $conditions[] = "{$column} = :{$column}";
+            if (($table === 'mascota' || $table === 'cola_espera') && in_array($column, ['especie', 'tamano', 'temperamento'])) {
+                if ($column === 'especie') $conditions[] = "e.nombre = :{$column}";
+                if ($column === 'tamano') $conditions[] = "t.nombre = :{$column}";
+                if ($column === 'temperamento') $conditions[] = "temp.nombre = :{$column}";
+            } else {
+                // Prefijar con la tabla para evitar ambigüedad (ej: id existe en mascota y en los diccionarios)
+                $conditions[] = "{$table}.{$column} = :{$column}";
+            }
+            
             $binds[":{$column}"] = $value;
         }
 
         if ($edadMin !== null && $edadMin !== '') {
-            $conditions[] = "edad >= :emin";
+            $conditions[] = "{$table}.edad >= :emin";
             $binds[':emin'] = $edadMin;
         }
 
         if ($edadMax !== null && $edadMax !== '') {
-            $conditions[] = "edad <= :emax";
+            $conditions[] = "{$table}.edad <= :emax";
             $binds[':emax'] = $edadMax;
         }
 
@@ -232,8 +263,12 @@ class QueryBuilder
     public function getMascotasInvisibles(string $table, int $limite): array
     {
         $sql = "
-            SELECT m.*, ((CURRENT_DATE - m.fecha_publicacion::date) / (m.visitas + 1.0)) AS puntaje_invisibilidad
-            FROM {$table} m WHERE m.estado_adopcion = 'DISPONIBLE'
+            SELECT m.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento, ((CURRENT_DATE - m.fecha_publicacion::date) / (m.visitas + 1.0)) AS puntaje_invisibilidad
+            FROM {$table} m 
+            LEFT JOIN especie e ON m.especie_id = e.id
+            LEFT JOIN tamano t ON m.tamano_id = t.id
+            LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
+            WHERE m.estado_adopcion = 'DISPONIBLE'
             ORDER BY puntaje_invisibilidad DESC, m.visitas ASC, m.fecha_publicacion ASC
             LIMIT :limite
         ";
@@ -270,9 +305,15 @@ class QueryBuilder
 
     public function buscarMascotasPorTermino(string $tabla, string $termino, bool $esConteo = false, ?int $limite = null, ?int $offset = null)
     {
-        $select = $esConteo ? "COUNT(*)" : "*";
-        $sql = "SELECT {$select} FROM {$tabla} WHERE estado_adopcion = 'DISPONIBLE' 
-                AND (nombre ILIKE :term1 OR especie ILIKE :term2 OR descripcion ILIKE :term3)";
+        $baseJoins = "
+            LEFT JOIN especie e ON m.especie_id = e.id
+            LEFT JOIN tamano t ON m.tamano_id = t.id
+            LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
+        ";
+
+        $select = $esConteo ? "COUNT(*)" : "m.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento";
+        $sql = "SELECT {$select} FROM {$tabla} m {$baseJoins} WHERE m.estado_adopcion = 'DISPONIBLE' 
+                AND (m.nombre ILIKE :term1 OR e.nombre ILIKE :term2 OR m.descripcion ILIKE :term3)";
         
         if (!$esConteo && $limite !== null && $offset !== null) {
             $sql .= " LIMIT :limite OFFSET :offset";
@@ -402,9 +443,12 @@ class QueryBuilder
 
     public function obtenerSolicitudesPorAdoptante(string $tabla, int $adoptanteId): array
     {
-        $sql = "SELECT s.id, s.estado, m.nombre, m.nombre as mascota_nombre, m.edad, m.tamano, m.temperamento, r.nombre_institucion as refugio_nombre, u.foto_perfil as refugio_foto
+        $sql = "SELECT s.id, s.estado, m.nombre, m.nombre as mascota_nombre, m.edad, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento, r.nombre_institucion as refugio_nombre, u.foto_perfil as refugio_foto
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
+                LEFT JOIN especie e ON m.especie_id = e.id
+                LEFT JOIN tamano t ON m.tamano_id = t.id
+                LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
                 LEFT JOIN refugio r ON m.refugio_id = r.usuario_id
                 LEFT JOIN usuario u ON r.usuario_id = u.id
                 WHERE s.adoptante_id = :adoptante_id";
@@ -414,9 +458,12 @@ class QueryBuilder
 
     public function obtenerAdopcionesPorAdoptante(string $tabla, int $adoptanteId): array
     {
-        $sql = "SELECT m.id, m.nombre, m.edad, m.tamano, m.temperamento
+        $sql = "SELECT m.id, m.nombre, m.edad, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento
                 FROM {$tabla} s
                 JOIN mascota m ON s.mascota_id = m.id
+                LEFT JOIN especie e ON m.especie_id = e.id
+                LEFT JOIN tamano t ON m.tamano_id = t.id
+                LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
                 WHERE s.adoptante_id = :adoptante_id AND s.estado = 'APROBADA'";
                 
         return $this->rawQuery($sql, [':adoptante_id' => $adoptanteId]);
@@ -473,9 +520,12 @@ class QueryBuilder
 
     public function obtenerMascotasDisponiblesConUbicacion(): array
     {
-        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, m.tamano, m.temperamento, m.especie, m.refugio_id,
+        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento, m.refugio_id,
                        u.provincia, u.ciudad
                 FROM mascota m
+                LEFT JOIN especie e ON m.especie_id = e.id
+                LEFT JOIN tamano t ON m.tamano_id = t.id
+                LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
                 LEFT JOIN ubicacion u ON m.refugio_id = u.refugio_id
                 WHERE m.estado_adopcion = 'DISPONIBLE'";
 
@@ -832,6 +882,26 @@ class QueryBuilder
 
         return $refugios;
     }
+    public function existsExact(string $table, array $conditions): bool
+    {
+        $query = "SELECT 1 FROM {$table} WHERE 1=1";
+        $binds = [];
+        
+        foreach ($conditions as $column => $value) {
+            if ($value === null || $value === '') {
+                $query .= " AND {$column} IS NULL";
+            } else {
+                $query .= " AND {$column} = :{$column}";
+                $binds[":{$column}"] = $value;
+            }
+        }
+        
+        $sentencia = $this->pdo->prepare($query);
+        $this->bindValues($sentencia, $binds);
+        $sentencia->execute();
+        
+        return $sentencia->fetchColumn() !== false;
+    }
         /*solo mascotas disponibles*/
     public function selectByRefugioId(string $table, int $refugioId): array
     {
@@ -845,12 +915,15 @@ class QueryBuilder
     {
         $sql = "SELECT s.id, s.fecha, s.estado,
         m.nombre as mascota_nombre,
-        m.edad, m.tamano, m.temperamento,
+        m.edad, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento,
         a.nombre as adoptante_nombre,
         a.apellido as adoptante_apellido,
         u.foto_perfil as adoptante_foto
         FROM solicitud_de_adopcion s
         JOIN mascota m ON s.mascota_id = m.id
+        LEFT JOIN especie e ON m.especie_id = e.id
+        LEFT JOIN tamano t ON m.tamano_id = t.id
+        LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
         JOIN adoptante a ON s.adoptante_id = a.usuario_id
         JOIN usuario u ON a.usuario_id = u.id
         WHERE m.refugio_id = :refugio_id 
@@ -895,6 +968,35 @@ class QueryBuilder
             ':usuario_id' => $usuarioId,
             ':limit' => ['value' => $limit, 'type' => \PDO::PARAM_INT]
         ]);
+    }
+
+    public function obtenerAlertasPorUsuario(string $tabla, int $usuarioId, ?int $limit = null, ?int $offset = null): array
+    {
+        $sql = "SELECT c.*, 
+                       e.nombre as especie, 
+                       t.nombre as tamano, 
+                       temp.nombre as temperamento
+                FROM {$tabla} c
+                LEFT JOIN especie e ON c.especie_id = e.id
+                LEFT JOIN tamano t ON c.tamano_id = t.id
+                LEFT JOIN temperamento temp ON c.temperamento_id = temp.id
+                WHERE c.usuario_id = :uid";
+                
+        if ($limit !== null) {
+            $sql .= " LIMIT {$limit}";
+        }
+        if ($offset !== null) {
+            $sql .= " OFFSET {$offset}";
+        }
+                
+        return $this->rawQuery($sql, [':uid' => $usuarioId]);
+    }
+
+    public function contarAlertasPorUsuario(string $tabla, int $usuarioId): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM {$tabla} WHERE usuario_id = :uid";
+        $resultado = $this->rawQuery($sql, [':uid' => $usuarioId]);
+        return (int)($resultado[0]['total'] ?? 0);
     }
 
     public function obtenerAdoptantePorMascota(int $mascotaId): ?array

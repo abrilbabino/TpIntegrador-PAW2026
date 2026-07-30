@@ -58,6 +58,8 @@ $router->get('/mapa', 'PageController@mapa');
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/api/mascotas', 'MascotaController@apiMascotas');
+$router->get('/api/diccionario', 'MascotaController@apiDiccionario');
+$router->get('/api/diccionarios', 'MascotaController@apiDiccionarios');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
 $router->get('/api/mascota/libreta', 'MascotaController@apiLibreta');
@@ -80,6 +82,10 @@ $router->post('/formulario-adopcion/enviar', 'AdopcionController@enviar');
 $router->get('/test-de-compatibilidad', 'TestController@test');
 $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
 $router->get('/formulario-adopcion/descargar-acuerdo', 'AdopcionController@descargarAcuerdo');
+
+// Cola de Espera Inteligente
+$router->post('/cola-espera/suscribir', 'ColaEsperaController@suscribir');
+$router->post('/cola-espera/eliminar', 'ColaEsperaController@eliminar');
 
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');

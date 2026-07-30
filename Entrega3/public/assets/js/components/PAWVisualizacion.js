@@ -49,7 +49,54 @@ class PAWVisualizacion {
         this.contenedorItems.innerHTML = "";
 
         if (!this.items || this.items.length === 0) {
-            this.contenedorItems.innerHTML = "<p>No se encontraron resultados.</p>";
+            this.contenedorItems.innerHTML = "";
+            const sectionVacio = PAW.nuevoElemento("section", "", { 
+                class: `estado-vacio-moderno ${this.tipoVista === 'mascotas' ? 'estado-vacio-mascotas' : ''}` 
+            });
+            
+            const figureIcono = PAW.nuevoElemento("figure", "", { class: "icono-vacio-wrapper" });
+            const icono = PAW.nuevoElemento("span", "pets", { class: "material-symbols-outlined icono-vacio-animado" });
+            figureIcono.appendChild(icono);
+
+            const textoContenedor = PAW.nuevoElemento("header", "", { class: "texto-vacio-contenedor" });
+            const titulo = PAW.nuevoElemento("h3", "¡Ups! No encontramos coincidencias", { class: "titulo-vacio" });
+            
+            const texto = PAW.nuevoElemento("p", "", { class: "subtitulo-vacio" });
+
+            if (this.tipoVista === 'mascotas') {
+                titulo.innerText = "¡Ups! No se encontraron mascotas";
+                texto.appendChild(document.createTextNode("Actualmente no tenemos mascotas publicadas que coincidan"));
+                texto.appendChild(PAW.nuevoElemento("br"));
+                texto.appendChild(document.createTextNode("con todas estas características."));
+            } else if (this.tipoVista === 'refugios') {
+                texto.innerText = "No encontramos refugios en esta ubicación.";
+            } else if (this.tipoVista === 'libreta') {
+                titulo.innerText = "Tu libreta está vacía";
+                texto.innerText = "Aún no tenés registros médicos guardados para esta mascota.";
+            } else {
+                texto.innerText = "No hay resultados que coincidan con los filtros actuales.";
+            }
+            
+            textoContenedor.appendChild(titulo);
+            textoContenedor.appendChild(texto);
+            
+            sectionVacio.appendChild(figureIcono);
+            sectionVacio.appendChild(textoContenedor);
+            
+            if (this.tipoVista === 'mascotas') {
+                const btnAvisame = PAW.nuevoElemento("button", "", { class: "btn-cola-espera-moderno" });
+                
+                const iconBtn = PAW.nuevoElemento("span", "notifications_active", { class: "material-symbols-outlined" });
+                btnAvisame.appendChild(iconBtn);
+                btnAvisame.appendChild(document.createTextNode(" Activar notificaciones"));
+                
+                btnAvisame.addEventListener("click", () => {
+                    document.dispatchEvent(new CustomEvent('paw-cola-espera-solicitada'));
+                });
+                sectionVacio.appendChild(btnAvisame);
+            }
+            
+            this.contenedorItems.appendChild(sectionVacio);
             return;
         }
 

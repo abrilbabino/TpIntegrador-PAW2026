@@ -15,7 +15,7 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-exito-check:checked~.fondo-modal-exito {
+.modal-exito-check:checked ~ .fondo-modal-exito {
     opacity: 0.7;
     visibility: visible;
 }
@@ -33,7 +33,7 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-exito-check:checked~.modal-exito-raw-wrapper {
+.modal-exito-check:checked ~ .modal-exito-raw-wrapper {
     opacity: 1;
     visibility: visible;
 }
@@ -214,12 +214,6 @@ fieldset.comprobante-wrapper legend {
     text-align: center;
 }
 
-.mensaje-exito p.texto-descarga-pdf {
-    margin: 0.5rem 0;
-    font-size: 0.9em;
-    color: var(--color-gris);
-}
-
 .btn-volver {
     display: inline-block;
     background-color: var(--color-azul);
@@ -244,18 +238,6 @@ fieldset.comprobante-wrapper legend {
     transform: scale(0.98);
 }
 
-.mensaje-exito a.link-descarga-pdf {
-    color: var(--color-azul);
-    text-decoration: underline;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
-}
-
-.mensaje-exito a.link-descarga-pdf:hover {
-    color: var(--color-naranja);
-}
-
 .success-card {
     background: var(--color-fondo);
     border-radius: 40px;
@@ -278,7 +260,7 @@ fieldset.comprobante-wrapper legend {
 }
 
 .success-icon .material-symbols-outlined {
-    font-size: 60px;
+    font-size: 60px !important;
 }
 
 .success-card h1 {
@@ -304,10 +286,65 @@ fieldset.comprobante-wrapper legend {
     transition: all 0.3s ease;
     display: inline-block;
     text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
 }
 
 .btn-home:hover {
     background-color: var(--color-naranja);
     color: var(--color-fondo);
     transform: scale(0.98);
+}
+
+.modal-js-alerta {
+    border: none;
+    border-radius: 40px;
+    padding: 0;
+    background: transparent;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: none;
+}
+
+@media screen and (min-width: 994px) {
+    .modal-js-alerta {
+        transform: translateX(140px);
+    }
+}
+
+.modal-js-alerta::backdrop {
+    background-color: transparent;
+    opacity: 0;
+}
+
+.modal-js-alerta-card {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px !important;
+    padding: 3rem 2rem !important;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px var(--color-texto);
+}
+
+.modal-js-alerta-card .success-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1rem;
+}
+
+.modal-js-alerta-card .success-icon .material-symbols-outlined {
+    font-size: 40px !important;
+}
+
+.modal-js-alerta-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-js-alerta-card p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
 }

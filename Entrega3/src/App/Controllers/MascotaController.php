@@ -50,6 +50,38 @@ class MascotaController extends Controller
         exit;
     }
 
+    public function apiDiccionarios() {
+        header('Content-Type: application/json');
+        
+        $diccionario = $this->request->get('diccionario');
+        $mascotaCollection = $this->loadCollection(MascotaCollection::class);
+        
+        $items = [];
+        if ($diccionario === 'temperamento') {
+            $items = $mascotaCollection->getTemperamentos();
+        } else if ($diccionario === 'tamano') {
+            $items = $mascotaCollection->getTamanos();
+        } else if ($diccionario === 'especie') {
+            $items = $mascotaCollection->getEspecies();
+        } else {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Diccionario inválido']);
+            exit;
+        }
+
+        $data = array_map(function($item) use ($diccionario) {
+            return [
+                $diccionario => ucfirst(strtolower($item->fields['nombre']))
+            ];
+        }, $items);
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+        exit;
+    }
+
     private function loadFotosMascota(int $mascotaId, ?string $imagen): array
     {
         $mediaCol = $this->loadCollection(MediaMascotaCollection::class);

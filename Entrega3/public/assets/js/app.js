@@ -310,9 +310,9 @@ class AppPAW {
                   { prop: "ciudad", label: "Ciudad", type: "select", sourceURL: "/api/refugios" },
                   { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
                   { prop: "edad", label: "Edad", type: "rango" },
-                  { prop: "tamano", label: "Tamaño", type: "select" },
-                  { prop: "especie", label: "Especie", type: "radio" },
-                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                  { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
+                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });
             } else if (tipoVista === "refugios") {
@@ -331,9 +331,9 @@ class AppPAW {
                 filtrosConfig: [
                   { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
                   { prop: "edad", label: "Rango de Edad", type: "rango" },
-                  { prop: "tamano", label: "Tamaño", type: "select" },
-                  { prop: "especie", label: "Especie", type: "radio" },
-                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                  { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
+                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });
 

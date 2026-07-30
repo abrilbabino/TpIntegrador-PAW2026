@@ -5,6 +5,7 @@ namespace Paw\App\Models;
 use Paw\Core\Model;
 
 use Paw\App\Models\Mascota;
+use Paw\App\Models\DiccionarioCollection;
 use Paw\App\Helpers\GCSHelper;
 
 class MascotaCollection extends Model
@@ -39,22 +40,24 @@ class MascotaCollection extends Model
         return $mascota;    
     }
 
-    public function getTamanos(): array { return $this->getCampoUnico('tamano'); }
-    public function getEspecies(): array { return $this->getCampoUnico('especie'); }
-    public function getTemperamentos(): array { return $this->getCampoUnico('temperamento'); }
+    public function getTamanos(): array { 
+        $d = new DiccionarioCollection(); 
+        $d->setQueryBuilder($this->queryBuilder); 
+        return $d->obtenerTodos('tamano'); 
+    }
+    public function getEspecies(): array { 
+        $d = new DiccionarioCollection(); 
+        $d->setQueryBuilder($this->queryBuilder); 
+        return $d->obtenerTodos('especie'); 
+    }
+    public function getTemperamentos(): array { 
+        $d = new DiccionarioCollection(); 
+        $d->setQueryBuilder($this->queryBuilder); 
+        return $d->obtenerTodos('temperamento'); 
+    }
+    
     public function getProvincias(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'provincia'), 'provincia'); }
     public function getCiudades(): array { return $this->mapearCampoMascota($this->queryBuilder->obtenerUbicacionUnicaRefugio('refugio', 'ciudad'), 'ciudad'); }
-
-    private function getCampoUnico(string $campo): array
-    {
-        if (!in_array($campo, $this->camposPermitidosParaFiltro)) {
-            return [];
-        }
-
-        $resultados = $this->queryBuilder->obtenerValoresUnicos($this->table, $campo);
-        
-        return $this->mapearCampoMascota($resultados, $campo);
-    }
 
     public function buscar(string $termino): array
     {
@@ -349,15 +352,18 @@ class MascotaCollection extends Model
                 }
 
                 try {
+                    $dicc = new DiccionarioCollection();
+                    $dicc->setQueryBuilder($this->queryBuilder);
+                    
                     $this->queryBuilder->insert('mascota', [
                         'refugio_id'      => $idUsuario,
                         'nombre'          => $nombreSeguro,
-                        'especie'         => $especieSegura,
+                        'especie_id'      => $dicc->obtenerOCrearId('especie', $especieSegura),
                         'descripcion'     => $descripcionSegura,
                         'edad'            => $edadValida,
-                        'tamano'          => $tamanoSeguro,
+                        'tamano_id'       => $dicc->obtenerOCrearId('tamano', $tamanoSeguro),
                         'sexo'            => $sexoSeguro,
-                        'temperamento'    => $temperamentoSeguro,
+                        'temperamento_id' => $dicc->obtenerOCrearId('temperamento', $temperamentoSeguro),
                         'castrado'        => (strtolower($castradoStr) === 'si') ? 1 : 0,
                         'vacunado'        => 0,
                         'estado_adopcion' => 'DISPONIBLE',
@@ -564,22 +570,46 @@ class MascotaCollection extends Model
         $descripcionSegura = trim($descripcionMascota);
 
         // Insertar en la BD
-        $this->queryBuilder->insert('mascota', [
+        $dicc = new DiccionarioCollection();
+        $dicc->setQueryBuilder($this->queryBuilder);
+
+        $mascotaId = $this->queryBuilder->insert('mascota', [
             'refugio_id'      => $userId,
             'nombre'          => $nombreSeguro,
-            'especie'         => $especieSegura,
+            'especie_id'      => $dicc->obtenerOCrearId('especie', $especieSegura),
             'descripcion'     => $descripcionSegura,
             'edad'            => $edad,
             'fecha_nacimiento'=> $fechaNac ?: null,
-            'tamano'          => $tamanoSeguro,
+            'tamano_id'       => $dicc->obtenerOCrearId('tamano', $tamanoSeguro),
             'sexo'            => $sexoSeguro,
-            'temperamento'    => $temperamentoSeguro,
+            'temperamento_id' => $dicc->obtenerOCrearId('temperamento', $temperamentoSeguro),
             'castrado'        => ($esterilizado === 'si') ? 1 : 0,
             'vacunado'        => 0,
             'estado_adopcion' => 'DISPONIBLE',
             'imagen'          => $imagenRelativa ?? 'default-pet.jpg',
             'svg'             => $svgRelativa,
         ]);
+
+        if ($mascotaId) {
+            try {
+                // Obtener datos del refugio para saber la ubicación de la mascota
+                $refugios = $this->queryBuilder->select('refugio', ['usuario_id' => $userId]);
+                $refugio = $refugios[0] ?? [];
+                
+                $colaCollection = new \Paw\App\Models\ColaEsperaCollection();
+                $colaCollection->setQueryBuilder($this->queryBuilder);
+                $colaCollection->verificarMatches((int)$mascotaId, [
+                    'nombre'       => $nombreSeguro,
+                    'especie'      => $especieSegura,
+                    'tamano'       => $tamanoSeguro,
+                    'temperamento' => $temperamentoSeguro,
+                    'provincia'    => $refugio['provincia'] ?? '',
+                    'ciudad'       => $refugio['ciudad'] ?? '',
+                ]);
+            } catch (\Exception $e) {
+                error_log("Error en Cola de Espera: " . $e->getMessage());
+            }
+        }
 
         return [];
     }
@@ -625,15 +655,28 @@ class MascotaCollection extends Model
             $edad = $mascota->fields['edad'] ?? null;
         }
 
+        $dicc = new DiccionarioCollection();
+        $dicc->setQueryBuilder($this->queryBuilder);
+
+        $especie = $datosMascota['especie'] ?? '';
+        if (strtolower($especie) === 'otro') {
+            $especie = $datosMascota['nueva_especie'] ?? '';
+        }
+        
+        $temperamento = $datosMascota['temperamento'] ?? '';
+        if (strtolower($temperamento) === 'otro') {
+            $temperamento = $datosMascota['nuevo_temperamento'] ?? '';
+        }
+        
         $datosUpdate = [
-            'nombre'       => htmlspecialchars($datosMascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
-            'especie'      => htmlspecialchars($datosMascota['especie'] ?? '', ENT_QUOTES, 'UTF-8'),
-            'descripcion'  => htmlspecialchars($datosMascota['descripcion_mascota'] ?? '', ENT_QUOTES, 'UTF-8'),
-            'edad'         => $edad,
-            'fecha_nacimiento' => !empty($datosMascota['fecha_nacimiento']) ? $datosMascota['fecha_nacimiento'] : null,
-            'tamano'       => htmlspecialchars($datosMascota['tamanio'] ?? '', ENT_QUOTES, 'UTF-8'),
-            'sexo'         => htmlspecialchars($datosMascota['sexo'] ?? '', ENT_QUOTES, 'UTF-8'),
-            'temperamento' => htmlspecialchars($datosMascota['temperamento'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'nombre'          => htmlspecialchars($datosMascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'especie_id'      => $dicc->obtenerOCrearId('especie', $especie),
+            'descripcion'     => htmlspecialchars($datosMascota['descripcion_mascota'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'edad'            => $edad,
+            'fecha_nacimiento'=> !empty($datosMascota['fecha_nacimiento']) ? $datosMascota['fecha_nacimiento'] : null,
+            'tamano_id'       => $dicc->obtenerOCrearId('tamano', $datosMascota['tamanio'] ?? ''),
+            'sexo'            => htmlspecialchars($datosMascota['sexo'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'temperamento_id' => $dicc->obtenerOCrearId('temperamento', $temperamento),
             'castrado'     => (($datosMascota['esterilizado'] ?? '') === 'si') ? 1 : 0,
             'imagen'       => $imagenRelativa,
             'svg'          => $svgRelativa,

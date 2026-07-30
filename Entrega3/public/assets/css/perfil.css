@@ -462,7 +462,8 @@
       "nav nav"
       "favoritos favoritos"
       "solicitudes solicitudes"
-      "adopciones adopciones";
+      "adopciones adopciones"
+      "alertas alertas";
     gap: 2rem;
     align-items: start;
   }
@@ -497,6 +498,10 @@
 
   .sec-adopciones {
     grid-area: adopciones;
+  }
+
+  .sec-alertas {
+    grid-area: alertas;
   }
 
   .perfil-seccion {
@@ -908,4 +913,8 @@ textarea.dato-valor-input {
 .alerta-error span {
   color: var(--color-rojo);
   font-size: 1.5rem;
-}
+}  
+.paginacion { margin-top: 1.5rem; display: flex; justify-content: center; }  
+.paginacion-lista { display: flex; gap: 0.5rem; list-style: none; padding: 0; margin: 0; align-items: center; }  
+.paginacion-link { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; background: var(--color-fondo); border: 2px solid var(--color-naranja); color: var(--color-naranja); text-decoration: none; font-weight: bold; transition: all 0.2s; }  
+.paginacion-link:hover, .paginacion-link.active { background: var(--color-naranja); color: var(--color-fondo); } 
