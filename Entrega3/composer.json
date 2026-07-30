@@ -5,7 +5,7 @@
     "php",
     "mvc"
   ],
-  "licence": "MIT",
+  "license": "MIT",
   "authors": [
     {
       "name": "Abril Babino",
@@ -31,7 +31,7 @@
     "robmorgan/phinx": "^0.16.11",
     "phpmailer/phpmailer": "^7.0",
     "ext-pdo_pgsql": "*",
-    "mercadopago/dx-php": ">=3.10",
+    "mercadopago/dx-php": "^3.10",
     "twig/twig": "^3.27",
     "google/cloud-storage": "^2.3",
     "cboden/ratchet": "^0.4.4",
