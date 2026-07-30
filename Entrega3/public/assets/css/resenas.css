@@ -246,6 +246,13 @@
     border-radius: 12px;
 }
 
+@media (min-width: 994px) {
+    .sin-resenas-mensaje {
+        width: 60%;
+        margin: 1rem auto;
+    }
+}
+
 .modal-resena {
     border: none;
     border-radius: 16px;

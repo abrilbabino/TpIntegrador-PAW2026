@@ -98,7 +98,7 @@
             <h2>Lo que dicen nuestros adoptantes</h2>
         </header>
 
-        <section class="carrusel" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
+        <section class="carrusel" {% if resenas is defined and resenas is not empty %}data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false"{% endif %}>
             {% if resenas is defined and resenas is not empty %}
                 {% for resena in resenas %}
                     <article class="tarjeta-resena">
@@ -143,7 +143,7 @@
                     </article>
                 {% endfor %}
             {% else %}
-                <p class="sin-resenas-mensaje">Todavía no hay reseñas. ¡Sé el primero en adoptar y contarnos tu experiencia!</p>
+                <p class="sin-resenas-mensaje">Todavía no hay reseñas. ¡Sé el primero en adoptar y contanos tu experiencia!</p>
             {% endif %}
         </section>
 
