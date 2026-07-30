@@ -16,8 +16,10 @@ class PdfService
         $options = new Options();
         $options->set('isRemoteEnabled', true);
         $options->set('defaultFont', 'Helvetica');
+        $options->set('chroot', $_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/../../../public');
         
         $dompdf = new Dompdf($options);
+        $dompdf->setBasePath($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/../../../public');
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', $orientacion);
         $dompdf->render();

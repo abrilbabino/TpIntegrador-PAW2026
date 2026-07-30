@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
     const steps = document.querySelectorAll('.paso');
     const btnAnterior = document.getElementById('btnAnterior');
     const btnSiguiente = document.getElementById('btnSiguiente');
@@ -98,4 +98,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     updateUI();
-});
+})();

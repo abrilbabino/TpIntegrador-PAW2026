@@ -15,7 +15,7 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-exito-check:checked ~ .fondo-modal-exito {
+.modal-exito-check:checked~.fondo-modal-exito {
     opacity: 0.7;
     visibility: visible;
 }
@@ -33,7 +33,7 @@
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-exito-check:checked ~ .modal-exito-raw-wrapper {
+.modal-exito-check:checked~.modal-exito-raw-wrapper {
     opacity: 1;
     visibility: visible;
 }
@@ -215,7 +215,7 @@ fieldset.comprobante-wrapper legend {
 }
 
 .mensaje-exito p.texto-descarga-pdf {
-    margin-top: 15px;
+    margin: 0.5rem 0;
     font-size: 0.9em;
     color: var(--color-gris);
 }
@@ -244,9 +244,16 @@ fieldset.comprobante-wrapper legend {
     transform: scale(0.98);
 }
 
-.mensaje-exito a.btn-volver-gris {
-    background-color: var(--color-gris);
-    margin-bottom: 10px;
+.mensaje-exito a.link-descarga-pdf {
+    color: var(--color-azul);
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.mensaje-exito a.link-descarga-pdf:hover {
+    color: var(--color-naranja);
 }
 
 .success-card {

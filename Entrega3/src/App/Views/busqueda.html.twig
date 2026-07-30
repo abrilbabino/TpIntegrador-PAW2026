@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="/assets/css/adoptar.css" />
     <link rel="stylesheet" href="/assets/css/refugios.css" />
     <link rel="stylesheet" href="/assets/css/busqueda.css" />
-    <script src="/assets/js/components/paw-paginacion.js"></script>
-    <script src="/assets/js/components/PAWVisualizacion.js"></script>
 {% endblock %}
 
 {% block main_attributes %}id="busqueda-resultados" class="contenedor-busqueda" data-resultados="{{ resultados_mixtos|default([])|json_encode(constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|escape('html_attr') }}"{% endblock %}

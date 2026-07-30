@@ -1,80 +1,209 @@
-        header, main, section, figure, footer, article {
-            display: block;
-        }
-        body {
-            font-family: var(--fuente-cuerpo);
-            margin: 40px;
-            color: var(--color-texto);
-            line-height: 1.6;
-        }
-        h1 {
-            text-align: center;
-            color: var(--color-azul-oscuro);
-            border-bottom: 2px solid var(--color-azul);
-            padding-bottom: 10px;
-        }
-        .seccion-info {
-            margin-bottom: 30px;
-        }
-        .seccion-info h3 {
-            color: var(--color-azul);
-            margin-bottom: 10px;
-        }
-        .tabla-info {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .tabla-info th, .tabla-info td {
-            padding: 10px;
-            border: 1px solid var(--color-gris-claro);
-            text-align: left;
-        }
-        .tabla-info th {
-            background-color: var(--color-fondo);
-            width: 30%;
-        }
-        .terminos {
-            font-size: 0.9em;
-            margin-top: 20px;
-            text-align: justify;
-        }
-        .firmas {
-            margin-top: 50px;
-            width: 100%;
-        }
-        .caja-firma {
-            width: 45%;
-            display: inline-block;
-            text-align: center;
-            margin-top: 30px;
-        }
-        .linea-firma {
-            border-top: 1px solid var(--color-texto);
-            margin-top: 40px;
-            padding-top: 5px;
-        }
-        .foto-mascota {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .foto-mascota img {
-            max-width: 250px;
-            max-height: 250px;
-            border-radius: 10px;
-            border: 3px solid var(--color-azul);
-        }
-        .texto-firma {
-            text-align: center;
-            font-weight: bold;
-            margin-top: 40px;
-            padding: 20px;
-            background-color: var(--color-fondo);
-            border: 1px solid var(--color-gris-claro);
-            border-radius: 5px;
-        }
-        .texto-footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 0.8em;
-            color: var(--color-gris);
-        }
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 10px 40px;
+    background-color: #ffffff;
+    color: #1a2566;
+    line-height: 1.25;
+}
+
+.header-pdf {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 3px dashed #e87722;
+}
+
+.header-pdf h2 {
+    color: #1a2566;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 800;
+}
+
+.header-pdf h2 span {
+    color: #e87722;
+}
+
+.header-pdf h1 {
+    color: #1a2566;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    margin: 10px 0;
+    font-weight: 800;
+}
+
+.fecha-registro {
+    color: #e87722;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Cards layout */
+.cards-container {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.card-info {
+    background-color: #ffffff;
+    border: 1px solid #dcdbdb;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.card-info h3,
+.card-mascota h3 {
+    margin: 0 0 15px 0;
+    color: #1a2566;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #dcdbdb;
+    padding-bottom: 10px;
+}
+
+.info-row {
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+}
+
+.info-row .label {
+    font-weight: 700;
+    color: #1a2566;
+}
+
+.info-row .value {
+    color: #333333;
+}
+
+/* Card Mascota */
+.card-mascota {
+    background-color: #ffffff;
+    border: 1px solid #dcdbdb;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.tabla-layout-mascota {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-layout-mascota .td-foto {
+    width: 140px;
+    vertical-align: middle;
+}
+
+.tabla-layout-mascota .td-info {
+    vertical-align: middle;
+    padding-left: 20px;
+}
+
+.foto-mascota {
+    margin: 0;
+    display: block;
+    text-align: center;
+}
+
+.foto-mascota img {
+    max-width: 130px;
+    max-height: 130px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.placeholder-foto {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    background-color: #dcdbdb;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #a3a3a3;
+    border-radius: 8px;
+}
+
+.info-mascota .info-row {
+    margin-bottom: 10px;
+}
+
+/* Compromisos */
+.card-compromisos {
+    margin-bottom: 20px;
+}
+
+.card-compromisos h3 {
+    text-align: center;
+    color: #1a2566;
+    font-size: 1.6rem;
+    margin: 0 0 5px 0;
+}
+
+.subtitulo-compromiso {
+    text-align: left;
+    color: #333333;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.card-compromisos ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.card-compromisos li {
+    margin-bottom: 8px;
+    color: #333333;
+    line-height: 1.25;
+    position: relative;
+    padding-left: 20px;
+}
+
+.card-compromisos li::before {
+    content: "•";
+    color: #1a2566;
+    font-weight: bold;
+    display: inline-block; 
+    width: 15px;
+    margin-left: -20px;
+}
+
+.card-compromisos li strong {
+    color: #1a2566;
+}
+
+.alerta-importante {
+    background-color: #ffdd9e;
+    color: #e87722;
+    padding: 20px;
+    border-radius: 10px;
+    font-style: italic;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Firma */
+.texto-firma {
+    text-align: center;
+    font-size: 1.05rem;
+    color: #1a2566;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed #dcdbdb;
+}
+
+.texto-footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #a3a3a3;
+    margin-top: 20px;
+}

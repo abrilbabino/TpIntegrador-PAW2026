@@ -3,67 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Compromiso de Adopción Responsable</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/acuerdo_adopcion.css">
 </head>
 <body>
 
-    <header>
+    <header class="header-pdf">
         {% set meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] %}
         {% set mes_index = 'now'|date('n') - 1 %}
         {% set fecha_en_letras = 'a los ' ~ 'now'|date('d') ~ ' días del mes de ' ~ meses[mes_index] ~ ' de ' ~ 'now'|date('Y') %}
-        <h1>Acuerdo de Adopción Responsable</h1>
-        <p class="texto-footer" style="font-style: italic;"> Compromiso registrado {{ fecha_en_letras }}</p>
+        
+        <h2>Paw<span>Map</span></h2>
+        <h1>Contrato de Adopción Responsable</h1>
+        <p class="fecha-registro">Compromiso registrado {{ fecha_en_letras }}</p>
     </header>
 
-    <main>
-        <figure class="foto-mascota">
-            {% if mascota_foto %}
-                <img src="{{ mascota_foto }}" alt="Foto de {{ mascota_nombre }}">
-            {% endif %}
-        </figure>
+    <main class="main-pdf">
+        
+        <article class="cards-container">
+            <section class="card-info">
+                <h3>Datos del Adoptante</h3>
+                <p class="info-row">
+                    <span class="label">Nombre:</span> 
+                    <span class="value">{{ adoptante_nombre }} {{ adoptante_apellido }}</span>
+                </p>
+                <p class="info-row">
+                    <span class="label">Contacto:</span> 
+                    <span class="value">{{ adoptante_email }}</span>
+                </p>
+            </section>
+        </article>
 
-        <section class="seccion-info">
-            <h3>Datos del Adoptante</h3>
-            <table class="tabla-info">
-                <tr>
-                    <th>Nombre Completo</th>
-                    <td>{{ adoptante_nombre }} {{ adoptante_apellido }}</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td>{{ adoptante_email }}</td>
-                </tr>
-            </table>
-        </section>
-
-        <section class="seccion-info">
+        <section class="card-mascota">
             <h3>Datos de la Mascota</h3>
-            <table class="tabla-info">
+            <table class="tabla-layout-mascota">
                 <tr>
-                    <th>Nombre</th>
-                    <td>{{ mascota_nombre }}</td>
-                </tr>
-                <tr>
-                    <th>Especie</th>
-                    <td>{{ mascota_especie }}</td>
+                    <td class="td-foto">
+                        <figure class="foto-mascota">
+                            {% if mascota_foto %}
+                                <img src="{{ mascota_foto }}" alt="Foto de {{ mascota_nombre }}">
+                            {% else %}
+                                <span class="placeholder-foto">Foto<br>Mascota</span>
+                            {% endif %}
+                        </figure>
+                    </td>
+                    <td class="td-info">
+                        <article class="info-mascota">
+                            <p class="info-row">
+                                <span class="label">Mascota Adoptada:</span> 
+                                <span class="value">{{ mascota_nombre }}</span>
+                            </p>
+                            <p class="info-row">
+                                <span class="label">Especie:</span> 
+                                <span class="value">{{ mascota_especie }}</span>
+                            </p>
+                        </article>
+                    </td>
                 </tr>
             </table>
         </section>
 
-        <section class="terminos">
+        <section class="card-compromisos">
             <h3>Términos y Condiciones</h3>
-            <p>Al adoptar a esta mascota, te comprometes a:</p>
+            <p class="subtitulo-compromiso">Al adoptar a esta mascota, te comprometes a:</p>
+            
             <ul>
                 <li>Brindarle un hogar seguro, alimento adecuado y atención veterinaria cuando lo requiera.</li>
                 <li>Mantener al día su libreta sanitaria, aplicando las vacunas correspondientes.</li>
                 <li>Notificar al refugio ante cualquier cambio de domicilio o pérdida.</li>
                 <li>Permitir y facilitar el seguimiento de la mascota por parte del refugio, respondiendo a encuestas o visitas programadas para verificar su bienestar.</li>
             </ul>
-            <p><strong>El incumplimiento de este contrato puede resultar en la revocación de la adopción.</strong></p>
+
+            <aside class="alerta-importante">
+                <strong>El incumplimiento de este contrato puede resultar en la revocación de la adopción.</strong>
+            </aside>
         </section>
 
         <section class="texto-firma">
-            Aceptado electrónicamente por {{ adoptante_nombre }} {{ adoptante_apellido }} el {{ 'now'|date('d/m/Y') }}.
+            Aceptado electrónicamente por <strong>{{ adoptante_nombre }} {{ adoptante_apellido }}</strong> el {{ 'now'|date('d/m/Y') }}.
         </section>
     </main>
 

@@ -26,6 +26,12 @@ class AppPAW {
     this._initBusquedaResultados();
     this._initNotificaciones();
     this._initResenas();
+    this._initCharts();
+    this._initGenerarQR();
+    this._initTestCompatibilidad();
+    this._initMascota();
+    this._initDonacion();
+    this._initCompartir();
   }
 
   _initResenas() {
@@ -38,6 +44,56 @@ class AppPAW {
           new window.PAWResenas();
         }
       );
+    }
+  }
+
+  _initCharts() {
+    const charts = document.querySelectorAll('.paw-js-pie-chart');
+    if (charts.length > 0) {
+      PAW.cargarScript("paw-charts", "/assets/js/components/paw-charts.js", () => {
+        new PAWCharts();
+      });
+    }
+  }
+
+  _initGenerarQR() {
+    const qrContainer = document.getElementById('mascota-select');
+    if (qrContainer) {
+      PAW.cargarScript("paw-generar-qr", "/assets/js/components/paw-generar-qr.js", () => {
+        new PAWGenerarQR();
+      });
+    }
+  }
+
+  _initTestCompatibilidad() {
+    const form = document.getElementById('testForm');
+    if (form) {
+      PAW.cargarScript("paw-test-compatibilidad", "/assets/js/test-compatibilidad.js", () => {});
+    }
+  }
+
+  _initMascota() {
+    const carrusel = document.querySelector('.carrusel-contenedor');
+    const svgMascota = document.querySelector('.svg-mascota');
+    if (carrusel || svgMascota) {
+      PAW.cargarScript("paw-mascota", "/assets/js/mascota.js", () => {});
+    }
+  }
+
+  _initDonacion() {
+    const refugioSelect = document.getElementById('refugio_id');
+    const aliasInput = document.getElementById('alias');
+    if (refugioSelect && aliasInput) {
+      PAW.cargarScript("paw-donacion", "/assets/js/donar.js", () => {});
+    }
+  }
+
+  _initCompartir() {
+    const wrapper = document.querySelector('.compartir-wrapper');
+    if (wrapper) {
+      PAW.cargarScript("paw-compartir", "/assets/js/components/paw-compartir.js", () => {
+        new PAWCompartir(wrapper);
+      });
     }
   }
 
@@ -135,12 +191,13 @@ class AppPAW {
         const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
         window.history.replaceState({}, document.title, newUrl || window.location.pathname);
       });
+    }
   }
 
   _initDescargaPDF() {
     const btnDescarga = document.getElementById('btn-descarga-pdf');
     if (btnDescarga) {
-      PAW.cargarScript("paw-formulario-adopcion", "/assets/js/formulario-adopcion.js", () => {
+      PAW.cargarScript("paw-formulario-adopcion", "/assets/js/components/formulario-adopcion.js", () => {
         new PAWFormularioAdopcion();
       });
     }

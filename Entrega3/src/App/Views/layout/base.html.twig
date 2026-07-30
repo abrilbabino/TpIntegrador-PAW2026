@@ -52,15 +52,15 @@
                     <h1>¡Solicitud confirmada!</h1>
                     <p>Hemos procesado tu solicitud correctamente.<br> El personal ha sido notificado por correo electrónico y se pondrá en contacto con usted a la brevedad.</p>
 
+                    <a href="/adoptar" class="btn-volver">VOLVER A ADOPTAR</a>
+
                     {% if descargar_pdf_mascota_id is defined and descargar_pdf_mascota_id %}
                         <p class="texto-descarga-pdf">
                             Tu acuerdo de adopción se descargará automáticamente.<br>
                             ¿No comenzó la descarga o cerraste la página?
                         </p>
-                        <a href="/formulario-adopcion/descargar-acuerdo?mascota_id={{ descargar_pdf_mascota_id }}" class="btn-volver btn-volver-gris" id="btn-descarga-pdf">DESCARGAR ACUERDO PDF</a>
+                        <a href="/formulario-adopcion/descargar-acuerdo?mascota_id={{ descargar_pdf_mascota_id }}" class="link-descarga-pdf" id="btn-descarga-pdf">Descargar Acuerdo PDF</a>
                     {% endif %}
-
-                    <a href="/adoptar" class="btn-volver">VOLVER A ADOPTAR</a>
                 </section>
                 
             {% elseif flash_type == 'contacto' %}
