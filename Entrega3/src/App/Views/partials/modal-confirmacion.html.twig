@@ -1,0 +1,12 @@
+<dialog id="{{ id|default('modal-confirmacion') }}" class="modal-nativo modal-confirmacion">
+    <header>
+        <h2>{{ titulo|default('Confirmar acción') }}</h2>
+    </header>
+    <section class="modal-body">
+        <p>{{ mensaje|default('¿Estás seguro de que deseas realizar esta acción?') }}</p>
+    </section>
+    <footer class="acciones-modal">
+        <button type="button" class="btn-cancelar js-cerrar-modal" id="btn-cancelar-{{ modal_suffix|default('accion') }}">Cancelar</button>
+        <button type="button" class="btn-eliminar-confirmado" id="btn-confirmar-{{ modal_suffix|default('accion') }}">{{ boton_texto|default('Confirmar') }}</button>
+    </footer>
+</dialog>

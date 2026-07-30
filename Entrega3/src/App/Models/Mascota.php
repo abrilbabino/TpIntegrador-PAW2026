@@ -17,6 +17,7 @@ class Mascota extends Model
         'especie' => null,
         'descripcion' => null,
         'edad' => null,
+        'fecha_nacimiento' => null,
         'tamano' => null,
         'temperamento' => null,
         'estado_adopcion' => null,
@@ -26,6 +27,8 @@ class Mascota extends Model
         'sexo' => 'Desconocido',
         'fecha_adopcion' => null,
         'svg' => null,
+        'fecha_publicacion' => null,
+        'visitas' => 0,
     ];
 
     public function setId($id){
@@ -88,5 +91,74 @@ class Mascota extends Model
             && stripos($contenido, '<svg') !== false;
 
         return $esValido ? null : 'El archivo no es un SVG válido.';
+    }
+
+    public static function validarEdicion(array $post, array $opcionesPermitidas): array
+    {
+        $errores = [];
+
+        $nombre = trim($post['nombre'] ?? '');
+        $largoNombre = function_exists('mb_strlen') ? mb_strlen($nombre) : strlen($nombre);
+        if ($nombre === '') {
+            $errores['nombre'] = 'El nombre es obligatorio.';
+        } elseif ($largoNombre < 2 || $largoNombre > 60) {
+            $errores['nombre'] = 'El nombre debe tener entre 2 y 60 caracteres.';
+        } elseif (!preg_match("/^[\\p{L}\\s'-]+$/u", $nombre)) {
+            $errores['nombre'] = 'Solo se permiten letras, espacios, apóstrofes y guiones.';
+        }
+
+        $especie = trim($post['especie'] ?? '');
+        if ($especie === '') {
+            $errores['especie'] = 'Debe seleccionar una especie.';
+        } elseif (!in_array(strtolower($especie), $opcionesPermitidas['especies'], true)) {
+            $errores['especie'] = 'La especie seleccionada no es válida.';
+        }
+
+        $tamanio = trim($post['tamanio'] ?? '');
+        if ($tamanio === '') {
+            $errores['tamanio'] = 'Debe seleccionar un tamaño.';
+        } elseif (!in_array(strtolower($tamanio), $opcionesPermitidas['tamanos'], true)) {
+            $errores['tamanio'] = 'El tamaño seleccionado no es válido.';
+        }
+
+        $temperamento = trim($post['temperamento'] ?? '');
+        if ($temperamento === '') {
+            $errores['temperamento'] = 'Debe seleccionar un temperamento.';
+        } elseif (!in_array(strtolower($temperamento), $opcionesPermitidas['temperamentos'], true)) {
+            $errores['temperamento'] = 'El temperamento seleccionado no es válido.';
+        }
+
+        $sexo = trim($post['sexo'] ?? '');
+        if (!in_array($sexo, ['macho', 'hembra'], true)) {
+            $errores['sexo'] = 'Debe seleccionar un sexo válido.';
+        }
+
+        $esterilizado = trim($post['esterilizado'] ?? '');
+        if (!in_array($esterilizado, ['si', 'no'], true)) {
+            $errores['esterilizado'] = 'Debe indicar si la mascota está esterilizada.';
+        }
+
+        $descripcionMascota = trim($post['descripcion_mascota'] ?? '');
+        $largoDescripcion = function_exists('mb_strlen') ? mb_strlen($descripcionMascota) : strlen($descripcionMascota);
+        if ($descripcionMascota === '') {
+            $errores['descripcion_mascota'] = 'La descripción es obligatoria.';
+        } elseif ($largoDescripcion < 10 || $largoDescripcion > 500) {
+            $errores['descripcion_mascota'] = 'La descripción debe tener entre 10 y 500 caracteres.';
+        }
+
+        $fechaNac = trim($post['fecha_nacimiento'] ?? '');
+        if ($fechaNac !== '') {
+            $d = \DateTime::createFromFormat('Y-m-d', $fechaNac);
+            if (!$d || $d->format('Y-m-d') !== $fechaNac) {
+                $errores['fecha_nacimiento'] = 'La fecha de nacimiento no es válida.';
+            } else {
+                $hoy = new \DateTime();
+                if ($d > $hoy) {
+                    $errores['fecha_nacimiento'] = 'La fecha de nacimiento no puede ser futura.';
+                }
+            }
+        }
+
+        return $errores;
     }
 }

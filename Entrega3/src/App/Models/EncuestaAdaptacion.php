@@ -3,9 +3,11 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\Core\Traits\Notificable;
 
 class EncuestaAdaptacion extends Model
 {
+    use Notificable;
     public $table = 'encuesta_adopcion';
     public $fields = [
         'id' => null,
@@ -65,4 +67,5 @@ class EncuestaAdaptacion extends Model
         $this->fields['alerta_generada'] = $alerta;
         return $alerta;
     }
+
 }

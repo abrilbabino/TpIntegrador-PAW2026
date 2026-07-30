@@ -17,12 +17,97 @@ class AppPAW {
     this._initPerfilRefugio();
     this._initFavoritos();
     this._initModalExito();
+    this._initDescargaPDF();
     this._initChatWidget();
     this._initChatPage();
     this._initLibreta();
-    this._initIniciarSesion();
+    this._initAuthModals();
     this._initSeguimiento();
     this._initBusquedaResultados();
+    this._initNotificaciones();
+    this._initResenas();
+    this._initCharts();
+    this._initGenerarQR();
+    this._initTestCompatibilidad();
+    this._initMascota();
+    this._initDonacion();
+    this._initCompartir();
+  }
+
+  _initResenas() {
+    const seccionResenas = document.getElementById('seccion-resenas');
+    if (seccionResenas) {
+      PAW.cargarScript(
+        "PAW-Resenas-Script",
+        "/assets/js/components/paw-resenas.js",
+        () => {
+          new window.PAWResenas();
+        }
+      );
+    }
+  }
+
+  _initCharts() {
+    const charts = document.querySelectorAll('.paw-js-pie-chart');
+    if (charts.length > 0) {
+      PAW.cargarScript("paw-charts", "/assets/js/components/paw-charts.js", () => {
+        new PAWCharts();
+      });
+    }
+  }
+
+  _initGenerarQR() {
+    const qrContainer = document.getElementById('mascota-select');
+    if (qrContainer) {
+      PAW.cargarScript("paw-generar-qr", "/assets/js/components/paw-generar-qr.js", () => {
+        new PAWGenerarQR();
+      });
+    }
+  }
+
+  _initTestCompatibilidad() {
+    const form = document.getElementById('testForm');
+    if (form) {
+      PAW.cargarScript("paw-test-compatibilidad", "/assets/js/test-compatibilidad.js", () => {});
+    }
+  }
+
+  _initMascota() {
+    const carrusel = document.querySelector('.carrusel-contenedor');
+    const svgMascota = document.querySelector('.svg-mascota');
+    if (carrusel || svgMascota) {
+      PAW.cargarScript("paw-mascota", "/assets/js/mascota.js", () => {});
+    }
+  }
+
+  _initDonacion() {
+    const refugioSelect = document.getElementById('refugio_id');
+    const aliasInput = document.getElementById('alias');
+    if (refugioSelect && aliasInput) {
+      PAW.cargarScript("paw-donacion", "/assets/js/donar.js", () => {});
+    }
+  }
+
+  _initCompartir() {
+    const wrapper = document.querySelector('.compartir-wrapper');
+    if (wrapper) {
+      PAW.cargarScript("paw-compartir", "/assets/js/components/paw-compartir.js", () => {
+        new PAWCompartir(wrapper);
+      });
+    }
+  }
+
+  _initNotificaciones() {
+    const btnCampanita = document.getElementById("btn-campanita");
+    if (btnCampanita) {
+      PAW.cargarScript(
+        "PAW-Notificaciones-Script",
+        "/assets/js/components/paw-notificaciones.js",
+        () => {
+          new PAWNotificaciones();
+        }
+      );
+    }
   }
 
   _initSeguimiento() {
@@ -31,7 +116,7 @@ class AppPAW {
       PAW.cargarScript(
         "PAW-Seguimiento-Script",
         "/assets/js/components/paw-seguimiento.js",
-        () => {}
+        () => { }
       );
     }
   }
@@ -39,24 +124,28 @@ class AppPAW {
   _initBusquedaResultados() {
     const contenedor = document.getElementById("busqueda-resultados");
     if (contenedor) {
-      PAW.cargarScript(
-        "PAW-Busqueda-Resultados-Script",
-        "/assets/js/components/paw-busqueda-resultados.js",
-        () => {
-          new PAWBusquedaResultados();
-        }
-      );
+      PAW.cargarScript("PAW-Paginacion-Script", "/assets/js/components/paw-paginacion.js", () => {
+        PAW.cargarScript("PAW-Visualizacion-Script", "/assets/js/components/PAWVisualizacion.js", () => {
+          PAW.cargarScript(
+            "PAW-Busqueda-Resultados-Script",
+            "/assets/js/components/paw-busqueda-resultados.js",
+            () => {
+              new PAWBusquedaResultados();
+            }
+          );
+        });
+      });
     }
   }
 
-  _initIniciarSesion() {
-    const contenedorSesion = document.querySelector(".mostrar-contraseña");
-    if (contenedorSesion) {
+  _initAuthModals() {
+    const loginModal = document.getElementById("modal-login");
+    if (loginModal) {
       PAW.cargarScript(
-        "PAW-Iniciar-Sesion-Script",
-        "/assets/js/components/paw-iniciar-sesion.js",
+        "PAW-Auth-Modals-Script",
+        "/assets/js/components/paw-auth-modals.js",
         () => {
-          new PAWIniciarSesion();
+          new PAWAuthModals();
         }
       );
     }
@@ -105,6 +194,15 @@ class AppPAW {
         // Limpiar la URL para que no vuelva a aparecer al recargar
         const newUrl = window.location.pathname + window.location.search.replace(/[\?&]registro_exitoso=1/, '').replace(/^&/, '?');
         window.history.replaceState({}, document.title, newUrl || window.location.pathname);
+      });
+    }
+  }
+
+  _initDescargaPDF() {
+    const btnDescarga = document.getElementById('btn-descarga-pdf');
+    if (btnDescarga) {
+      PAW.cargarScript("paw-formulario-adopcion", "/assets/js/components/formulario-adopcion.js", () => {
+        new PAWFormularioAdopcion();
       });
     }
   }
@@ -212,9 +310,9 @@ class AppPAW {
                   { prop: "ciudad", label: "Ciudad", type: "select", sourceURL: "/api/refugios" },
                   { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
                   { prop: "edad", label: "Edad", type: "rango" },
-                  { prop: "tamano", label: "Tamaño", type: "select" },
-                  { prop: "especie", label: "Especie", type: "radio" },
-                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                  { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
+                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });
             } else if (tipoVista === "refugios") {
@@ -233,9 +331,9 @@ class AppPAW {
                 filtrosConfig: [
                   { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
                   { prop: "edad", label: "Rango de Edad", type: "rango" },
-                  { prop: "tamano", label: "Tamaño", type: "select" },
-                  { prop: "especie", label: "Especie", type: "radio" },
-                  { prop: "temperamento", label: "Temperamento", type: "select" }
+                  { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
+                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });
 
@@ -381,7 +479,7 @@ class AppPAW {
   }
 
   initValidador() {
-    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-editar-mascota, .form-registro, #form-subir-archivo, #form-encuesta"); if (forms.length === 0) {
+    const forms = document.querySelectorAll(".login-form, .registro-form, .form-adopcion, #testForm, .formulario-donaciones, form[action='/contacto/enviar'], #perfil-form, #perfil-refugio-form, #form-publicar-mascota, #form-importar-mascotas, #form-editar-mascota, .form-registro, #form-subir-archivo, #form-encuesta, #form-nueva-resena"); if (forms.length === 0) {
       return;
     }
 
@@ -403,9 +501,9 @@ class AppPAW {
       "/assets/js/components/paw-perfil.js",
       () => {
         const editorPerfil = new PAWPerfil(contenedor, {
-            formId: 'perfil-refugio-form',
-            editBtnId: 'btn-edit-refugio',
-            cancelBtnId: 'btn-cancel-refugio'
+          formId: 'perfil-refugio-form',
+          editBtnId: 'btn-edit-refugio',
+          cancelBtnId: 'btn-cancel-refugio'
         });
         editorPerfil.render();
 

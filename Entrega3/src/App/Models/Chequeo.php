@@ -6,8 +6,8 @@ namespace Paw\App\Models;
 
 class Chequeo extends RegistroSanitario
 {
-    public function getIconoHtml(): string
+    public function getIcono(): string
     {
-        return '<span class="material-symbols-outlined">stethoscope</span>';
+        return 'stethoscope';
     }
 }

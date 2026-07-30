@@ -73,6 +73,13 @@ class Request
         $_SESSION[$key] = $value;
     }
 
+    public function unsetSession($key)
+    {
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+    }
+
     public function destroySession()
     {
         $_SESSION = [];

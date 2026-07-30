@@ -78,7 +78,7 @@ class Controller
             ],
             [
                 "href" => "/test-de-compatibilidad",
-                "name" => "Test de Compatibilidad",
+                "name" => "Test",
                 "icon" => "quiz",
                 "type" => "link",
             ],
@@ -98,6 +98,12 @@ class Controller
                 "href" => "/refugios",
                 "name" => "Refugios",
                 "icon" => "location_city",
+                "type" => "link",
+            ],
+            [
+                "href" => "/generar-qr",
+                "name" => "Generar QR",
+                "icon" => "qr_code_2",
                 "type" => "link",
             ],
             [
@@ -132,6 +138,7 @@ class Controller
         $this->twig->addGlobal('menu', $this->menu);
         $this->twig->addGlobal('redes', $this->redes);
         $this->twig->addGlobal('notificaciones', $this->notificaciones);
+        $this->twig->addGlobal('request', $this->request);
     }
 
     public function setModel(Model $model)
@@ -141,8 +148,19 @@ class Controller
 
     protected function loadCollection($className)
     {
+        $qb = $this->model ? $this->model->getQueryBuilder() : new QueryBuilder($this->connection, $this->log);
+        $collection = new $className;
+        $collection->setQueryBuilder($qb);
+        return $collection;
+    }
+
+    protected function loadModel($className)
+    {
+        $qb = $this->model ? $this->model->getQueryBuilder() : new QueryBuilder($this->connection, $this->log);
         $model = new $className;
-        $model->setQueryBuilder($this->model->getQueryBuilder());
+        if (method_exists($model, 'setQueryBuilder')) {
+            $model->setQueryBuilder($qb);
+        }
         return $model;
     }
 

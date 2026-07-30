@@ -80,7 +80,7 @@
             <li class="dato-item">
                 <label class="dato-label" for="fecha_de_nacimiento">Fecha de Nacimiento</label>
                 <p class="dato-valor static-value">{{ adoptante.fecha_de_nacimiento|default('dd / mm / aaaa') }}</p>
-                <input type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}" max="{{ 'now'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." {% if errores.fecha_de_nacimiento is defined %}data-server-error="{{ errores.fecha_de_nacimiento }}"{% endif %}>
+                <input type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" value="{{ oldData.fecha_de_nacimiento|default(adoptante.fecha_de_nacimiento|default('')) }}" data-original="{{ adoptante.fecha_de_nacimiento|default('') }}" class="dato-valor-input input-value {{ errores.fecha_de_nacimiento is defined ? 'input-invalido' : '' }}" max="{{ '-16 years'|date('Y-m-d') }}" data-no-future="true" data-future-message="Debes tener al menos 16 años de edad." {% if errores.fecha_de_nacimiento is defined %}data-server-error="{{ errores.fecha_de_nacimiento }}"{% endif %}>
             </li>
             <li class="dato-item">
                 <label class="dato-label" for="contacto">Teléfono</label>
@@ -158,14 +158,15 @@
             <ul class="perfil-cards-grid">
                 {% for fav in favoritos %}
                     <li class="perfil-card">
-                        <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota') }}">
+                        <a href="/mascota?id={{ fav.id }}" class="perfil-card-link" title="Ver detalle de {{ fav.nombre|default('Mascota')|capitalize }}">
                             <figure class="perfil-card-img">
+                                {% set favImagenUrl = fav.imagen|default('default-pet.jpg') starts with 'http' ? fav.imagen : '/assets/img/' ~ fav.imagen|default('default-pet.jpg') %}
                                 <img
-                                    src="/assets/img/{{ fav.imagen|default('default-pet.jpg') }}"
-                                    alt="{{ fav.nombre|default('Mascota') }}"
+                                    src="{{ favImagenUrl }}"
+                                    alt="{{ fav.nombre|default('Mascota')|capitalize }}"
                                 />
                             </figure>
-                            <h4>{{ fav.nombre|default('Sin nombre') }}</h4>
+                            <h4>{{ fav.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ fav.edad|default('?') }} año(s)
                                 · {{ fav.tamano|default('—') }}
@@ -196,7 +197,7 @@
             <ul class="perfil-lista">
                 {% for sol in solicitudes %}
                     <li class="perfil-lista-item">
-                        <h4>{{ sol.nombre|default('Mascota') }}</h4>
+                        <h4>{{ sol.nombre|default('Mascota')|capitalize }}</h4>
                         <p>
                             {{ sol.edad|default('?') }} año(s)
                             · {{ sol.tamano|default('—') }}
@@ -223,7 +224,7 @@
             <ul class="perfil-lista">
                 {% for ad in adopciones %}
                     <li class="perfil-lista-item">
-                        <h4>{{ ad.nombre|default('Mascota') }}</h4>
+                        <h4>{{ ad.nombre|default('Mascota')|capitalize }}</h4>
                         <p>
                             {{ ad.edad|default('?') }} año(s)
                             · {{ ad.tamano|default('—') }}

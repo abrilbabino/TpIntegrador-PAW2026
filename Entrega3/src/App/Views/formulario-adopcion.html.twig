@@ -17,7 +17,7 @@
             <figure class="imagen-principal-desktop">
                 {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                 <img src="{{ imagenUrl }}"
-                     alt="Foto de {{ mascota.fields.nombre|default('la mascota') }}">
+                     alt="Foto de {{ mascota.fields.nombre|default('la mascota')|capitalize }}">
             </figure>
 
             {% if mediaExtras is not empty %}
@@ -29,7 +29,7 @@
                 <figure class="carrusel-slide-item slide-principal-movil">
                     {% set imagenUrlForm = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                     <img src="{{ imagenUrlForm }}"
-                         alt="Foto de {{ mascota.fields.nombre|default('la mascota') }}">
+                         alt="Foto de {{ mascota.fields.nombre|default('la mascota')|capitalize }}">
                 </figure>
 
                 {% if mediaExtras is not empty %}
@@ -123,6 +123,7 @@
                 <button type="submit" class="btn-submit-adoptar" {{ errores.solicitud_duplicada is defined ? 'disabled' : '' }}>¡QUIERO ADOPTAR!</button>
             </form>
         </aside>
+
     </article>
 {% endblock %}
 
@@ -145,8 +146,4 @@
             <button type="submit" class="btn-cerrar-modal">Entendido y Cerrar</button>
         </form>
     </dialog>
-{% endblock %}
-
-{% block scripts %}
-    <script src="/assets/js/mascota.js"></script>
 {% endblock %}

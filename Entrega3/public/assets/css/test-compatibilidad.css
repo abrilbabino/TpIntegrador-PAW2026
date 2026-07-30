@@ -87,11 +87,13 @@
   transform: translateY(-1px);
 }
 
-.tarjeta-opcion input[type="radio"] {
+.tarjeta-opcion input[type="radio"],
+.tarjeta-opcion input[type="checkbox"] {
   display: none;
 }
 
-.tarjeta-opcion:has(input[type="radio"]:checked) {
+.tarjeta-opcion:has(input[type="radio"]:checked),
+.tarjeta-opcion:has(input[type="checkbox"]:checked) {
   border-color: var(--color-naranja);
   background: var(--color-fondo);
   box-shadow: 0 0 0 1px var(--color-naranja);
@@ -120,7 +122,8 @@
   transition: color 0.25s;
 }
 
-.tarjeta-opcion:has(input[type="radio"]:checked) .opcion-titulo {
+.tarjeta-opcion:has(input[type="radio"]:checked) .opcion-titulo,
+.tarjeta-opcion:has(input[type="checkbox"]:checked) .opcion-titulo {
   color: var(--color-naranja);
 }
 

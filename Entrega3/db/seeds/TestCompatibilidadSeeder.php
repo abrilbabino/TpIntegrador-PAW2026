@@ -65,7 +65,7 @@ class TestCompatibilidadSeeder extends AbstractSeed
                 'opciones' => [
                     ['valor' => 'perro', 'etiqueta' => 'Perro', 'subtitulo' => 'Compañero fiel, paseos, juego', 'orden' => 1, 'emoji' => '🐶'],
                     ['valor' => 'gato', 'etiqueta' => 'Gato', 'subtitulo' => 'Independiente, cariñoso, bajo mantenimiento', 'orden' => 2, 'emoji' => '🐱'],
-                    ['valor' => 'indiferente', 'etiqueta' => 'Me da igual', 'subtitulo' => 'Estoy abierto a lo que mejor se adapte', 'orden' => 3, 'emoji' => '🤷'],
+                    ['valor' => 'indiferente', 'etiqueta' => '¡Ambos!', 'subtitulo' => 'Me gustan los dos por igual', 'orden' => 3, 'emoji' => '🐾'],
                 ]
             ],
         ];

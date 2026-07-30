@@ -2,6 +2,8 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+date_default_timezone_set('America/Argentina/Buenos_Aires');
+
 use Paw\Core\Config;
 use Paw\Core\DataBase\ConnectionBuilder;
 use Paw\Core\DataBase\QueryBuilder;
@@ -9,6 +11,8 @@ use Paw\Core\MailService;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Dotenv\Dotenv;
+use Paw\App\Models\Notificacion;
+use Paw\App\Models\NotificacionCollection;
 
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../');
 $dotenv->safeLoad();
@@ -41,6 +45,20 @@ try {
 
         $mailService = new MailService();
         $mailService->send($row['adoptante_email'], $subject, $body);
+
+        // Notificación en la plataforma
+        $notificacion = new Notificacion();
+        $notificacion->set([
+            'usuario_id' => (int)$row['adoptante_id'],
+            'titulo' => "Recordatorio de turno",
+            'mensaje' => "El turno de {$row['mascota_nombre']} para '{$row['titulo']}' es el {$fechaFormateada}.",
+            'enlace' => '/seguimiento?id=' . $row['mascota_id']
+        ]);
+
+        $notifCollection = new NotificacionCollection();
+        $notifCollection->setQueryBuilder($qb);
+        $notifCollection->agregarNotificacion($notificacion);
+        $notifCollection->enviarNotificacionTiempoReal($notificacion);
 
         // Actualizar registro
         $qb->marcarRegistroNotificado((int)$row['registro_id']);

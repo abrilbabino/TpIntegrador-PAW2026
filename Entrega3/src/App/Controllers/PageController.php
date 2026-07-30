@@ -4,6 +4,9 @@ namespace Paw\App\Controllers;
 
 use Paw\Core\Controller;
 use Paw\App\Models\MascotaCollection;
+use Paw\App\Models\Favorito;
+use Paw\App\Models\ResenaCollection;
+use Paw\App\Models\RefugioCollection;
 use Paw\Core\MailService;
 
 class PageController extends Controller
@@ -12,20 +15,28 @@ class PageController extends Controller
 
     public function index()
     {
-        $titulo = htmlspecialchars($_GET["nombre"] ?? "Inicio-PawMap");
+        $titulo = htmlspecialchars($this->request->get("nombre") ?? "Inicio-PawMap");
         $metaDescription = "Descubrí en PawMap a tu compañero ideal. Buscá entre cientos de perros y gatos en adopción de los mejores refugios.";
         $menu = $this->menu;
         $redes = $this->redes;
         
-        $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
+        // Algoritmo de Mascotas Invisibles: Obtener las 8 mascotas más olvidadas
+        $mascotas = $this->model->getMascotasInvisibles(8);
 
-        $refugioCollection = new \Paw\App\Models\RefugioCollection();
-        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioCollection = $this->loadCollection(RefugioCollection::class);
         $refugiosMapa = $refugioCollection->getRefugiosConUbicacion([]);
 
-        $favoritoModel = new \Paw\App\Models\Favorito();
-        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritoModel = $this->loadModel(Favorito::class);
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
+
+        $resenaCollection = $this->loadCollection(ResenaCollection::class);
+        $resenas = $resenaCollection->getResenasDestacadas(5);
+        
+        $adopcionesSinResena = [];
+        $userSession = $this->request->session('user');
+        if ($userSession && isset($userSession['id'])) {
+            $adopcionesSinResena = $resenaCollection->getAdopcionesSinResena($userSession['id']);
+        }
 
         echo $this->twig->render('index.html.twig', get_defined_vars());
     }
@@ -50,14 +61,12 @@ class PageController extends Controller
         ];
 
         // Obtener refugios con ubicaciones para el mapa
-        $refugioCollection = new \Paw\App\Models\RefugioCollection();
-        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioCollection = $this->loadCollection(RefugioCollection::class);
         $refugiosMapa = $refugioCollection->getRefugiosConUbicacion($filtros);
 
         $mascotas = $this->model->getFiltered($filtros);
 
-        $favoritoModel = new \Paw\App\Models\Favorito();
-        $favoritoModel->setQueryBuilder($this->model->getQueryBuilder());
+        $favoritoModel = $this->loadModel(Favorito::class);
         $favoritosIds = $favoritoModel->getFavoritosIds($this->request->session('user'));
 
         echo $this->twig->render('mapa.html.twig', get_defined_vars());
@@ -83,8 +92,7 @@ class PageController extends Controller
         }
 
         // Refugios
-        $refugioCollection = new \Paw\App\Models\RefugioCollection();
-        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioCollection = $this->loadCollection(RefugioCollection::class);
         $refugios = $refugioCollection->buscar($q ?? '');
         foreach ($refugios as $r) {
             $item = $r->fields ?? [];
@@ -93,15 +101,6 @@ class PageController extends Controller
         }
 
         echo $this->twig->render('busqueda.html.twig', get_defined_vars());
-    }
-
-    public function iniciarSesion()
-    {
-        $titulo = "Iniciar Sesión";
-        $menu = $this->menu;
-        $redes = $this->redes;
-        $request = $this->request;
-        echo $this->twig->render('iniciar-sesion.html.twig', get_defined_vars());
     }
 
     public function comoAdoptar()
@@ -113,12 +112,6 @@ class PageController extends Controller
         echo $this->twig->render('como-adoptar.html.twig', get_defined_vars());
     }
 
-    public function adopcionExitosa()
-    {
-        $menu = $this->menu;
-        $redes = $this->redes;
-        echo $this->twig->render('adopcion-exitosa.html.twig', get_defined_vars());
-    }
 
     public function contacto()
     {
@@ -145,14 +138,13 @@ class PageController extends Controller
                 'mensaje' => $this->request->get('mensaje'),
             ]
         );
-        header("Location: /contacto-exitoso");
-    }
-    public function contactoExitoso()
-    {
-        $titulo = "Contacto Exitoso - PawMap";
-        $menu = $this->menu;
-        $redes = $this->redes;
-        echo $this->twig->render('contacto-exitoso.html.twig', get_defined_vars());
+        echo $this->twig->render('contacto.html.twig', [
+            'titulo' => 'Contacto - PawMap',
+            'menu' => $this->menu,
+            'redes' => $this->redes,
+            'flash_type' => 'contacto'
+        ]);
+        exit;
     }
     public function donacion()
     {
@@ -169,8 +161,7 @@ class PageController extends Controller
         $mascotas = $this->model->getAll(['estado_adopcion' => 'DISPONIBLE']);
 
         // Obtener refugios
-        $refugioCollection = new \Paw\App\Models\RefugioCollection();
-        $refugioCollection->setQueryBuilder($this->model->getQueryBuilder());
+        $refugioCollection = $this->loadCollection(RefugioCollection::class);
         $refugios = $refugioCollection->getAll();
 
         // Configurar el Content-Type para XML

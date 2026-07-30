@@ -6,8 +6,8 @@ namespace Paw\App\Models;
 
 class Desparasitacion extends RegistroSanitario
 {
-    public function getIconoHtml(): string
+    public function getIcono(): string
     {
-        return '<span class="material-symbols-outlined">pest_control</span>';
+        return 'pest_control';
     }
 }

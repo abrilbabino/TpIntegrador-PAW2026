@@ -26,6 +26,13 @@ class PAWLibreta {
                 const form = modal.querySelector("form");
                 if (form) {
                     form.reset(); // Restaura los valores originales
+                    form.dataset.submitted = "false";
+                    const btnSubmit = form.querySelector("button[type='submit']");
+                    if (btnSubmit) {
+                        btnSubmit.disabled = false;
+                        btnSubmit.textContent = btnSubmit.classList.contains('btn-guardar-registro') ? 
+                            (form.action.includes('completar') ? 'Completar y Subir' : 'Guardar Registro') : 'Guardar';
+                    }
 
                     // Limpiar clases, data-attributes y mensajes de error inyectados
                     form.querySelectorAll("input, select, textarea").forEach(input => {
@@ -52,5 +59,21 @@ class PAWLibreta {
                 modal.showModal();
             }
         }
+
+        // Prevenir el doble envío de formularios
+        document.querySelectorAll("form.form-registro").forEach(form => {
+            form.addEventListener("submit", (e) => {
+                if (form.dataset.submitted === "true") {
+                    e.preventDefault();
+                    return;
+                }
+                const btnSubmit = form.querySelector("button[type='submit']");
+                if (btnSubmit) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.textContent = "Procesando...";
+                }
+                form.dataset.submitted = "true";
+            });
+        });
     }
 }

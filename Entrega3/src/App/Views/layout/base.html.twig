@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/assets/img/icon.png?v=2">
     <link rel="stylesheet" href="/assets/css/style.css?v=3" />
-    <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
@@ -27,8 +26,59 @@
     </main>
 
     {% include 'partials/footer.html.twig' %}
+    {% include 'partials/auth-modals.html.twig' %}
+    {% include 'partials/alerta-global.html.twig' %}
 
     {% block content_after_main %}{% endblock %}
+
+    {% if flash_type is defined %}
+        <input type="checkbox" id="mostrar-exito" class="modal-exito-check" checked />
+        <label for="mostrar-exito" class="fondo-modal-exito"></label>
+        
+        <aside class="modal-exito-raw-wrapper">
+            
+            {% if flash_type == 'donacion' %}
+                <section class="contenedor-exito">
+                    <span class="icono-exito emoji-confeti">🎉</span>
+                    <h2>¡Muchas gracias por tu compromiso!</h2>
+                    {% include 'partials/donacion-exitosa-modal.html.twig' with {'data': flash_data} %}
+                    <a href="/donar" class="link-volver">← Volver a donaciones</a>
+                </section>
+                
+            {% elseif flash_type == 'adopcion' %}
+                <section class="mensaje-exito">
+                    <figure class="success-icon">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </figure>
+                    <h1>¡Solicitud confirmada!</h1>
+                    <p>Hemos procesado tu solicitud correctamente.<br> El personal ha sido notificado por correo electrónico y se pondrá en contacto con usted a la brevedad.</p>
+
+                    <a href="/adoptar" class="btn-volver">VOLVER A ADOPTAR</a>
+
+                    {% if descargar_pdf_mascota_id is defined and descargar_pdf_mascota_id %}
+                        <p class="texto-descarga-pdf">
+                            Tu acuerdo de adopción se descargará automáticamente.<br>
+                            ¿No comenzó la descarga o cerraste la página?
+                        </p>
+                        <a href="/formulario-adopcion/descargar-acuerdo?mascota_id={{ descargar_pdf_mascota_id }}" class="link-descarga-pdf" id="btn-descarga-pdf">Descargar Acuerdo PDF</a>
+                    {% endif %}
+                </section>
+                
+            {% elseif flash_type == 'contacto' %}
+                <section class="success-card">
+                    <figure class="success-icon">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </figure>
+                    <h1>¡Mensaje Enviado!</h1>
+                    <p>Gracias por ponerte en contacto con PawMap. Hemos recibido tu mensaje correctamente y nos comunicaremos con vos a la brevedad.</p>
+                    <nav>
+                        <a href="/" class="btn-home">Volver al Inicio</a>
+                    </nav>
+                </section>
+            {% endif %}
+        </aside>
+    {% endif %}
+
     {% block scripts %}{% endblock %}
   </body>
 </html>

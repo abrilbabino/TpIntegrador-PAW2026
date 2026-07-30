@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pawmap-websocket
+  labels:
+    app: pawmap-ws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pawmap-ws
+  template:
+    metadata:
+      labels:
+        app: pawmap-ws
+    spec:
+      serviceAccountName: pawmap-sa
+      containers:
+        - name: pawmap-websocket
+          image: us-central1-docker.pkg.dev/project-f3583ede-db03-4872-95c/pawmap-repo/pawmap-app:latest
+          imagePullPolicy: Always
+          command: ["php", "bin/websocket-server.php"]
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: pawmap-config
+            - secretRef:
+                name: pawmap-secrets
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"

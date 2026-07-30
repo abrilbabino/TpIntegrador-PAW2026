@@ -50,7 +50,7 @@ $router->setControllerFactory($controllerFactory);
 
 // Páginas estáticas
 $router->get('/', 'PageController@index');
-$router->get('/iniciar-sesion', 'PageController@iniciarSesion');
+
 $router->get('/como-adoptar', 'PageController@comoAdoptar');
 // $router->get('/donar', 'PageController@donar');
 $router->get('/mapa', 'PageController@mapa');
@@ -58,6 +58,8 @@ $router->get('/mapa', 'PageController@mapa');
 // Mascotas / adopción
 $router->get('/adoptar', 'MascotaController@adoptar');
 $router->get('/api/mascotas', 'MascotaController@apiMascotas');
+$router->get('/api/diccionario', 'MascotaController@apiDiccionario');
+$router->get('/api/diccionarios', 'MascotaController@apiDiccionarios');
 $router->get('/mascota', 'MascotaController@detalle');
 $router->get('/mascota/libreta', 'MascotaController@libreta');
 $router->get('/api/mascota/libreta', 'MascotaController@apiLibreta');
@@ -68,17 +70,22 @@ $router->get('/mascota/editar', 'MascotaController@editarForm');
 $router->post('/mascota/editar/guardar', 'MascotaController@editarGuardar');
 $router->post( '/perfil/eliminar', 'MascotaController@eliminar');
 $router->post('/mascota/subir-archivo', 'MascotaController@subirArchivoMascota');
-$router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 $router->post('/mascota/eliminar-svg', 'MascotaController@eliminarSvg');
+$router->post('/mascota/eliminar-foto-principal', 'MascotaController@eliminarFotoPrincipal');
+$router->post('/mascota/eliminar-foto', 'MascotaController@eliminarFoto');
 
 // Formulario de adopción
 $router->get('/formulario-adopcion', 'AdopcionController@formulario');
 $router->post('/formulario-adopcion/enviar', 'AdopcionController@enviar');
-$router->get('/adopcion-exitosa', 'PageController@adopcionExitosa');
 
 // Test de compatibilidad
 $router->get('/test-de-compatibilidad', 'TestController@test');
 $router->post('/test-de-compatibilidad/resultado', 'TestController@resultado');
+$router->get('/formulario-adopcion/descargar-acuerdo', 'AdopcionController@descargarAcuerdo');
+
+// Cola de Espera Inteligente
+$router->post('/cola-espera/suscribir', 'ColaEsperaController@suscribir');
+$router->post('/cola-espera/eliminar', 'ColaEsperaController@eliminar');
 
 // Refugios
 $router->get('/refugios', 'RefugioController@lista');
@@ -97,15 +104,23 @@ $router->post('/perfil/guardar', 'UserController@guardar');
 $router->post('/perfil/refugio/guardar', 'UserController@guardarRefugio');
 $router->post('/perfil/refugio/ubicacion', 'UserController@guardarUbicacion');
 $router->post('/perfil/mascota/publicar', 'UserController@guardarMascota');
+$router->post('/perfil/mascota/importar', 'UserController@importarMascotasCsv');
 $router->get('/seguimiento', 'SeguimientoController@index');
 $router->post('/seguimiento/subir-archivo', 'SeguimientoController@subirArchivo');
 $router->post('/encuesta/guardar', 'SeguimientoController@guardarEncuesta');
+$router->post('/resena/guardar', 'ResenaController@guardar');
+$router->post('/resena/editar', 'ResenaController@editar');
+$router->post('/resena/eliminar', 'ResenaController@eliminar');
 
 // Favoritos
 $router->post('/api/favorito/toggle', 'FavoritoController@toggle');
 
 // Solicitudes API
 $router->post('/api/solicitud/actualizar', 'AdopcionController@actualizar');
+
+// Notificaciones API
+$router->get('/api/notificaciones', 'NotificacionController@getRecientes');
+$router->post('/api/notificaciones/leer', 'NotificacionController@marcarLeidas');
 
 // Chat
 $router->get('/chat', 'ChatController@verChat');
@@ -120,7 +135,6 @@ $router->get('invalid_format', 'ErrorController@invalidFormat');
 // Contacto
 $router->get('/contacto', 'PageController@contacto');
 $router->post('/contacto/enviar', 'PageController@contactoEnviar');
-$router->get('/contacto-exitoso', 'PageController@contactoExitoso');
 
 // Donaciones
 $router->get('/donar', 'DonacionController@index');
@@ -129,3 +143,7 @@ $router->post('/enviar-comprobante', 'DonacionController@enviarComprobante');
 
 // SEO
 $router->get('/sitemap.xml', 'PageController@sitemap');
+
+// Generar QR
+$router->get('/generar-qr', 'QrController@index');
+$router->get('/generar-qr/imagen', 'QrController@generarImagen');

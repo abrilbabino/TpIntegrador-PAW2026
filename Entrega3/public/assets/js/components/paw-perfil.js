@@ -72,7 +72,7 @@ class PAWPerfil {
         this.imgPreview = document.getElementById('image-preview');
         this.placeholder = document.getElementById('preview-placeholder');
         this.eliminarFotoInput = document.getElementById('eliminar_foto');
-        
+
         this.avatarModal = document.getElementById('avatar-modal');
         this.modalBackdrop = document.getElementById('avatar-modal-backdrop');
         this.modalUploadBtn = document.getElementById('modal-upload-btn');
@@ -90,6 +90,7 @@ class PAWPerfil {
 
     abrirModalAvatar(e) {
         if (e) e.preventDefault();
+        if (this.wasDragging) return;
         if (!this.contenedor.classList.contains('is-editing')) return;
         if (this.avatarModal) {
             this.avatarModal.classList.remove('hidden');
@@ -143,7 +144,15 @@ class PAWPerfil {
                     input.classList.remove('input-invalido');
                 });
 
+                if (this.avatarCircle) this.avatarCircle.classList.remove('is-cropping');
+                if (this.dragAbortController) this.dragAbortController.abort();
+
                 if (this.imgPreview) {
+                    this.imgPreview.style.left = '';
+                    this.imgPreview.style.top = '';
+                    this.imgPreview.style.width = '';
+                    this.imgPreview.style.height = '';
+                    this.imgPreview.style.cursor = '';
                     const original = this.imgPreview.getAttribute('data-original');
                     if (original) {
                         this.imgPreview.setAttribute('src', original);
@@ -169,6 +178,7 @@ class PAWPerfil {
                         if (this.imgPreview) {
                             this.imgPreview.setAttribute('src', ev.target.result);
                             this.imgPreview.classList.remove('hidden');
+                            this.iniciarRecorte(ev.target.result, file);
                         }
                         if (this.placeholder) {
                             this.placeholder.classList.add('hidden');
@@ -208,7 +218,14 @@ class PAWPerfil {
                 this.cerrarModalAvatar();
                 if (this.eliminarFotoInput) this.eliminarFotoInput.value = '1';
                 if (this.fileInput) this.fileInput.value = '';
+                if (this.avatarCircle) this.avatarCircle.classList.remove('is-cropping');
+                if (this.dragAbortController) this.dragAbortController.abort();
                 if (this.imgPreview) {
+                    this.imgPreview.style.left = '';
+                    this.imgPreview.style.top = '';
+                    this.imgPreview.style.width = '';
+                    this.imgPreview.style.height = '';
+                    this.imgPreview.style.cursor = '';
                     this.imgPreview.setAttribute('src', '');
                     this.imgPreview.classList.add('hidden');
                 }
@@ -217,5 +234,130 @@ class PAWPerfil {
                 }
             });
         }
+    }
+
+    iniciarRecorte(dataUrl, file) {
+        if (!this.avatarCircle) return;
+        this.avatarCircle.classList.add('is-cropping');
+
+        // Reiniciar estilos en línea previos
+        this.imgPreview.style.left = '0px';
+        this.imgPreview.style.top = '0px';
+        this.imgPreview.style.width = 'auto';
+        this.imgPreview.style.height = 'auto';
+        this.imgPreview.style.transform = 'none';
+
+        const img = new Image();
+        img.onload = () => {
+            const containerSize = this.avatarCircle.offsetWidth || 100;
+            const scale = Math.max(containerSize / img.width, containerSize / img.height);
+            const scaledWidth = img.width * scale;
+            const scaledHeight = img.height * scale;
+
+            this.imgPreview.style.width = scaledWidth + 'px';
+            this.imgPreview.style.height = scaledHeight + 'px';
+
+            // Centrar por defecto
+            let currentLeft = (containerSize - scaledWidth) / 2;
+            let currentTop = (containerSize - scaledHeight) / 2;
+
+            this.imgPreview.style.left = currentLeft + 'px';
+            this.imgPreview.style.top = currentTop + 'px';
+            this.imgPreview.style.cursor = 'grab';
+
+            let isDragging = false;
+            let hasMoved = false;
+            let startX, startY, startLeft, startTop;
+
+            const startDrag = (e) => {
+                if (!this.avatarCircle.classList.contains('is-cropping')) return;
+                e.preventDefault();
+                isDragging = true;
+                hasMoved = false;
+                this.avatarCircle.classList.add('is-dragging');
+                this.imgPreview.style.cursor = 'grabbing';
+                startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+                startLeft = currentLeft;
+                startTop = currentTop;
+            };
+
+            const doDrag = (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                hasMoved = true;
+                const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+                const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+                let newLeft = startLeft + (clientX - startX);
+                let newTop = startTop + (clientY - startY);
+
+                // Restringir arrastre para no salir del contenedor
+                if (newLeft > 0) newLeft = 0;
+                if (newTop > 0) newTop = 0;
+                if (newLeft < containerSize - scaledWidth) newLeft = containerSize - scaledWidth;
+                if (newTop < containerSize - scaledHeight) newTop = containerSize - scaledHeight;
+
+                currentLeft = newLeft;
+                currentTop = newTop;
+                this.imgPreview.style.left = newLeft + 'px';
+                this.imgPreview.style.top = newTop + 'px';
+            };
+
+            const endDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                if (hasMoved) {
+                    this.wasDragging = true;
+                    setTimeout(() => { this.wasDragging = false; }, 100);
+                }
+
+                this.avatarCircle.classList.remove('is-dragging');
+                this.imgPreview.style.cursor = 'grab';
+                this.aplicarRecorte(img, currentLeft, currentTop, scaledWidth, scale, containerSize, file);
+            };
+
+            // Eliminar listeners anteriores si los hay
+            if (this.dragAbortController) this.dragAbortController.abort();
+            this.dragAbortController = new AbortController();
+            const signal = this.dragAbortController.signal;
+
+            this.imgPreview.addEventListener('mousedown', startDrag, { signal });
+            this.imgPreview.addEventListener('touchstart', startDrag, { signal, passive: false });
+
+            document.addEventListener('mousemove', doDrag, { signal });
+            document.addEventListener('touchmove', doDrag, { signal, passive: false });
+
+            document.addEventListener('mouseup', endDrag, { signal });
+            document.addEventListener('touchend', endDrag, { signal });
+
+            // Aplicar primer recorte automático centrado
+            this.aplicarRecorte(img, currentLeft, currentTop, scaledWidth, scale, containerSize, file);
+        };
+        img.src = dataUrl;
+    }
+
+    aplicarRecorte(originalImg, currentLeft, currentTop, scaledWidth, scale, containerSize, file) {
+        const EXPORT_SIZE = 400;
+        const canvas = document.createElement('canvas');
+        canvas.width = EXPORT_SIZE;
+        canvas.height = EXPORT_SIZE;
+        const ctx = canvas.getContext('2d');
+
+        const realScale = originalImg.width / scaledWidth;
+        const sourceX = Math.abs(currentLeft) * realScale;
+        const sourceY = Math.abs(currentTop) * realScale;
+        const sourceSize = containerSize * realScale;
+
+        ctx.drawImage(originalImg, sourceX, sourceY, sourceSize, sourceSize, 0, 0, EXPORT_SIZE, EXPORT_SIZE);
+
+        canvas.toBlob((blob) => {
+            if (blob && this.fileInput) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(new File([blob], file.name, { type: file.type }));
+                this.fileInput.files = dataTransfer.files;
+            }
+        }, file.type, 0.9);
     }
 }

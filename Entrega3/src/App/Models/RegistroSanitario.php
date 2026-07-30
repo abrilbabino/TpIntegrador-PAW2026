@@ -96,5 +96,5 @@ abstract class RegistroSanitario extends Model
     /**
      * Método para obtener el icono según el tipo
      */
-    abstract public function getIconoHtml(): string;
+    abstract public function getIcono(): string;
 }

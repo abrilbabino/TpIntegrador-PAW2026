@@ -4,9 +4,11 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 use Paw\Core\Exceptions\ModelNotFoundException;
+use Paw\Core\Traits\Notificable;
 
 class SolicitudAdopcion extends Model
 {
+    use Notificable;
     public $table = 'solicitud_de_adopcion';
 
     public $fields = [
@@ -64,89 +66,8 @@ class SolicitudAdopcion extends Model
             }
         }
 
-        // Verificar solicitud duplicada contra la base de datos
-        if (!empty($this->fields['adoptante_id']) && !empty($this->fields['mascota_id'])) {
-            if ($this->existeSolicitud((int)$this->fields['adoptante_id'], (int)$this->fields['mascota_id'])) {
-                $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota. No es posible enviar más de una solicitud por mascota.';
-            }
-        }
-
         return $errores;
     }
 
-    /**
-     * Verifica si ya existe una solicitud de adopción del adoptante para la mascota indicada.
-     */
-    public function existeSolicitud(int $adoptanteId, int $mascotaId): bool
-    {
-        return $this->queryBuilder->exists($this->table, [
-            'adoptante_id' => $adoptanteId,
-            'mascota_id'   => $mascotaId,
-        ]);
-    }
 
-    public function guardar(int $refugio_id)
-    {
-        $data = [
-            'adoptante_id' => $this->fields['adoptante_id'],
-            'mascota_id' => $this->fields['mascota_id'],
-            'refugio_id' => $refugio_id,
-            'fecha' => date('Y-m-d H:i:s'),
-            'estado' => 'PENDIENTE',
-            'contrato_aceptado' => 1,
-            'fecha_aceptacion' => date('Y-m-d H:i:s')
-        ];
-
-        $this->queryBuilder->insert($this->table, $data);
-    }
-
-    /**
-     * Procesa una solicitud de adopción (aceptar o rechazar)
-     * Lanza excepciones con código HTTP si hay errores de validación.
-     */
-    public function procesarSolicitud(int $solicitudId, string $accion, int $refugioId): string
-    {
-        if ($accion !== 'aceptar' && $accion !== 'rechazar') {
-            throw new \Exception('Acción no válida. Solo se permite aceptar o rechazar.', 400);
-        }
-
-        $solicitud = $this->queryBuilder->selectOne($this->table, ['id' => $solicitudId]);
-
-        if (!$solicitud) {
-            throw new ModelNotFoundException('No se encontró la solicitud especificada.');
-        }
-
-        if ((int)$solicitud['refugio_id'] !== $refugioId) {
-            throw new \Exception('No tiene permisos para modificar esta solicitud.', 403);
-        }
-
-        if (strtoupper($solicitud['estado'] ?? '') !== 'PENDIENTE') {
-            throw new \Exception('La solicitud ya ha sido procesada previamente.', 400);
-        }
-
-        $nuevoEstado = ($accion === 'aceptar') ? 'APROBADA' : 'RECHAZADA';
-
-        $this->queryBuilder->getConnection()->beginTransaction();
-        try {
-            $this->queryBuilder->update($this->table, [
-                'estado' => $nuevoEstado,
-                'fecha_aceptacion' => date('Y-m-d H:i:s')
-            ], ['id' => $solicitudId]);
-
-            if ($accion === 'aceptar') {
-                $mascotaId = (int)$solicitud['mascota_id'];
-                $this->queryBuilder->update('mascota', [
-                    'estado_adopcion' => 'ADOPTADO',
-                    'fecha_adopcion' => date('Y-m-d H:i:s')
-                ], ['id' => $mascotaId]);
-            }
-
-            $this->queryBuilder->getConnection()->commit();
-        } catch (\Exception $e) {
-            $this->queryBuilder->getConnection()->rollBack();
-            throw new \Exception('Error al actualizar la base de datos: ' . $e->getMessage(), 500);
-        }
-
-        return $nuevoEstado;
-    }
 }

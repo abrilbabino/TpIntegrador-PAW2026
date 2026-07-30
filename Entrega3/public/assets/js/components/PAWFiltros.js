@@ -115,7 +115,9 @@ class PAWFiltros {
             // Si el filtro tiene datos auxiliares (sourceURL), usarlos para poblar las opciones
             const fuenteDatos = this.datosAuxiliares[filtro.prop] || this.items;
             fuenteDatos.forEach(item => {
-                if (item[filtro.prop] != null && item[filtro.prop] !== "") valoresUnicos.add(item[filtro.prop]);
+                if (item[filtro.prop] != null && item[filtro.prop] !== "") {
+                    valoresUnicos.add(item[filtro.prop].toString().trim().toLowerCase());
+                }
             });
             const opcionesOrdenadas = Array.from(valoresUnicos).sort();
 
@@ -323,7 +325,7 @@ class PAWFiltros {
                     cta.innerHTML = `
                         <h3><span class="material-symbols-outlined">pets</span> ¿Representás a un Refugio?</h3>
                         <p>Sumate a nuestra red y dale visibilidad a tus mascotas.</p>
-                        <a href="/iniciar-sesion?registro=refugio" class="btn-registro-refugio">
+                        <a href="?auth=login&registro=refugio" class="btn-registro-refugio">
                             <span class="material-symbols-outlined">add_circle</span> Registrate
                         </a>
                     `;
@@ -394,11 +396,96 @@ class PAWFiltros {
 
             this.aplicarFiltros();
         });
+
+        // Evento para suscribirse a la Cola de Espera
+        document.addEventListener('paw-cola-espera-solicitada', () => {
+            // Filtrar los valores vacíos o no relevantes para el backend
+            const filtrosActivos = Object.fromEntries(
+                Object.entries(this.estadoFiltros).filter(([k, v]) => v !== "" && k !== "ubicacion_lat" && k !== "ubicacion_lon" && k !== "ubicacion")
+            );
+
+            // Si hay ubicación en string y pudimos deducir ciudad o provincia en el frontend, 
+            // el backend necesita provincia/ciudad estricto, o le mandamos lo que buscó
+            // por simplificación, mandamos todo lo que está en estadoFiltros.
+            
+            const formData = new URLSearchParams();
+            for (const key in filtrosActivos) {
+                if (typeof filtrosActivos[key] === 'object') {
+                    if (filtrosActivos[key].min !== "") formData.append(`${key}_min`, filtrosActivos[key].min);
+                    if (filtrosActivos[key].max !== "") formData.append(`${key}_max`, filtrosActivos[key].max);
+                } else {
+                    formData.append(key, filtrosActivos[key]);
+                }
+            }
+
+            // Obtenemos el prefijo de la URL de API (por si estamos en XAMPP o PHP built-in)
+            const basePath = window.location.pathname.includes('/public/')
+                ? window.location.pathname.split('/public/')[0] + '/public'
+                : '';
+            const endpointUrl = basePath + '/cola-espera/suscribir';
+
+            fetch(endpointUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            })
+            .then(res => {
+                if (res.status === 401) {
+                    const loginModal = document.getElementById('modal-login');
+                    if (loginModal) {
+                        loginModal.showModal();
+                        throw new Error("OPEN_LOGIN");
+                    }
+                }
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return res.json();
+                } else {
+                    throw new Error("Respuesta no válida del servidor");
+                }
+            })
+            .then(data => {
+                const isSuccess = data.success;
+                const modal = document.getElementById('modal-js-alerta');
+                if (modal) {
+                    const titulo = document.getElementById('modal-js-alerta-titulo');
+                    const mensaje = document.getElementById('modal-js-alerta-mensaje');
+                    const icono = document.getElementById('modal-js-alerta-icono');
+
+                    titulo.innerText = isSuccess ? "¡Alerta creada!" : "¡Ups!";
+                    mensaje.innerText = data.message || (isSuccess ? "Te avisaremos cuando ingrese un animal con estas características." : "Error inesperado.");
+                    
+                    if (icono) {
+                        icono.innerText = isSuccess ? "check_circle" : "info";
+                    }
+
+                    modal.showModal();
+                } else {
+                    alert(data.message || (isSuccess ? "Suscripción exitosa" : "No se pudo suscribir"));
+                }
+            })
+            .catch(err => {
+                if (err.message === "OPEN_LOGIN") return; // Ya abrimos el modal de login
+                
+                console.error("Error en Cola de Espera", err);
+                const modal = document.getElementById('modal-js-alerta');
+                if (modal) {
+                    document.getElementById('modal-js-alerta-titulo').innerText = "Iniciá Sesión";
+                    document.getElementById('modal-js-alerta-mensaje').innerText = "Para suscribirte a la cola de espera necesitás iniciar sesión primero.";
+                    const icono = document.getElementById('modal-js-alerta-icono');
+                    if (icono) icono.innerText = "lock";
+                    modal.showModal();
+                } else {
+                    alert("Para suscribirte a la cola de espera necesitás iniciar sesión primero.");
+                }
+            });
+        });
     }
 
     aplicarFiltros() {
-        const queryUbicacion = (this.estadoFiltros['ubicacion'] || "").toLowerCase().trim();
-        const todasLasCiudades = [...new Set(this.items.map(i => (i.ciudad || "").toLowerCase().trim()).filter(c=>c))];
+        const removeAccentsGlobal = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const queryUbicacion = removeAccentsGlobal((this.estadoFiltros['ubicacion'] || "").toLowerCase().trim());
+        const todasLasCiudades = [...new Set(this.items.map(i => removeAccentsGlobal((i.ciudad || "").toLowerCase().trim())).filter(c=>c))];
         const queryTieneCiudadExacta = queryUbicacion ? todasLasCiudades.some(c => queryUbicacion.includes(c)) : false;
 
         this.itemsFiltrados = this.items.filter(item => {
@@ -419,7 +506,9 @@ class PAWFiltros {
                 } 
                 // 2. Evaluación estricta para el resto (Selects, Radios)
                 else {
-                    if (valorBuscado !== "" && String(item[prop]) !== String(valorBuscado)) {
+                    const strItem = removeAccentsGlobal(String(item[prop] || "").toLowerCase().trim());
+                    const strBuscado = removeAccentsGlobal(String(valorBuscado || "").toLowerCase().trim());
+                    if (strBuscado !== "" && strItem !== strBuscado) {
                         cumple = false;
                         break; 
                     }
@@ -428,8 +517,8 @@ class PAWFiltros {
 
             // 3. Filtrar por ubicación (prioridad ciudad sobre provincia)
             if (cumple && queryUbicacion) {
-                const ciudad = (item.ciudad || "").toLowerCase().trim();
-                const provincia = (item.provincia || "").toLowerCase().trim();
+                const ciudad = removeAccentsGlobal((item.ciudad || "").toLowerCase().trim());
+                const provincia = removeAccentsGlobal((item.provincia || "").toLowerCase().trim());
                 
                 const matchCiudad = ciudad && (queryUbicacion.includes(ciudad) || ciudad.includes(queryUbicacion));
                 const matchProvincia = provincia && (queryUbicacion.includes(provincia) || provincia.includes(queryUbicacion));

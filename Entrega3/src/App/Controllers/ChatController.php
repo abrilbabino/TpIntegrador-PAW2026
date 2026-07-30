@@ -15,14 +15,13 @@ class ChatController extends Controller
     public function verChat()
     {
         $solicitudId = (int) $this->request->get('solicitud_id');
-        if (!$solicitudId || !isset($_SESSION['user'])) {
+        $usuario = $this->request->session('user');
+        if (!$solicitudId || !$usuario) {
             header("Location: /perfil");
             exit;
         }
 
-        $usuario = $_SESSION['user'];
-        $solicitudesDb = new SolicitudAdopcionCollection();
-        $solicitudesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $solicitudesDb = $this->loadCollection(SolicitudAdopcionCollection::class);
         $solicitud = $solicitudesDb->getById($solicitudId);
 
         if (!$solicitud || $solicitud['estado'] !== 'APROBADA') {
@@ -38,8 +37,7 @@ class ChatController extends Controller
 
         $otroUsuarioId = ($usuario['id'] == $solicitud['adoptante_id']) ? $solicitud['refugio_id'] : $solicitud['adoptante_id'];
 
-        $mensajesDb = new MensajeCollection();
-        $mensajesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $mensajesDb = $this->loadCollection(MensajeCollection::class);
         
         // Marcar leidos
         $mensajesDb->marcarComoLeidos($solicitudId, $usuario['id']);
@@ -55,7 +53,8 @@ class ChatController extends Controller
 
     public function enviarMensaje()
     {
-        if (!isset($_SESSION['user'])) {
+        $usuario = $this->request->session('user');
+        if (!$usuario) {
             http_response_code(403);
             echo json_encode(["error" => "No autorizado"]);
             exit;
@@ -70,9 +69,7 @@ class ChatController extends Controller
             exit;
         }
 
-        $usuario = $_SESSION['user'];
-        $solicitudesDb = new SolicitudAdopcionCollection();
-        $solicitudesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $solicitudesDb = $this->loadCollection(SolicitudAdopcionCollection::class);
         $solicitud = $solicitudesDb->getById($solicitudId);
 
         if (!$solicitud || $solicitud['estado'] !== 'APROBADA') {
@@ -97,8 +94,7 @@ class ChatController extends Controller
             'contenido' => $contenido
         ]);
 
-        $mensajesDb = new MensajeCollection();
-        $mensajesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $mensajesDb = $this->loadCollection(MensajeCollection::class);
         $resultado = $mensajesDb->guardar($mensaje);
 
         if ($resultado === true) {
@@ -113,16 +109,15 @@ class ChatController extends Controller
 
     public function apiMensajes()
     {
-        if (!isset($_SESSION['user'])) {
+        $usuario = $this->request->session('user');
+        if (!$usuario) {
             http_response_code(403);
             exit;
         }
 
         $solicitudId = (int) $this->request->get('solicitud_id');
-        $usuario = $_SESSION['user'];
 
-        $solicitudesDb = new SolicitudAdopcionCollection();
-        $solicitudesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $solicitudesDb = $this->loadCollection(SolicitudAdopcionCollection::class);
         $solicitud = $solicitudesDb->getById($solicitudId);
 
         if (!$solicitud || ($usuario['id'] != $solicitud['adoptante_id'] && $usuario['id'] != $solicitud['refugio_id'])) {
@@ -130,8 +125,7 @@ class ChatController extends Controller
             exit;
         }
 
-        $mensajesDb = new MensajeCollection();
-        $mensajesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $mensajesDb = $this->loadCollection(MensajeCollection::class);
         $mensajesDb->marcarComoLeidos($solicitudId, $usuario['id']);
         $mensajes = $mensajesDb->getMensajesPorSolicitud($solicitudId);
 
@@ -154,16 +148,15 @@ class ChatController extends Controller
 
     public function apiListarChatsActivos()
     {
-        if (!isset($_SESSION['user'])) {
+        $usuario = $this->request->session('user');
+        if (!$usuario) {
             http_response_code(403);
             exit;
         }
 
-        $usuario = $_SESSION['user'];
         $rol = $usuario['rol'] ?? 'adoptante';
         
-        $solicitudesDb = new SolicitudAdopcionCollection();
-        $solicitudesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $solicitudesDb = $this->loadCollection(SolicitudAdopcionCollection::class);
         
         if ($rol === 'refugio') {
             $solicitudes = $solicitudesDb->getSolicitudesRefugio((int) $usuario['id']);
@@ -171,8 +164,7 @@ class ChatController extends Controller
             $solicitudes = $solicitudesDb->getSolicitudesAdoptante((int) $usuario['id']);
         }
 
-        $mensajesDb = new MensajeCollection();
-        $mensajesDb->setQueryBuilder($this->model->getQueryBuilder());
+        $mensajesDb = $this->loadCollection(MensajeCollection::class);
 
         $chats = [];
         foreach ($solicitudes as $s) {

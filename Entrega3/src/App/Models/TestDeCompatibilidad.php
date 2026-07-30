@@ -48,10 +48,39 @@ class TestDeCompatibilidad extends Model
         } elseif ($r['pregunta3'] === 'alta') {
             $filtros['temperamento'] = ['enérgico', 'juguetón'];
         }
+        
+        $otrasMascotas = (array)($r['pregunta4'] ?? []);
+        $tienePerro = in_array('perro', $otrasMascotas);
+        $tieneGato = in_array('gato', $otrasMascotas);
+        $mensajeExtra = "";
+
+        if ($tienePerro || $tieneGato) {
+            if (!isset($filtros['temperamento'])) {
+                $filtros['temperamento'] = [];
+            }
+            
+            if ($tienePerro && $tieneGato) {
+                // Tiene Ambos
+                $filtros['temperamento'][] = 'cariñoso';
+                $mensajeExtra = " Al tener ya perros y gatos, priorizamos exclusivamente perfiles muy cariñosos para asegurar una buena convivencia en la manada.";
+            } elseif ($tienePerro) {
+                // Solo Perro
+                $filtros['temperamento'][] = 'juguetón';
+                $filtros['temperamento'][] = 'enérgico';
+                $mensajeExtra = " Como ya tenés perro/s, priorizamos mascotas más juguetonas y enérgicas para que puedan jugar e interactuar a la par.";
+            } elseif ($tieneGato) {
+                // Solo Gato
+                $filtros['temperamento'][] = 'tranquilo';
+                $filtros['temperamento'][] = 'curioso';
+                $mensajeExtra = " Al convivir con gatos, buscamos priorizar animales más tranquilos y curiosos para no estresarlos ni invadir su territorio.";
+            }
+
+            $filtros['temperamento'] = array_unique($filtros['temperamento']);
+        }
 
         $this->resultado = json_encode([
             'tipo' => $filtros['especie'] ?? 'indiferente',
-            'mensaje' => "Según tu espacio y rutina, te recomendamos buscar $mensajeEspecie con un nivel de energía acorde a tu estilo de vida."
+            'mensaje' => "Según tu espacio y rutina, te recomendamos buscar $mensajeEspecie con un nivel de energía acorde a tu estilo de vida." . $mensajeExtra
         ]);
 
         return $filtros;

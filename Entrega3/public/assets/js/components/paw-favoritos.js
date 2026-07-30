@@ -44,7 +44,7 @@ class PAWFavoritos {
           }
         } else {
           if (data.error === 'No autorizado') {
-            window.location.href = '/iniciar-sesion';
+            window.location.href = '?auth=login';
           } else {
             console.error('Error al modificar favoritos:', data.error);
           }

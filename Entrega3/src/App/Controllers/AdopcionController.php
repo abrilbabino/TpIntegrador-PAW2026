@@ -5,11 +5,16 @@ namespace Paw\App\Controllers;
 use Paw\Core\Controller;
 use Paw\App\Models\Mascota;
 use Paw\App\Models\MediaMascotaCollection;
+use Paw\App\Models\User;
 use Paw\Core\MailService;
+
+use Paw\App\Models\SolicitudAdopcion;
+use Paw\App\Models\SolicitudAdopcionCollection;
+use Paw\Core\PdfService;
 
 class AdopcionController extends Controller
 {
-    public ?string $modelName = \Paw\App\Models\SolicitudAdopcion::class;
+    public ?string $modelName = SolicitudAdopcionCollection::class;
 
     public function formulario()
     {
@@ -21,7 +26,7 @@ class AdopcionController extends Controller
 
         // Si no está logueado o no es adoptante, redirigir a login
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /iniciar-sesion?error=perfil_requerido');
+            header('Location: /?auth=login&error=perfil_requerido');
             exit;
         }
 
@@ -33,8 +38,7 @@ class AdopcionController extends Controller
         [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
 
         // Obtener datos del adoptante para pre-completar el formulario
-        $userModel = new \Paw\App\Models\User;
-        $userModel->setQueryBuilder($this->model->getQueryBuilder());
+        $userModel = $this->loadModel(User::class);
         $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
         $userData = $userModel->findById((int)$userSession['id']);
 
@@ -58,7 +62,7 @@ class AdopcionController extends Controller
 
         // Seguridad: Verificar sesión en el envío también
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /iniciar-sesion');
+            header('Location: /?auth=login');
             exit;
         }
 
@@ -69,37 +73,100 @@ class AdopcionController extends Controller
         // Inyectar el ID del adoptante desde la sesión (como favoritos)
         $datos['adoptante_id'] = $userSession['id'];
 
-        $this->model->set($datos);
-        $errores = $this->model->validar();
+        $solicitudEntity = new SolicitudAdopcion();
+        $solicitudEntity->set($datos);
+        $errores = $solicitudEntity->validar();
 
-        $mascota_id = $this->model->fields['mascota_id'];
+        // Verificar duplicados
+        if (empty($errores) && $this->model->existeSolicitud((int)$datos['adoptante_id'], (int)$datos['mascota_id'])) {
+            $errores['solicitud_duplicada'] = 'Ya enviaste una solicitud de adopción para esta mascota.';
+        }
+
+        $mascota_id = $solicitudEntity->fields['mascota_id'];
 
         if (count($errores) > 0) {
             [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
             echo $this->twig->render('formulario-adopcion.html.twig', get_defined_vars());
         } else {
             $mascota = $this->cargarMascota($mascota_id);
-            $this->model->guardar($mascota->fields['refugio_id']);
+            $this->model->guardar($solicitudEntity, $mascota->fields['refugio_id']);
 
             $mailService = new MailService;
             $mailService->enviarConfirmacionAdopcion(
                 $config->get('MAIL_PERSONAL'),
                 [
                     'nombre_mascota' => $mascota->fields['nombre'],
-                    'nombre' => $this->model->fields['nombre'],
-                    'apellido' => $this->model->fields['apellido'],
-                    'email' => $this->model->fields['email'],
+                    'nombre' => $solicitudEntity->fields['nombre'],
+                    'apellido' => $solicitudEntity->fields['apellido'],
+                    'email' => $solicitudEntity->fields['email'],
                 ]
             );
 
-            header('Location: /adopcion-exitosa');
+            $id = $mascota_id;
+            [$mascota, $mediaExtras] = $this->cargarMediaMascota($id);
+            $userModel = $this->loadModel(User::class);
+            $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+            $userData = $userModel->findById((int)$userSession['id']);
+
+            echo $this->twig->render('formulario-adopcion.html.twig', [
+                'mascota' => $mascota,
+                'mediaExtras' => $mediaExtras,
+                'adoptanteData' => $adoptanteData,
+                'userData' => $userData,
+                'flash_type' => 'adopcion',
+                'descargar_pdf_mascota_id' => $id,
+            ]);
+            exit;
         }
+    }
+
+    public function descargarAcuerdo()
+    {
+        $userSession = $this->request->session('user');
+        if (!$userSession || $userSession['rol'] !== 'adoptante') {
+            header('Location: /');
+            return;
+        }
+
+        $mascota_id = $this->request->get('mascota_id');
+        if (!$mascota_id) {
+            header('Location: /adoptar');
+            return;
+        }
+
+        [$mascota, $mediaExtras] = $this->cargarMediaMascota($mascota_id);
+        
+        $userModel = $this->loadModel(User::class);
+        $adoptanteData = $userModel->getAdoptante((int)$userSession['id']);
+        $userData = $userModel->findById((int)$userSession['id']);
+
+        $pdfService = new PdfService();
+        $publicDir = $this->request->server('DOCUMENT_ROOT');
+        $fotoPath = $pdfService->imageToBase64($mascota->fields['imagen'] ?? '', $publicDir);
+
+        $htmlPdf = $this->twig->render('pdf/acuerdo_adopcion.html.twig', [
+            'adoptante_nombre' => $adoptanteData['nombre'] ?? $this->model->fields['nombre'],
+            'adoptante_apellido' => $adoptanteData['apellido'] ?? $this->model->fields['apellido'],
+            'adoptante_email' => $userData['email'] ?? $this->model->fields['email'],
+            'mascota_nombre' => $mascota->fields['nombre'],
+            'mascota_especie' => $mascota->fields['especie'] ?? 'Desconocida',
+            'mascota_foto' => $fotoPath
+        ]);
+
+        $pdfBinary = $pdfService->generarDesdeHtml($htmlPdf);
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="acuerdo_adopcion_' . $mascota_id . '.pdf"');
+        header('Content-Length: ' . strlen($pdfBinary));
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
+
+        echo $pdfBinary;
     }
 
     private function cargarMascota($id)
     {
-        $mascota = new Mascota;
-        $mascota->setQueryBuilder($this->model->getQueryBuilder());
+        $mascota = $this->loadModel(Mascota::class);
         $mascota->load($id);
         return $mascota;
     }
@@ -108,8 +175,7 @@ class AdopcionController extends Controller
     {
         $mascota = $this->cargarMascota($id);
 
-        $mediaCol = new MediaMascotaCollection;
-        $mediaCol->setQueryBuilder($mascota->getQueryBuilder());
+        $mediaCol = $this->loadCollection(MediaMascotaCollection::class);
         $mediaExtras = $mediaCol->getMultimedia(
             (int)$mascota->fields['id'],
             $mascota->fields['imagen'] ?? null

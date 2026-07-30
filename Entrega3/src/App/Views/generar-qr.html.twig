@@ -1,0 +1,117 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Generar codigo QR - PawMap{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/donacion.css" />
+    <link rel="stylesheet" href="/assets/css/generar-qr.css" />
+{% endblock %}
+
+{% block main_attributes %}class="donar-main"{% endblock %}
+
+{% block main %}
+    <header class="hero-donaciones">
+        <h1>Generar codigo QR</h1>
+        <p>Imprimiá la chapita inteligente de tu mascota</p>
+    </header>
+
+    <section class="formulario-donacion">
+
+        {# Columna izquierda: imagen + banner info #}
+        <article class="qr-info-card">
+            <figure class="qr-info-img-wrapper">
+                <img id="img-mascota-preview" src="/assets/img/qr_placeholder.jpg" alt="Mascota">
+            </figure>
+            
+            <section class="qr-info-content">
+                <p class="qr-info-text qr-info-cta">
+                    <strong>¡Escaneá el QR para acceder al perfil de tu mascota!</strong>
+                </p>
+
+                <aside class="qr-info-feature">
+                    <figure class="icon-feature-wrap">
+                        <span class="material-symbols-outlined">pets</span>
+                    </figure>
+                    <section class="feature-text">
+                        <h4>Identificación rápida y segura</h4>
+                        <p>Ideal para que el refugio imprima o mande a <strong>grabar en láser</strong>. Si se pierde, quien escanee el QR entrará directo al perfil público para ver los datos de contacto.</p>
+                    </section>
+                </aside>
+            </section>
+        </article>
+
+        <section class="formulario-donaciones qr-formulario-lado">
+
+            <label for="mascota-select">
+                {% if rolUsuario == 'refugio' %}
+                    SELECCIONÁ UNA MASCOTA DE TU REFUGIO
+                {% else %}
+                    SELECCIONÁ TU MASCOTA
+                {% endif %}
+            </label>
+
+            {% if mascotas is empty %}
+                <select id="mascota-select" disabled>
+                    <option value="">
+                        {% if rolUsuario == 'refugio' %}
+                            No tenés mascotas disponibles publicadas
+                        {% else %}
+                            No tenés mascotas adoptadas registradas
+                        {% endif %}
+                    </option>
+                </select>
+            {% else %}
+                <select id="mascota-select">
+                    <option value="" disabled selected>Seleccioná una mascota para comenzar</option>
+                    {% for mascota in mascotas %}
+                        <option value="{{ mascota.fields.id }}"
+                                data-nombre="{{ mascota.fields.nombre|capitalize }}"
+                                data-imagen="{{ mascota.fields.imagen|default('default-pet.jpg') }}">
+                            {{ mascota.fields.nombre|capitalize }}
+                            {% if mascota.fields.especie %} · {{ mascota.fields.especie|capitalize }}{% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            <section class="qr-estado-vacio" id="qr-estado-vacio">
+                <span class="material-symbols-outlined qr-icono-grande">pets</span>
+                <p>El código QR aparecerá aquí una vez que elijas una mascota</p>
+            </section>
+
+            <section class="qr-resultado" id="qr-resultado" hidden>
+
+                <header class="qr-resultado-header">
+                    <h3 class="chapita-title" id="qr-nombre-mascota"></h3>
+                </header>
+
+                <figure class="qr-frame-simple" id="qr-image-container">
+                </figure>
+
+                <section class="form-group-qr">
+                    <label for="print-size-select">TAMAÑO DE IMPRESION</label>
+                    <select id="print-size-select">
+                        <option value="size-poster">Cartel para Jaula (12x12 cm)</option>
+                        <option value="size-medium">Molde Medalla Grande (5x5 cm)</option>
+                        <option value="size-small">Molde Medalla Pequeña (3x3 cm)</option>
+                    </select>
+                </section>
+
+                <button type="button" class="btn-confirmar" id="btn-imprimir-qr" onclick="window.print()">
+                    <span class="material-symbols-outlined">print</span>
+                    Imprimir codigo QR
+                </button>
+            </section>
+
+        </section>
+    </section>
+
+    <section class="print-section" id="print-zone">
+        <header class="qr-resultado-header">
+            <h3 class="chapita-title" id="print-nombre"></h3>
+        </header>
+        <figure class="qr-frame-simple" id="print-qr-container"></figure>
+    </section>
+
+{% endblock %}
+

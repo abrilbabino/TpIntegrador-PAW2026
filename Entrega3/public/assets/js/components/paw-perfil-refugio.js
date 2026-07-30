@@ -27,7 +27,7 @@ class PAWRefugioPerfil {
         const inPais = document.getElementById("ubi_pais");
         const inDireccion = document.getElementById("ubi_direccion");
         const btnGuardar = document.getElementById("btn-guardar-ubicacion");
-        
+
         if (!inputUbi || !ulSugerencias) return;
 
         let timeout = null;
@@ -52,11 +52,11 @@ class PAWRefugioPerfil {
                         data.forEach(item => {
                             const li = document.createElement("li");
                             li.textContent = item.display_name;
-                            
+
                             li.addEventListener("click", () => {
                                 inputUbi.value = item.display_name;
                                 ulSugerencias.style.display = "none";
-                                
+
                                 if (inLat) inLat.value = item.lat;
                                 if (inLon) inLon.value = item.lon;
                                 const addr = item.address || {};
@@ -66,7 +66,7 @@ class PAWRefugioPerfil {
                                 if (inDireccion) inDireccion.value = item.display_name;
                                 if (btnGuardar) btnGuardar.disabled = false;
                             });
-                            
+
                             ulSugerencias.appendChild(li);
                         });
                         ulSugerencias.style.display = "block";
@@ -91,7 +91,7 @@ class PAWRefugioPerfil {
         const checkClamp = () => {
             texto.classList.remove('expanded');
             btnVerMas.textContent = 'Ver más';
-            
+
             // Wait for render layout calculations
             setTimeout(() => {
                 if (texto.scrollHeight > texto.clientHeight) {
@@ -113,7 +113,7 @@ class PAWRefugioPerfil {
                 btnVerMas.textContent = 'Ver menos';
             }
         });
-        
+
         window.addEventListener('resize', checkClamp);
     }
 
@@ -161,33 +161,33 @@ class PAWRefugioPerfil {
                         },
                         body: JSON.stringify({ id: parseInt(id), accion: accion })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const spanEstado = li.querySelector('.estado-solicitud');
-                            if (spanEstado) {
-                                spanEstado.className = 'estado-solicitud';
-                                const nuevoEstadoClass = 'estado-' + data.estado.toLowerCase();
-                                spanEstado.classList.add(nuevoEstadoClass);
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                const spanEstado = li.querySelector('.estado-solicitud');
+                                if (spanEstado) {
+                                    spanEstado.className = 'estado-solicitud';
+                                    const nuevoEstadoClass = 'estado-' + data.estado.toLowerCase();
+                                    spanEstado.classList.add(nuevoEstadoClass);
 
-                                const match = spanEstado.innerHTML.match(/Fecha:\s*(.*)/i);
-                                const fechaStr = match ? match[1] : '';
-                                spanEstado.innerHTML = `Estado: ${data.estado} <br> Fecha: ${fechaStr}`;
+                                    const match = spanEstado.innerHTML.match(/Fecha:\s*(.*)/i);
+                                    const fechaStr = match ? match[1] : '';
+                                    spanEstado.innerHTML = `Estado: ${data.estado} <br> Fecha: ${fechaStr}`;
+                                }
+                                if (btnAceptar) btnAceptar.remove();
+                                if (btnRechazar) btnRechazar.remove();
+                            } else {
+                                alert(data.mensaje || 'Error al procesar la solicitud.');
+                                if (btnAceptar) btnAceptar.disabled = false;
+                                if (btnRechazar) btnRechazar.disabled = false;
                             }
-                            if (btnAceptar) btnAceptar.remove();
-                            if (btnRechazar) btnRechazar.remove();
-                        } else {
-                            alert(data.mensaje || 'Error al procesar la solicitud.');
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Ocurrió un error en la conexión con el servidor.');
                             if (btnAceptar) btnAceptar.disabled = false;
                             if (btnRechazar) btnRechazar.disabled = false;
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert('Ocurrió un error en la conexión con el servidor.');
-                        if (btnAceptar) btnAceptar.disabled = false;
-                        if (btnRechazar) btnRechazar.disabled = false;
-                    });
+                        });
                 });
             });
         });

@@ -1,0 +1,265 @@
+/* Estilos para los Modales de Autenticación (Login y Registro) */
+
+.modal-auth {
+  width: 90%;
+  max-width: 450px;
+  border-radius: 12px;
+  background-color: var(--color-fondo);
+  box-shadow: 0 10px 30px var(--color-texto);
+  border: none;
+  padding: 0;
+}
+
+.modal-auth::backdrop {
+  background-color: var(--color-azul-oscuro);
+  opacity: 0.6;
+  backdrop-filter: blur(4px);
+}
+
+.modal-auth-content {
+  padding: 2rem;
+}
+
+.sesion-header,
+.registro-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  border: none;
+}
+
+.sesion-header {
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+.auth-close-btn {
+  background: none;
+  border: none;
+  color: var(--color-texto);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.auth-close-btn:hover {
+  background-color: var(--color-gris-claro);
+  color: var(--color-violeta);
+}
+
+.auth-close-btn .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.sesion-header .auth-close-form,
+.registro-header .auth-close-form {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.sesion-header h1,
+.registro-header h2 {
+  color: var(--color-violeta);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.login-form,
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-form label,
+.registro-form label {
+  font-weight: 600;
+  color: var(--color-violeta);
+  margin-bottom: 0.3rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.login-form .oculto,
+.registro-form .oculto {
+  display: none;
+}
+
+.login-form input,
+.registro-form input,
+.registro-input {
+  padding: 0.85rem;
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-form input:focus,
+.registro-form input:focus,
+.registro-input:focus {
+  outline: none;
+  border-color: var(--color-azul);
+  box-shadow: 0 0 0 1px var(--color-azul);
+}
+
+.campo-contraseña {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.campo-contraseña input {
+  flex: 1;
+  padding-right: 2.5rem;
+}
+
+.campo-contraseña .mostrar-contraseña {
+  position: absolute;
+  right: 0.75rem;
+  cursor: pointer;
+  color: var(--color-texto);
+  font-size: 1.3rem;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.campo-contraseña .mostrar-contraseña:hover {
+  color: var(--color-azul);
+}
+
+.btn-auth {
+  padding: 0.85rem 1rem;
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.btn-auth:hover {
+  background-color: var(--color-azul-oscuro);
+  transform: scale(0.98);
+}
+
+.btn-auth:active {
+  transform: scale(0.98);
+}
+
+.auth-switch {
+  text-align: center;
+  color: var(--color-texto);
+  font-size: 0.95rem;
+  margin: 1.5rem 0 0 0;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-azul);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-link:hover {
+  color: var(--color-azul-oscuro);
+  text-decoration: underline;
+}
+
+.btn-nav-auth {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-rojo-claro);
+  color: var(--color-rojo);
+  border: 1px solid var(--color-rojo);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.login-error span {
+  font-size: 1.2rem;
+  color: var(--color-rojo);
+}
+
+.modal-exito-content {
+  text-align: center;
+  padding: 2.5rem 2rem;
+}
+
+.material-symbols-outlined.modal-exito-icon {
+  font-size: 5rem;
+  color: var(--color-verde);
+  margin-bottom: 1rem;
+}
+
+.modal-exito-title {
+  font-size: 1.8rem;
+  color: var(--color-violeta);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.modal-exito-text {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: var(--color-texto);
+  line-height: 1.5;
+}

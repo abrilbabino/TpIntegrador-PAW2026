@@ -76,15 +76,41 @@ class DonacionController extends Controller
         if ($valores['metodo_pago'] === 'transferencia') {
             $monto = number_format((float) $valores['monto'], 2, ',', '.');
             
-            // Mandamos a la vista donde ve tu CBU/Alias
-            echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
+            echo $this->twig->render('donacion.html.twig', [
+                'titulo' => 'Donaciones - PawMap',
+                'flash_type' => 'donacion',
+                'flash_data' => [
+                    'monto' => $monto,
+                    'monto_raw' => $valores['monto'],
+                    'metodo_pago' => $valores['metodo_pago'],
+                    'refugio_nombre' => $refugio->getNombre(),
+                    'refugio_alias' => $refugio->getAlias(),
+                    'refugio_cvu' => $refugio->getCvu(),
+                    'refugio_email' => $refugio->getEmail(),
+                    'refugio_id' => $refugio->getId()
+                ]
+            ]);
             return;
         }
 
         $monto = number_format((float) $valores['monto'], 2, ',', '.');
         $metodoPago = $valores['metodo_pago'] === 'mp' ? 'Mercado Pago' : 'Transferencia bancaria';
 
-        echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
+        echo $this->twig->render('donacion.html.twig', [
+            'titulo' => 'Donaciones - PawMap',
+            'flash_type' => 'donacion',
+            'flash_data' => [
+                'monto' => $monto,
+                'monto_raw' => $valores['monto'],
+                'metodo_pago' => $valores['metodo_pago'],
+                'refugio_nombre' => $refugio->getNombre(),
+                'refugio_alias' => $refugio->getAlias(),
+                'refugio_cvu' => $refugio->getCvu(),
+                'refugio_email' => $refugio->getEmail(),
+                'refugio_id' => $refugio->getId()
+            ]
+        ]);
+        exit;
     }
 
     public function enviarComprobante()
@@ -141,7 +167,19 @@ class DonacionController extends Controller
             'error' => $errorEnvio
         ];
 
-        echo $this->twig->render('donacion-exitosa.html.twig', get_defined_vars());
+        $_SESSION['flash_type'] = 'donacion';
+        $_SESSION['flash_data'] = [
+            'monto' => $monto,
+            'monto_raw' => $montoRaw,
+            'metodo_pago' => 'transferencia',
+            'refugio_nombre' => $refugio->getNombre(),
+            'refugio_alias' => $refugio->getAlias(),
+            'refugio_cvu' => $refugio->getCvu(),
+            'refugio_email' => $refugio->getEmail(),
+            'refugio_id' => $refugio->getId(),
+            'comprobanteStatus' => $comprobanteStatus
+        ];
+        header("Location: /donar");
     }
 
 

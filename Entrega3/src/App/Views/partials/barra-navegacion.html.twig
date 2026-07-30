@@ -11,7 +11,23 @@
     
     {% if session.user is defined %}
         <section class="nav-acciones-usuario">
-            <a href="/perfil" class="icono-usuario">
+             <section class="contenedor-notificaciones" id="contenedor-notificaciones">
+                <button type="button" class="btn-campanita" id="btn-campanita" aria-label="Notificaciones" data-usuario-id="{{ session.user.id }}">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="badge-notificaciones oculto" id="badge-notificaciones">0</span>
+                </button>
+                <aside class="dropdown-notificaciones oculto" id="dropdown-notificaciones">
+                    <header class="dropdown-header">
+                        <h4>Notificaciones</h4>
+                        <button type="button" id="btn-marcar-todas-leidas" class="btn-marcar-todas-leidas oculto">Marcar todas como leídas</button>
+                    </header>
+                    <ul class="lista-notificaciones" id="lista-notificaciones">
+                        <!-- Las notificaciones se inyectarán aquí vía JS -->
+                    </ul>
+                </aside>
+            </section>
+
+            <a href="/perfil" class="icono-usuario perfil-desktop">
                 {% if session.user.foto_perfil is defined and session.user.foto_perfil %}
                     {% set navImgUrl = session.user.foto_perfil starts with 'http' ? session.user.foto_perfil : '/assets/img/' ~ session.user.foto_perfil %}
                     <img src="{{ navImgUrl }}" alt="Perfil" class="nav-foto-perfil">
@@ -22,14 +38,28 @@
             </a>
         </section>
     {% else %}
-        <a href="/iniciar-sesion" class="icono-usuario">
+        <button type="button" class="icono-usuario btn-nav-auth" id="btn-open-login">
             <span class="material-symbols-outlined">person</span>
             <p>Iniciar Sesión</p>
-        </a>
+        </button>
     {% endif %}
 
     <nav class="menu-principal">
         <ul class="nav-lista">
+            {% if session.user is defined %}
+                <li class="perfil-menu-mobile">
+                    <a href="/perfil" class="perfil-mobile-link">
+                        {% if session.user.foto_perfil is defined and session.user.foto_perfil %}
+                            {% set navImgUrl = session.user.foto_perfil starts with 'http' ? session.user.foto_perfil : '/assets/img/' ~ session.user.foto_perfil %}
+                            <img src="{{ navImgUrl }}" alt="Perfil" class="nav-foto-perfil-mobile">
+                        {% else %}
+                            <span class="material-symbols-outlined">person</span>
+                        {% endif %}
+                        <span class="perfil-mobile-nombre">{{ session.user.nombre_usuario|default('Perfil') }}</span>
+                    </a>
+                </li>
+            {% endif %}
+
             {% for item in menu %}
                 <li class="{{ item.li_class|default('') }}">
                     {% if item.type|default('') == 'link' %}

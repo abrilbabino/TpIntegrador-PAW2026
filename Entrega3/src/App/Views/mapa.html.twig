@@ -5,7 +5,7 @@
 {% block head %}
     <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
-    <script src="/assets/js/mapa.js" defer></script>
+
 {% endblock %}
 
 {% block main_attributes %}class="contenedor-mapa-page"{% endblock %}
@@ -81,7 +81,7 @@
                                     <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="link-imagen">
                                         {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                                         <img src="{{ imagenUrl }}"
-                                             alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                                             alt="{{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                                     </a>
                                     <form method="POST" action="/favorito" class="form-favorito-tarjeta">
                                         <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
@@ -94,7 +94,7 @@
                                 <a href="/mascota?id={{ mascota.fields.id|default('') }}" class="verPerfil">
                                     <section class="tarjeta-info">
                                         <header class="tarjeta-info-header">
-                                            <h3>{{ mascota.fields.nombre|default('Sin nombre') }}</h3>
+                                            <h3>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h3>
                                             <span class="btn-ver-perfil-mobile">Ver Perfil</span>
                                         </header>
                                         <p>

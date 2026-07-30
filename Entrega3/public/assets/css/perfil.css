@@ -39,6 +39,15 @@
   object-position: center;
 }
 
+.perfil-avatar-wrapper.is-cropping img {
+  position: absolute;
+  object-fit: unset;
+  border-radius: 0;
+  max-width: none;
+  max-height: none;
+  cursor: grab;
+}
+
 .perfil-avatar-wrapper .material-symbols-outlined {
   font-size: 2.5rem;
   color: var(--color-gris);
@@ -78,11 +87,46 @@
   padding: 1.2rem 1.5rem;
 }
 
+.editar-footer-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.editar-footer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 300px;
+}
+
+.editar-footer-input-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.editar-footer-acciones {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.input-file-padding {
+  padding: 0.4rem;
+  border: 1px solid var(--color-gris-claro);
+  border-radius: 4px;
+}
+
 .perfil-datos-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
 .perfil-datos-header h2 {
@@ -104,15 +148,22 @@
 
 .perfil-datos-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.6rem 1.5rem;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+@media (min-width: 994px) {
+  .perfil-datos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .dato-item {
   display: flex;
+  padding-top: 1rem;
   flex-direction: column;
 }
 
@@ -411,7 +462,8 @@
       "nav nav"
       "favoritos favoritos"
       "solicitudes solicitudes"
-      "adopciones adopciones";
+      "adopciones adopciones"
+      "alertas alertas";
     gap: 2rem;
     align-items: start;
   }
@@ -448,6 +500,10 @@
     grid-area: adopciones;
   }
 
+  .sec-alertas {
+    grid-area: alertas;
+  }
+
   .perfil-seccion {
     scroll-margin-top: 200px;
   }
@@ -473,6 +529,7 @@
 .perfil-container.is-editing .btn-editar {
   display: none;
 }
+
 
 .perfil-container.is-editing .input-value {
   display: block;
@@ -508,20 +565,20 @@
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--color-gris-claro);
-  padding: 0;
+  padding: 0.5rem 0;
   margin: 0;
   width: 100%;
   box-sizing: border-box;
-  height: 1.3rem;
-  line-height: 1.3rem;
   outline: none;
   transition: border-bottom-color 0.2s;
 }
 
 .dato-valor-input[type="date"] {
-  padding: 0;
-  line-height: 1.3rem;
-  height: 1.3rem;
+  padding: 0.5rem 0;
+}
+
+textarea.dato-valor-input {
+  resize: vertical;
 }
 
 .dato-valor-input:focus {
@@ -570,7 +627,7 @@
 .btn-cancelar-perfil {
   background-color: transparent;
   color: var(--color-azul);
-  border: 1px solid var(--color-fondo);
+  border: 1px solid var(--color-azul);
   padding: 0.4rem 1.2rem;
   font-size: 0.85rem;
   font-weight: 700;
@@ -608,9 +665,13 @@
   z-index: 5;
 }
 
-.perfil-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay,
-.perfil-refugio-container.is-editing .perfil-avatar-wrapper:hover .avatar-hover-overlay {
-  opacity: 1;
+.perfil-container.is-editing .perfil-avatar-wrapper:not(.is-dragging):hover .avatar-hover-overlay,
+.perfil-refugio-container.is-editing .perfil-avatar-wrapper:not(.is-dragging):hover .avatar-hover-overlay {
+  opacity: 0.5;
+}
+
+.perfil-avatar-wrapper.is-dragging .avatar-hover-overlay {
+  opacity: 0 !important;
 }
 
 .avatar-hover-overlay span {
@@ -772,6 +833,23 @@
   display: none;
 }
 
+.perfil-container input[type="text"].input-otro,
+.perfil-refugio-container input[type="text"].input-otro {
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: none;
+}
+
+.perfil-container select:has(option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-container label:has(select option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-container fieldset:has(input[type="radio"][value="otro"]:checked) input[type="text"].input-otro,
+.perfil-refugio-container select:has(option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-refugio-container label:has(select option[value="otro"]:checked)~input[type="text"].input-otro,
+.perfil-refugio-container fieldset:has(input[type="radio"][value="otro"]:checked) input[type="text"].input-otro {
+  display: block;
+}
+
 /* Alertas de error/éxito premium */
 .alerta-exito,
 .alerta-error {
@@ -817,6 +895,12 @@
   font-size: 1.5rem;
 }
 
+.alerta-exito section p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-verde);
+}
+
 .alerta-error {
   background-color: var(--color-fondo);
   border: 1px solid var(--color-rojo);
@@ -829,4 +913,8 @@
 .alerta-error span {
   color: var(--color-rojo);
   font-size: 1.5rem;
-}
+}  
+.paginacion { margin-top: 1.5rem; display: flex; justify-content: center; }  
+.paginacion-lista { display: flex; gap: 0.5rem; list-style: none; padding: 0; margin: 0; align-items: center; }  
+.paginacion-link { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; background: var(--color-fondo); border: 2px solid var(--color-naranja); color: var(--color-naranja); text-decoration: none; font-weight: bold; transition: all 0.2s; }  
+.paginacion-link:hover, .paginacion-link.active { background: var(--color-naranja); color: var(--color-fondo); } 

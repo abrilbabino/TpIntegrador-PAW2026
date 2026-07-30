@@ -1,6 +1,6 @@
 {% extends 'layout/base.html.twig' %}
 
-{% block title %}{{ mascota.fields.nombre|default('Mascota') }} - PawMap{% endblock %}
+{% block title %}{{ mascota.fields.nombre|default('Mascota')|capitalize }} - PawMap{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="/assets/css/pawcarousel.css" />
@@ -11,19 +11,17 @@
         <section class="galeria-mascota">
             <figure class="imagen-principal-desktop">
                 {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
-                <img src="{{ imagenUrl }}" alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                <img src="{{ imagenUrl }}" alt="{{ mascota.fields.nombre|default('Mascota')|capitalize }}">
             </figure>
 
-            {% if mediaExtras is not empty %}
-                <h4>GALERÍA</h4>
-            {% endif %}
+            <h4>GALERÍA</h4>
 
             <section class="carrusel-mascota" data-paw-carousel data-paw-effect="zoom" data-paw-miniaturas="false">
                 
                 <figure class="carrusel-slide-item slide-principal-movil">
                     {% set imagenUrl = mascota.fields.imagen|default('default-pet.jpg') starts with 'http' ? mascota.fields.imagen : '/assets/img/' ~ mascota.fields.imagen|default('default-pet.jpg') %}
                     <img src="{{ imagenUrl }}"
-                         alt="{{ mascota.fields.nombre|default('Mascota') }}">
+                         alt="{{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                 </figure>
 
                 {% if mediaExtras is not empty %}
@@ -37,7 +35,7 @@
                                 </video>
                             {% else %}
                                 <img src="{{ extraUrl }}" loading="lazy"
-                                     alt="Media extra de {{ mascota.fields.nombre|default('Mascota') }}">
+                                     alt="Media extra de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             {% endif %}
                         </figure>
                     {% endfor %}
@@ -48,7 +46,7 @@
         <aside class="info-mascota">
             <span class="drag-handle"></span>
             <header class="info-header">
-                <h2>{{ mascota.fields.nombre|default('Mascota') }}</h2>
+                <h2>{{ mascota.fields.nombre|default('Mascota')|capitalize }}</h2>
                 {% set svgArchivo = mascota.fields.svg|default('')|trim %}
                 {% if svgArchivo is empty %}
                     {# Retrocompatibilidad: mascotas antiguas sin campo svg usan el nombre #}
@@ -58,21 +56,49 @@
                 <figure class="svg-mascota">
                     {% set svgUrl = svgArchivo starts with 'http' ? svgArchivo : '/assets/svg/' ~ svgArchivo %}
                     <img src="{{ svgUrl }}"
-                         alt="Animación de {{ mascota.fields.nombre|default('') }}"
+                         alt="Animación de {{ mascota.fields.nombre|default('')|capitalize }}"
                          class="svg-mascota-img"
                          onerror="this.parentElement.style.display='none'">
                 </figure>
             {% endif %}
-
                 <a href="mascota/libreta?id={{ mascota.fields.id|default('') }}" class="libreta">
                     <span class="material-symbols-outlined">clinical_notes</span>
                 </a>
                 <form method="POST" action="/favorito" class="form-favorito">
-                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">    
+                    <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
                     <button type="submit" class="boton-favorito {{ esFavorito is defined and esFavorito ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
                         <span class="material-symbols-outlined">favorite</span>
                     </button>
                 </form>
+
+                {# Botón compartir con dropdown (a la derecha del corazón) #}
+                <nav class="compartir-wrapper"
+                     data-nombre="{{ mascota.fields.nombre|default('esta mascota')|capitalize }}"
+                     data-especie="{{ mascota.fields.especie|default('animal')|capitalize }}">
+                    <button type="button" class="boton-compartir" aria-label="Compartir" aria-expanded="false">
+                        <span class="material-symbols-outlined">ios_share</span>
+                    </button>
+                    <menu class="compartir-dropdown" hidden>
+                        <li>
+                            <a class="compartir-opcion compartir-wpp" href="#" target="_blank" rel="noopener noreferrer">
+                                <img src="/assets/svg/whatsapp.svg" alt="WhatsApp" class="icono-redes">
+                                WhatsApp
+                            </a>
+                        </li>
+                        <li>
+                            <button type="button" class="compartir-opcion compartir-ig">
+                                <img src="/assets/svg/instagram.svg" alt="Instagram" class="icono-redes">
+                                Instagram
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="compartir-opcion compartir-tt">
+                                <img src="/assets/svg/tiktok.svg" alt="TikTok" class="icono-redes">
+                                TikTok
+                            </button>
+                        </li>
+                    </menu>
+                </nav>
             </header>
 
             {% set esp = mascota.fields.especie|default('Desconocido')|capitalize %}
@@ -107,8 +133,28 @@
             </section>
 
             <section class="sobre-mi">
-                <h4>SOBRE MÍ</h4>
-                <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
+                {% if mascota.fields.estado_adopcion == 'ADOPTADO' and adoptante %}
+                    <h4>DATOS DE MI FAMILIA</h4>
+                    <address class="sobre-mi-box contacto-dueno-box">
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">person</span> 
+                            <strong>Nombre:</strong> {{ adoptante.nombre|capitalize }} {{ adoptante.apellido|capitalize }}
+                        </p>
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">phone</span> 
+                            <strong>Teléfono:</strong>
+                            <a href="tel:{{ adoptante.telefono|default('') }}" class="link-contacto">{{ adoptante.telefono|default('No registrado') }}</a>
+                        </p>
+                        <p>
+                            <span class="material-symbols-outlined icono-contacto">mail</span> 
+                            <strong>Email:</strong>
+                            <a href="mailto:{{ adoptante.email|default('') }}" class="link-contacto">{{ adoptante.email|default('No registrado') }}</a>
+                        </p>
+                    </address>
+                {% else %}
+                    <h4>SOBRE MÍ</h4>
+                    <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.')|capitalize }}</p>
+                {% endif %}
             </section>
 
             <a href="/refugio/perfil?id={{ refugio.fields.usuario_id|default(refugio.fields.id) }}" class="refugio-info">
@@ -121,11 +167,12 @@
                 </figcaption>
             </a>
 
-            <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+
+            {% if mascota.fields.estado_adopcion != 'ADOPTADO' %}
+                <a href="/formulario-adopcion?id={{ mascota.fields.id|default('') }}" class="boton-adoptar">¡QUIERO ADOPTAR!</a>
+            {% endif %}
         </aside>
     </article>
 {% endblock %}
 
-{% block scripts %}
-    <script src="/assets/js/mascota.js"></script>
-{% endblock %}
+

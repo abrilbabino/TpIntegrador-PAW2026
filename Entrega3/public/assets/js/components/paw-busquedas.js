@@ -46,7 +46,6 @@ class PAWBusquedas {
   }
 
   // Asocia el guardado al submit y controla la visibilidad con focus/blur.
-  // El setTimeout en el evento blur retrasa la ocultación 200ms para permitir que los eventos click en los enlaces del historial se procesen antes de desaparecer el contenedor.
   registrarEventos() {
     this.formulario.addEventListener("submit", () => {
       const termino = this.input.value.trim();
@@ -60,7 +59,14 @@ class PAWBusquedas {
     this.input.addEventListener("blur", () => {
       setTimeout(() => {
         this.ocultar();
-      }, 200);
+      }, 300);
+    });
+
+    this.dropdown.addEventListener("mousedown", (e) => {
+      // Prevenimos siempre el mousedown. Esto evita que el input pierda el foco
+      // (el evento blur no se dispara prematuramente) y permite que el evento click
+      // sobre el enlace se ejecute con total normalidad inmediatamente después.
+      e.preventDefault();
     });
   }
 

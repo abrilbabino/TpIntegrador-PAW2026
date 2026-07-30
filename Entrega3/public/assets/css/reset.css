@@ -143,3 +143,9 @@ mark {
   background-color: transparent;
   color: inherit;
 }
+
+/* Ocultar botón de ver contraseña por defecto del navegador (Edge/IE) */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}

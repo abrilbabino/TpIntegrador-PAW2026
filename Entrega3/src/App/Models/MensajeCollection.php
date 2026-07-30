@@ -3,20 +3,17 @@
 namespace Paw\App\Models;
 
 use Paw\Core\Model;
+use Paw\App\Models\User;
+use Paw\Core\Traits\Notificable;
 
 class MensajeCollection extends Model
 {
+    use Notificable;
     public $modelName = Mensaje::class;
 
     public function getMensajesPorSolicitud(int $solicitudId): array
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT m.*, r.nombre_usuario as remitente_nombre, r.rol as remitente_rol 
-                FROM mensaje m 
-                JOIN usuario r ON m.remitente_id = r.id 
-                WHERE m.solicitud_id = :solicitud_id 
-                ORDER BY m.fecha_envio ASC";
-        $mensajesDB = $qb->rawQuery($sql, [':solicitud_id' => $solicitudId]);
+        $mensajesDB = $this->queryBuilder->obtenerMensajesPorSolicitud($solicitudId);
 
         $mensajes = [];
         foreach ($mensajesDB as $row) {
@@ -44,23 +41,12 @@ class MensajeCollection extends Model
 
     public function getUnreadCount(int $usuarioId): int
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE destinatario_id = :destinatario_id AND leido = false";
-        $count = $qb->rawQueryValue($sql, [':destinatario_id' => $usuarioId]);
-
-        return (int)$count;
+        return $this->queryBuilder->contarMensajesNoLeidos($usuarioId);
     }
 
     public function getUnreadCountBySolicitud(int $solicitudId, int $usuarioId): int
     {
-        $qb = clone $this->queryBuilder;
-        $sql = "SELECT COUNT(*) as count FROM mensaje WHERE solicitud_id = :solicitud_id AND destinatario_id = :destinatario_id AND leido = false";
-        $count = $qb->rawQueryValue($sql, [
-            ':solicitud_id' => $solicitudId,
-            ':destinatario_id' => $usuarioId
-        ]);
-
-        return (int)$count;
+        return $this->queryBuilder->contarMensajesNoLeidosPorSolicitud($solicitudId, $usuarioId);
     }
 
     public function guardar(Mensaje $mensaje)
@@ -81,6 +67,25 @@ class MensajeCollection extends Model
 
         $qb = clone $this->queryBuilder;
         $qb->insert('mensaje', $data);
+        
+        // Lógica de notificaciones
+        $userModel = new User();
+        $userModel->setQueryBuilder($this->queryBuilder);
+        $remitente = $userModel->findById($mensaje->fields['remitente_id']);
+        
+        if ($remitente) {
+            $tituloNotificacion = "Nuevo mensaje de " . ($remitente['rol'] === 'refugio' ? 'Refugio' : $remitente['nombre_usuario']);
+            $contenido = $mensaje->fields['contenido'];
+            $extractoMensaje = strlen($contenido) > 30 ? substr($contenido, 0, 30) . '...' : $contenido;
+            
+            $this->notificar(
+                $mensaje->fields['destinatario_id'],
+                $tituloNotificacion,
+                $extractoMensaje,
+                '/chat?solicitud_id=' . $mensaje->fields['solicitud_id']
+            );
+        }
+        
         return true;
     }
 }

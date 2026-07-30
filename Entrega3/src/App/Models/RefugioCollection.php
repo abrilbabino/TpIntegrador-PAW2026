@@ -16,18 +16,7 @@ class RefugioCollection extends Model
     }
 
     public function getAll() {
-        $sql = "SELECT r.*, u.ciudad, u.provincia, 
-                       COALESCE(md.adoptables, 0) as adoptables_disponibles
-                FROM {$this->table} r 
-                LEFT JOIN ubicacion u ON r.usuario_id = u.refugio_id 
-                LEFT JOIN (
-                    SELECT refugio_id, COUNT(id) as adoptables 
-                    FROM mascota 
-                    WHERE estado_adopcion = 'DISPONIBLE' 
-                    GROUP BY refugio_id
-                ) md ON r.usuario_id = md.refugio_id
-                ORDER BY r.nombre_institucion ASC";
-        $rows = $this->queryBuilder->rawQuery($sql);
+        $rows = $this->queryBuilder->obtenerTodosRefugiosConAdoptables($this->table);
         return $this->mapRefugios($rows);
     }
 
@@ -86,5 +75,10 @@ class RefugioCollection extends Model
     public function getRefugiosConUbicacion(array $filtros = []): array
     {
         return $this->queryBuilder->obtenerRefugiosConUbicacion($this->table, $filtros);
+    }
+
+    public function obtenerUbicaciones(int $refugioId): array
+    {
+        return $this->queryBuilder->obtenerUbicacionesPorRefugio($refugioId);
     }
 }
