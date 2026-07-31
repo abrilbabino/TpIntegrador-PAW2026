@@ -39,11 +39,12 @@ jobs:
           location: ${{ env.REGION }}
           project_id: ${{ env.GCP_PROJECT_ID }}
 
-      - name: Delete Ingress to clean up GCP resources
+      - name: Delete Ingress and LoadBalancers to clean up GCP resources
         continue-on-error: true
         run: |
           kubectl delete ingress --all --all-namespaces || true
-          echo "Esperando 60s para que Google Cloud elimine los NEGs y Load Balancers..."
+          kubectl delete svc -n ingress-nginx --all || true
+          echo "Esperando 60s para que Google Cloud elimine los Load Balancers y firewalls..."
           sleep 60
 
       - name: Tofu Init
