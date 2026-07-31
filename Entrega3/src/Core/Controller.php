@@ -33,6 +33,19 @@ class Controller
             session_start();
         }
 
+        // Sistema CSRF: Generar token si no existe en la sesión
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        // Sistema CSRF: Validar estrictamente todas las peticiones POST
+        if ($this->request->method() === 'POST' && get_class($this) !== 'Paw\App\Controllers\ErrorController') {
+            $token = $this->request->post()['csrf_token'] ?? null;
+            if (!$token || !is_string($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+                throw new \Exception("Token CSRF inválido o ausente. Posible intento de falsificación de petición.");
+            }
+        }
+
         $this->notificaciones = 0;
         if (isset($_SESSION['user']['id']) && class_exists('\Paw\App\Models\MensajeCollection')) {
             $qbMensajes = new QueryBuilder($connection, $log);
@@ -139,6 +152,7 @@ class Controller
         $this->twig->addGlobal('redes', $this->redes);
         $this->twig->addGlobal('notificaciones', $this->notificaciones);
         $this->twig->addGlobal('request', $this->request);
+        $this->twig->addGlobal('csrf_token', $_SESSION['csrf_token']);
     }
 
     public function setModel(Model $model)

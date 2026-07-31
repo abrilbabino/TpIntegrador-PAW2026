@@ -31,6 +31,7 @@
 
     <!-- Datos personales (formulario de edición) -->
     <form id="perfil-form" method="POST" action="/perfil/guardar" enctype="multipart/form-data" class="perfil-datos" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <header class="perfil-datos-header">
             <h2>Datos Personales</h2>
             <button type="button" id="btn-edit-perfil" class="btn-editar" title="Editar datos">
@@ -174,6 +175,7 @@
                             </p>
                         </a>
                         <form method="POST" action="/api/favorito/toggle" class="form-quitar-fav">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <input type="hidden" name="mascota_id" value="{{ fav.id }}" />
                             <button type="submit" class="btn-corazon activo" title="Quitar favorito">
                                 <span class="material-symbols-outlined">favorite</span>

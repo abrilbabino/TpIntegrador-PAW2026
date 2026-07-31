@@ -65,6 +65,7 @@
                     <span class="material-symbols-outlined">clinical_notes</span>
                 </a>
                 <form method="POST" action="/favorito" class="form-favorito">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
                     <button type="submit" class="boton-favorito {{ esFavorito is defined and esFavorito ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
                         <span class="material-symbols-outlined">favorite</span>

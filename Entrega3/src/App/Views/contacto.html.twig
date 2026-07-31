@@ -16,6 +16,7 @@
             <p class="texto">¿Tenés alguna duda o querés colaborar con nosotros? Completá el siguiente formulario y nos pondremos en contacto a la brevedad.</p>
             
             <form action="/contacto/enviar" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <section class="row">
                     <fieldset class="nombre">
                         <label for="nombre" class="form-label">Nombre</label>

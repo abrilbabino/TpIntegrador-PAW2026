@@ -183,10 +183,13 @@ class PAWNotificaciones {
         this.noLeidasCount = Math.max(0, this.noLeidasCount - 1);
         this.actualizarUI();
 
+        const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+        const csrfToken = csrfTokenInput ? csrfTokenInput.value : '';
+
         fetch('/api/notificaciones/leer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ids: [id] }),
+            body: JSON.stringify({ ids: [id], csrf_token: csrfToken }),
             keepalive: true
         }).catch(e => console.error('Error marcando notificación como leída', e));
     }
@@ -203,11 +206,14 @@ class PAWNotificaciones {
 
         if (noLeidasIds.length === 0) return;
 
+        const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+        const csrfToken = csrfTokenInput ? csrfTokenInput.value : '';
+
         // Fire-and-forget: no esperamos la respuesta del servidor
         fetch('/api/notificaciones/leer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ids: noLeidasIds })
+            body: JSON.stringify({ ids: noLeidasIds, csrf_token: csrfToken })
         }).catch(e => console.error('Error marcando como leídas', e));
     }
 

@@ -53,6 +53,7 @@
 
     <section class="perfil-datos perfil-datos-unificada">
         <form id="form-editar-mascota" method="POST" action="/mascota/editar/guardar" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <header class="perfil-datos-header">
                 <h2>Editar Mascota</h2>
             </header>
@@ -73,7 +74,7 @@
                 <select name="especie" class="dato-valor-input input-value {{ errores.especie is defined ? 'input-invalido' : '' }}" required>
                     <option value="">Seleccioná una especie</option>
                     {% for e in especies %}
-                        {% set especieValor = e.fields.especie|default('') %}
+                        {% set especieValor = e.fields.nombre|default('') %}
                         <option value="{{ especieValor }}" {{ (especieActual == especieValor|lower) ? 'selected' : '' }}>
                             {{ especieValor|capitalize }}
                         </option>
@@ -106,7 +107,7 @@
                 <select name="temperamento" class="dato-valor-input input-value {{ errores.temperamento is defined ? 'input-invalido' : '' }}" required>
                     <option value="">Seleccioná un temperamento</option>
                     {% for t in temperamentos %}
-                        {% set temperamentoValor = t.fields.temperamento|default('') %}
+                        {% set temperamentoValor = t.fields.nombre|default('') %}
                         <option value="{{ temperamentoValor }}" {{ (temperamentoActual == temperamentoValor|lower) ? 'selected' : '' }}>
                             {{ temperamentoValor|capitalize }}
                         </option>
@@ -236,6 +237,7 @@
                         <img src="{{ extraUrl }}" alt="Foto extra de la mascota" class="foto-extra-preview">
                         <figcaption>
                             <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <input type="hidden" name="id" value="{{ foto.id }}">
                                 <input type="hidden" name="mascota_id" value="{{ mascotaFields.id }}">
                                 <button type="submit" class="btn-eliminar-foto">Eliminar</button>
@@ -248,10 +250,12 @@
     </section>
 
     <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" hidden>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
     </form>
     
     <form id="form-eliminar-foto-principal" method="POST" action="/mascota/eliminar-foto-principal" hidden>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ mascotaFields.id|default('') }}">
     </form>
 

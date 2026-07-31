@@ -14,9 +14,11 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
     <script src="/assets/js/components/paw.js"></script>
     <script src="/assets/js/app.js"></script>
+    <meta name="user-rol" content="{{ session.user.rol | default('') }}">
     {% block head %}{% endblock %}
 </head>
   <body>
+    <input type="hidden" name="csrf_token" id="global-csrf-token" value="{{ csrf_token }}">
     {% include 'partials/barra-navegacion.html.twig' %}
     
     {% block content_before_main %}{% endblock %}

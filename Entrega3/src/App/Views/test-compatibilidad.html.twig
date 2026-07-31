@@ -14,6 +14,7 @@
         <p class="indicador-paso" id="indicador-paso">Pregunta 1 de {{ preguntas|length }}</p>
 
         <form id="testForm" method="POST" action="/test-de-compatibilidad/resultado">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             {% for pregunta in preguntas %}
             <fieldset class="paso {{ loop.index0 == 0 ? 'active' : '' }}" data-paso="{{ loop.index }}">

@@ -223,6 +223,11 @@ class PAWChatWidget {
         formData.append('solicitud_id', this.currentChatSolicitudId);
         formData.append('contenido', contenido);
 
+        const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+        if (csrfTokenInput) {
+            formData.append('csrf_token', csrfTokenInput.value);
+        }
+
         fetch('/chat/enviar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

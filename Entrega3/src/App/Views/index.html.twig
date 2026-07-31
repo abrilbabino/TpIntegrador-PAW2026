@@ -65,6 +65,7 @@
                                     <img src="{{ imagenUrl }}" alt="Foto de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                                 </a>
                                 <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('')|escape('html_attr') }}">
                                     <button type="submit" class="btn-favorito {{ mascota.fields.id in (favoritosIds|default([])) ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
                                         <span class="material-symbols-outlined">favorite</span>
@@ -156,6 +157,7 @@
                 <article class="tarjeta-resena nueva-resena" data-paw-resena-form>
                     <button type="button" id="btn-cerrar-modal-resena" class="modal-resena-close"><span class="material-symbols-outlined">close</span></button>
                     <form action="/resena/guardar" method="POST" id="form-nueva-resena">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                         <fieldset>
                             <legend>¡Dejá tu reseña sobre tu adopción!</legend>
                             
@@ -202,6 +204,7 @@
                 <article class="tarjeta-resena nueva-resena">
                     <button type="button" id="btn-cerrar-modal-editar-resena" class="modal-resena-close"><span class="material-symbols-outlined">close</span></button>
                     <form action="/resena/editar" method="POST" id="form-editar-resena">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                         <fieldset>
                             <legend>Editar tu reseña</legend>
                             <input type="hidden" name="id" id="editar_resena_id" value="">
@@ -234,6 +237,7 @@
             </dialog>
 
             <form action="/resena/eliminar" method="POST" id="form-eliminar-resena" style="display: none;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="id" id="eliminar_resena_id" value="">
             </form>
 

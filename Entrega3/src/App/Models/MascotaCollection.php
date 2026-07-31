@@ -342,12 +342,15 @@ class MascotaCollection extends Model
                 $temperamentoSeguro = trim($temperamento);
                 $descripcionSegura = trim($descripcion);
 
+                $dicc = new DiccionarioCollection();
+                $dicc->setQueryBuilder($this->queryBuilder);
+
                 $duplicados = $this->queryBuilder->select('mascota', [
                     'refugio_id' => $idUsuario,
                     'nombre' => $nombreSeguro,
-                    'especie' => $especieSegura,
+                    'especie_id' => $dicc->obtenerOCrearId('especie', $especieSegura),
                     'sexo' => $sexoSeguro,
-                    'tamano' => $tamanoSeguro,
+                    'tamano_id' => $dicc->obtenerOCrearId('tamano', $tamanoSeguro),
                     'edad' => $edadValida
                 ]);
                 
@@ -357,9 +360,6 @@ class MascotaCollection extends Model
                 }
 
                 try {
-                    $dicc = new DiccionarioCollection();
-                    $dicc->setQueryBuilder($this->queryBuilder);
-                    
                     $this->queryBuilder->insert('mascota', [
                         'refugio_id'      => $idUsuario,
                         'nombre'          => $nombreSeguro,

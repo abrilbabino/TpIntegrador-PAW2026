@@ -48,6 +48,11 @@ class PAWChatPage {
                 formData.append('solicitud_id', this.solicitudId);
                 formData.append('contenido', content);
 
+                const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+                if (csrfTokenInput) {
+                    formData.append('csrf_token', csrfTokenInput.value);
+                }
+
                 // Emplea fetch API nativa con FormData para enviar el contenido de forma segura al servidor.
                 const res = await fetch('/chat/enviar', {
                     method: 'POST',
