@@ -48,6 +48,7 @@
             <h2>Agregar Registro Sanitario</h2>
         </header>
         <form method="POST" action="/mascota/registro/guardar" class="form-registro">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
 
             <label for="tipo">Tipo de registro</label>
@@ -81,6 +82,7 @@
             <h2>Completar Registro</h2>
         </header>
         <form method="POST" action="/mascota/registro/completar" class="form-registro" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
             <input type="hidden" name="registro_id" id="completar_registro_id" value="">
 

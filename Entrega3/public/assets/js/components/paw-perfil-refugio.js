@@ -154,12 +154,15 @@ class PAWRefugioPerfil {
                     if (btnAceptar) btnAceptar.disabled = true;
                     if (btnRechazar) btnRechazar.disabled = true;
 
+                    const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+                    const csrfToken = csrfTokenInput ? csrfTokenInput.value : '';
+
                     fetch('/api/solicitud/actualizar', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ id: parseInt(id), accion: accion })
+                        body: JSON.stringify({ id: parseInt(id), accion: accion, csrf_token: csrfToken })
                     })
                         .then(response => response.json())
                         .then(data => {

@@ -84,6 +84,7 @@
                                              alt="{{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                                     </a>
                                     <form method="POST" action="/favorito" class="form-favorito-tarjeta">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                         <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
                                         <button type="submit" class="btn-favorito {{ mascota.fields.id in (favoritosIds|default([])) ? 'favorito-activo' : '' }}" aria-label="Agregar a favoritos">
                                             <span class="material-symbols-outlined">favorite</span>

@@ -16,12 +16,15 @@ class PAWFavoritos {
       
       if (!mascotaId || !btn) return;
       
+      const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+      const csrfToken = csrfTokenInput ? csrfTokenInput.value : '';
+
       fetch('/api/favorito/toggle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ mascota_id: mascotaId })
+        body: JSON.stringify({ mascota_id: mascotaId, csrf_token: csrfToken })
       })
       .then(res => res.json())
       .then(data => {

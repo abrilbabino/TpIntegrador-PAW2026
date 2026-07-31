@@ -14,7 +14,7 @@
              <section class="contenedor-notificaciones" id="contenedor-notificaciones">
                 <button type="button" class="btn-campanita" id="btn-campanita" aria-label="Notificaciones" data-usuario-id="{{ session.user.id }}">
                     <span class="material-symbols-outlined">notifications</span>
-                    <span class="badge-notificaciones oculto" id="badge-notificaciones">0</span>
+                    <span class="badge-notificaciones {% if notificaciones == 0 %}oculto{% endif %}" id="badge-notificaciones">{{ notificaciones }}</span>
                 </button>
                 <aside class="dropdown-notificaciones oculto" id="dropdown-notificaciones">
                     <header class="dropdown-header">

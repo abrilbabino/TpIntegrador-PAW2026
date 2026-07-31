@@ -21,6 +21,12 @@ class ColaEsperaController extends Controller
             exit;
         }
 
+        if (($userSession['rol'] ?? '') !== 'adoptante') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Solo los adoptantes pueden crear alertas de búsqueda.']);
+            exit;
+        }
+
         $filtros = $this->request->post();
         $usuarioId = (int) $userSession['id'];
 

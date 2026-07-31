@@ -133,6 +133,7 @@
             <h3>Cargar Certificado o Comprobante</h3>
         </header>
         <form id="form-subir-archivo" action="/seguimiento/subir-archivo" method="POST" enctype="multipart/form-data">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
             
             <fieldset class="seguimiento-oculto">
@@ -178,6 +179,7 @@
             <h3 id="modal-encuesta-titulo">Encuesta de Seguimiento</h3>
         </header>
         <form id="form-encuesta" action="/encuesta/guardar" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="mascota_id" value="{{ mascotaSeleccionada.fields.id|default('') }}">
             <input type="hidden" name="etapa" id="input_etapa" value="">
             

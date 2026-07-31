@@ -51,6 +51,7 @@
 
         <footer class="chat-input-area">
             <form id="chat-form" action="/chat/enviar" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" id="solicitud_id" name="solicitud_id" value="{{ solicitudId }}">
                 <textarea id="chat-input" name="contenido" placeholder="Escribe un mensaje..." required rows="1"></textarea>
                 <button type="submit" class="btn-send-message" aria-label="Enviar mensaje">

@@ -6,6 +6,7 @@ class AppPAW {
   }
 
   init() {
+    this._injectCSRF();
     this._initMenu();
     this._initCarousel();
     this._initVisualizacion();
@@ -162,6 +163,23 @@ class AppPAW {
         }
       );
     }
+  }
+
+  _injectCSRF() {
+    const globalTokenInput = document.getElementById('global-csrf-token');
+    if (!globalTokenInput) return;
+
+    document.querySelectorAll('form').forEach(form => {
+        if (form.method && form.method.toUpperCase() === 'POST') {
+            if (!form.querySelector('input[name="csrf_token"]')) {
+                const tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = 'csrf_token';
+                tokenInput.value = globalTokenInput.value;
+                form.appendChild(tokenInput);
+            }
+        }
+    });
   }
 
   _initChatWidget() {

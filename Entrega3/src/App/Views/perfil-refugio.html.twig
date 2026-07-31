@@ -1,4 +1,4 @@
-{% extends 'layout/base.html.twig' %}
+﻿{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -38,6 +38,7 @@
         </header>
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar los 2 MB.">
                 <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
                 
@@ -308,6 +309,7 @@
             {% endif %}
 
             <form action="/perfil/refugio/ubicacion" method="POST" id="form-ubicacion-refugio" class="form-ubicacion-premium">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <fieldset class="grupo-input-ubicacion">
                     <label for="ubicacion-autocomplete" class="label-buscar-ubicacion">¿Te mudaste? Buscá la nueva dirección:</label>
                     <section class="input-wrapper-premium">
@@ -349,6 +351,7 @@
         {% endif %}
 
         <form id="form-publicar-mascota" method="POST" action="/perfil/mascota/publicar" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <label for="nombre">Nombre
             <input type="text" id="nombre" name="nombre" placeholder="Ingres&aacute; el nombre de la mascota"
                 value="{{ oldMascota.nombre|default('') }}"
@@ -366,11 +369,11 @@
                 {% set errorEspecie = erroresMascota.especie|default('') %}
                 {% for e in especies %}
                     <label class="especie-refugio-radio">
-                        <input type="radio" name="especie" value="{{ e.fields.especie }}"
+                        <input type="radio" name="especie" value="{{ e.fields.nombre }}"
                                required
-                               {{ (oldMascota.especie|default('') == e.fields.especie) ? 'checked' : '' }}
+                               {{ (oldMascota.especie|default('') == e.fields.nombre) ? 'checked' : '' }}
                                {{ errorEspecie is not empty ? 'data-server-error="' ~ errorEspecie ~ '"' : '' }}>
-                        <span>{{ e.fields.especie|capitalize }}</span>
+                        <span>{{ e.fields.nombre|capitalize }}</span>
                     </label>
                     {% set errorEspecie = '' %}
                 {% endfor %}
@@ -419,8 +422,8 @@
             <select id="temperamento" name="temperamento" required {{ erroresMascota.temperamento is defined and erroresMascota.temperamento is not empty ? 'data-server-error="' ~ erroresMascota.temperamento ~ '"' : '' }}>
                 <option value="">Seleccion&aacute; un temperamento</option>
                 {% for t in temperamentos %}
-                    <option value="{{ t.fields.temperamento }}" {{ (oldMascota.temperamento|default('') == t.fields.temperamento) ? 'selected' : '' }}>
-                        {{ t.fields.temperamento|capitalize }}
+                    <option value="{{ t.fields.nombre }}" {{ (oldMascota.temperamento|default('') == t.fields.nombre) ? 'selected' : '' }}>
+                        {{ t.fields.nombre|capitalize }}
                     </option>
                 {% endfor %}
                 <option value="otro" {{ (oldMascota.temperamento|default('') == 'otro') ? 'selected' : '' }}>Otro...</option>
@@ -482,6 +485,7 @@
             {% endif %}
 
             <form id="form-importar-mascotas" method="POST" action="/perfil/mascota/importar" enctype="multipart/form-data" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <label for="csv_mascotas">Seleccionar Archivo CSV:
                     <input type="file" id="csv_mascotas" class="input-archivo" name="csv_mascotas" accept=".csv" required 
                            {% if erroresCsv != '' %}data-server-error="{{ erroresCsv|raw }}"{% endif %}>
@@ -517,6 +521,7 @@
                            <span class="material-symbols-outlined">edit_square</span>
                        </a>
                         <form method="POST" action="/perfil/eliminar" class="form-eliminar-mascota">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <input type="hidden" name="id" value="{{ mascota.fields.id }}">
                             <button type="submit" class="btn-eliminar-mascota" title="Eliminar mascota">
                                 <span class="material-symbols-outlined">delete</span>

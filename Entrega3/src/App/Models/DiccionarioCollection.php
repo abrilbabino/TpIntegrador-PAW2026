@@ -4,7 +4,7 @@ namespace Paw\App\Models;
 
 use Paw\Core\Model;
 
-use Paw\App\Models\Mascota;
+use Paw\App\Models\Diccionario;
 
 class DiccionarioCollection extends Model
 {
@@ -20,15 +20,12 @@ class DiccionarioCollection extends Model
         });
         
         return array_map(function($fila) {
-            $m = new Mascota();
-            $m->fields = [
+            $d = new Diccionario();
+            $d->fields = [
                 'id' => (int)$fila['id'],
-                'especie' => $fila['nombre'], 
-                'tamano' => $fila['nombre'], 
-                'temperamento' => $fila['nombre'], 
                 'nombre' => $fila['nombre']
             ];
-            return $m;
+            return $d;
         }, $resultados);
     }
 
