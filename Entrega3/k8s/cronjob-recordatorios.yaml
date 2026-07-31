@@ -16,7 +16,7 @@ spec:
         spec:
           containers:
           - name: pawmap-cron
-            image: us-central1-docker.pkg.dev/project-f3583ede-db03-4872-95c/pawmap-repo/pawmap-app:latest
+            image: us-east1-docker.pkg.dev/project-f7af048a-a298-4d12-b7e/pawmap-repo/pawmap-app:latest
             imagePullPolicy: Always
             command:
             - php
