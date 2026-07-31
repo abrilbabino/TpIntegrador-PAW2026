@@ -18,6 +18,7 @@
             </aside>
         {% else %}
             <form action="/enviar-comprobante" method="POST" enctype="multipart/form-data" class="form-comprobante">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="refugio_id" value="{{ data.refugio_id|default('') }}">
                 <input type="hidden" name="monto" value="{{ data.monto_raw|default('') }}">
                 <fieldset class="comprobante-wrapper">

@@ -83,7 +83,10 @@ class PAWVisualizacion {
             sectionVacio.appendChild(figureIcono);
             sectionVacio.appendChild(textoContenedor);
             
-            if (this.tipoVista === 'mascotas') {
+            const userRolMeta = document.querySelector('meta[name="user-rol"]');
+            const userRol = userRolMeta ? userRolMeta.content : '';
+
+            if (this.tipoVista === 'mascotas' && userRol !== 'refugio') {
                 const btnAvisame = PAW.nuevoElemento("button", "", { class: "btn-cola-espera-moderno" });
                 
                 const iconBtn = PAW.nuevoElemento("span", "notifications_active", { class: "material-symbols-outlined" });

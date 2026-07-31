@@ -70,6 +70,7 @@
             {% endif %}
 
             <form method="POST" action="/formulario-adopcion/enviar" class="form-adopcion">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="mascota_id" value="{{ mascota.fields.id|default('') }}">
 
                 <fieldset>

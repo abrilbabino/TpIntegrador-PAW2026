@@ -17,6 +17,7 @@
         </header>
 
         <form class="login-form" method="POST" action="/login">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <label for="nombre_usuario">Usuario</label>
             <input
                 type="text"
@@ -64,6 +65,7 @@
         </header>
 
         <form class="registro-form" method="POST" action="/register">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <label for="name" id="label-name">Nombre</label>
             <input type="text" id="name" name="name" placeholder="Ingresá tu nombre" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios" {{ error == 'nombre_invalido' ? 'data-server-error="El nombre debe tener entre 2 y 50 caracteres y solo letras."' : '' }} required />
 

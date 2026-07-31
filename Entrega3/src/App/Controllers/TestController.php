@@ -38,11 +38,42 @@ class TestController extends Controller
         $filtrosSQL = $test->construirFiltrosBusqueda();
 
         $mascotaCollection = $this->loadCollection(MascotaCollection::class);
+        $diccionario = new \Paw\App\Models\DiccionarioCollection();
+        $diccionario->setQueryBuilder($mascotaCollection->getQueryBuilder());
 
-        $mascotas = $mascotaCollection->buscarCompatibles($filtrosSQL);
+        // Mapear filtros de texto a IDs
+        $filtrosDB = [];
+        if (isset($filtrosSQL['estado_adopcion'])) {
+            $filtrosDB['estado_adopcion'] = $filtrosSQL['estado_adopcion'];
+        }
+
+        if (isset($filtrosSQL['especie'])) {
+            $id = $diccionario->obtenerOCrearId('especie', $filtrosSQL['especie']);
+            if ($id) $filtrosDB['especie_id'] = $id;
+        }
+
+        if (isset($filtrosSQL['tamano'])) {
+            $ids = [];
+            foreach ((array)$filtrosSQL['tamano'] as $t) {
+                $id = $diccionario->obtenerOCrearId('tamano', $t);
+                if ($id) $ids[] = $id;
+            }
+            if (!empty($ids)) $filtrosDB['tamano_id'] = $ids;
+        }
+
+        if (isset($filtrosSQL['temperamento'])) {
+            $ids = [];
+            foreach ((array)$filtrosSQL['temperamento'] as $t) {
+                $id = $diccionario->obtenerOCrearId('temperamento', $t);
+                if ($id) $ids[] = $id;
+            }
+            if (!empty($ids)) $filtrosDB['temperamento_id'] = $ids;
+        }
+
+        $mascotas = $mascotaCollection->buscarCompatibles($filtrosDB);
 
         if (empty($mascotas)) {
-            $soloEspecie = array_intersect_key($filtrosSQL, array_flip(['especie', 'estado_adopcion']));
+            $soloEspecie = array_intersect_key($filtrosDB, array_flip(['especie_id', 'estado_adopcion']));
             $mascotas = $mascotaCollection->buscarCompatibles($soloEspecie);
         }
 

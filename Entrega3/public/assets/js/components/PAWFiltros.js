@@ -418,6 +418,11 @@ class PAWFiltros {
                 }
             }
 
+            const csrfTokenInput = document.querySelector('input[name="csrf_token"]');
+            if (csrfTokenInput) {
+                formData.append('csrf_token', csrfTokenInput.value);
+            }
+
             // Obtenemos el prefijo de la URL de API (por si estamos en XAMPP o PHP built-in)
             const basePath = window.location.pathname.includes('/public/')
                 ? window.location.pathname.split('/public/')[0] + '/public'

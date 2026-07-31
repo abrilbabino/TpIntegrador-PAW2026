@@ -274,3 +274,32 @@ resource "helm_release" "cert_manager" {
 
   depends_on = [google_container_node_pool.primary_nodes]
 }
+
+# ----------------------------------------------------------
+# external-secrets via Helm
+# ----------------------------------------------------------
+resource "helm_release" "external_secrets" {
+  name             = "external-secrets"
+  repository       = "https://charts.external-secrets.io"
+  chart            = "external-secrets"
+  version          = "0.9.11"
+  namespace        = "external-secrets"
+  create_namespace = true
+  wait             = true
+  timeout          = 600
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+
+  set {
+    name  = "serviceAccount.annotations.iam\\.gke\\.io/gcp-service-account"
+    value = google_service_account.external_secrets_sa.email
+  }
+
+  depends_on = [
+    google_container_node_pool.primary_nodes,
+    google_service_account_iam_binding.workload_identity_binding
+  ]
+}

@@ -16,6 +16,7 @@
             <figcaption id="gracias">¡Gracias por sumar tu granito de arena!</figcaption>
         </figure>
         <form class="formulario-donaciones" action="/procesar-donacion" method="POST">
+             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <!-- Selector de Refugio -->
             <label for="refugio_id">Seleccioná un refugio</label>
             <select name="refugio_id" id="refugio_id" required>
