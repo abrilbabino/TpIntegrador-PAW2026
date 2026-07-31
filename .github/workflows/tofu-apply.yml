@@ -1,0 +1,101 @@
+name: 'OpenTofu Apply'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  CLUSTER_NAME: ${{ vars.GKE_CLUSTER_NAME }}
+  REGISTRY: "${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/pawmap-repo/pawmap-app"
+
+jobs:
+  tofu-apply:
+    name: 'Tofu Apply & Deploy'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker Auth
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Tofu Init
+        working-directory: ./Entrega3/terraform
+        run: tofu init -upgrade
+
+      - name: Tofu Plan
+        working-directory: ./Entrega3/terraform
+        run: |
+          tofu plan -out=tfplan \
+            -var="project_id=${{ env.GCP_PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="cluster_name=${{ env.CLUSTER_NAME }}"
+
+      - name: Tofu Apply
+        working-directory: ./Entrega3/terraform
+        run: tofu apply -auto-approve tfplan
+
+      - name: Build & Push Docker Image
+        working-directory: ./Entrega3
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.REGISTRY }}:latest .
+          docker push ${{ env.REGISTRY }}:latest
+
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.CLUSTER_NAME }}
+          location: ${{ env.REGION }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Upload Secrets to GCP
+        run: |
+          # DB_PASSWORD
+          gcloud secrets create DB_PASSWORD --replication-policy="automatic" --project="${{ env.GCP_PROJECT_ID }}" --quiet 2>/dev/null || true
+          printf '%s' "${{ secrets.DB_PASSWORD }}" | gcloud secrets versions add DB_PASSWORD --data-file=- --project="${{ env.GCP_PROJECT_ID }}"
+          
+          # MAIL_PASS
+          gcloud secrets create MAIL_PASS --replication-policy="automatic" --project="${{ env.GCP_PROJECT_ID }}" --quiet 2>/dev/null || true
+          printf '%s' "${{ secrets.MAIL_PASS }}" | gcloud secrets versions add MAIL_PASS --data-file=- --project="${{ env.GCP_PROJECT_ID }}"
+          
+          # MERCADO_PAGO_ACCESS_TOKEN
+          gcloud secrets create MERCADO_PAGO_ACCESS_TOKEN --replication-policy="automatic" --project="${{ env.GCP_PROJECT_ID }}" --quiet 2>/dev/null || true
+          printf '%s' "${{ secrets.MERCADO_PAGO_ACCESS_TOKEN }}" | gcloud secrets versions add MERCADO_PAGO_ACCESS_TOKEN --data-file=- --project="${{ env.GCP_PROJECT_ID }}"
+
+      - name: Apply K8s Manifests
+        working-directory: ./Entrega3/k8s
+        run: |
+          kubectl apply -f configmap.yaml
+          kubectl apply -f external-secrets.yaml
+          kubectl apply -f service.yaml
+          kubectl apply -f deployment.yaml
+          kubectl apply -f ingress.yaml
+          kubectl apply -f cluster-issuer.yaml
+
+      - name: Restart Deployment
+        working-directory: ./Entrega3/k8s
+        run: |
+          kubectl rollout restart deployment pawmap-app
+          kubectl rollout status deployment pawmap-app --timeout=300s
