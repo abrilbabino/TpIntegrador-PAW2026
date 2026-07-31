@@ -116,6 +116,13 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  # Configurar el node pool por defecto para evitar exceder la cuota de SSD
+  # (GKE crea 3 nodos de 100GB pd-balanced por defecto antes de borrarlos)
+  node_config {
+    disk_type    = "pd-standard"
+    disk_size_gb = 30
+  }
+
   network    = google_compute_network.vpc.id
   subnetwork = google_compute_subnetwork.subnet.id
 
