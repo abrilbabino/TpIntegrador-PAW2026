@@ -44,8 +44,31 @@ jobs:
         run: |
           kubectl delete ingress --all --all-namespaces || true
           kubectl delete svc -n ingress-nginx --all || true
-          echo "Esperando 120s para que Google Cloud elimine los Load Balancers y firewalls..."
-          sleep 120
+          
+          echo "Esperando a que Kubernetes elimine los Load Balancers en GCP..."
+          for i in {1..20}; do
+            # Busca forwarding rules creadas por GKE
+            RULES=$(gcloud compute forwarding-rules list --project=${{ env.GCP_PROJECT_ID }} --format="value(name)" --filter="name~'k8s|gk3'")
+            if [ -n "$RULES" ]; then
+              echo "Aún existen Load Balancers. Esperando 15s..."
+              sleep 15
+            else
+              echo "No se encontraron Load Balancers."
+              break
+            fi
+          done
+
+      - name: Deep Cleanup of orphaned GCP Firewalls
+        continue-on-error: true
+        run: |
+          echo "Buscando reglas de firewall huérfanas en la VPC..."
+          # Busca reglas de firewall creadas por GKE en nuestra VPC que hayan quedado huérfanas
+          FIREWALLS=$(gcloud compute firewall-rules list --project=${{ env.GCP_PROJECT_ID }} --filter="network:${{ env.CLUSTER_NAME }}-vpc AND name~'k8s'" --format="value(name)")
+          for fw in $FIREWALLS; do
+            echo "Eliminando firewall huérfano: $fw"
+            gcloud compute firewall-rules delete $fw --project=${{ env.GCP_PROJECT_ID }} --quiet || true
+          done
+          echo "Limpieza profunda finalizada."
 
       - name: Tofu Init
         working-directory: ./Entrega3/terraform
