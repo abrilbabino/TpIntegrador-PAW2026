@@ -1,13 +1,13 @@
 variable "project_id" {
   description = "El ID de tu proyecto en Google Cloud"
   type        = string
-  default     = "project-f3583ede-db03-4872-95c"
+  default     = "project-f7af048a-a298-4d12-b7e"
 }
 
 variable "region" {
   description = "La región de Google Cloud"
   type        = string
-  default     = "us-central1"
+  default     = "us-east1"
 }
 
 

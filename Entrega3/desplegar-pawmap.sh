@@ -38,7 +38,7 @@ done
 
 # --- Configuración ---
 GCP_PROJECT_ID="project-f7af048a-a298-4d12-b7e"
-REGION="us-central1"
+REGION="us-east1"
 CLUSTER_NAME="pawmap-cluster"
 REGISTRY="${REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/pawmap-repo/pawmap-app"
 DOMAIN="pawmap.lat"

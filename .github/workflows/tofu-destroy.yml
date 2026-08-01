@@ -44,8 +44,8 @@ jobs:
         run: |
           kubectl delete ingress --all --all-namespaces || true
           kubectl delete svc -n ingress-nginx --all || true
-          echo "Esperando 60s para que Google Cloud elimine los Load Balancers y firewalls..."
-          sleep 60
+          echo "Esperando 120s para que Google Cloud elimine los Load Balancers y firewalls..."
+          sleep 120
 
       - name: Tofu Init
         working-directory: ./Entrega3/terraform
