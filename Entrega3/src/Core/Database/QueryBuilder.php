@@ -272,8 +272,7 @@ class QueryBuilder
             ORDER BY puntaje_invisibilidad DESC, m.visitas ASC, m.fecha_publicacion ASC
             LIMIT :limite
         ";
-        
-        return $this->rawQuery($sql, ['limite' => $limite]);
+        return $this->rawQuery($sql, [':limite' => ['value' => $limite, 'type' => \PDO::PARAM_INT]]);
     }
 
     private function addPagination(string $query, ?int $limit): string
