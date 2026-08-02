@@ -28,10 +28,7 @@ class Controller
         $this->connection = $connection;
         $this->viewsDir = __DIR__ . "/../App/Views";
 
-        // Iniciar sesión para verificar si hay usuario autenticado
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        // La sesión ya fue iniciada globalmente en Bootstrap.php
 
         // Sistema CSRF: Generar token si no existe en la sesión
         if (empty($_SESSION['csrf_token'])) {
