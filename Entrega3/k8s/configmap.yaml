@@ -4,7 +4,7 @@ metadata:
   name: pawmap-config
 data:
   LOG_LEVEL: "INFO"
-  LOG_PATH: "/logs/app.log"
+  LOG_PATH: "/var/www/html/logs/app.log"
   DB_ADAPTER: "pgsql"
   DB_HOSTNAME: "aws-1-us-east-1.pooler.supabase.com" 
   DB_DBNAME: "postgres"
