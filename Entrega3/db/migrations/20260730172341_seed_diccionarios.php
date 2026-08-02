@@ -18,4 +18,10 @@ final class SeedDiccionarios extends AbstractMigration
             ON CONFLICT (nombre) DO NOTHING;
         ");
     }
+
+    public function down(): void
+    {
+        // Las tablas se dropean en la migración CrearDiccionariosMascota,
+        // no hace falta borrar registros manualmente acá
+    }
 }
