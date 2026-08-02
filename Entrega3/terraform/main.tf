@@ -197,6 +197,16 @@ resource "google_artifact_registry_repository" "pawmap_repo" {
   format        = "DOCKER"
 }
 
+data "google_compute_default_service_account" "default" {}
+
+resource "google_artifact_registry_repository_iam_member" "gke_ar_reader" {
+  project    = google_artifact_registry_repository.pawmap_repo.project
+  location   = google_artifact_registry_repository.pawmap_repo.location
+  repository = google_artifact_registry_repository.pawmap_repo.name
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:${data.google_compute_default_service_account.default.email}"
+}
+
 # ----------------------------------------------------------
 # External Secrets Operator - IAM & Service Account
 # ----------------------------------------------------------
