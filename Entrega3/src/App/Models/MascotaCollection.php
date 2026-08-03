@@ -229,15 +229,15 @@ class MascotaCollection extends Model
 
     public function importarMascotasCsv(string $rutaTemporalCsv, int $idUsuario): array
     {
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($this->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($this->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($this->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($this->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos());
 
         $archivo = fopen($rutaTemporalCsv, 'r');
         $esPrimeraLinea = true;
@@ -395,15 +395,15 @@ class MascotaCollection extends Model
     {
         $erroresMascota = [];
 
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($this->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($this->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($this->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($this->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos());
 
         // --- Validaciones ---
         $nombre = trim($post['nombre'] ?? '');
@@ -612,7 +612,9 @@ class MascotaCollection extends Model
                     'ciudad'       => $refugio['ciudad'] ?? '',
                 ]);
             } catch (\Exception $e) {
-                error_log("Error en Cola de Espera: " . $e->getMessage());
+                if ($this->logger) {
+                    $this->logger->error('Error en Cola de Espera', ['error' => $e->getMessage()]);
+                }
             }
         }
 
@@ -712,7 +714,9 @@ class MascotaCollection extends Model
                                 'url'        => $urlExtra
                             ]);
                         } catch (\Exception $e) {
-                            error_log("Error guardando foto extra múltiple: " . $e->getMessage());
+                            if ($this->logger) {
+                                $this->logger->error('Error guardando foto extra múltiple', ['mascota_id' => $id, 'error' => $e->getMessage()]);
+                            }
                         }
                     }
                 }
@@ -726,7 +730,9 @@ class MascotaCollection extends Model
                         'url'        => $urlExtra
                     ]);
                 } catch (\Exception $e) {
-                    error_log("Error guardando foto extra individual: " . $e->getMessage());
+                    if ($this->logger) {
+                        $this->logger->error('Error guardando foto extra individual', ['mascota_id' => $id, 'error' => $e->getMessage()]);
+                    }
                 }
             }
         }

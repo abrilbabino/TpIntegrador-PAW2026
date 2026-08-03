@@ -42,7 +42,9 @@ class ColaEsperaController extends Controller
             }
         } catch (\Exception $e) {
             http_response_code(500);
-            error_log('Error al suscribirse a cola_espera: ' . $e->getMessage());
+            if ($this->logger) {
+                $this->logger->error('Error al suscribirse a cola_espera', ['error' => $e->getMessage()]);
+            }
             echo json_encode(['success' => false, 'message' => 'Ocurrió un error inesperado al procesar tu solicitud. Por favor, intentá nuevamente.']);
         }
         exit;
@@ -80,7 +82,9 @@ class ColaEsperaController extends Controller
             }
         } catch (\Exception $e) {
             http_response_code(500);
-            error_log('Error al eliminar alerta de cola_espera: ' . $e->getMessage());
+            if ($this->logger) {
+                $this->logger->error('Error al eliminar alerta de cola_espera', ['error' => $e->getMessage()]);
+            }
             echo json_encode(['success' => false, 'message' => 'Ocurrió un error inesperado al procesar tu solicitud. Por favor, intentá nuevamente.']);
         }
         exit;

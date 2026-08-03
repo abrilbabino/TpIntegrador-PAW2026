@@ -15,8 +15,10 @@ class MailService {
             $mail->CharSet = 'UTF-8';
             $mail->isSMTP();
             $mail->SMTPDebug = 2;
-            $mail->Debugoutput = function($str, $level) {
-                error_log("SMTP DEBUG [$level]: $str");
+            $mail->Debugoutput = function($str, $level) use ($log) {
+                if (isset($log)) {
+                    $log->debug("SMTP DEBUG [$level]: $str");
+                }
             };
             $mail->Host       = $config->get('MAIL_HOST');
             $mail->SMTPAuth   = true;
@@ -101,9 +103,7 @@ class MailService {
             return true;
         } catch (Exception $e) {
             if (isset($log)) {
-                $log->error("Error SMTP al enviar recordatorio: {$mail->ErrorInfo}");
-            } else {
-                error_log("Error SMTP al enviar recordatorio: {$mail->ErrorInfo}");
+                $log->error('Error SMTP al enviar recordatorio', ['error' => $mail->ErrorInfo]);
             }
             return false;
         }

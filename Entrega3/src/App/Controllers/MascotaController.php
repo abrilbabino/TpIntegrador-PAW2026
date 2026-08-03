@@ -230,15 +230,15 @@ class MascotaController extends Controller
         }
 
         $mascotaCollection = $this->loadCollection(MascotaCollection::class);
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($mascotaCollection->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($mascotaCollection->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($mascotaCollection->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($mascotaCollection->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($mascotaCollection->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($mascotaCollection->getTemperamentos());
         
         // --- Validaciones ---
         $opcionesPermitidas = [
@@ -294,7 +294,9 @@ class MascotaController extends Controller
         $mascotaId = (int) ($postData['mascota_id'] ?? 0);
         
         if ($mascotaId <= 0) {
-            error_log("ERROR: Intento de subir foto con ID inválido. POST data: " . json_encode($postData));
+            if ($this->logger) {
+                $this->logger->warning('Intento de subir foto con ID inválido', ['post_data' => $postData]);
+            }
             header('Location: /perfil?error=id_invalido');
             exit;
         }
@@ -342,7 +344,9 @@ class MascotaController extends Controller
             
             header('Location: /mascota/editar?id=' . $mascotaId . '&upload=success');
         } catch (\Exception $e) {
-            error_log("Error subirArchivoMascota: " . $e->getMessage());
+            if ($this->logger) {
+                $this->logger->error('Error subirArchivoMascota', ['mascota_id' => $mascotaId, 'error' => $e->getMessage()]);
+            }
             
             $wantsJson = $this->request->server('HTTP_ACCEPT') && str_contains($this->request->server('HTTP_ACCEPT'), 'application/json');
             if ($wantsJson) {
