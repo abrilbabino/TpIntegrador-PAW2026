@@ -128,8 +128,24 @@
                 <h4>Etiquetas</h4>
                 <ul class="etiquetas-container">
                     <li class="etiqueta">{{ mascota.fields.temperamento|default('Juguetón')|capitalize }}</li>
-                    <li class="etiqueta">Ideal Depto</li>
-                    <li class="etiqueta">Convive con Gatos</li>
+                    {% if mascota.fields.vacunado %}
+                        <li class="etiqueta">Vacunado/a</li>
+                    {% endif %}
+                    {% if mascota.fields.castrado %}
+                        <li class="etiqueta">Castrado/a</li>
+                    {% endif %}
+                    {% if mascota.fields.ideal_depto %}
+                        <li class="etiqueta">Ideal Depto</li>
+                    {% endif %}
+                    {% if mascota.fields.convive_perros %}
+                        <li class="etiqueta">Convive con Perros</li>
+                    {% endif %}
+                    {% if mascota.fields.convive_gatos %}
+                        <li class="etiqueta">Convive con Gatos</li>
+                    {% endif %}
+                    {% if mascota.fields.apto_ninos %}
+                        <li class="etiqueta">Apto para Niños</li>
+                    {% endif %}
                 </ul>
             </section>
 
@@ -154,7 +170,7 @@
                     </address>
                 {% else %}
                     <h4>SOBRE MÍ</h4>
-                    <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.')|capitalize }}</p>
+                    <p class="sobre-mi-box">{{ mascota.fields.descripcion|default('Sin descripción disponible.') }}</p>
                 {% endif %}
             </section>
 

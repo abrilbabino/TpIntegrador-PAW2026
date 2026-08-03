@@ -216,16 +216,47 @@
             </li>
             <li class="dato-item">
                 <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
-                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*" multiple class="dato-valor-input input-file-padding">
+                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*" multiple class="dato-valor-input input-file-padding" data-max-total-size="47185920" data-max-total-message="El peso total de las imágenes no puede superar los 45 MB.">
             </li>
 
             <li class="dato-item">
-                <footer class="perfil-datos-acciones">
-                    <button type="submit" form="form-editar-mascota" class="btn-guardar-perfil">Guardar</button>
-                    <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
-                </footer>
+                <span class="dato-label">Características</span>
+                <ul class="etiquetas-checks">
+                    <li>
+                        <label class="etiqueta-check-label">
+                            <input type="checkbox" name="ideal_depto" value="1"
+                                {{ (oldData.ideal_depto ?? mascotaFields.ideal_depto ?? 0) ? 'checked' : '' }}>
+                            Ideal Depto
+                        </label>
+                    </li>
+                    <li>
+                        <label class="etiqueta-check-label">
+                            <input type="checkbox" name="convive_perros" value="1"
+                                {{ (oldData.convive_perros ?? mascotaFields.convive_perros ?? 0) ? 'checked' : '' }}>
+                            Convive con Perros
+                        </label>
+                    </li>
+                    <li>
+                        <label class="etiqueta-check-label">
+                            <input type="checkbox" name="convive_gatos" value="1"
+                                {{ (oldData.convive_gatos ?? mascotaFields.convive_gatos ?? 0) ? 'checked' : '' }}>
+                            Convive con Gatos
+                        </label>
+                    </li>
+                    <li>
+                        <label class="etiqueta-check-label">
+                            <input type="checkbox" name="apto_ninos" value="1"
+                                {{ (oldData.apto_ninos ?? mascotaFields.apto_ninos ?? 0) ? 'checked' : '' }}>
+                            Apto para Niños
+                        </label>
+                    </li>
+                </ul>
             </li>
         </ul>
+        <footer class="perfil-datos-acciones">
+            <button type="submit" form="form-editar-mascota" class="btn-guardar-perfil">Guardar</button>
+            <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
+        </footer>
     </form>
 
     <section class="galeria-multimedia">
@@ -261,7 +292,5 @@
 
 
 </section>
-
-
 
 {% endblock %}

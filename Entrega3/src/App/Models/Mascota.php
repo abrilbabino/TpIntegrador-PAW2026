@@ -29,6 +29,10 @@ class Mascota extends Model
         'svg' => null,
         'fecha_publicacion' => null,
         'visitas' => 0,
+        'ideal_depto'    => false,
+        'convive_perros' => false,
+        'convive_gatos'  => false,
+        'apto_ninos'     => false,
     ];
 
     public function setId($id){

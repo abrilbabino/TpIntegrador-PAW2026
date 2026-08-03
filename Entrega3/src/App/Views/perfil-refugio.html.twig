@@ -1,4 +1,4 @@
-﻿{% extends 'layout/base.html.twig' %}
+{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -175,8 +175,8 @@
                         <p>
                             Detalle de la mascota: <br>
                             {{ sol.edad|default('?') }} a&ntilde;o(s)
-                            · {{ sol.tamano|default('—') }}
-                            · {{ sol.temperamento|default('—') }}
+                            · {{ sol.tamano|default('—')|capitalize }}
+                            · {{ sol.temperamento|default('—')|capitalize }}
                         </p>
                         {% if estadoSol == 'PENDIENTE' %}
                             <button class="btn-rechazar" data-id="{{ sol.id }}">RECHAZAR</button>
@@ -513,8 +513,8 @@
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
-                                · {{ mascota.fields.tamano|default('—') }}
-                                · {{ mascota.fields.temperamento|default('—') }}
+                                · {{ mascota.fields.tamano|default('—')|capitalize }}
+                                · {{ mascota.fields.temperamento|default('—')|capitalize }}
                             </p>
                         </a>
                         <a href="/mascota/editar?id={{ mascota.fields.id }}" class="btn-editar" title="Editar datos">
@@ -550,8 +550,8 @@
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
                                 {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
-                                · {{ mascota.fields.tamano|default('—') }}
-                                · {{ mascota.fields.temperamento|default('—') }}
+                                · {{ mascota.fields.tamano|default('—')|capitalize }}
+                                · {{ mascota.fields.temperamento|default('—')|capitalize }}
                             </p>
                         </a>
                         <a href="/mascota/libreta?id={{ mascota.fields.id }}" class="btn-editar btn-libreta" title="Ver Libreta Sanitaria">

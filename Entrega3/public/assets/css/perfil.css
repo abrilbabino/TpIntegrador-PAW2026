@@ -453,9 +453,7 @@
     width: 100%;
     max-width: 1200px;
     margin: 3.5rem auto 2rem;
-    /* Aumentado porque la barra en desktop es más alta */
     display: grid;
-    grid-template-columns: 1fr 2fr;
     grid-template-areas:
       "header datos"
       "alerta alerta"
@@ -622,6 +620,40 @@ textarea.dato-valor-input {
 
 .btn-guardar-perfil:hover {
   background-color: var(--color-naranja);
+}
+
+/* Checkboxes de etiquetas en editar mascota */
+.etiquetas-checks {
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.etiqueta-check-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  border: 1.5px solid var(--color-azul);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-azul);
+  transition: background-color 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.etiqueta-check-label:has(input:checked) {
+  background-color: var(--color-azul);
+  color: var(--color-fondo);
+}
+
+.etiqueta-check-label input[type="checkbox"] {
+  display: none;
 }
 
 .btn-cancelar-perfil {
@@ -913,8 +945,40 @@ textarea.dato-valor-input {
 .alerta-error span {
   color: var(--color-rojo);
   font-size: 1.5rem;
-}  
-.paginacion { margin-top: 1.5rem; display: flex; justify-content: center; }  
-.paginacion-lista { display: flex; gap: 0.5rem; list-style: none; padding: 0; margin: 0; align-items: center; }  
-.paginacion-link { display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; background: var(--color-fondo); border: 2px solid var(--color-naranja); color: var(--color-naranja); text-decoration: none; font-weight: bold; transition: all 0.2s; }  
-.paginacion-link:hover, .paginacion-link.active { background: var(--color-naranja); color: var(--color-fondo); } 
+}
+
+.paginacion {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.paginacion-lista {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.paginacion-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: var(--color-fondo);
+  border: 2px solid var(--color-naranja);
+  color: var(--color-naranja);
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.paginacion-link:hover,
+.paginacion-link.active {
+  background: var(--color-naranja);
+  color: var(--color-fondo);
+}

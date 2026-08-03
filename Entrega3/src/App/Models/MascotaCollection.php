@@ -687,6 +687,10 @@ class MascotaCollection extends Model
             'castrado'     => (($datosMascota['esterilizado'] ?? '') === 'si') ? 1 : 0,
             'imagen'       => $imagenRelativa,
             'svg'          => $svgRelativa,
+            'ideal_depto'    => isset($datosMascota['ideal_depto']) ? 1 : 0,
+            'convive_perros' => isset($datosMascota['convive_perros']) ? 1 : 0,
+            'convive_gatos'  => isset($datosMascota['convive_gatos']) ? 1 : 0,
+            'apto_ninos'     => isset($datosMascota['apto_ninos']) ? 1 : 0,
         ];
 
         $db->update('mascota', $datosUpdate, ['id' => $id]);

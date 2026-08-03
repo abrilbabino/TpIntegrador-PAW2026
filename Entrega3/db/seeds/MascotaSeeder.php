@@ -42,6 +42,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => true,
                 'sexo'            => 'Macho',
                 'imagen'          => 'firulais.jpg',
+                'ideal_depto'     => false,
+                'convive_perros'  => true,
+                'convive_gatos'   => false,
+                'apto_ninos'      => true,
             ],
             [
                 'refugio_id'      => 5,
@@ -56,6 +60,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => true,
                 'sexo'            => 'Hembra',
                 'imagen'          => 'mishi.jpg',
+                'ideal_depto'     => true,
+                'convive_perros'  => false,
+                'convive_gatos'   => true,
+                'apto_ninos'      => true,
             ],
             [
                 'refugio_id'      => 10,
@@ -70,6 +78,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => false,
                 'sexo'            => 'Macho',
                 'imagen'          => 'rocky.jpg',
+                'ideal_depto'     => false,
+                'convive_perros'  => true,
+                'convive_gatos'   => false,
+                'apto_ninos'      => true,
             ],
             [
                 'refugio_id'      => 9,
@@ -84,6 +96,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => false,
                 'sexo'            => 'Macho',
                 'imagen'          => 'toby.jpg',
+                'ideal_depto'     => false,
+                'convive_perros'  => true,
+                'convive_gatos'   => true,
+                'apto_ninos'      => false,
             ],
             [
                 'refugio_id'      => 6,
@@ -98,6 +114,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => true,
                 'sexo'            => 'Hembra',
                 'imagen'          => 'luna.jpg',
+                'ideal_depto'     => true,
+                'convive_perros'  => false,
+                'convive_gatos'   => true,
+                'apto_ninos'      => true,
             ],
             [
                 'refugio_id'      => 7,
@@ -112,6 +132,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => false,
                 'sexo'            => 'Macho',
                 'imagen'          => 'max.jpg',
+                'ideal_depto'     => false,
+                'convive_perros'  => true,
+                'convive_gatos'   => false,
+                'apto_ninos'      => false,
             ],
             [
                 'refugio_id'      => 7,
@@ -126,6 +150,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => true,
                 'sexo'            => 'Hembra',
                 'imagen'          => 'bella.jpg',
+                'ideal_depto'     => false,
+                'convive_perros'  => true,
+                'convive_gatos'   => true,
+                'apto_ninos'      => true,
             ],
             [
                 'refugio_id'      => 8,
@@ -140,6 +168,10 @@ class MascotaSeeder extends AbstractSeed
                 'castrado'        => true,
                 'sexo'            => 'Macho',
                 'imagen'          => 'simba.jpg',
+                'ideal_depto'     => true,
+                'convive_perros'  => false,
+                'convive_gatos'   => true,
+                'apto_ninos'      => false,
             ],
         ];
 

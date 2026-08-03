@@ -180,15 +180,25 @@ class PAWValidador {
     }
 
     if (input.type === "file" && input.files && input.files.length > 0) {
-      const archivo = input.files[0];
       const maximoBytes = Number(input.dataset.maxFileSize || 0);
+      const maximoTotalBytes = Number(input.dataset.maxTotalSize || 0);
+      let totalBytes = 0;
 
-      if (maximoBytes > 0 && archivo.size > maximoBytes) {
-        return input.dataset.maxFileMessage || "El archivo supera el tamaño máximo permitido.";
+      for (let i = 0; i < input.files.length; i++) {
+        const archivo = input.files[i];
+        totalBytes += archivo.size;
+
+        if (maximoBytes > 0 && archivo.size > maximoBytes) {
+          return input.dataset.maxFileMessage || "Un archivo supera el tamaño máximo permitido.";
+        }
+
+        if (input.accept && !this.archivoCumpleAccept(archivo, input.accept)) {
+          return input.dataset.fileTypesMessage || "El tipo de un archivo no es válido.";
+        }
       }
 
-      if (input.accept && !this.archivoCumpleAccept(archivo, input.accept)) {
-        return input.dataset.fileTypesMessage || "El tipo de archivo no es válido.";
+      if (maximoTotalBytes > 0 && totalBytes > maximoTotalBytes) {
+        return input.dataset.maxTotalMessage || "El peso total de los archivos supera el límite permitido.";
       }
     }
 
