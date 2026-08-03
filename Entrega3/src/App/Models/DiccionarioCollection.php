@@ -35,7 +35,7 @@ class DiccionarioCollection extends Model
     {
         $db = $this->getQueryBuilder();
         
-        $nombreLimpio = ucfirst(strtolower(trim($nombre)));
+        $nombreLimpio = strtolower(trim($nombre));
         
         $existente = $db->select($tabla, ['nombre' => $nombreLimpio]);
         

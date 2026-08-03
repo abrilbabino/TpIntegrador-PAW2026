@@ -28,6 +28,13 @@ class UserController extends Controller
         }
 
         $dbUser = $this->model->findById((int) $userSession['id']);
+        
+        if (!$dbUser) {
+            $this->request->unsetSession('user');
+            header('Location: /?auth=login');
+            exit;
+        }
+
         if (array_key_exists('rol', $dbUser)) unset($dbUser['rol']);
         $user = array_merge($userSession, $dbUser);
         $user['rol'] = $userSession['rol'] ?? 'adoptante'; // ← preservar el rol de la sesión

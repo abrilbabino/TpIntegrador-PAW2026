@@ -6,15 +6,15 @@ use Phinx\Migration\AbstractMigration;
 
 final class SeedDiccionarios extends AbstractMigration
 {
-    public function up(): void
+    public function change(): void
     {
         $this->execute("
             INSERT INTO tamano (nombre) VALUES
-            ('Pequeño'), ('Mediano'), ('Grande')
+            ('pequeño'), ('mediano'), ('grande')
             ON CONFLICT (nombre) DO NOTHING;
             
             INSERT INTO temperamento (nombre) VALUES
-            ('Tranquilo'), ('Enérgico'), ('Cariñoso'), ('Independiente'), ('Protector'), ('Juguetón'), ('Tímido'), ('Curioso')
+            ('tranquilo'), ('enérgico'), ('cariñoso'), ('independiente'), ('protector'), ('juguetón'), ('tímido'), ('curioso')
             ON CONFLICT (nombre) DO NOTHING;
         ");
     }

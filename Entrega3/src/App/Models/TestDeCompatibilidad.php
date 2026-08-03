@@ -23,12 +23,16 @@ class TestDeCompatibilidad extends Model
     {
         $filtros = ['estado_adopcion' => 'DISPONIBLE'];
         $r = $this->respuestas;
+        
+        $p1 = trim((string)($r['pregunta1'] ?? ''));
+        $p2 = trim((string)($r['pregunta2'] ?? ''));
+        $p3 = trim((string)($r['pregunta3'] ?? ''));
+        $p5 = trim((string)($r['pregunta5'] ?? ''));
 
-        if ($r['pregunta5'] === 'perro') {
+        if ($p5 === 'perro') {
             $filtros['especie'] = 'perro';
             $mensajeEspecie = 'perros';
-        } elseif ($r['pregunta5'] === 'gato' || 
-           ($r['pregunta5'] === 'indiferente' && $r['pregunta1'] === 'departamento_chico' && $r['pregunta2'] === 'pocas')) {
+        } elseif ($p5 === 'gato' || ($p5 === 'indiferente' && $p1 === 'departamento_chico' && $p2 === 'pocas')) {
             $filtros['especie'] = 'gato';
             $mensajeEspecie = 'gatos';
         } else {
@@ -36,16 +40,16 @@ class TestDeCompatibilidad extends Model
         }
 
         if (($filtros['especie'] ?? '') === 'perro') {
-            if ($r['pregunta1'] === 'departamento_chico') {
+            if ($p1 === 'departamento_chico') {
                 $filtros['tamano'] = ['pequeño'];
-            } elseif ($r['pregunta1'] === 'departamento_grande') {
-                $filtros['tamano'] = ($r['pregunta3'] === 'alta') ? ['mediano'] : ['pequeño', 'mediano'];
+            } elseif ($p1 === 'departamento_grande') {
+                $filtros['tamano'] = ($p3 === 'alta') ? ['mediano'] : ['pequeño', 'mediano'];
             }
         }
 
-        if ($r['pregunta3'] === 'tranqui' || $r['pregunta2'] === 'pocas') {
+        if ($p3 === 'tranqui' || $p2 === 'pocas') {
             $filtros['temperamento'] = ['tranquilo', 'independiente'];
-        } elseif ($r['pregunta3'] === 'alta') {
+        } elseif ($p3 === 'alta') {
             $filtros['temperamento'] = ['enérgico', 'juguetón'];
         }
         
