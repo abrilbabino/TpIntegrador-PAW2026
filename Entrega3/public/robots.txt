@@ -14,6 +14,7 @@ Disallow: /contacto/enviar
 Disallow: /mascota/registro/
 Disallow: /encuesta/guardar
 Disallow: /favorito
+Disallow: /generar-qr/imagen
 Disallow: /api/
 
 # Sitemap
