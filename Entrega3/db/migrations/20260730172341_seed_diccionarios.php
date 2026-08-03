@@ -6,7 +6,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class SeedDiccionarios extends AbstractMigration
 {
-    public function up(): void
+    public function change(): void
     {
         $this->execute("
             INSERT INTO tamano (nombre) VALUES
@@ -17,11 +17,5 @@ final class SeedDiccionarios extends AbstractMigration
             ('tranquilo'), ('enérgico'), ('cariñoso'), ('independiente'), ('protector'), ('juguetón'), ('tímido'), ('curioso')
             ON CONFLICT (nombre) DO NOTHING;
         ");
-    }
-
-    public function down(): void
-    {
-        // Las tablas se dropean en la migración CrearDiccionariosMascota,
-        // no hace falta borrar registros manualmente acá
     }
 }
