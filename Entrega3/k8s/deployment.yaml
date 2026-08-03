@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: pawmap-sa
+  annotations:
+    iam.gke.io/gcp-service-account: 318080077162-compute@developer.gserviceaccount.com
 ---
 apiVersion: apps/v1
 kind: Deployment
