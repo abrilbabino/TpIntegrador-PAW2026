@@ -39,8 +39,9 @@ trait Notificable
 
             $client->rpush('paw_jobs_queue', $jobPayload);
         } catch (\Exception $e) {
-            // Fallback log
-            error_log("No se pudo encolar la notificación en Redis: " . $e->getMessage());
+            if (isset($this->logger) && $this->logger) {
+                $this->logger->error('No se pudo encolar la notificación en Redis', ['error' => $e->getMessage()]);
+            }
         }
     }
 }

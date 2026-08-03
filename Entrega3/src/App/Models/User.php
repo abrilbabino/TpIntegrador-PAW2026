@@ -560,7 +560,10 @@ class User extends Model
                         $fieldsUsuario['foto_perfil'] = $url;
 
                     } catch (\Exception $e) {
-                        $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. ' . $e->getMessage();
+                        if ($this->logger) {
+                            $this->logger->error('[GCS] Error al subir foto de perfil', ['userId' => $userId, 'error' => $e->getMessage()]);
+                        }
+                        $errores['foto_perfil_o_logo'] = 'No se pudo guardar la imagen de perfil. Por favor, intentá de nuevo más tarde.';
                     }
                 } elseif ($archivo['error'] !== UPLOAD_ERR_NO_FILE) {
                     $errores['foto_perfil_o_logo'] = 'Ocurrió un error al subir la imagen (Código: ' . $archivo['error'] . ').';

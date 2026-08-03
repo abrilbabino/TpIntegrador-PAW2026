@@ -612,7 +612,9 @@ class MascotaCollection extends Model
                     'ciudad'       => $refugio['ciudad'] ?? '',
                 ]);
             } catch (\Exception $e) {
-                error_log("Error en Cola de Espera: " . $e->getMessage());
+                if ($this->logger) {
+                    $this->logger->error('Error en Cola de Espera', ['error' => $e->getMessage()]);
+                }
             }
         }
 
@@ -712,7 +714,9 @@ class MascotaCollection extends Model
                                 'url'        => $urlExtra
                             ]);
                         } catch (\Exception $e) {
-                            error_log("Error guardando foto extra múltiple: " . $e->getMessage());
+                            if ($this->logger) {
+                                $this->logger->error('Error guardando foto extra múltiple', ['mascota_id' => $id, 'error' => $e->getMessage()]);
+                            }
                         }
                     }
                 }
@@ -726,7 +730,9 @@ class MascotaCollection extends Model
                         'url'        => $urlExtra
                     ]);
                 } catch (\Exception $e) {
-                    error_log("Error guardando foto extra individual: " . $e->getMessage());
+                    if ($this->logger) {
+                        $this->logger->error('Error guardando foto extra individual', ['mascota_id' => $id, 'error' => $e->getMessage()]);
+                    }
                 }
             }
         }

@@ -47,7 +47,12 @@ class PAWFavoritos {
           }
         } else {
           if (data.error === 'No autorizado') {
-            window.location.href = '?auth=login';
+            const loginModal = document.getElementById('modal-login');
+            if (loginModal) {
+              loginModal.showModal();
+            } else {
+              window.location.href = '?auth=login';
+            }
           } else {
             console.error('Error al modificar favoritos:', data.error);
           }

@@ -6,7 +6,7 @@ use Google\Cloud\Storage\StorageClient;
 
 class GCSHelper
 {
-    private static string $bucketName = 'pawmap-fotos';
+    private static string $bucketName = 'pawmap-bucket';
 
     public static function subir(array $archivo, string $prefijo): string
     {
