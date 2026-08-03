@@ -470,9 +470,13 @@ class QueryBuilder
 
     public function obtenerFavoritosPorAdoptante(string $tabla, int $adoptanteId): array
     {
-        $sql = "SELECT f.id AS favorito_id, m.*
+        $sql = "SELECT f.id AS favorito_id, m.*,
+                       e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento
                 FROM {$tabla} f
                 INNER JOIN mascota m ON m.id = f.mascota_id
+                LEFT JOIN especie e ON m.especie_id = e.id
+                LEFT JOIN tamano t ON m.tamano_id = t.id
+                LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
                 WHERE f.adoptante_id = :adoptante_id
                   AND m.estado_adopcion = 'DISPONIBLE'
                 ORDER BY f.id DESC";
@@ -904,7 +908,12 @@ class QueryBuilder
         /*solo mascotas disponibles*/
     public function selectByRefugioId(string $table, int $refugioId): array
     {
-        $sql = "SELECT * FROM {$table} WHERE refugio_id = :refugio_id AND estado_adopcion = 'DISPONIBLE'" ;
+        $sql = "SELECT m.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento 
+                FROM {$table} m
+                LEFT JOIN especie e ON m.especie_id = e.id
+                LEFT JOIN tamano t ON m.tamano_id = t.id
+                LEFT JOIN temperamento temp ON m.temperamento_id = temp.id
+                WHERE m.refugio_id = :refugio_id AND m.estado_adopcion = 'DISPONIBLE'";
         $sentencia = $this->pdo->prepare($sql);
         $sentencia->bindValue(':refugio_id', $refugioId, PDO::PARAM_INT);
         $sentencia->execute();

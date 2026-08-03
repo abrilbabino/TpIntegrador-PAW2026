@@ -229,15 +229,15 @@ class MascotaCollection extends Model
 
     public function importarMascotasCsv(string $rutaTemporalCsv, int $idUsuario): array
     {
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($this->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($this->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($this->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($this->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos());
 
         $archivo = fopen($rutaTemporalCsv, 'r');
         $esPrimeraLinea = true;
@@ -395,15 +395,15 @@ class MascotaCollection extends Model
     {
         $erroresMascota = [];
 
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($this->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($this->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($this->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($this->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($this->getTemperamentos());
 
         // --- Validaciones ---
         $nombre = trim($post['nombre'] ?? '');

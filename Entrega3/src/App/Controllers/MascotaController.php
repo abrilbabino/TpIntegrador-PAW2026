@@ -230,15 +230,15 @@ class MascotaController extends Controller
         }
 
         $mascotaCollection = $this->loadCollection(MascotaCollection::class);
-        $valoresDeCampo = static function (array $items, string $campo): array {
+        $valoresDeCampo = static function (array $items): array {
             return array_map(
-                static fn ($item) => strtolower((string) ($item->fields[$campo] ?? '')),
+                static fn ($item) => strtolower((string) ($item->fields['nombre'] ?? '')),
                 $items
             );
         };
-        $especiesPermitidas = $valoresDeCampo($mascotaCollection->getEspecies(), 'especie');
-        $tamanosPermitidos = $valoresDeCampo($mascotaCollection->getTamanos(), 'tamano');
-        $temperamentosPermitidos = $valoresDeCampo($mascotaCollection->getTemperamentos(), 'temperamento');
+        $especiesPermitidas = $valoresDeCampo($mascotaCollection->getEspecies());
+        $tamanosPermitidos = $valoresDeCampo($mascotaCollection->getTamanos());
+        $temperamentosPermitidos = $valoresDeCampo($mascotaCollection->getTemperamentos());
         
         // --- Validaciones ---
         $opcionesPermitidas = [

@@ -26,8 +26,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10000;
-    max-width: 95%;
-    width: max-content;
+    width: 95%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -39,12 +41,13 @@
 }
 
 .contenedor-exito {
-    max-width: 600px;
-    padding: 30px;
+    width: 100%;
+    padding: 20px 15px;
     text-align: center;
     border: 1px solid var(--color-gris-claro);
     border-radius: 20px;
     background-color: var(--color-fondo);
+    box-sizing: border-box;
 }
 
 .contenedor-exito hr {
@@ -311,6 +314,9 @@ fieldset.comprobante-wrapper legend {
 @media screen and (min-width: 994px) {
     .modal-js-alerta {
         transform: translateX(140px);
+    }
+    .contenedor-exito {
+        padding: 30px;
     }
 }
 
