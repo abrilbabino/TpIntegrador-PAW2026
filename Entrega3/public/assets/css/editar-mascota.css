@@ -38,7 +38,8 @@
     text-align: center;
 }
 
-.foto-item img {
+.foto-item img,
+.foto-item video {
     display: block;
     width: 100%;
     height: 150px;

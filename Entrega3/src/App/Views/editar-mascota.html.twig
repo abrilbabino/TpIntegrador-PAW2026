@@ -216,7 +216,7 @@
             </li>
             <li class="dato-item">
                 <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
-                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*" multiple class="dato-valor-input input-file-padding" data-max-total-size="47185920" data-max-total-message="El peso total de las imágenes no puede superar los 45 MB.">
+                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*,video/*" multiple class="dato-valor-input input-file-padding" data-max-total-size="47185920" data-max-total-message="El peso total de las imágenes no puede superar los 45 MB.">
             </li>
 
             <li class="dato-item">
@@ -265,7 +265,11 @@
                 <li class="foto-item">
                     <figure>
                         {% set extraUrl = foto.url starts with 'http' ? foto.url : '/' ~ foto.url %}
-                        <img src="{{ extraUrl }}" alt="Foto extra de la mascota" class="foto-extra-preview">
+                        {% if foto.tipo == 'video' %}
+                            <video src="{{ extraUrl }}" class="foto-extra-preview" controls></video>
+                        {% else %}
+                            <img src="{{ extraUrl }}" alt="Foto extra de la mascota" class="foto-extra-preview">
+                        {% endif %}
                         <figcaption>
                             <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
