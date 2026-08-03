@@ -366,6 +366,7 @@ class MascotaCollection extends Model
                         'especie_id'      => $dicc->obtenerOCrearId('especie', $especieSegura),
                         'descripcion'     => $descripcionSegura,
                         'edad'            => $edadValida,
+                        'fecha_nacimiento'=> $fechaNac,
                         'tamano_id'       => $dicc->obtenerOCrearId('tamano', $tamanoSeguro),
                         'sexo'            => $sexoSeguro,
                         'temperamento_id' => $dicc->obtenerOCrearId('temperamento', $temperamentoSeguro),
