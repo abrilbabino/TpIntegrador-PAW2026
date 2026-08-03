@@ -8,7 +8,7 @@
 {% set sexoActual = (oldData.sexo|default(mascotaFields.sexo|default('')))|lower %}
 {% set esterilizadoActual = oldData.esterilizado|default((mascotaFields.castrado|default(0) == 1) ? 'si' : 'no') %}
 {% set descripcionActual = oldData.descripcion_mascota|default(oldData.descripcion|default(mascotaFields.descripcion|default(''))) %}
-{% set fechaDB = mascotaFields.fecha_nacimiento|default('') %}
+{% set fechaDB = (mascotaFields.fecha_nacimiento|default(''))|slice(0, 10) %}
 {% set fechaNacimientoActual = oldData.fecha_nacimiento|default(fechaDB) %}
 {% set fotos = fotos|default([]) %}
 
