@@ -99,7 +99,7 @@
                                             <span class="btn-ver-perfil-mobile">Ver Perfil</span>
                                         </header>
                                         <p>
-                                            {{ mascota.fields.edad|default('0') }} años -
+                                            {{ mascota.fields.fecha_nacimiento|edad_formateada(mascota.fields.edad) }} -
                                             {{ mascota.fields.tamano|default('Desconocido')|capitalize }} -
                                             {{ mascota.fields.temperamento|default('Desconocido')|capitalize }}
                                         </p>
