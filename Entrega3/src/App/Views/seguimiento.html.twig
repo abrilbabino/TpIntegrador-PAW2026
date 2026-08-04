@@ -159,7 +159,7 @@
 
             <fieldset>
                 <label for="archivo">Archivo (PDF o Imagen):</label>
-                <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required
+                <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required data-file-types-message="Formato invalido. Formatos admitidos: Imagenes o PDF."
                     class="input-file-completar {{ errorUpload is not empty ? 'input-invalido' : '' }}"
                     {% if errorUpload is not empty %}
                     data-server-error="{{ errorUpload }}"

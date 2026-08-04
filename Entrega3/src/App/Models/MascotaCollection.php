@@ -522,7 +522,7 @@ class MascotaCollection extends Model
                     }
                 }
                 if (!$esImagenValida || !in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
-                    $erroresMascota['foto'] = 'Archivo no válido. Solo JPG, PNG o WEBP.';
+                    $erroresMascota['foto'] = 'Formato invalido. Formatos admitidos: JPG, PNG, WEBP';
                 } else {
                     $fotoValidaParaMover = true;
                 }
