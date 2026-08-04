@@ -325,6 +325,7 @@ class MascotaController extends Controller
         // 3. Procesar el archivo
         try {
             $url = GCSHelper::subir($archivo, 'media_mascotas');
+            $esVideo = str_starts_with($archivo['type'] ?? '', 'video/');
             $insertId = $mediaCollection->agregarMedia(
                 $mascotaId,
                 $esVideo ? 'video' : 'foto',
