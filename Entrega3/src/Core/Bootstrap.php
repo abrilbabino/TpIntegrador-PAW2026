@@ -22,8 +22,12 @@ $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
 $dotenv->safeLoad();
 $config = new Config;
 
-// Iniciar sesión global
+// Configurar cookies de sesión (HttpOnly, Secure) previas al session_start
 if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'httponly' => true,
+        'secure'   => true
+    ]);
     session_start();
 }
 

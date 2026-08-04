@@ -824,7 +824,17 @@ class QueryBuilder
         }
 
         $where = !empty($conditions) ? implode(' AND ', $conditions) : '1=1';
-        $sql = "SELECT * FROM {$table} WHERE {$where}";
+        
+        if ($table === 'mascota') {
+            $sql = "SELECT {$table}.*, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento 
+                    FROM {$table} 
+                    LEFT JOIN especie e ON {$table}.especie_id = e.id 
+                    LEFT JOIN tamano t ON {$table}.tamano_id = t.id 
+                    LEFT JOIN temperamento temp ON {$table}.temperamento_id = temp.id 
+                    WHERE {$where}";
+        } else {
+            $sql = "SELECT * FROM {$table} WHERE {$where}";
+        }
 
         $sentencia = $this->pdo->prepare($sql);
         foreach ($binds as $key => $val) {
