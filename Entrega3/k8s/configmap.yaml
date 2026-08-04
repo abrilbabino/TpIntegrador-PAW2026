@@ -15,3 +15,5 @@ data:
   MAIL_USER: "pawmap2026@gmail.com"
   MAIL_HOST: "smtp.gmail.com"
   MAIL_PORT: "465"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
