@@ -31,6 +31,12 @@ RUN { \
     echo 'session.save_path = "tcp://redis-service:6379"'; \
     } > /usr/local/etc/php/conf.d/session-redis.ini
 
+# 5.2. Configurar limites de subida para permitir videos y multiples fotos
+RUN { \
+    echo 'upload_max_filesize = 50M'; \
+    echo 'post_max_size = 55M'; \
+    } > /usr/local/etc/php/conf.d/uploads.ini
+
 # 6. Copiar el código fuente
 COPY . /var/www/html/
 
