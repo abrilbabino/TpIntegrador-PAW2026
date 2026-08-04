@@ -253,13 +253,9 @@
                 </ul>
             </li>
         </ul>
-        <footer class="perfil-datos-acciones">
-            <button type="submit" form="form-editar-mascota" class="btn-guardar-perfil">Guardar</button>
-            <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
-        </footer>
     </form>
 
-    <section class="galeria-multimedia">
+    <section class="galeria-multimedia" style="margin-top: 20px; margin-bottom: 20px;">
         <ul class="galeria-grid">
             {% for foto in fotos %}
                 <li class="foto-item">
@@ -272,7 +268,7 @@
                         {% endif %}
                         <figcaption>
                             <form method="POST" action="/mascota/eliminar-foto" class="eliminar-foto-form">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                 <input type="hidden" name="id" value="{{ foto.id }}">
                                 <input type="hidden" name="mascota_id" value="{{ mascotaFields.id }}">
                                 <button type="submit" class="btn-eliminar-foto">Eliminar</button>
@@ -283,6 +279,11 @@
             {% endfor %}
         </ul>
     </section>
+
+    <footer class="perfil-datos-acciones">
+        <button type="submit" form="form-editar-mascota" class="btn-guardar-perfil">Guardar</button>
+        <a href="/perfil" class="btn-cancelar-perfil">Cancelar</a>
+    </footer>
 
     <form id="form-eliminar-svg" method="POST" action="/mascota/eliminar-svg" hidden>
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
