@@ -40,6 +40,18 @@ class PAWResenas {
             this.modal.addEventListener('click', (e) => {
                 if (e.target === this.modal) this.modal.close();
             });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorResena = urlParams.get('error_resena');
+
+            if (errorResena) {
+                this.modal.showModal();
+                
+                urlParams.delete('error_resena');
+                const newSearch = urlParams.toString();
+                const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '') + window.location.hash;
+                window.history.replaceState({}, document.title, newUrl);
+            }
         }
     }
 

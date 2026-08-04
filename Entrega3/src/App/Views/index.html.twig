@@ -189,7 +189,7 @@
                             </fieldset>
 
                             <label for="comentario">Comentario:</label>
-                            <textarea id="comentario" name="comentario" required minlength="10" maxlength="150" placeholder="Contanos tu experiencia..."></textarea>
+                            <textarea id="comentario" name="comentario" required minlength="10" maxlength="250" placeholder="Contanos tu experiencia..." {% if request.get('error_resena') %}data-server-error="{{ request.get('error_resena') }}"{% endif %}></textarea>
 
                             <button type="submit" class="boton-principal">Publicar Reseña</button>
                         </fieldset>
