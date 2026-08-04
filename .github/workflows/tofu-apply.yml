@@ -92,6 +92,10 @@ jobs:
           kubectl apply -f external-secrets.yaml
           kubectl apply -f service.yaml
           kubectl apply -f deployment.yaml
+          kubectl apply -f websocket-service.yaml
+          kubectl apply -f websocket-deployment.yaml
+          kubectl apply -f worker-deployment.yaml
+          kubectl apply -f cronjob-recordatorios.yaml
           kubectl apply -f ingress.yaml
           kubectl apply -f cluster-issuer.yaml
 
@@ -99,4 +103,8 @@ jobs:
         working-directory: ./Entrega3/k8s
         run: |
           kubectl rollout restart deployment pawmap-app
+          kubectl rollout restart deployment pawmap-websocket
+          kubectl rollout restart deployment pawmap-worker
           kubectl rollout status deployment pawmap-app --timeout=300s
+          kubectl rollout status deployment pawmap-websocket --timeout=300s
+          kubectl rollout status deployment pawmap-worker --timeout=300s
