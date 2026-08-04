@@ -66,6 +66,8 @@ class Controller
 
         $this->twig->addGlobal('session', $_SESSION ?? []);
 
+        $this->twig->addExtension(new \Paw\App\Helpers\TwigExtensions());
+
 
         $this -> menu = [
             [

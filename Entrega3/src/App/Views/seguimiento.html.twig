@@ -13,7 +13,7 @@
             </figure>
             <header class="pet-card-info">
                 <h1>{{ mascotaSeleccionada.fields.nombre|default('')|capitalize }}</h1>
-                <p>{{ mascotaSeleccionada.fields.especie|default('') }} - {{ mascotaSeleccionada.fields.edad|default('') }} años</p>
+                <p>{{ mascotaSeleccionada.fields.especie|default('') }} - {{ mascotaSeleccionada.fields.fecha_nacimiento|edad_formateada(mascotaSeleccionada.fields.edad) }}</p>
             </header>
         </article>
 

@@ -117,7 +117,7 @@
             <section class="estadisticas-mascota">
                 <article class="estadistica-box">
                     <span class="estadistica-label">Edad</span>
-                    <span class="estadistica-valor">{{ mascota.fields.edad|default('?') }} años</span>
+                    <span class="estadistica-valor">{{ mascota.fields.fecha_nacimiento|edad_formateada(mascota.fields.edad) }}</span>
                 </article>
                 <article class="estadistica-box">
                     <span class="estadistica-label">Tamaño</span>

@@ -153,7 +153,7 @@
                                 <figcaption class="tarjeta-info">
                                     <h3>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h3>
                                     <p>
-                                        {{ mascota.fields.edad|default('0') }} años -
+                                        {{ mascota.fields.fecha_nacimiento|edad_formateada(mascota.fields.edad) }} -
                                         {{ mascota.fields.tamano|default('Desconocido')|capitalize }} -
                                         {{ mascota.fields.temperamento|default('Desconocido')|capitalize }}
                                     </p>

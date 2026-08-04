@@ -55,7 +55,7 @@
                     <article class="tarjeta-recomendada-body">
                         <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                         <p>
-                            {{ mascota.fields.edad|default('0') }} años
+                            {{ mascota.fields.fecha_nacimiento|edad_formateada(mascota.fields.edad) }}
                             &middot; {{ mascota.fields.tamano|default('')|capitalize }}
                             &middot; {{ mascota.fields.temperamento|default('')|capitalize }}
                         </p>
