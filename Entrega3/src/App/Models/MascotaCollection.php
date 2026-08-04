@@ -7,6 +7,7 @@ use Paw\Core\Model;
 use Paw\App\Models\Mascota;
 use Paw\App\Models\DiccionarioCollection;
 use Paw\App\Helpers\GCSHelper;
+use Paw\App\Helpers\DateHelper;
 
 class MascotaCollection extends Model
 {
@@ -208,7 +209,7 @@ class MascotaCollection extends Model
                 'id'           => $row['id'],
                 'nombre'       => $row['nombre'],
                 'imagen'       => $row['imagen'],
-                'edad'         => $row['edad'],
+                'edad'         => DateHelper::formatEdad($row['fecha_nacimiento'] ?? null, $row['edad'] ?? 0),
                 'tamano'       => $row['tamano'],
                 'temperamento' => $row['temperamento'],
                 'especie'      => $row['especie'],

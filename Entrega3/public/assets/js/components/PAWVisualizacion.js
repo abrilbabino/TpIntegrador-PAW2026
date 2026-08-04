@@ -171,9 +171,9 @@ class PAWVisualizacion {
         const nombre = PAW.nuevoElemento("h3", nombreCapitalizado, {});
         const tamano = mascota.tamano ? mascota.tamano.charAt(0).toUpperCase() + mascota.tamano.slice(1).toLowerCase() : 'Desconocido';
         const temperamento = mascota.temperamento ? mascota.temperamento.charAt(0).toUpperCase() + mascota.temperamento.slice(1).toLowerCase() : 'Desconocido';
-        const edad = mascota.edad || '0';
+        const edad = mascota.edad || '0 años';
 
-        const textoDetalles = `${edad} años - ${tamano} - ${temperamento}`;
+        const textoDetalles = `${edad} - ${tamano} - ${temperamento}`;
         const detalles = PAW.nuevoElemento("p", textoDetalles, {});
 
         seccionInfo.appendChild(nombre);

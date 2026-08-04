@@ -523,7 +523,7 @@ class QueryBuilder
 
     public function obtenerMascotasDisponiblesConUbicacion(): array
     {
-        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento, m.refugio_id,
+        $sql = "SELECT m.id, m.nombre, m.imagen, m.edad, m.fecha_nacimiento, e.nombre as especie, t.nombre as tamano, temp.nombre as temperamento, m.refugio_id,
                        u.provincia, u.ciudad
                 FROM mascota m
                 LEFT JOIN especie e ON m.especie_id = e.id
