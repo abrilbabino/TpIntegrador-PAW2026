@@ -216,6 +216,7 @@ class AppPAW {
     }
   }
 
+
   _initDescargaPDF() {
     const btnDescarga = document.getElementById('btn-descarga-pdf');
     if (btnDescarga) {
