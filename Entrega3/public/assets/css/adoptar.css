@@ -88,9 +88,9 @@
   box-sizing: border-box;
 }
 
-.filtros form .btn-limpiar {
+.filtros-botones {
   display: flex;
-  justify-self: center;
+  justify-content: center;
 }
 
 .edad-rango {
@@ -381,10 +381,6 @@
     border: 1px solid var(--color-gris-claro);
     border-radius: 12px;
     padding: 1.65rem;
-  }
-
-  .filtros form .btn-limpiar {
-    margin-top: auto;
   }
 
   .grilla-mascotas {
