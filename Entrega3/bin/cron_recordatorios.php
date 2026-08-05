@@ -5,8 +5,8 @@ require __DIR__ . '/../vendor/autoload.php';
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 use Paw\Core\Config;
-use Paw\Core\DataBase\ConnectionBuilder;
-use Paw\Core\DataBase\QueryBuilder;
+use Paw\Core\Database\ConnectionBuilder;
+use Paw\Core\Database\QueryBuilder;
 use Paw\Core\MailService;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
