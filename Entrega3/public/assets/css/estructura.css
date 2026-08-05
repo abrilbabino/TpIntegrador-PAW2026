@@ -207,6 +207,13 @@
   display: flex;
 }
 
+.PAW-MenuAbierto.menu-principal {
+  max-height: calc(100vh - 110px);
+  max-height: calc(100dvh - 110px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .nav-link {
   display: flex;
   align-items: center;

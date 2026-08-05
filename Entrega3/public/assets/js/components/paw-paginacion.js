@@ -63,7 +63,7 @@ class PAWPaginacion {
                 nav.appendChild(btnNum);
             }
         } else {
-            nav.appendChild(this.crearBoton(1));
+            nav.appendChild(this.crearBoton(String(1), 1, 1 === this.paginaActual ? ["pagina-activa"] : []));
 
             let inicio = this.paginaActual - Math.floor(maxPaginas / 2);
             let fin = inicio + maxPaginas - 1;
@@ -83,14 +83,14 @@ class PAWPaginacion {
             }
 
             for (let i = inicio; i <= fin; i++) {
-                nav.appendChild(this.crearBoton(i));
+                nav.appendChild(this.crearBoton(String(i), i, i === this.paginaActual ? ["pagina-activa"] : []));
             }
 
             if (fin < totalPaginas - 1) {
                 nav.appendChild(crearElipsis());
             }
 
-            nav.appendChild(this.crearBoton(totalPaginas));
+            nav.appendChild(this.crearBoton(String(totalPaginas), totalPaginas, totalPaginas === this.paginaActual ? ["pagina-activa"] : []));
         }
 
         // Botón Siguiente
