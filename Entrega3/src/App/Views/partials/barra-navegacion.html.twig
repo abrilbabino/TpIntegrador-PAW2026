@@ -58,6 +58,11 @@
                         <span class="perfil-mobile-nombre">{{ session.user.nombre_usuario|default('Perfil') }}</span>
                     </a>
                 </li>
+                <li class="mensajes-menu-mobile">
+                    <a href="/mensajes" class="nav-link">
+                        <span class="material-symbols-outlined simbolos">chat</span> Mensajes
+                    </a>
+                </li>
             {% endif %}
 
             {% for item in menu %}

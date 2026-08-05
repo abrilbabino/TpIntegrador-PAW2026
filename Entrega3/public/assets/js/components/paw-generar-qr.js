@@ -5,7 +5,6 @@ class PAWGenerarQR {
         this.resultado   = document.getElementById('qr-resultado');
         this.qrContainer = document.getElementById('qr-image-container');
         this.nombreEl    = document.getElementById('qr-nombre-mascota');
-        this.imgPreview  = document.getElementById('img-mascota-preview');
         this.selectSize  = document.getElementById('print-size-select');
         this.printZone   = document.getElementById('print-zone');
         this.printQrEl   = document.getElementById('print-qr-container');
@@ -57,19 +56,10 @@ class PAWGenerarQR {
             }
 
             const nombre  = opt.getAttribute('data-nombre') || 'Mascota';
-            const imagen  = opt.getAttribute('data-imagen') || 'default-pet.jpg';
             
             const baseUrl = window.location.href.split('/generar-qr')[0];
             const urlQr   = baseUrl + '/mascota?id=' + encodeURIComponent(id);
             const imgUrl  = baseUrl + '/generar-qr/imagen?data=' + encodeURIComponent(urlQr);
-
-            if (this.imgPreview) {
-                const srcImagen = imagen.indexOf('http') === 0 ? imagen : '/assets/img/' + imagen;
-                this.imgPreview.src = srcImagen;
-                this.imgPreview.onerror = () => {
-                    this.imgPreview.src = '/assets/img/qr_placeholder.jpg';
-                };
-            }
 
             if (this.nombreEl) this.nombreEl.textContent = nombre;
             this.qrContainer.innerHTML = `<img src="${imgUrl}" alt="Codigo QR de ${nombre}" class="qr-code-img">`;

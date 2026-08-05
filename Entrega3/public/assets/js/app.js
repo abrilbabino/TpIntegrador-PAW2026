@@ -330,7 +330,7 @@ class AppPAW {
                   { prop: "provincia", label: "Provincia", type: "select", sourceURL: "/api/refugios" },
                   { prop: "edad", label: "Edad", type: "rango" },
                   { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
-                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "especie", label: "Especie", type: "select", sourceURL: "/api/diccionarios?diccionario=especie" },
                   { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });
@@ -351,7 +351,7 @@ class AppPAW {
                   { prop: "ubicacion", label: "Ubicación", type: "ubicacion" },
                   { prop: "edad", label: "Rango de Edad", type: "rango" },
                   { prop: "tamano", label: "Tamaño", type: "select", sourceURL: "/api/diccionarios?diccionario=tamano" },
-                  { prop: "especie", label: "Especie", type: "radio", sourceURL: "/api/diccionarios?diccionario=especie" },
+                  { prop: "especie", label: "Especie", type: "select", sourceURL: "/api/diccionarios?diccionario=especie" },
                   { prop: "temperamento", label: "Temperamento", type: "select", sourceURL: "/api/diccionarios?diccionario=temperamento" }
                 ]
               });

@@ -1,0 +1,9 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Mensajes - PawMap{% endblock %}
+
+{% block main_attributes %}class="messages-main"{% endblock %}
+
+{% block main %}
+    {% include 'partials/chat-widget.html.twig' with {'messages_page': true} %}
+{% endblock %}
