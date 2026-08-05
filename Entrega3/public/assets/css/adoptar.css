@@ -109,27 +109,6 @@
   color: var(--color-texto);
 }
 
-.filtro-especie-grupo {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-}
-
-.especie-radio {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--color-texto);
-}
-
-.especie-radio input[type="radio"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--color-azul);
-}
-
 .filtros form button {
   background-color: var(--color-azul);
   color: var(--color-fondo);
