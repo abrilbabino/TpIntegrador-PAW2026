@@ -22,7 +22,7 @@
             <figure class="qr-info-img-wrapper">
                 <img id="img-mascota-preview" src="/assets/img/qr_placeholder.jpg" alt="Mascota">
             </figure>
-            
+
             <section class="qr-info-content">
                 <p class="qr-info-text qr-info-cta">
                     <strong>¡Escaneá el QR para acceder al perfil de tu mascota!</strong>
@@ -65,8 +65,7 @@
                     <option value="" disabled selected>Seleccioná una mascota para comenzar</option>
                     {% for mascota in mascotas %}
                         <option value="{{ mascota.fields.id }}"
-                                data-nombre="{{ mascota.fields.nombre|capitalize }}"
-                                data-imagen="{{ mascota.fields.imagen|default('default-pet.jpg') }}">
+                                data-nombre="{{ mascota.fields.nombre|capitalize }}">
                             {{ mascota.fields.nombre|capitalize }}
                             {% if mascota.fields.especie %} · {{ mascota.fields.especie|capitalize }}{% endif %}
                         </option>
@@ -114,4 +113,4 @@
     </section>
 
 {% endblock %}
-
+

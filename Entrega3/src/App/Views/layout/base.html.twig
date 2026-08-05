@@ -28,6 +28,9 @@
     </main>
 
     {% include 'partials/footer.html.twig' %}
+    {% if mostrarChatWidget|default(true) %}
+        {% include 'partials/chat-widget.html.twig' %}
+    {% endif %}
     {% include 'partials/auth-modals.html.twig' %}
     {% include 'partials/alerta-global.html.twig' %}
 

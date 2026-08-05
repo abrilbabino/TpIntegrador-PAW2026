@@ -12,6 +12,19 @@ class ChatController extends Controller
 {
     public ?string $modelName = MensajeCollection::class;
 
+    public function verBandejaEntrada()
+    {
+        $usuario = $this->request->session('user');
+        if (!$usuario) {
+            header("Location: /perfil");
+            exit;
+        }
+
+        $titulo = "Mensajes - PawMap";
+        $mostrarChatWidget = false;
+        echo $this->twig->render('mensajes.html.twig', get_defined_vars());
+    }
+
     public function verChat()
     {
         $solicitudId = (int) $this->request->get('solicitud_id');
