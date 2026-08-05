@@ -156,6 +156,15 @@
   display: flex;
 }
 
+.mensajes-menu-mobile {
+  display: flex;
+  width: 100%;
+}
+
+.mensajes-menu-mobile .nav-link {
+  width: 100%;
+}
+
 .perfil-mobile-link {
   display: flex;
   align-items: center;
@@ -512,6 +521,10 @@ main>header p {
 
   .perfil-menu-mobile {
     display: none !important;
+  }
+
+  .mensajes-menu-mobile {
+    display: none;
   }
 
   .footer-principal {

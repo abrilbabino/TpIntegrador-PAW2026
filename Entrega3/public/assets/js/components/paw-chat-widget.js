@@ -4,6 +4,7 @@ class PAWChatWidget {
         this.widget = document.getElementById('paw-chat-widget');
         if (!this.widget) return; // Si no existe (ej. no logueado), no hacemos nada
 
+        this.isMessagesPage = this.widget.classList.contains('messages-page-widget');
         this.userId = this.widget.dataset.userId;
         this.chatWidgetRefreshInterval = null;
         this.currentChatSolicitudId = null;
@@ -26,7 +27,7 @@ class PAWChatWidget {
 
     // Asocia de forma delegada los eventos de interfaz gráfica a sus respectivos métodos de clase.
     _bindEvents() {
-        if (this.header) {
+        if (this.header && !this.isMessagesPage) {
             this.header.addEventListener('click', () => this.toggleChatWidget());
         }
 
@@ -69,7 +70,7 @@ class PAWChatWidget {
 
         // Expone un método global en el objeto window para permitir invocar o instanciar chats desde botones externos (ej: perfiles).
         window.abrirChat = (solicitudId, interlocutor = 'Chat', mascotaNombre = 'Mascota') => {
-            if (this.widget && this.widget.classList.contains('collapsed')) {
+            if (!this.isMessagesPage && this.widget && this.widget.classList.contains('collapsed')) {
                 this.toggleChatWidget();
             }
             this.abrirConversacion(solicitudId, interlocutor, mascotaNombre);
@@ -140,7 +141,7 @@ class PAWChatWidget {
                     this.listContainer.appendChild(item);
                 });
 
-                if (totalUnread > 0) {
+                if (totalUnread > 0 && !this.isMessagesPage) {
                     this.badge.textContent = totalUnread;
                     this.badge.style.display = 'inline-block';
                 } else {
@@ -236,6 +237,8 @@ class PAWChatWidget {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+                this.inputField.blur();
+                window.setTimeout(() => window.scrollTo(0, 0), 0);
                 this.cargarMensajesWidget();
             } else {
                 alert('Error al enviar el mensaje');

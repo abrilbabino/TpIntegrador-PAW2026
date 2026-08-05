@@ -39,7 +39,7 @@
         <article class="perfil-refugio-datos-body">
             <form id="perfil-refugio-form" class="perfil-refugio-form" method="POST" action="/perfil/refugio/guardar" enctype="multipart/form-data" novalidate>
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar los 2 MB." data-file-types-message="Formato invalido. Solo se admiten imagenes.">
+                <input type="file" id="foto_perfil_o_logo" name="foto_perfil_o_logo" accept="image/*" class="hidden-input" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar los 2 MB." data-file-types-message="Formato inválido. Solo se admiten imágenes.">
                 <input type="hidden" id="eliminar_foto" name="eliminar_foto" value="0">
                 
                 {% if errores.foto_perfil_o_logo is defined %}
@@ -444,13 +444,13 @@
             <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp"
                 data-max-file-size="2097152"
                 data-max-file-message="La imagen no puede superar 2 MB."
-                data-file-types-message="Formato inv&aacute;lido. Formatos admitidos: JPG, PNG, WEBP"
+                data-file-types-message="Formato inválido. Formatos admitidos: JPG, PNG, WEBP"
                 {{ erroresMascota.foto is defined and erroresMascota.foto is not empty ? 'data-server-error="' ~ erroresMascota.foto ~ '"' : '' }}>
             </label>
 
             <label for="svg">Ilustraci&oacute;n SVG <small>(opcional — archivo .svg)</small>
             <input type="file" id="svg" name="svg" accept="image/svg+xml,.svg"
-                data-file-types-message="Formato inv&aacute;lido. Formatos admitidos: SVG"
+                data-file-types-message="Formato inválido. Formatos admitidos: SVG"
                 {{ erroresMascota.svg is defined and erroresMascota.svg is not empty ? 'data-server-error="' ~ erroresMascota.svg ~ '"' : '' }}>
             </label>
 
@@ -487,7 +487,7 @@
             <form id="form-importar-mascotas" method="POST" action="/perfil/mascota/importar" enctype="multipart/form-data" novalidate>
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <label for="csv_mascotas">Seleccionar Archivo CSV:
-                    <input type="file" id="csv_mascotas" class="input-archivo" name="csv_mascotas" accept=".csv" required data-file-types-message="Formato invalido. Solo archivos CSV." 
+                    <input type="file" id="csv_mascotas" class="input-archivo" name="csv_mascotas" accept=".csv" required data-file-types-message="Formato inválido. Solo archivos CSV."
                            {% if erroresCsv != '' %}data-server-error="{{ erroresCsv|raw }}"{% endif %}>
                 </label>
                 <footer class="form-acciones">

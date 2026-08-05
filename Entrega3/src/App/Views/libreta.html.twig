@@ -89,7 +89,7 @@
             <p class="modal-completar-desc">Para marcar este registro como completado, debés adjuntar el certificado correspondiente.</p>
 
             <label for="archivo">Subir Certificado / Comprobante</label>
-            <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required data-file-types-message="Formato invalido. Formatos admitidos: Imagenes o PDF." 
+            <input type="file" name="archivo" id="archivo" accept="image/*,.pdf" required data-file-types-message="Formato inválido. Formatos admitidos: Imágenes o PDF."
                 class="input-file-completar {{ request.get('error') == 'error_carga' ? 'input-invalido' : '' }}"
                 {% if request.get('error') == 'error_carga' %}
                 data-server-error="{{ request.get('motivo') == '1' ? 'El archivo pesa más del límite permitido (2MB).' : 'Hubo un error al subir el archivo. Intentá de nuevo.' }}"

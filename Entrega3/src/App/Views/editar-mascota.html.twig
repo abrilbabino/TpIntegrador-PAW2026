@@ -171,7 +171,7 @@
             <li class="dato-item">
                 <span class="dato-label">Foto Principal</span>
                 <span class="svg-input-row">
-                    <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value input-file-padding {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB." data-file-types-message="Formato inv&aacute;lido. Formatos admitidos: JPG, PNG, WEBP">
+                    <input type="file" name="foto" accept="image/*" class="dato-valor-input input-value input-file-padding {{ errores.foto is defined ? 'input-invalido' : '' }}" data-max-file-size="2097152" data-max-file-message="La imagen no puede superar 2 MB." data-file-types-message="Formato inválido. Formatos admitidos: JPG, PNG, WEBP">
                 </span>
                 {% set foto_actual = mascotaFields.imagen|default('') %}
                 {% if foto_actual is not empty and foto_actual != 'default-pet.jpg' and foto_actual != 'icon.png' %}
@@ -195,7 +195,7 @@
             <li class="dato-item">
                 <span class="dato-label">Ilustración SVG</span>
                 <span class="svg-input-row">
-                    <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value input-file-padding {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Formato inv&aacute;lido. Formatos admitidos: SVG">
+                    <input type="file" name="svg" accept="image/svg+xml,.svg" class="dato-valor-input input-value input-file-padding {{ errores.svg is defined ? 'input-invalido' : '' }}" data-file-types-message="Formato inválido. Formatos admitidos: SVG">
                 </span>
                 {% if mascotaFields.svg|default('') is not empty %}
                     {% set svgUrl = mascotaFields.svg starts with 'http' ? mascotaFields.svg : '/assets/svg/' ~ mascotaFields.svg %}
@@ -216,7 +216,7 @@
             </li>
             <li class="dato-item">
                 <label for="archivo_multimedia" class="dato-label">Fotos Adicionales</label>
-                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*,video/*" multiple class="dato-valor-input input-file-padding" data-max-total-size="47185920" data-max-total-message="El peso total de las imagenes no puede superar los 45 MB." data-file-types-message="Formato invalido. Solo se admiten imagenes y videos.">
+                <input type="file" name="archivo_multimedia[]" id="archivo_multimedia" accept="image/*,video/*" multiple class="dato-valor-input input-file-padding" data-max-total-size="47185920" data-max-total-message="El peso total de las imágenes no puede superar los 45 MB." data-file-types-message="Formato inválido. Solo se admiten imágenes y videos.">
             </li>
 
             <li class="dato-item">
