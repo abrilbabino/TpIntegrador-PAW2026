@@ -58,12 +58,13 @@ class PAWPaginacion {
         // Números de página
         if (totalPaginas <= maxPaginas + 1) {
             for (let i = 1; i <= totalPaginas; i++) {
-                const clases = i === this.paginaActual ? ["paw-paginacion-btn", "pagina-activa"] : ["paw-paginacion-btn"];
+                const clases = i === this.paginaActual ? ["pagina-activa"] : [];
                 const btnNum = this.crearBoton(String(i), i, clases);
                 nav.appendChild(btnNum);
             }
         } else {
-            nav.appendChild(this.crearBoton(String(1), 1, 1 === this.paginaActual ? ["pagina-activa"] : []));
+            const clasesInicio = 1 === this.paginaActual ? ["pagina-activa"] : [];
+            nav.appendChild(this.crearBoton(String(1), 1, clasesInicio));
 
             let inicio = this.paginaActual - Math.floor(maxPaginas / 2);
             let fin = inicio + maxPaginas - 1;
@@ -83,14 +84,16 @@ class PAWPaginacion {
             }
 
             for (let i = inicio; i <= fin; i++) {
-                nav.appendChild(this.crearBoton(String(i), i, i === this.paginaActual ? ["pagina-activa"] : []));
+                const clasesMedia = i === this.paginaActual ? ["pagina-activa"] : [];
+                nav.appendChild(this.crearBoton(String(i), i, clasesMedia));
             }
 
             if (fin < totalPaginas - 1) {
                 nav.appendChild(crearElipsis());
             }
 
-            nav.appendChild(this.crearBoton(String(totalPaginas), totalPaginas, totalPaginas === this.paginaActual ? ["pagina-activa"] : []));
+            const clasesFin = totalPaginas === this.paginaActual ? ["pagina-activa"] : [];
+            nav.appendChild(this.crearBoton(String(totalPaginas), totalPaginas, clasesFin));
         }
 
         // Botón Siguiente
