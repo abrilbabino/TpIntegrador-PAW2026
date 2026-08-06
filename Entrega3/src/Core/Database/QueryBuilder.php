@@ -98,12 +98,12 @@ class QueryBuilder
             $binds[':sexo'] = $filtros['sexo'];
         }
 
-        if (!empty($filtros['edad_min'])) {
+        if (isset($filtros['edad_min']) && $filtros['edad_min'] !== '') {
             $sql .= " AND m.edad >= :emin";
             $binds[':emin'] = $filtros['edad_min'];
         }
 
-        if (!empty($filtros['edad_max'])) {
+        if (isset($filtros['edad_max']) && $filtros['edad_max'] !== '') {
             $sql .= " AND m.edad <= :emax";
             $binds[':emax'] = $filtros['edad_max'];
         }

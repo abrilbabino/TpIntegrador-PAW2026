@@ -349,6 +349,16 @@ class PAWFiltros {
             nodosArray.forEach(nodo => {
                 nodo.addEventListener("input", (e) => { // Usamos input para que detecte al escribir
                     const prop = e.target.dataset.prop || e.target.name;
+                    const minimo = Number(e.target.min);
+                    const paso = Number(e.target.step || 1);
+                    const incrementoInicial = e.target.dataset.rango === "min"
+                        && this.estadoFiltros[prop].min === ""
+                        && Number(e.target.value) === minimo + paso
+                        && e.inputType !== "insertText";
+
+                    if (incrementoInicial) {
+                        e.target.value = String(minimo);
+                    }
                     
                     // Si es parte de un rango, actualizamos su submódulo (min o max)
                     if (e.target.dataset.rango) {
