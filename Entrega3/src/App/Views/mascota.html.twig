@@ -29,12 +29,12 @@
                         <figure class="carrusel-slide-item">
                             {% set extraUrl = media.url starts with 'http' ? media.url : '/' ~ media.url %}
                             {% if media.tipo == 'video' %}
-                                <video controls loading="lazy">
+                                <video controls autoplay muted playsinline loop preload="metadata">
                                     <source src="{{ extraUrl }}" type="video/mp4">
                                     Tu navegador no soporta videos.
                                 </video>
                             {% else %}
-                                <img src="{{ extraUrl }}" loading="lazy"
+                                <img src="{{ extraUrl }}"
                                      alt="Media extra de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             {% endif %}
                         </figure>
