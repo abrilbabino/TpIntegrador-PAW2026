@@ -207,68 +207,81 @@
     gap: 0.5rem;
 }
 
-.print-section { display: none !important; }
+.print-section { display: none; }
 
 @media print {
-    body {
-        visibility: hidden;
+    @page {
+        margin: 1.5cm;
     }
 
-    .print-section {
-        visibility: visible;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        display: block !important;
-        background-color: var(--color-fondo);
+    .Barra-navegacion, .footer-principal, .paw-chat-widget,
+    .donar-main > .hero-donaciones, .donar-main > .formulario-donacion {
+        display: none;
+    }
+
+    .donar-main {
+        display: block;
+        width: auto;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        background: var(--color-fondo);
+    }
+
+    .donar-main > .print-section {
+        display: block;
+        position: static;
+        width: auto;
+        margin: 0;
+        padding: 0;
         text-align: center;
-        padding-top: 2cm;
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
-    .print-section .chapita-title { 
-        font-size: 28pt; 
-        color: var(--color-texto); 
-        font-weight: bold; 
+    .print-section .chapita-title {
+        font-size: 28pt;
+        color: var(--color-texto);
+        font-weight: bold;
     }
 
     .print-section .qr-frame-simple {
-        display: flex; 
+        display: flex;
         justify-content: center;
         margin-top: 1rem;
     }
 
-    .print-section .qr-code-img { 
-        width: 8cm;  
-        height: 8cm; 
-        max-width: none; 
-        margin: 0 auto; 
+    .print-section .qr-code-img {
+        width: 8cm;
+        height: 8cm;
+        max-width: none;
+        margin: 0 auto;
     }
 
-    .print-section.size-poster .qr-code-img { 
-        width: 12cm; 
-        height: 12cm; 
+    .print-section.size-poster .qr-code-img {
+        width: 12cm;
+        height: 12cm;
     }
 
-    .print-section.size-medium .qr-code-img { 
-        width: 5cm;  
-        height: 5cm; 
+    .print-section.size-medium .qr-code-img {
+        width: 5cm;
+        height: 5cm;
     }
 
-    .print-section.size-small .qr-code-img { 
-        width: 3cm;  
-        height: 3cm; 
+    .print-section.size-small .qr-code-img {
+        width: 3cm;
+        height: 3cm;
     }
 
-    .print-section.size-poster .chapita-title { 
-        font-size: 40pt; 
+    .print-section.size-poster .chapita-title {
+        font-size: 40pt;
     }
 
-    .print-section.size-medium .chapita-title { 
-        font-size: 22pt; 
+    .print-section.size-medium .chapita-title {
+        font-size: 22pt;
     }
 
-    .print-section.size-small .chapita-title { 
-        font-size: 18pt; 
+    .print-section.size-small .chapita-title {
+        font-size: 18pt;
     }
 }

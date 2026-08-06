@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace Paw\App\Models;
 
@@ -210,6 +210,7 @@ class MascotaCollection extends Model
                 'nombre'       => $row['nombre'],
                 'imagen'       => $row['imagen'],
                 'edad'         => DateHelper::formatEdad($row['fecha_nacimiento'] ?? null, $row['edad'] ?? 0),
+                'edad_anios'   => DateHelper::obtenerEdadEnAnios($row['fecha_nacimiento'] ?? null, $row['edad'] ?? 0),
                 'tamano'       => $row['tamano'],
                 'temperamento' => $row['temperamento'],
                 'especie'      => $row['especie'],
@@ -599,9 +600,8 @@ class MascotaCollection extends Model
 
         if ($mascotaId) {
             try {
-                // Obtener datos del refugio para saber la ubicación de la mascota
-                $refugios = $this->queryBuilder->select('refugio', ['usuario_id' => $userId]);
-                $refugio = $refugios[0] ?? [];
+                $ubicaciones = $this->queryBuilder->select('ubicacion', ['refugio_id' => $userId]);
+                $ubicacion = $ubicaciones[0] ?? [];
                 
                 $colaCollection = new \Paw\App\Models\ColaEsperaCollection();
                 $colaCollection->setQueryBuilder($this->queryBuilder);
@@ -610,8 +610,9 @@ class MascotaCollection extends Model
                     'especie'      => $especieSegura,
                     'tamano'       => $tamanoSeguro,
                     'temperamento' => $temperamentoSeguro,
-                    'provincia'    => $refugio['provincia'] ?? '',
-                    'ciudad'       => $refugio['ciudad'] ?? '',
+                    'edad'         => $edad,
+                    'provincia'    => $ubicacion['provincia'] ?? '',
+                    'ciudad'       => $ubicacion['ciudad'] ?? '',
                 ]);
             } catch (\Exception $e) {
                 if ($this->logger) {

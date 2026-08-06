@@ -67,7 +67,7 @@ class ColaEsperaCollection extends Model
         $tamanoIdMascota = !empty($mascotaData['tamano']) ? $dicc->obtenerOCrearId('tamano', $mascotaData['tamano']) : null;
         $temperamentoIdMascota = !empty($mascotaData['temperamento']) ? $dicc->obtenerOCrearId('temperamento', $mascotaData['temperamento']) : null;
 
-        $edadMascota = isset($mascotaData['edad']) && $mascotaData['edad'] !== '' ? (float)$mascotaData['edad'] : null;
+        $edadMascota = isset($mascotaData['edad']) && $mascotaData['edad'] !== '' ? (int)$mascotaData['edad'] : null;
 
         foreach ($suscripciones as $s) {
             $match = true;
@@ -91,10 +91,10 @@ class ColaEsperaCollection extends Model
 
             // 3. Verificar edad
             if ($match && $edadMascota !== null) {
-                if ($s['edad_min'] !== null && $edadMascota < (float)$s['edad_min']) {
+                if ($s['edad_min'] !== null && $edadMascota < (int)$s['edad_min']) {
                     $match = false;
                 }
-                if ($s['edad_max'] !== null && $edadMascota > (float)$s['edad_max']) {
+                if ($s['edad_max'] !== null && $edadMascota > (int)$s['edad_max']) {
                     $match = false;
                 }
             }
