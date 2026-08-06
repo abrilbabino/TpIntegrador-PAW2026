@@ -44,13 +44,6 @@ class PAWCompartir {
     }
 
     abrirApp(label, appUrl) {
-        const ventanaApp = window.open(appUrl, '_blank');
-        if (ventanaApp) {
-            ventanaApp.opener = null;
-        } else {
-            window.location.assign(appUrl);
-        }
-
         if (navigator.clipboard) {
             navigator.clipboard.writeText(this.msg).then(() => {
                 this.mostrarToast('¡Mensaje copiado! ' + label + ' 📋');
@@ -62,6 +55,7 @@ class PAWCompartir {
         }
         this.dropdown.hidden = true;
         this.btn.setAttribute('aria-expanded', 'false');
+        setTimeout(() => { window.location.assign(appUrl); }, 1000);
     }
 
     mostrarToast(texto) {
