@@ -104,17 +104,6 @@ a:hover {
   }
 }
 
-.texto-descarga-pdf {
-  margin-top: 15px;
-  font-size: 0.9em;
-  color: var(--color-gris);
-}
-
-.btn-volver-gris {
-  background-color: var(--color-gris) !important;
-  margin-bottom: 10px;
-}
-
 /* --- ESTADO VACÍO --- */
 .estado-vacio-moderno {
   grid-column: 1 / -1;

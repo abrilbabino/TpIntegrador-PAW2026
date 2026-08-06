@@ -151,7 +151,9 @@ class Mascota extends Model
         }
 
         $fechaNac = trim($post['fecha_nacimiento'] ?? '');
-        if ($fechaNac !== '') {
+        if ($fechaNac === '') {
+            $errores['fecha_nacimiento'] = 'La fecha de nacimiento es obligatoria.';
+        } else {
             $d = \DateTime::createFromFormat('Y-m-d', $fechaNac);
             if (!$d || $d->format('Y-m-d') !== $fechaNac) {
                 $errores['fecha_nacimiento'] = 'La fecha de nacimiento no es válida.';

@@ -502,7 +502,7 @@ class PAWFiltros {
                 
                 // 1. Evaluación matemática para RANGOS (ej: edad)
                 if (typeof valorBuscado === "object") {
-                    const valorItem = parseFloat(item[prop]);
+                    const valorItem = prop === "edad" ? Number(item.edad_anios) : parseFloat(item[prop]);
                     const min = parseFloat(valorBuscado.min);
                     const max = parseFloat(valorBuscado.max);
                     
@@ -515,7 +515,7 @@ class PAWFiltros {
                     const strBuscado = removeAccentsGlobal(String(valorBuscado || "").toLowerCase().trim());
                     if (strBuscado !== "" && strItem !== strBuscado) {
                         cumple = false;
-                        break; 
+                        break;
                     }
                 }
             }

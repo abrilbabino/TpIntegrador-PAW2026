@@ -96,6 +96,7 @@
 
 .form-adopcion input {
     width: 100%;
+    max-width: 100%;
     padding: 16px 18px;
     background-color: var(--color-fondo);
     border: 1.5px solid var(--color-gris-claro);

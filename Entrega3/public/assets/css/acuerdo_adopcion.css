@@ -9,8 +9,8 @@ body {
 
 .header-pdf {
     text-align: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
     border-bottom: 3px dashed #e87722;
 }
 
@@ -44,7 +44,7 @@ body {
 /* Cards layout */
 .cards-container {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .card-info {
@@ -83,7 +83,7 @@ body {
     border: 1px solid #dcdbdb;
     border-radius: 12px;
     padding: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .tabla-layout-mascota {
@@ -156,7 +156,7 @@ body {
 .card-compromisos ul {
     list-style-type: none;
     padding-left: 0;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .card-compromisos li {
@@ -183,7 +183,7 @@ body {
 .alerta-importante {
     background-color: #ffdd9e;
     color: #e87722;
-    padding: 20px;
+    padding: 10px 20px;
     border-radius: 10px;
     font-style: italic;
     text-align: center;
@@ -196,7 +196,7 @@ body {
     text-align: center;
     font-size: 1.05rem;
     color: #1a2566;
-    margin-top: 20px;
+    margin-top: 10px;
     padding-top: 10px;
     border-top: 1px dashed #dcdbdb;
 }
@@ -205,5 +205,5 @@ body {
     text-align: center;
     font-size: 0.85rem;
     color: #a3a3a3;
-    margin-top: 20px;
+    margin-top: 10px;
 }

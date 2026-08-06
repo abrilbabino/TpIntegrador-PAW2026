@@ -17,6 +17,8 @@ class ColaEspera extends Model
         'temperamento' => null,
         'provincia' => null,
         'ciudad' => null,
+        'edad_min' => null,
+        'edad_max' => null,
         'created_at' => null
     ];
 

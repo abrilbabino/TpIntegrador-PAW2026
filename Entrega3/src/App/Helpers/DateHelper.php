@@ -4,6 +4,20 @@ namespace Paw\App\Helpers;
 
 class DateHelper
 {
+    public static function obtenerEdadEnAnios($fechaNac, $edadFallback = 0): int
+    {
+        if (empty($fechaNac)) {
+            return (int) ($edadFallback ?? 0);
+        }
+
+        try {
+            $fechaNacimiento = new \DateTime($fechaNac);
+            return (int) $fechaNacimiento->diff(new \DateTime())->y;
+        } catch (\Exception $e) {
+            return (int) ($edadFallback ?? 0);
+        }
+    }
+
     public static function formatEdad($fechaNac, $edadFallback = 0)
     {
         if (empty($fechaNac)) {

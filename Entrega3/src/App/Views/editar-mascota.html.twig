@@ -162,7 +162,7 @@
 
             <li class="dato-item">
                 <span class="dato-label">Fecha de nacimiento</span>
-                <input type="date" name="fecha_nacimiento" value="{{ fechaNacimientoActual }}" max="{{ 'now'|date('Y-m-d') }}" min="{{ '-30 years'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." class="dato-valor-input input-value {{ errores.fecha_nacimiento is defined ? 'input-invalido' : '' }}">
+                <input type="date" name="fecha_nacimiento" value="{{ fechaNacimientoActual }}" max="{{ 'now'|date('Y-m-d') }}" min="{{ '-30 years'|date('Y-m-d') }}" data-no-future="true" data-future-message="La fecha de nacimiento no puede ser futura." class="dato-valor-input input-value {{ errores.fecha_nacimiento is defined ? 'input-invalido' : '' }}" required>
                 {% if errores.fecha_nacimiento is defined %}
                     <span class="msg-error">{{ errores.fecha_nacimiento }}</span>
                 {% endif %}

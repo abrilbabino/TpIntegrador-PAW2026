@@ -34,18 +34,18 @@
 
                 {% if mediaExtras is not empty %}
                     {% for media in mediaExtras %}
-                        {% if media.tipo == 'video' %}
-                            <figure class="carrusel-slide-item carrusel-slide--video">
-                                <video controls autoplay loop preload="metadata" playsinline muted
-                                    poster="{{ media.poster|default('') }}">
-                                    <source src="/{{ media.url }}" type="video/mp4">
+                        <figure class="carrusel-slide-item">
+                            {% set extraUrl = media.url starts with 'http' ? media.url : '/' ~ media.url %}
+                            {% if media.tipo == 'video' %}
+                                <video controls autoplay muted playsinline loop preload="metadata">
+                                    <source src="{{ extraUrl }}" type="video/mp4">
+                                    Tu navegador no soporta videos.
                                 </video>
-                            </figure>
-                        {% else %}
-                            <figure class="carrusel-slide-item">
-                                <img src="/{{ media.url }}" loading="lazy">
-                            </figure>
-                        {% endif %}
+                            {% else %}
+                                <img src="{{ extraUrl }}" loading="lazy"
+                                     alt="Media extra de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
+                            {% endif %}
+                        </figure>
                     {% endfor %}
                 {% endif %}
             </section>

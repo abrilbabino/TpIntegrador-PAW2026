@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace Paw\App\Models;
 
@@ -210,6 +210,7 @@ class MascotaCollection extends Model
                 'nombre'       => $row['nombre'],
                 'imagen'       => $row['imagen'],
                 'edad'         => DateHelper::formatEdad($row['fecha_nacimiento'] ?? null, $row['edad'] ?? 0),
+                'edad_anios'   => DateHelper::obtenerEdadEnAnios($row['fecha_nacimiento'] ?? null, $row['edad'] ?? 0),
                 'tamano'       => $row['tamano'],
                 'temperamento' => $row['temperamento'],
                 'especie'      => $row['especie'],
@@ -346,16 +347,7 @@ class MascotaCollection extends Model
                 $dicc = new DiccionarioCollection();
                 $dicc->setQueryBuilder($this->queryBuilder);
 
-                $duplicados = $this->queryBuilder->select('mascota', [
-                    'refugio_id' => $idUsuario,
-                    'nombre' => $nombreSeguro,
-                    'especie_id' => $dicc->obtenerOCrearId('especie', $especieSegura),
-                    'sexo' => $sexoSeguro,
-                    'tamano_id' => $dicc->obtenerOCrearId('tamano', $tamanoSeguro),
-                    'edad' => $edadValida
-                ]);
-                
-                if (!empty($duplicados)) {
+                if ($this->esMascotaDuplicada($idUsuario, $nombreSeguro, $especieSegura, $sexoSeguro, $tamanoSeguro, $edadValida, $dicc)) {
                     $erroresImportacion[] = "Fila $filaNum: Mascota '$nombre' ya está registrada exactamente igual (duplicada).";
                     $filaNum++; continue;
                 }
@@ -485,21 +477,22 @@ class MascotaCollection extends Model
             "options" => ["regexp" => "/^\d{4}-\d{2}-\d{2}$/"]
         ]);
         $edad = null;
-        if (!empty($fechaNac)) {
-            if (!$fechaValida) {
+        
+        if (empty($fechaNac)) {
+            $erroresMascota['fecha_nacimiento'] = 'La fecha de nacimiento es obligatoria.';
+        } elseif (!$fechaValida) {
+            $erroresMascota['fecha_nacimiento'] = 'Fecha de nacimiento inválida (use AAAA-MM-DD).';
+        } else {
+            $d = \DateTime::createFromFormat('Y-m-d', $fechaNac);
+            $minDate = (new \DateTime())->modify('-30 years');
+            if (!$d || $d->format('Y-m-d') !== $fechaNac) {
                 $erroresMascota['fecha_nacimiento'] = 'Fecha de nacimiento inválida.';
+            } elseif ($d > new \DateTime()) {
+                $erroresMascota['fecha_nacimiento'] = 'La fecha de nacimiento no puede ser futura.';
+            } elseif ($d < $minDate) {
+                $erroresMascota['fecha_nacimiento'] = 'La edad máxima permitida es de 30 años.';
             } else {
-                $d = \DateTime::createFromFormat('Y-m-d', $fechaNac);
-                $minDate = (new \DateTime())->modify('-30 years');
-                if (!$d || $d->format('Y-m-d') !== $fechaNac) {
-                    $erroresMascota['fecha_nacimiento'] = 'Fecha de nacimiento inválida.';
-                } elseif ($d > new \DateTime()) {
-                    $erroresMascota['fecha_nacimiento'] = 'La fecha de nacimiento no puede ser futura.';
-                } elseif ($d < $minDate) {
-                    $erroresMascota['fecha_nacimiento'] = 'La edad máxima permitida es de 30 años.';
-                } else {
-                    $edad = filter_var((int) $d->diff(new \DateTime())->y, FILTER_VALIDATE_INT);
-                }
+                $edad = filter_var((int) $d->diff(new \DateTime())->y, FILTER_VALIDATE_INT);
             }
         }
 
@@ -551,6 +544,21 @@ class MascotaCollection extends Model
             return $erroresMascota;
         }
 
+        $nombreSeguro = trim($nombre);
+        $especieSegura = trim($especie);
+        $sexoSeguro = trim($sexo);
+        $tamanoSeguro = trim($tamanio);
+        $temperamentoSeguro = trim($temperamento);
+        $descripcionSegura = trim($descripcionMascota);
+
+        $dicc = new DiccionarioCollection();
+        $dicc->setQueryBuilder($this->queryBuilder);
+
+        if ($this->esMascotaDuplicada($userId, $nombreSeguro, $especieSegura, $sexoSeguro, $tamanoSeguro, $edad, $dicc)) {
+            $erroresMascota['global'] = 'Ya existe una mascota idéntica publicada (mismo nombre, especie, tamaño, sexo y edad).';
+            return $erroresMascota;
+        }
+
         if ($svgValidoParaMover) {
             try {
                 $svgRelativa = \Paw\App\Helpers\GCSHelper::subir($svg, 'mascotas_svg');
@@ -569,17 +577,7 @@ class MascotaCollection extends Model
             }
         }
 
-        $nombreSeguro = trim($nombre);
-        $especieSegura = trim($especie);
-        $sexoSeguro = trim($sexo);
-        $tamanoSeguro = trim($tamanio);
-        $temperamentoSeguro = trim($temperamento);
-        $descripcionSegura = trim($descripcionMascota);
-
         // Insertar en la BD
-        $dicc = new DiccionarioCollection();
-        $dicc->setQueryBuilder($this->queryBuilder);
-
         $mascotaId = $this->queryBuilder->insert('mascota', [
             'refugio_id'      => $userId,
             'nombre'          => $nombreSeguro,
@@ -599,9 +597,8 @@ class MascotaCollection extends Model
 
         if ($mascotaId) {
             try {
-                // Obtener datos del refugio para saber la ubicación de la mascota
-                $refugios = $this->queryBuilder->select('refugio', ['usuario_id' => $userId]);
-                $refugio = $refugios[0] ?? [];
+                $ubicaciones = $this->queryBuilder->select('ubicacion', ['refugio_id' => $userId]);
+                $ubicacion = $ubicaciones[0] ?? [];
                 
                 $colaCollection = new \Paw\App\Models\ColaEsperaCollection();
                 $colaCollection->setQueryBuilder($this->queryBuilder);
@@ -610,8 +607,9 @@ class MascotaCollection extends Model
                     'especie'      => $especieSegura,
                     'tamano'       => $tamanoSeguro,
                     'temperamento' => $temperamentoSeguro,
-                    'provincia'    => $refugio['provincia'] ?? '',
-                    'ciudad'       => $refugio['ciudad'] ?? '',
+                    'edad'         => $edad,
+                    'provincia'    => $ubicacion['provincia'] ?? '',
+                    'ciudad'       => $ubicacion['ciudad'] ?? '',
                 ]);
             } catch (\Exception $e) {
                 if ($this->logger) {
@@ -795,5 +793,21 @@ class MascotaCollection extends Model
     {
         $resultados = $this->getQueryBuilder()->getMascotasInvisibles($this->table, $limite);
         return $this->mapMascotas($resultados);
+    }
+    /**
+     * Verifica si ya existe una mascota registrada con las mismas características base.
+     */
+    private function esMascotaDuplicada(int $refugioId, string $nombre, string $especie, string $sexo, string $tamano, ?int $edad, DiccionarioCollection $dicc): bool
+    {
+        $duplicados = $this->queryBuilder->select('mascota', [
+            'refugio_id' => $refugioId,
+            'nombre'     => $nombre,
+            'especie_id' => $dicc->obtenerOCrearId('especie', $especie),
+            'sexo'       => $sexo,
+            'tamano_id'  => $dicc->obtenerOCrearId('tamano', $tamano),
+            'edad'       => $edad
+        ]);
+
+        return !empty($duplicados);
     }
 }
