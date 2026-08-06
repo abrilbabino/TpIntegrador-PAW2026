@@ -41,9 +41,30 @@ class UserController extends Controller
         $rol = $user['rol'];
  
         if ($rol === 'refugio') {
-            $this->cargarPerfilRefugio($user);
+            $erroresMascota = $this->request->session('errores_mascota') ?? [];
+            $oldMascota = $this->request->session('old_mascota') ?? [];
+            
+            $erroresPerfil = $this->request->session('errores_perfil') ?? [];
+            $oldPerfil = $this->request->session('old_perfil') ?? [];
+            
+            if (!empty($erroresMascota) || !empty($oldMascota) || !empty($erroresPerfil) || !empty($oldPerfil)) {
+                $this->request->unsetSession('errores_mascota');
+                $this->request->unsetSession('old_mascota');
+                $this->request->unsetSession('errores_perfil');
+                $this->request->unsetSession('old_perfil');
+            }
+            
+            $this->cargarPerfilRefugio($user, $erroresPerfil, $oldPerfil, $erroresMascota, $oldMascota);
         } else {
-            $this->cargarPerfilAdoptante($user);
+            $erroresPerfil = $this->request->session('errores_perfil') ?? [];
+            $oldPerfil = $this->request->session('old_perfil') ?? [];
+
+            if (!empty($erroresPerfil) || !empty($oldPerfil)) {
+                $this->request->unsetSession('errores_perfil');
+                $this->request->unsetSession('old_perfil');
+            }
+
+            $this->cargarPerfilAdoptante($user, $erroresPerfil, $oldPerfil);
         }
     }
  
@@ -200,8 +221,10 @@ class UserController extends Controller
         );
 
         if (!empty($errores)) {
-            $this->cargarPerfilRefugio($user, $errores, $this->request->post());
-            return;
+            $this->request->setSession('errores_perfil', $errores);
+            $this->request->setSession('old_perfil', $this->request->post());
+            header('Location: /perfil?update=error#sec-perfil');
+            exit;
         }
 
         $updatedUser = $this->model->findById($userId);
@@ -234,8 +257,10 @@ class UserController extends Controller
         $errores = $this->model->actualizarUbicacionRefugio($userId, $postData);
 
         if (!empty($errores)) {
-            $this->cargarPerfilRefugio($userSession, $errores, $postData);
-            return;
+            $this->request->setSession('errores_perfil', $errores);
+            $this->request->setSession('old_perfil', $postData);
+            header("Location: /perfil?update=error#sec-ubicacion");
+            exit;
         }
 
         header("Location: /perfil?update=success#sec-ubicacion");
@@ -265,8 +290,10 @@ class UserController extends Controller
         $erroresMascota = $mascotaCollection->guardarMascotaIndividual($post, $foto, $svg, $userId);
 
         if (!empty($erroresMascota)) {
-            $this->cargarPerfilRefugio($userSession, [], [], $erroresMascota, $post);
-            return;
+            $this->request->setSession('errores_mascota', $erroresMascota);
+            $this->request->setSession('old_mascota', $post);
+            header('Location: /perfil?publicado=error#sec-publicar');
+            exit;
         }
 
         header('Location: /perfil?publicado=1#sec-publicar');
@@ -297,8 +324,10 @@ class UserController extends Controller
         );
 
         if (!empty($errores)) {
-            $this->cargarPerfilAdoptante($user, $errores, $this->request->post());
-            return;
+            $this->request->setSession('errores_perfil', $errores);
+            $this->request->setSession('old_perfil', $this->request->post());
+            header('Location: /perfil?update=error#sec-perfil');
+            exit;
         }
 
         $updatedUser = $this->model->findById($userId);

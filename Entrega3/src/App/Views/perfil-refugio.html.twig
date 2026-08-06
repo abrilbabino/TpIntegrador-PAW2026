@@ -336,7 +336,7 @@
     </section>
 
     <section class="perfil-refugio-publicar" id="sec-publicar">
-        <details class="perfil-dropdown" {% if request.get('publicado') == '1' %}open{% endif %}>
+        <details class="perfil-dropdown" {% if request.get('publicado') == '1' or (erroresMascota is defined and erroresMascota is not empty) %}open{% endif %}>
         <summary> <h3>Publicar Mascota</h3> </summary>
         <p>Agrega los datos de la nueva mascota:</p>
     
@@ -346,6 +346,16 @@
                 <section>
                     <strong>¡Publicación Exitosa!</strong>
                     <p>La mascota se ha publicado correctamente.</p>
+                </section>
+            </aside>
+        {% endif %}
+
+        {% if erroresMascota.global is defined %}
+            <aside class="alerta-error" role="alert">
+                <span class="material-symbols-outlined">error</span>
+                <section>
+                    <strong>¡Atención!</strong>
+                    <p>{{ erroresMascota.global }}</p>
                 </section>
             </aside>
         {% endif %}
@@ -387,7 +397,7 @@
                 min="{{ '-30 years'|date('Y-m-d') }}"
                 data-no-future="true"
                 data-future-message="La fecha de nacimiento no puede ser futura."
-                {{ erroresMascota.fecha_nacimiento is defined and erroresMascota.fecha_nacimiento is not empty ? 'data-server-error="' ~ erroresMascota.fecha_nacimiento ~ '"' : '' }}>
+                {{ erroresMascota.fecha_nacimiento is defined and erroresMascota.fecha_nacimiento is not empty ? 'data-server-error="' ~ erroresMascota.fecha_nacimiento ~ '"' : '' }} required>
             </label>
 
             <label for="descripcion_mascota">Descripci&oacute;n

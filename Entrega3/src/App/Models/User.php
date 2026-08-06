@@ -215,6 +215,7 @@ class User extends Model
                 'usuario_id'         => $userId,
                 'nombre_institucion' => $name,
                 'cuit'               => null,
+                'email'              => $email,
             ]);
 
             $refugio = $this->getRefugio((int) $userId);
@@ -462,6 +463,7 @@ class User extends Model
             'alias' => htmlspecialchars(trim($postData['alias'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'cvu' => htmlspecialchars(trim($postData['cvu'] ?? ''), ENT_QUOTES, 'UTF-8'),
             'imagen' => $fieldsRefugioSync,
+            'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         ];
 
         // Verificar si existe el refugio en la DB

@@ -60,7 +60,7 @@
             </header>
 
             <nav class="perfil-actions" aria-label="Acciones del refugio">
-                <a href="/contacto?refugio={{ refugio.getId() }}" class="perfil-btn-primary">
+                <a href="{% if refugio.fields.email is not empty %}mailto:{{ refugio.fields.email }}{% else %}#{% endif %}" class="perfil-btn-primary" target="_blank" rel="noopener noreferrer">
                     <span class="material-symbols-outlined">mail</span> Contactar al Refugio
                 </a>
                 {% if refugio.fields.telefono is not empty %}
