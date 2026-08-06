@@ -153,8 +153,7 @@ class MascotaController extends Controller
     {
         $userSession = $this->request->session('user');
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $id = (int) $this->request->get('id');
@@ -203,8 +202,7 @@ class MascotaController extends Controller
         $userSession = $this->request->session('user');
         if (empty($userSession) || $this->request->method() !== 'POST'
             || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $post  = $this->request->post();
@@ -286,8 +284,7 @@ class MascotaController extends Controller
 
         // 1. Validar sesión y permisos
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $postData = $this->request->post();
@@ -365,8 +362,7 @@ class MascotaController extends Controller
     public function eliminarSvg() {
         $userSession = $this->request->session('user');
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $postData = $this->request->post();
@@ -399,8 +395,7 @@ class MascotaController extends Controller
     public function eliminarFotoPrincipal() {
         $userSession = $this->request->session('user');
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $postData = $this->request->post();
@@ -433,8 +428,7 @@ class MascotaController extends Controller
 public function eliminarFoto() {
     $userSession = $this->request->session('user');
     if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $this->request->method() !== 'POST') {
-        header('Location: /?auth=login');
-        exit;
+        $this->redireccionarALogin();
     }
 
     $postData = $this->request->post();
@@ -575,8 +569,7 @@ public function eliminarFoto() {
     {
         $userSession = $this->request->session('user');
         if (empty($userSession)) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $datos = $this->request->post();
@@ -626,8 +619,7 @@ public function eliminarFoto() {
     {
         $userSession = $this->request->session('user');
         if (empty($userSession)) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $datos = $this->request->post();
@@ -677,8 +669,7 @@ public function eliminarFoto() {
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || ($userSession['rol'] ?? '') !== 'refugio' || $id <= 0) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         try {

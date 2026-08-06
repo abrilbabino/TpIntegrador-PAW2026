@@ -23,16 +23,14 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession)) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $dbUser = $this->model->findById((int) $userSession['id']);
         
         if (!$dbUser) {
             $this->request->unsetSession('user');
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         if (array_key_exists('rol', $dbUser)) unset($dbUser['rol']);
@@ -207,8 +205,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $user   = $userSession;
@@ -247,8 +244,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $userId = (int) $userSession['id'];
@@ -277,8 +273,7 @@ class UserController extends Controller
 
         if (empty($userSession) || $this->request->method() !== 'POST'
             || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $post  = $this->request->post();
@@ -310,8 +305,7 @@ class UserController extends Controller
         $userSession = $this->request->session('user');
 
         if (empty($userSession) || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $user   = $userSession;
@@ -351,8 +345,7 @@ class UserController extends Controller
 
         if (empty($userSession) || $this->request->method() !== 'POST'
             || ($userSession['rol'] ?? '') !== 'refugio') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $csv = $this->request->file('csv_mascotas');

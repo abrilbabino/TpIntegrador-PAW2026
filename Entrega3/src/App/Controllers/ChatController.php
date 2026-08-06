@@ -16,8 +16,7 @@ class ChatController extends Controller
     {
         $usuario = $this->request->session('user');
         if (!$usuario) {
-            header("Location: /perfil");
-            exit;
+            $this->redireccionarALogin();
         }
 
         $titulo = "Mensajes - PawMap";
@@ -30,8 +29,7 @@ class ChatController extends Controller
         $solicitudId = (int) $this->request->get('solicitud_id');
         $usuario = $this->request->session('user');
         if (!$solicitudId || !$usuario) {
-            header("Location: /perfil");
-            exit;
+            $this->redireccionarALogin();
         }
 
         $solicitudesDb = $this->loadCollection(SolicitudAdopcionCollection::class);

@@ -18,8 +18,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user)) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $rol  = $user['rol'] ?? 'adoptante';
@@ -130,8 +129,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user) || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $registroId = $this->request->get('registro_id');
@@ -162,8 +160,7 @@ class SeguimientoController extends Controller
     {
         $user = $this->request->session('user');
         if (empty($user) || $this->request->method() !== 'POST') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $adoptanteId = $user['id'];

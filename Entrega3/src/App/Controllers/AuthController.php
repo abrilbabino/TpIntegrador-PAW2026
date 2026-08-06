@@ -54,12 +54,14 @@ class AuthController extends Controller
             session_start();
         }
 
+        $returnTo = $this->obtenerRetornoSeguro($this->request->get('return_to'));
+        $loginUrl = '/?auth=login' . ($returnTo ? '&return_to=' . rawurlencode($returnTo) : '');
         $username = trim($this->request->get('nombre_usuario') ?? '');
         $password = $this->request->get('contrasena') ?? '';
 
         // Validar que los campos no estén vacíos
         if (empty($username) || empty($password)) {
-            header('Location: /?auth=login&error=1');
+            header('Location: ' . $loginUrl . '&error=1');
             exit;
         }
 
@@ -76,7 +78,7 @@ class AuthController extends Controller
         $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
         if ($minutosRestantes > 0) {
             $this->log->info("Login fallido: usuario bloqueado por rate limit", ['username' => $username, 'minutos' => $minutosRestantes]);
-            header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+            header('Location: ' . $loginUrl . '&error=bloqueado&minutos=' . $minutosRestantes);
             exit;
         }
 
@@ -87,11 +89,11 @@ class AuthController extends Controller
             // Re-verificar si este último intento lo bloqueó
             $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
             if ($minutosRestantes > 0) {
-                header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+                header('Location: ' . $loginUrl . '&error=bloqueado&minutos=' . $minutosRestantes);
                 exit;
             }
 
-            header('Location: /?auth=login&error=1');
+            header('Location: ' . $loginUrl . '&error=1');
             exit;
         }
 
@@ -103,11 +105,11 @@ class AuthController extends Controller
             // Re-verificar si este último intento lo bloqueó
             $minutosRestantes = $rateLimit->obtenerMinutosRestantesBloqueo($username);
             if ($minutosRestantes > 0) {
-                header('Location: /?auth=login&error=bloqueado&minutos=' . $minutosRestantes);
+                header('Location: ' . $loginUrl . '&error=bloqueado&minutos=' . $minutosRestantes);
                 exit;
             }
 
-            header('Location: /?auth=login&error=1');
+            header('Location: ' . $loginUrl . '&error=1');
             exit;
         }
 
@@ -143,8 +145,17 @@ class AuthController extends Controller
 
         $this->log->info("Login exitoso", ['username' => $username, 'user_id' => $usuario['id']]);
 
-        header('Location: /perfil');
+        header('Location: ' . ($returnTo ?? '/perfil'));
         exit;
+    }
+
+    private function obtenerRetornoSeguro($returnTo): ?string
+    {
+        if (!is_string($returnTo) || !$returnTo || !str_starts_with($returnTo, '/') || str_starts_with($returnTo, '//')) {
+            return null;
+        }
+
+        return $returnTo;
     }
 
     /**

@@ -26,8 +26,7 @@ class AdopcionController extends Controller
 
         // Si no está logueado o no es adoptante, redirigir a login
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /?auth=login&error=perfil_requerido');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $menu = $this->menu;
@@ -62,8 +61,7 @@ class AdopcionController extends Controller
 
         // Seguridad: Verificar sesión en el envío también
         if (empty($userSession) || $userSession['rol'] !== 'adoptante') {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $menu = $this->menu;
@@ -124,8 +122,7 @@ class AdopcionController extends Controller
     {
         $userSession = $this->request->session('user');
         if (!$userSession || $userSession['rol'] !== 'adoptante') {
-            header('Location: /');
-            return;
+            $this->redireccionarALogin();
         }
 
         $mascota_id = $this->request->get('mascota_id');
