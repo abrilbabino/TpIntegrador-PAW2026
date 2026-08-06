@@ -13,7 +13,7 @@ class PAWAuthModals {
 
     initEventListeners() {
         // Abrir login desde la barra de navegación
-        if (this.btnLogin) {s
+        if (this.btnLogin) {
             this.btnLogin.addEventListener('click', () => {
                 this.abrirLogin();
             });
