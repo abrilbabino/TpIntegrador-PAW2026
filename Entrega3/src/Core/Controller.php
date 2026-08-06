@@ -44,11 +44,11 @@ class Controller
         }
 
         $this->notificaciones = 0;
-        if (isset($_SESSION['user']['id']) && class_exists('\Paw\App\Models\MensajeCollection')) {
-            $qbMensajes = new QueryBuilder($connection, $log);
-            $mensajesCol = new \Paw\App\Models\MensajeCollection();
-            $mensajesCol->setQueryBuilder($qbMensajes);
-            $this->notificaciones = $mensajesCol->getUnreadCount($_SESSION['user']['id']);
+        if (isset($_SESSION['user']['id']) && class_exists('\Paw\App\Models\NotificacionCollection')) {
+            $qbNotificaciones = new QueryBuilder($connection, $log);
+            $notificacionesCol = new \Paw\App\Models\NotificacionCollection();
+            $notificacionesCol->setQueryBuilder($qbNotificaciones);
+            $this->notificaciones = $notificacionesCol->contarNoLeidas((int) $_SESSION['user']['id']);
         }
 
         // Configuración de Twig 

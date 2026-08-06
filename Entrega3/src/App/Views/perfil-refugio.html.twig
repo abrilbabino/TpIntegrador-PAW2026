@@ -1,4 +1,4 @@
-{% extends 'layout/base.html.twig' %}
+﻿{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -364,29 +364,21 @@
                 {{ erroresMascota.nombre is defined and erroresMascota.nombre is not empty ? 'data-server-error="' ~ erroresMascota.nombre ~ '"' : '' }}>
             </label>
             
-            <fieldset class="publicar-mascota-grupo">
-                <legend>Especie</legend>
+            <label for="especie">Especie
                 {% set errorEspecie = erroresMascota.especie|default('') %}
-                {% for e in especies %}
-                    <label class="especie-refugio-radio">
-                        <input type="radio" name="especie" value="{{ e.fields.nombre }}"
-                               required
-                               {{ (oldMascota.especie|default('') == e.fields.nombre) ? 'checked' : '' }}
-                               {{ errorEspecie is not empty ? 'data-server-error="' ~ errorEspecie ~ '"' : '' }}>
-                        <span>{{ e.fields.nombre|capitalize }}</span>
-                    </label>
-                    {% set errorEspecie = '' %}
-                {% endfor %}
-                    <label class="especie-refugio-radio">
-                        <input type="radio" name="especie" value="otro"
-                               required
-                               {{ (oldMascota.especie|default('') == 'otro') ? 'checked' : '' }}>
-                        <span>Otro...</span>
-                    </label>
+                <select id="especie" name="especie" required {{ errorEspecie is not empty ? 'data-server-error="' ~ errorEspecie ~ '"' : '' }}>
+                    <option value="" disabled {{ oldMascota.especie|default('') is empty ? 'selected' : '' }}>Seleccioná una especie</option>
+                    {% for e in especies %}
+                        <option value="{{ e.fields.nombre }}" {{ (oldMascota.especie|default('') == e.fields.nombre) ? 'selected' : '' }}>
+                            {{ e.fields.nombre|capitalize }}
+                        </option>
+                    {% endfor %}
+                    <option value="otro" {{ (oldMascota.especie|default('') == 'otro') ? 'selected' : '' }}>Otro...</option>
+                </select>
                 <input type="text" id="nueva_especie" name="nueva_especie" class="input-otro" placeholder="Escribí la nueva especie" value="{{ oldMascota.nueva_especie|default('') }}"
                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
                        title="Solo se permiten letras y espacios.">
-            </fieldset>
+            </label>
             
             <label for="fecha_nacimiento">Fecha de nacimiento
             <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"

@@ -165,6 +165,27 @@
   width: 100%;
 }
 
+.badge-mensajes-pendientes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--color-naranja);
+    color: var(--color-fondo);
+    font-weight: 800;
+    line-height: 1;
+    text-align: center;
+}
+
+.mensajes-menu-badge {
+    width: 28px;
+    height: 28px;
+    margin-left: auto;
+    margin-right: 1.5rem;
+    transform: translateY(-2px);
+    font-size: 0.85rem;
+}
+
 .perfil-mobile-link {
   display: flex;
   align-items: center;

@@ -32,12 +32,7 @@ class NotificacionController extends Controller
 
         try {
             $notificaciones = $this->model->getRecientes($usuarioId);
-            
-            // PostgreSQL PDO puede devolver '0', '1', 'f', 't', 0, 1 o booleanos
-            $noLeidasCount = count(array_filter($notificaciones, function($n) {
-                $leida = $n['leida'];
-                return $leida === false || $leida === 0 || $leida === '0' || $leida === 'f';
-            }));
+            $noLeidasCount = $this->model->contarNoLeidas($usuarioId);
 
             echo json_encode([
                 'success' => true, 

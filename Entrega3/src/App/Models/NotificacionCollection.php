@@ -15,6 +15,11 @@ class NotificacionCollection extends Model
         return $this->queryBuilder->obtenerNotificacionesNoLeidas($this->table, $usuarioId);
     }
 
+    public function contarNoLeidas(int $usuarioId): int
+    {
+        return count($this->getNoLeidas($usuarioId));
+    }
+
     public function getRecientes(int $usuarioId, int $limit = 20): array
     {
         return $this->queryBuilder->obtenerNotificacionesRecientes($this->table, $usuarioId, $limit);
