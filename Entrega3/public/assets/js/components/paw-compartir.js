@@ -44,19 +44,21 @@ class PAWCompartir {
     }
 
     abrirApp(label, appUrl) {
+        const ventanaApp = window.open(appUrl, '_blank');
+        if (ventanaApp) {
+            ventanaApp.opener = null;
+        } else {
+            window.location.assign(appUrl);
+        }
+
         if (navigator.clipboard) {
             navigator.clipboard.writeText(this.msg).then(() => {
-                this.mostrarToast('¡Mensaje copiado! Abriendo ' + label + '... 📋');
-                setTimeout(() => {
-                    window.open(appUrl, '_blank');
-                }, 1500);
+                this.mostrarToast('¡Mensaje copiado! ' + label + ' 📋');
             }).catch(() => {
                 this.mostrarToast('No se pudo copiar (requiere HTTPS). URL: ' + this.url);
-                window.open(appUrl, '_blank');
             });
         } else {
             this.mostrarToast('No se pudo copiar automáticamente.');
-            window.open(appUrl, '_blank');
         }
         this.dropdown.hidden = true;
         this.btn.setAttribute('aria-expanded', 'false');

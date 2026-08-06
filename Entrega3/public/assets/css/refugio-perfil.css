@@ -391,7 +391,10 @@
 }
 
 .perfil-content {
+    width: 100%;
+    min-width: 0;
     margin: 0;
+    justify-self: stretch;
 }
 
 .perfil-stats,
@@ -810,7 +813,10 @@
     }
 
     .perfil-content {
+        width: fit-content;
+        min-width: auto;
         margin-top: 3rem;
+        justify-self: center;
     }
 
     .perfil-stats,

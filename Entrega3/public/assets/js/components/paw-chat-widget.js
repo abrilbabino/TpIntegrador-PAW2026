@@ -16,6 +16,7 @@ class PAWChatWidget {
         this.conversationView = document.getElementById('chat-widget-conversation-view');
         this.listContainer = document.getElementById('chat-widget-list');
         this.badge = document.getElementById('chat-widget-badge');
+        this.menuBadge = document.getElementById('mensajes-menu-badge');
         this.backBtn = document.getElementById('chat-widget-back-btn');
         this.sendBtn = document.getElementById('chat-widget-send-btn');
         this.inputField = document.getElementById('chat-widget-input');
@@ -104,7 +105,7 @@ class PAWChatWidget {
                 
                 if (chats.length === 0) {
                     this.listContainer.innerHTML = '<div class="chat-widget-loading">No tienes mensajes.</div>';
-                    this.badge.style.display = 'none';
+                    this.actualizarBadges(0);
                     return;
                 }
 
@@ -119,7 +120,7 @@ class PAWChatWidget {
                         this.abrirConversacion(chat.solicitud_id, chat.interlocutor, chat.mascota_nombre);
                     });
                     
-                    let unreadBadge = chat.unread > 0 ? `<span class="chat-list-item-unread">${chat.unread}</span>` : '';
+                    let unreadBadge = chat.unread > 0 ? `<span class="badge-mensajes-pendientes chat-list-item-unread">${chat.unread}</span>` : '';
                     
                     let avatarHtml = '';
                     if (chat.foto_interlocutor) {
@@ -141,12 +142,7 @@ class PAWChatWidget {
                     this.listContainer.appendChild(item);
                 });
 
-                if (totalUnread > 0 && !this.isMessagesPage) {
-                    this.badge.textContent = totalUnread;
-                    this.badge.style.display = 'inline-block';
-                } else {
-                    this.badge.style.display = 'none';
-                }
+                this.actualizarBadges(totalUnread);
             })
             .catch(err => {
                 console.error(err);
@@ -155,6 +151,18 @@ class PAWChatWidget {
     }
 
     // Oculta la vista actual y revela la conversación simulando una transición de enrutamiento estático en cliente.
+    actualizarBadges(totalUnread) {
+        if (this.badge) {
+            this.badge.style.display = totalUnread > 0 && !this.isMessagesPage ? 'inline-block' : 'none';
+            this.badge.textContent = totalUnread;
+        }
+
+        if (this.menuBadge) {
+            this.menuBadge.textContent = totalUnread;
+            this.menuBadge.classList.toggle('oculto', totalUnread === 0);
+        }
+    }
+
     abrirConversacion(solicitudId, interlocutor, mascotaNombre) {
         this.currentChatSolicitudId = solicitudId;
         
