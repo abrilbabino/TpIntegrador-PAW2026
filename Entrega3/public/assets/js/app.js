@@ -69,15 +69,15 @@ class AppPAW {
   _initTestCompatibilidad() {
     const form = document.getElementById('testForm');
     if (form) {
-      PAW.cargarScript("paw-test-compatibilidad", "/assets/js/test-compatibilidad.js", () => {});
+      PAW.cargarScript("paw-test-compatibilidad", "/assets/js/test-compatibilidad.js", () => { });
     }
   }
 
   _initMascota() {
-    const carrusel = document.querySelector('.carrusel-contenedor');
+    const carrusel = document.querySelector('.carrusel-mascota');
     const svgMascota = document.querySelector('.svg-mascota');
     if (carrusel || svgMascota) {
-      PAW.cargarScript("paw-mascota", "/assets/js/mascota.js", () => {});
+      PAW.cargarScript("paw-mascota", "/assets/js/mascota.js", () => { });
     }
   }
 
@@ -85,7 +85,7 @@ class AppPAW {
     const refugioSelect = document.getElementById('refugio_id');
     const aliasInput = document.getElementById('alias');
     if (refugioSelect && aliasInput) {
-      PAW.cargarScript("paw-donacion", "/assets/js/donar.js", () => {});
+      PAW.cargarScript("paw-donacion", "/assets/js/donar.js", () => { });
     }
   }
 
@@ -170,15 +170,15 @@ class AppPAW {
     if (!globalTokenInput) return;
 
     document.querySelectorAll('form').forEach(form => {
-        if (form.method && form.method.toUpperCase() === 'POST') {
-            if (!form.querySelector('input[name="csrf_token"]')) {
-                const tokenInput = document.createElement('input');
-                tokenInput.type = 'hidden';
-                tokenInput.name = 'csrf_token';
-                tokenInput.value = globalTokenInput.value;
-                form.appendChild(tokenInput);
-            }
+      if (form.method && form.method.toUpperCase() === 'POST') {
+        if (!form.querySelector('input[name="csrf_token"]')) {
+          const tokenInput = document.createElement('input');
+          tokenInput.type = 'hidden';
+          tokenInput.name = 'csrf_token';
+          tokenInput.value = globalTokenInput.value;
+          form.appendChild(tokenInput);
         }
+      }
     });
   }
 
