@@ -17,8 +17,7 @@ class ResenaController extends Controller
         $userSession = $request->session('user');
 
         if (!$userSession || !isset($userSession['id'])) {
-            header("Location: /");
-            exit;
+            $this->redireccionarALogin();
         }
 
         try {
@@ -48,8 +47,7 @@ class ResenaController extends Controller
         $userSession = $request->session('user');
 
         if (!$userSession || !isset($userSession['id'])) {
-            header("Location: /");
-            exit;
+            $this->redireccionarALogin();
         }
 
         $id = (int) $request->get('id');
@@ -73,8 +71,7 @@ class ResenaController extends Controller
         $userSession = $request->session('user');
 
         if (!$userSession || !isset($userSession['id'])) {
-            header("Location: /");
-            exit;
+            $this->redireccionarALogin();
         }
 
         $id = (int) $request->get('id');

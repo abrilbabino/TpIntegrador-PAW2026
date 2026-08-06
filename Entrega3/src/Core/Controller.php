@@ -177,4 +177,77 @@ class Controller
         return $model;
     }
 
+    protected function redireccionarALogin(): void
+    {
+        $returnTo = $this->obtenerRutaRetorno();
+        $paginaLogin = $this->limpiarParametrosLogin($this->obtenerRutaReferer() ?? '/');
+        if ($paginaLogin === $returnTo) {
+            $paginaLogin = '/';
+        }
+        $separador = str_contains($paginaLogin, '?') ? '&' : '?';
+
+        header('Location: ' . $paginaLogin . $separador . 'auth=login&return_to=' . rawurlencode($returnTo));
+        exit;
+    }
+
+    private function obtenerRutaRetorno(): string
+    {
+        if ($this->request->method() === 'POST') {
+            $rutaReferer = $this->obtenerRutaReferer();
+            if ($rutaReferer) {
+                return $this->limpiarParametrosLogin($rutaReferer);
+            }
+        }
+
+        $requestUri = $this->request->server('REQUEST_URI') ?? '/';
+
+        return $this->esRutaInterna($requestUri) ? $this->limpiarParametrosLogin($requestUri) : '/';
+    }
+
+    private function obtenerRutaReferer(): ?string
+    {
+        $referer = $this->request->server('HTTP_REFERER');
+        $host = $this->request->server('HTTP_HOST');
+
+        if (!$referer || !$host) {
+            return null;
+        }
+
+        $urlReferer = parse_url($referer);
+        $hostActual = parse_url('http://' . $host, PHP_URL_HOST);
+
+        if ($urlReferer === false || ($urlReferer['host'] ?? null) !== $hostActual) {
+            return null;
+        }
+
+        $ruta = $urlReferer['path'] ?? '/';
+        if (isset($urlReferer['query'])) {
+            $ruta .= '?' . $urlReferer['query'];
+        }
+
+        return $this->esRutaInterna($ruta) ? $ruta : null;
+    }
+
+    private function esRutaInterna(string $ruta): bool
+    {
+        return str_starts_with($ruta, '/') && !str_starts_with($ruta, '//');
+    }
+
+    private function limpiarParametrosLogin(string $ruta): string
+    {
+        $url = parse_url($ruta);
+        if ($url === false) {
+            return '/';
+        }
+
+        $parametros = [];
+        parse_str($url['query'] ?? '', $parametros);
+        unset($parametros['auth'], $parametros['error'], $parametros['return_to']);
+
+        $rutaLimpia = $url['path'] ?? '/';
+        $query = http_build_query($parametros);
+
+        return $query ? $rutaLimpia . '?' . $query : $rutaLimpia;
+    }
+
 }

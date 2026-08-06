@@ -49,9 +49,15 @@ class PAWFavoritos {
           if (data.error === 'No autorizado') {
             const loginModal = document.getElementById('modal-login');
             if (loginModal) {
-              loginModal.showModal();
+              document.dispatchEvent(new CustomEvent('paw:login-requerido', {
+                detail: { returnTo: window.location.pathname + window.location.search }
+              }));
             } else {
-              window.location.href = '?auth=login';
+              const returnTo = window.location.pathname + window.location.search;
+              const loginUrl = new URL(window.location.href);
+              loginUrl.searchParams.set('auth', 'login');
+              loginUrl.searchParams.set('return_to', returnTo);
+              window.location.href = loginUrl.pathname + loginUrl.search;
             }
           } else {
             console.error('Error al modificar favoritos:', data.error);

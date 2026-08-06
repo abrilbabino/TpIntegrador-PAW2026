@@ -17,7 +17,8 @@
         </header>
 
         <form class="login-form" method="POST" action="/login">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="return_to" value="{{ request.get('return_to')|default('') }}">
             <label for="nombre_usuario">Usuario</label>
             <input
                 type="text"
