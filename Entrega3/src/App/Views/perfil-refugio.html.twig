@@ -1,4 +1,4 @@
-﻿{% extends 'layout/base.html.twig' %}
+{% extends 'layout/base.html.twig' %}
 
 {% block title %}Mi Perfil - PawMap{% endblock %}
 
@@ -174,7 +174,7 @@
                         </mark>
                         <p>
                             Detalle de la mascota: <br>
-                            {{ sol.edad|default('?') }} a&ntilde;o(s)
+                            {{ sol.fecha_nacimiento|default('') | edad_formateada(sol.edad|default(0)) }}
                             · {{ sol.tamano|default('—')|capitalize }}
                             · {{ sol.temperamento|default('—')|capitalize }}
                         </p>
@@ -504,7 +504,7 @@
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
-                                {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
+                                {{ mascota.fields.fecha_nacimiento|default('') | edad_formateada(mascota.fields.edad|default(0)) }}
                                 · {{ mascota.fields.tamano|default('—')|capitalize }}
                                 · {{ mascota.fields.temperamento|default('—')|capitalize }}
                             </p>
@@ -541,7 +541,7 @@
                         <a href="/mascota?id={{ mascota.fields.id }}" class="tarjeta-refugio-mascota-link" title="Ver detalle de {{ mascota.fields.nombre|default('Mascota')|capitalize }}">
                             <h4>{{ mascota.fields.nombre|default('Sin nombre')|capitalize }}</h4>
                             <p>
-                                {{ mascota.fields.edad|default('?') }} a&ntilde;o(s)
+                                {{ mascota.fields.fecha_nacimiento|default('') | edad_formateada(mascota.fields.edad|default(0)) }}
                                 · {{ mascota.fields.tamano|default('—')|capitalize }}
                                 · {{ mascota.fields.temperamento|default('—')|capitalize }}
                             </p>
