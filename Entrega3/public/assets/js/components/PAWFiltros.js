@@ -438,7 +438,9 @@ class PAWFiltros {
                 if (res.status === 401) {
                     const loginModal = document.getElementById('modal-login');
                     if (loginModal) {
-                        loginModal.showModal();
+                        document.dispatchEvent(new CustomEvent('paw:login-requerido', {
+                            detail: { returnTo: window.location.pathname + window.location.search }
+                        }));
                         throw new Error("OPEN_LOGIN");
                     }
                 }

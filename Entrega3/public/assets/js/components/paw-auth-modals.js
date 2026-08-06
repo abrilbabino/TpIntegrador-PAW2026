@@ -13,11 +13,15 @@ class PAWAuthModals {
 
     initEventListeners() {
         // Abrir login desde la barra de navegación
-        if (this.btnLogin) {
+        if (this.btnLogin) {s
             this.btnLogin.addEventListener('click', () => {
-                this.loginModal.showModal();
+                this.abrirLogin();
             });
         }
+
+        document.addEventListener('paw:login-requerido', (event) => {
+            this.abrirLogin(event.detail?.returnTo);
+        });
 
         // Cambiar de login a registro
         if (this.btnSwitchRegister) {
@@ -51,6 +55,15 @@ class PAWAuthModals {
         });
     }
 
+    abrirLogin(returnTo = '') {
+        const inputRetorno = this.loginModal.querySelector('input[name="return_to"]');
+        if (inputRetorno) {
+            inputRetorno.value = returnTo;
+        }
+
+        this.loginModal.showModal();
+    }
+
     checkUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get('error');
@@ -67,6 +80,7 @@ class PAWAuthModals {
             urlParams.delete('error');
             urlParams.delete('auth');
             urlParams.delete('registro');
+            urlParams.delete('return_to');
             
             const newSearch = urlParams.toString();
             const newUrl = window.location.pathname + (newSearch ? '?' + newSearch : '');

@@ -20,8 +20,7 @@ class QrController extends Controller
 
         // Requiere login
         if (empty($userSession)) {
-            header('Location: /?auth=login');
-            exit;
+            $this->redireccionarALogin();
         }
 
         $titulo = "Generar codigo QR - PawMap";
