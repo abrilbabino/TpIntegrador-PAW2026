@@ -106,7 +106,7 @@ class SolicitudAdopcionCollection extends Model
 
             // Notificar a usuarios que tienen a la mascota en favoritos
             if ($nuevoEstado === 'APROBADA' && $mascotaId !== null) {
-                $favoritos = $this->queryBuilder->rawQuery("SELECT adoptante_id FROM favorito WHERE mascota_id = :mascota_id", [':mascota_id' => $mascotaId]);
+                $favoritos = $this->queryBuilder->select('favorito', ['mascota_id' => $mascotaId]);
                 foreach ($favoritos as $fav) {
                     $favAdoptanteId = (int)$fav['adoptante_id'];
                     // No notificar al adoptante que acaba de adoptar a la mascota

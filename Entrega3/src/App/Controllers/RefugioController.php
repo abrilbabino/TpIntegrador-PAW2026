@@ -70,7 +70,7 @@ class RefugioController extends Controller
 
                 $refugio = $this->model->get($id);
                 if ($refugio) {
-                    $nombreRefugio = htmlspecialchars($refugio->fields['nombre_institucion'] ?? 'Refugio');
+                    $nombreRefugio = $refugio->fields['nombre_institucion'] ?? 'Refugio';
                     $metaDescription = "Conocé a {$nombreRefugio}, un refugio en PawMap. Mirá las mascotas que tienen en adopción y apoyá su causa.";
                 }
                 

@@ -130,7 +130,7 @@ class DonacionController extends Controller
             return;
         }
 
-        $comprobante = $_FILES['comprobante'] ?? null;
+        $comprobante = $this->request->file('comprobante');
         $envioExitoso = false;
         $errorEnvio = null;
 
