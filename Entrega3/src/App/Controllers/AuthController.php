@@ -66,7 +66,7 @@ class AuthController extends Controller
         }
 
         // Sanitizar
-        $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+        $username = trim($username);
 
         // Buscar usuario en base de datos
         $usuario = $this->model->findByUsername($username);

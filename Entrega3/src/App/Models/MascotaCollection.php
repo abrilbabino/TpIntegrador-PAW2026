@@ -698,13 +698,13 @@ class MascotaCollection extends Model
         }
         
         $datosUpdate = [
-            'nombre'          => htmlspecialchars($datosMascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'nombre'          => trim($datosMascota['nombre'] ?? ''),
             'especie_id'      => $dicc->obtenerOCrearId('especie', $especie),
-            'descripcion'     => htmlspecialchars($datosMascota['descripcion_mascota'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'descripcion'     => trim($datosMascota['descripcion_mascota'] ?? ''),
             'edad'            => $edad,
             'fecha_nacimiento'=> !empty($datosMascota['fecha_nacimiento']) ? $datosMascota['fecha_nacimiento'] : null,
             'tamano_id'       => $dicc->obtenerOCrearId('tamano', $datosMascota['tamanio'] ?? ''),
-            'sexo'            => htmlspecialchars($datosMascota['sexo'] ?? '', ENT_QUOTES, 'UTF-8'),
+            'sexo'            => trim($datosMascota['sexo'] ?? ''),
             'temperamento_id' => $dicc->obtenerOCrearId('temperamento', $temperamento),
             'castrado'     => (($datosMascota['esterilizado'] ?? '') === 'si') ? 1 : 0,
             'imagen'       => $imagenRelativa,

@@ -15,7 +15,7 @@ class PageController extends Controller
 
     public function index()
     {
-        $titulo = htmlspecialchars($this->request->get("nombre") ?? "Inicio-PawMap");
+        $titulo = $this->request->get("nombre") ?? "Inicio-PawMap";
         $metaDescription = "Descubrí en PawMap a tu compañero ideal. Buscá entre cientos de perros y gatos en adopción de los mejores refugios.";
         $menu = $this->menu;
         $redes = $this->redes;

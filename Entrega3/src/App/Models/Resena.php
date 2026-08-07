@@ -54,7 +54,7 @@ class Resena extends Model
         } elseif (mb_strlen($limpio, 'UTF-8') > 250) {
             $errores['comentario'] = "El comentario no puede superar los 250 caracteres.";
         } else {
-            $this->fields['comentario'] = htmlspecialchars($limpio);
+            $this->fields['comentario'] = $limpio;
         }
 
         return $errores;

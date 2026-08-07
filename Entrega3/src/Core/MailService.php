@@ -135,8 +135,8 @@ class MailService {
             $mail->isHTML(true);
             $mail->Subject = "Nuevo Comprobante de Donación Recibido";
             
-            $monto = htmlspecialchars($datosDonacion['monto'] ?? '0');
-            $refugioNombre = htmlspecialchars($datosDonacion['refugio'] ?? 'Refugio');
+            $monto = $datosDonacion['monto'] ?? '0';
+            $refugioNombre = $datosDonacion['refugio'] ?? 'Refugio';
             $mail->Body    = "<h2>¡Hola! Has recibido un nuevo comprobante de donación.</h2>" .
                              "<p>Un usuario ha enviado un comprobante de transferencia para tu refugio: <strong>$refugioNombre</strong>.</p>" .
                              "<p><strong>Monto registrado de la donación:</strong> $$monto</p>" .

@@ -102,8 +102,8 @@ class MascotaController extends Controller
 
         $mascota = $this->model->get($id);
         
-        $nombre = htmlspecialchars($mascota->fields['nombre'] ?? '');
-        $especie = htmlspecialchars(strtolower($mascota->fields['especie'] ?? 'mascota'));
+        $nombre = $mascota->fields['nombre'] ?? '';
+        $especie = strtolower($mascota->fields['especie'] ?? 'mascota');
         $metaDescription = "Conocé a {$nombre}, un {$especie} en adopción. Descubrí su historia y si es tu compañero ideal en PawMap.";
 
         $refugios = $this->loadCollection(RefugioCollection::class);

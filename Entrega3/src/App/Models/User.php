@@ -185,11 +185,11 @@ class User extends Model
         }
 
         // Sanitizar
-        $name     = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-        $apellido = htmlspecialchars($apellido, ENT_QUOTES, 'UTF-8');
-        $dni      = htmlspecialchars($dni, ENT_QUOTES, 'UTF-8');
+        $name     = trim($name);
+        $apellido = trim($apellido);
+        $dni      = trim($dni);
         $email    = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+        $username = trim($username);
 
         $existente = $this->findByUsername($username);
         if ($existente) {
@@ -333,9 +333,9 @@ class User extends Model
         }
 
         $fieldsUsuario = [
-            'nombre_usuario' => htmlspecialchars($nombreUsuario, ENT_QUOTES, 'UTF-8'),
+            'nombre_usuario' => $nombreUsuario,
             'email'          => filter_var($email, FILTER_SANITIZE_EMAIL),
-            'contacto'       => htmlspecialchars(trim($postData['contacto'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'contacto'       => trim($postData['contacto'] ?? ''),
         ];
 
         if (!empty($newPassword)) {
@@ -355,9 +355,9 @@ class User extends Model
         $fechaNac = trim($postData['fecha_de_nacimiento'] ?? '');
 
         $fieldsAdoptante = [
-            'nombre'              => htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'),
-            'apellido'            => htmlspecialchars($apellido, ENT_QUOTES, 'UTF-8'),
-            'dni'                 => htmlspecialchars($dni, ENT_QUOTES, 'UTF-8'),
+            'nombre'              => $nombre,
+            'apellido'            => $apellido,
+            'dni'                 => $dni,
             'fecha_de_nacimiento' => empty($fechaNac) ? null : $fechaNac,
         ];
 
@@ -457,11 +457,11 @@ class User extends Model
 
         // Actualizar refugio
         $fieldsRefugio = [
-            'nombre_institucion' => htmlspecialchars(trim($postData['nombre_institucion'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'descripcion' => htmlspecialchars(trim($postData['descripcion'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'telefono' => htmlspecialchars(trim($postData['telefono'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'alias' => htmlspecialchars(trim($postData['alias'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'cvu' => htmlspecialchars(trim($postData['cvu'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'nombre_institucion' => trim($postData['nombre_institucion'] ?? ''),
+            'descripcion' => trim($postData['descripcion'] ?? ''),
+            'telefono' => trim($postData['telefono'] ?? ''),
+            'alias' => trim($postData['alias'] ?? ''),
+            'cvu' => trim($postData['cvu'] ?? ''),
             'imagen' => $fieldsRefugioSync,
             'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
         ];
@@ -490,10 +490,10 @@ class User extends Model
             'refugio_id' => $userId,
             'latitud'    => (float) $postData['latitud'],
             'longitud'   => (float) $postData['longitud'],
-            'ciudad'     => htmlspecialchars(trim($postData['ciudad'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'provincia'  => htmlspecialchars(trim($postData['provincia'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'pais'       => htmlspecialchars(trim($postData['pais'] ?? ''), ENT_QUOTES, 'UTF-8'),
-            'direccion'  => htmlspecialchars(trim($postData['direccion'] ?? ''), ENT_QUOTES, 'UTF-8'),
+            'ciudad'     => trim($postData['ciudad'] ?? ''),
+            'provincia'  => trim($postData['provincia'] ?? ''),
+            'pais'       => trim($postData['pais'] ?? ''),
+            'direccion'  => trim($postData['direccion'] ?? ''),
         ];
 
         $existing = $this->queryBuilder->select('ubicacion', ['refugio_id' => $userId]);
