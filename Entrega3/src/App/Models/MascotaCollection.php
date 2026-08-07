@@ -353,7 +353,7 @@ class MascotaCollection extends Model
                 }
 
                 try {
-                    $this->queryBuilder->insert('mascota', [
+                    $mascotaId = $this->queryBuilder->insert('mascota', [
                         'refugio_id'      => $idUsuario,
                         'nombre'          => $nombreSeguro,
                         'especie_id'      => $dicc->obtenerOCrearId('especie', $especieSegura),
@@ -369,6 +369,17 @@ class MascotaCollection extends Model
                         'imagen'          => 'default-pet.jpg',
                         'svg'             => null,
                     ]);
+
+                    if ($mascotaId) {
+                        $this->verificarCoincidenciasColaEspera((int) $mascotaId, $idUsuario, [
+                            'nombre'       => $nombreSeguro,
+                            'especie'      => $especieSegura,
+                            'tamano'       => $tamanoSeguro,
+                            'temperamento' => $temperamentoSeguro,
+                            'edad'         => $edadValida,
+                        ]);
+                    }
+
                     $cantidadImportadas++;
                 } catch (\Exception $e) {
                     $erroresImportacion[] = "Fila $filaNum: Error al guardar - " . $e->getMessage();
@@ -596,29 +607,40 @@ class MascotaCollection extends Model
         ]);
 
         if ($mascotaId) {
-            try {
-                $ubicaciones = $this->queryBuilder->select('ubicacion', ['refugio_id' => $userId]);
-                $ubicacion = $ubicaciones[0] ?? [];
-                
-                $colaCollection = new \Paw\App\Models\ColaEsperaCollection();
-                $colaCollection->setQueryBuilder($this->queryBuilder);
-                $colaCollection->verificarMatches((int)$mascotaId, [
-                    'nombre'       => $nombreSeguro,
-                    'especie'      => $especieSegura,
-                    'tamano'       => $tamanoSeguro,
-                    'temperamento' => $temperamentoSeguro,
-                    'edad'         => $edad,
-                    'provincia'    => $ubicacion['provincia'] ?? '',
-                    'ciudad'       => $ubicacion['ciudad'] ?? '',
-                ]);
-            } catch (\Exception $e) {
-                if ($this->logger) {
-                    $this->logger->error('Error en Cola de Espera', ['error' => $e->getMessage()]);
-                }
-            }
+            $this->verificarCoincidenciasColaEspera((int) $mascotaId, $userId, [
+                'nombre'       => $nombreSeguro,
+                'especie'      => $especieSegura,
+                'tamano'       => $tamanoSeguro,
+                'temperamento' => $temperamentoSeguro,
+                'edad'         => $edad,
+            ]);
         }
 
         return [];
+    }
+
+    private function verificarCoincidenciasColaEspera(int $mascotaId, int $refugioId, array $datosMascota): void
+    {
+        try {
+            $ubicaciones = $this->queryBuilder->select('ubicacion', ['refugio_id' => $refugioId]);
+            $ubicacion = $ubicaciones[0] ?? [];
+
+            $colaCollection = new ColaEsperaCollection();
+            $colaCollection->setQueryBuilder($this->queryBuilder);
+            $colaCollection->verificarMatches($mascotaId, [
+                'nombre'       => $datosMascota['nombre'],
+                'especie'      => $datosMascota['especie'],
+                'tamano'       => $datosMascota['tamano'],
+                'temperamento' => $datosMascota['temperamento'],
+                'edad'         => $datosMascota['edad'],
+                'provincia'    => $ubicacion['provincia'] ?? '',
+                'ciudad'       => $ubicacion['ciudad'] ?? '',
+            ]);
+        } catch (\Exception $e) {
+            if ($this->logger) {
+                $this->logger->error('Error en Cola de Espera', ['error' => $e->getMessage()]);
+            }
+        }
     }
 
     public function actualizarMascotaConArchivos(int $id, array $datosMascota, array $archivos): void

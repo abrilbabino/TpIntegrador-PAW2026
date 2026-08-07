@@ -91,7 +91,7 @@ class PAWVisualizacion {
                 
                 const iconBtn = PAW.nuevoElemento("span", "notifications_active", { class: "material-symbols-outlined" });
                 btnAvisame.appendChild(iconBtn);
-                btnAvisame.appendChild(document.createTextNode(" Activar notificaciones"));
+                btnAvisame.appendChild(document.createTextNode(" Avisame"));
                 
                 btnAvisame.addEventListener("click", () => {
                     document.dispatchEvent(new CustomEvent('paw-cola-espera-solicitada'));

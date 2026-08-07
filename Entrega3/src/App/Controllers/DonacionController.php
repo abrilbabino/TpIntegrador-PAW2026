@@ -76,30 +76,8 @@ class DonacionController extends Controller
         if ($valores['metodo_pago'] === 'transferencia') {
             $monto = number_format((float) $valores['monto'], 2, ',', '.');
             
-            echo $this->twig->render('donacion.html.twig', [
-                'titulo' => 'Donaciones - PawMap',
-                'flash_type' => 'donacion',
-                'flash_data' => [
-                    'monto' => $monto,
-                    'monto_raw' => $valores['monto'],
-                    'metodo_pago' => $valores['metodo_pago'],
-                    'refugio_nombre' => $refugio->getNombre(),
-                    'refugio_alias' => $refugio->getAlias(),
-                    'refugio_cvu' => $refugio->getCvu(),
-                    'refugio_email' => $refugio->getEmail(),
-                    'refugio_id' => $refugio->getId()
-                ]
-            ]);
-            return;
-        }
-
-        $monto = number_format((float) $valores['monto'], 2, ',', '.');
-        $metodoPago = $valores['metodo_pago'] === 'mp' ? 'Mercado Pago' : 'Transferencia bancaria';
-
-        echo $this->twig->render('donacion.html.twig', [
-            'titulo' => 'Donaciones - PawMap',
-            'flash_type' => 'donacion',
-            'flash_data' => [
+            $flash_type = 'donacion';
+            $flash_data = [
                 'monto' => $monto,
                 'monto_raw' => $valores['monto'],
                 'metodo_pago' => $valores['metodo_pago'],
@@ -108,8 +86,30 @@ class DonacionController extends Controller
                 'refugio_cvu' => $refugio->getCvu(),
                 'refugio_email' => $refugio->getEmail(),
                 'refugio_id' => $refugio->getId()
-            ]
-        ]);
+            ];
+            $refugios = $this->model->getAll();
+
+            echo $this->twig->render('donacion.html.twig', get_defined_vars());
+            return;
+        }
+
+        $monto = number_format((float) $valores['monto'], 2, ',', '.');
+        $metodoPago = $valores['metodo_pago'] === 'mp' ? 'Mercado Pago' : 'Transferencia bancaria';
+
+        $flash_type = 'donacion';
+        $flash_data = [
+            'monto' => $monto,
+            'monto_raw' => $valores['monto'],
+            'metodo_pago' => $valores['metodo_pago'],
+            'refugio_nombre' => $refugio->getNombre(),
+            'refugio_alias' => $refugio->getAlias(),
+            'refugio_cvu' => $refugio->getCvu(),
+            'refugio_email' => $refugio->getEmail(),
+            'refugio_id' => $refugio->getId()
+        ];
+        $refugios = $this->model->getAll();
+
+        echo $this->twig->render('donacion.html.twig', get_defined_vars());
         exit;
     }
 
